@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import '../styles/animations.css';
 
@@ -53,6 +54,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <!-- Preload critical fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- View Transitions for smooth page navigation -->
+  <ViewTransitions />
 </head>
 <body>
   <div class="page-wrapper">
@@ -63,113 +67,102 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <slot name="footer" />
   </div>
 
-  <!-- GSAP for animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Motion for scroll animations -->
+  <script>
+    import { animate, scroll, stagger, inView } from 'motion';
 
-  <script is:inline>
-    // Wait for GSAP to load, then initialize
+    // Initialize animations after DOM is ready
     function initAnimations() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        setTimeout(initAnimations, 50);
-        return;
-      }
+      // Skew animations - animate when scrolled into view
+      document.querySelectorAll('.skew-animate').forEach((el) => {
+        // Set initial state
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(36%) skew(-6deg, -1deg)';
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      // Skew animations - animate from hidden state
-      gsap.utils.toArray('.skew-animate').forEach((el) => {
-        gsap.fromTo(el,
-          { opacity: 0, y: '36%', skewX: -6, skewY: -1 },
-          {
+        inView(el, () => {
+          animate(el, {
             opacity: 1,
-            y: 0,
-            skewX: 0,
-            skewY: 0,
+            transform: 'translateY(0) skew(0deg, 0deg)'
+          }, {
             duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
+            easing: [0.25, 0.46, 0.45, 0.94] // power2.out equivalent
+          });
+        }, { margin: '-15% 0px' });
       });
 
       // Scale animations
-      gsap.utils.toArray('.scale-animate').forEach((el) => {
-        gsap.fromTo(el,
-          { opacity: 0, scale: 0.97 },
-          {
+      document.querySelectorAll('.scale-animate').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'scale(0.97)';
+
+        inView(el, () => {
+          animate(el, {
             opacity: 1,
-            scale: 1,
+            transform: 'scale(1)'
+          }, {
             duration: 0.6,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
+            easing: [0.25, 0.46, 0.45, 0.94]
+          });
+        }, { margin: '-15% 0px' });
       });
 
       // Fade animations
-      gsap.utils.toArray('.fade-animate').forEach((el) => {
-        gsap.fromTo(el,
-          { opacity: 0, y: 20 },
-          {
+      document.querySelectorAll('.fade-animate').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+
+        inView(el, () => {
+          animate(el, {
             opacity: 1,
-            y: 0,
+            transform: 'translateY(0)'
+          }, {
             duration: 0.6,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
+            easing: [0.25, 0.46, 0.45, 0.94]
+          });
+        }, { margin: '-15% 0px' });
       });
 
       // Image reveal animations
-      gsap.utils.toArray('.image-reveal').forEach((el) => {
+      document.querySelectorAll('.image-reveal').forEach((el) => {
         const overlay = el.querySelector('.reveal-overlay');
         if (overlay) {
-          gsap.to(overlay, {
-            width: 0,
-            duration: 0.8,
-            ease: 'power2.inOut',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 80%',
-              toggleActions: 'play none none none'
-            }
-          });
+          inView(el, () => {
+            animate(overlay, {
+              width: '0%'
+            }, {
+              duration: 0.8,
+              easing: [0.45, 0, 0.55, 1] // power2.inOut equivalent
+            });
+          }, { margin: '-20% 0px' });
         }
       });
 
       // Stagger animations for lists
-      gsap.utils.toArray('[data-stagger]').forEach((container) => {
-        const items = container.children;
-        gsap.from(items, {
-          opacity: 0,
-          y: 30,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: container,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          }
+      document.querySelectorAll('[data-stagger]').forEach((container) => {
+        const items = Array.from(container.children);
+        items.forEach((item) => {
+          item.style.opacity = '0';
+          item.style.transform = 'translateY(30px)';
         });
+
+        inView(container, () => {
+          animate(items, {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }, {
+            duration: 0.5,
+            delay: stagger(0.1),
+            easing: [0.25, 0.46, 0.45, 0.94]
+          });
+        }, { margin: '-15% 0px' });
       });
     }
 
-    // Start checking for GSAP
+    // Run on initial load
     initAnimations();
+
+    // Re-run after view transitions
+    document.addEventListener('astro:after-swap', initAnimations);
   </script>
 </body>
 </html>

@@ -1,35 +1,12 @@
 /* Animation Styles - Minoan Mystery */
+/* Using Motion library for scroll animations */
 
 /* ============================================
-   SCROLL ANIMATIONS (GSAP handles these)
+   SCROLL ANIMATIONS (Motion handles via JS)
    ============================================ */
 
-/* Initial state for animated elements */
-[data-animate] {
-  opacity: 0;
-}
-
-[data-animate].is-visible {
-  opacity: 1;
-}
-
-/* Skew animation initial state - GSAP will set these */
-.skew-animate.gsap-init {
-  opacity: 0;
-  transform: translateY(36%) skew(-6deg, -1deg);
-}
-
-/* Scale animation initial state - GSAP will set these */
-.scale-animate.gsap-init {
-  opacity: 0;
-  transform: scale(0.97);
-}
-
-/* Fade animation initial state - GSAP will set these */
-.fade-animate.gsap-init {
-  opacity: 0;
-  transform: translateY(20px);
-}
+/* Initial states are set via JavaScript in BaseLayout.astro */
+/* Motion's inView() handles scroll-triggered animations */
 
 /* ============================================
    IMAGE REVEAL
