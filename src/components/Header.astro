@@ -1,0 +1,276 @@
+---
+const currentPath = Astro.url.pathname;
+
+const leftNav = [
+  { href: '/', label: 'Home' },
+  { href: '/portfolio', label: 'Portfolio', hasDropdown: true },
+  { href: '/ai-llms', label: 'A.I./LLMs' },
+];
+
+const rightNav = [
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/blog', label: 'Blog' },
+];
+
+const portfolioItems = [
+  { href: '/portfolio/dolby', label: 'Dolby.com' },
+  { href: '/portfolio/acs', label: 'The American College of Surgeons' },
+  { href: '/portfolio/czi', label: 'Chan Zuckerberg Initiative' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') {
+    return currentPath === '/';
+  }
+  if (href === '/portfolio') {
+    return currentPath.startsWith('/portfolio');
+  }
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="header">
+  <div class="container">
+    <nav class="nav">
+      <ul class="nav-links nav-left">
+        {leftNav.map((link) => (
+          <li class={link.hasDropdown ? 'nav-dropdown' : ''}>
+            <a
+              href={link.href}
+              class:list={['nav-link', { 'is-active': isActive(link.href) }]}
+            >
+              {link.label}
+              {link.hasDropdown && <span class="dropdown-arrow">&#9662;</span>}
+            </a>
+            {link.hasDropdown && (
+              <ul class="dropdown-menu">
+                {portfolioItems.map((item) => (
+                  <li>
+                    <a href={item.href} class="dropdown-link">{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <a href="/" class="nav-logo" aria-label="Minoan Mystery Home">
+        <img src="/images/header-logo.png" alt="Tom di Mino" class="logo-img" />
+      </a>
+
+      <ul class="nav-links nav-right">
+        {rightNav.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={['nav-link', { 'is-active': isActive(link.href) }]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-background);
+    padding: 32px 0; /* Matching Webflow original */
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-logo:hover {
+    opacity: 0.8;
+  }
+
+  .logo-img {
+    height: 36px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-left {
+    flex: 1;
+    justify-content: flex-start;
+  }
+
+  .nav-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .nav-link {
+    position: relative;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgb(34, 34, 34); /* Matching Webflow original */
+    text-decoration: none;
+    transition: color 0.35s ease; /* Matching Webflow 0.35s */
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 10px 20px; /* Matching Webflow original */
+  }
+
+  .dropdown-arrow {
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-primary);
+    transition: width var(--transition-normal);
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-link.is-active {
+    color: var(--color-text);
+  }
+
+  .nav-link.is-active::after {
+    width: 100%;
+    background-color: var(--color-text);
+  }
+
+  /* Dropdown menu */
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 260px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    list-style: none;
+    padding: var(--space-sm) 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all var(--transition-fast);
+    z-index: 100;
+  }
+
+  .nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+  }
+
+  .dropdown-link:hover {
+    background-color: var(--color-background-alt, #f5f5f5);
+    color: var(--color-primary);
+  }
+
+  /* Mobile menu */
+  @media (max-width: 768px) {
+    .nav-left,
+    .nav-right {
+      display: none;
+    }
+
+    .nav-links.is-open {
+      display: flex;
+      position: fixed;
+      top: 72px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: var(--space-xl);
+      gap: var(--space-md);
+      background-color: var(--color-background);
+    }
+
+    .nav-link {
+      font-size: 1.5rem;
+    }
+
+    .dropdown-menu {
+      position: static;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      border: none;
+      min-width: auto;
+    }
+  }
+</style>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLeft = document.querySelector('.nav-left');
+  const navRight = document.querySelector('.nav-right');
+
+  if (hamburger && navLeft && navRight) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = navLeft.classList.toggle('is-open');
+      navRight.classList.toggle('is-open');
+      hamburger.classList.toggle('is-active');
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+</script>

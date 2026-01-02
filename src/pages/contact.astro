@@ -1,0 +1,330 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Let's chat online or IRL!"
+  description="The human language system remains the most potent magic known to us. At Minoan Mystery, I dig to the root of what you do, and make it more powerful with words."
+>
+  <Header slot="header" />
+
+  <!-- Contact Section - Two Column Layout -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Left Column - Text -->
+        <div class="contact-content">
+          <h1 class="skew-animate">Let's get creative!</h1>
+          <p class="paragraph-large fade-animate">
+            Between LLMs, Big Tech, and digital 'souls,' we have mountains to talk about. I'll consult as a content engineer, tech writer, and developer of A.I. product MVPs.
+          </p>
+          <p class="fade-animate">
+            Whether you'd like to discuss the A.I./LLM industry, a nascent app, service or product of yours, I'm all ears and happy to chat with you!
+          </p>
+          <p class="cta-text fade-animate">
+            Reach out today, and <em class="highlight">let's unravel your mystery!</em>
+          </p>
+
+          <div class="contact-links scale-animate">
+            <a href="mailto:contact@tomdimino.com" class="contact-link">
+              <span>Email</span>
+              <span class="arrow">&#8599;</span>
+            </a>
+            <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer" class="contact-link">
+              <span>Calendly</span>
+              <span class="arrow">&#8599;</span>
+            </a>
+            <a href="https://www.linkedin.com/in/tomdimino" target="_blank" rel="noopener noreferrer" class="contact-link">
+              <span>LinkedIn</span>
+              <span class="arrow">&#8599;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column - Form -->
+        <div class="contact-form-wrapper">
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            class="contact-form fade-animate"
+          >
+            <!-- Honeypot field for spam protection -->
+            <p class="visually-hidden">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+
+            <div class="form-group">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Your preferred name"
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="Email address"
+              />
+            </div>
+
+            <div class="form-group">
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                maxlength="5000"
+                placeholder="A tidbit about a potential project, or business offer you'd like to propose."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-link">
+                <span>Submit message</span>
+                <span class="arrow">&#8599;</span>
+              </button>
+              <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                Schedule a video call with me!
+              </a>
+            </div>
+          </form>
+
+          <div id="form-success" class="form-message form-success" style="display: none;">
+            <p>Your message has been submitted. I will get back to you within 24-48 hours.</p>
+          </div>
+
+          <div id="form-error" class="form-message form-error" style="display: none;">
+            <p>Oops! Something went wrong while submitting the form. Please try again.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Contact Section */
+  .contact-section {
+    padding: var(--space-2xl) 0 var(--space-xl);
+    padding-top: calc(72px + var(--space-2xl));
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .contact-content h1 {
+    margin-bottom: var(--space-md);
+  }
+
+  .contact-content p {
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+  }
+
+  .cta-text {
+    margin-bottom: var(--space-lg);
+  }
+
+  .highlight {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+
+  /* Contact Links */
+  .contact-links {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .contact-link:hover {
+    color: var(--color-primary);
+  }
+
+  .contact-link .arrow {
+    font-size: 0.9rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .contact-link:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Contact Form */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: var(--space-sm) 0;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    background: transparent;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--color-text);
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-bottom-color: var(--color-primary);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* Form Actions */
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-md);
+  }
+
+  .submit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0;
+    transition: color var(--transition-fast);
+  }
+
+  .submit-link:hover {
+    color: var(--color-primary);
+  }
+
+  .submit-link .arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .submit-link:hover .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Form Messages */
+  .form-message {
+    padding: var(--space-md);
+    border-radius: 4px;
+    margin-top: var(--space-md);
+  }
+
+  .form-message p {
+    margin: 0;
+  }
+
+  .form-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+
+  .form-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding-top: calc(72px + var(--space-lg));
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    .contact-links {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .form-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+  }
+</style>
+
+<script>
+  // Handle form submission with Netlify
+  const form = document.querySelector('.contact-form');
+  const successMessage = document.getElementById('form-success');
+  const errorMessage = document.getElementById('form-error');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(formData).toString(),
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          successMessage.style.display = 'block';
+        } else {
+          errorMessage.style.display = 'block';
+        }
+      } catch (error) {
+        errorMessage.style.display = 'block';
+      }
+    });
+  }
+</script>

@@ -1,0 +1,344 @@
+/* Global Styles - Minoan Mystery */
+
+/* Font Import - Thicccboi */
+@font-face {
+  font-family: 'Thicccboi';
+  src: url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c40a67a85ca5_THICCCBOI-Medium.woff2') format('woff2'),
+       url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c4d177a85ca4_THICCCBOI-Medium.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thicccboi';
+  src: url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c40a67a85ca5_THICCCBOI-Medium.woff2') format('woff2'),
+       url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c4d177a85ca4_THICCCBOI-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thicccboi';
+  src: url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c45ef9a85caf_THICCCBOI-SemiBold.woff2') format('woff2'),
+       url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c430bda85cae_THICCCBOI-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thicccboi';
+  src: url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c46c17a85ca8_THICCCBOI-Bold.woff2') format('woff2'),
+       url('https://cdn.prod.website-files.com/63fcca386505c48385a85c72/63fcca386505c41815a85caa_THICCCBOI-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* CSS Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS Variables */
+:root {
+  /* Colors - Matching Webflow original */
+  --color-primary: #966a85; /* rgb(150, 106, 133) - lighter purple/pink */
+  --color-primary-dark: #5c1a5c;
+  --color-primary-light: #7a2b7a;
+  --color-text: #0d0d0d; /* rgb(13, 13, 13) */
+  --color-text-muted: #686868; /* rgb(104, 104, 104) */
+  --color-background: #ffffff;
+  --color-background-alt: #f5f5f5;
+  --color-border: #e5e5e5;
+  --color-accent: #d4af37;
+  --color-highlight: rgb(255, 248, 201); /* Pale yellow highlight - matches Webflow */
+
+  /* Typography */
+  --font-heading: 'Thicccboi', sans-serif;
+  --font-body: 'Thicccboi', sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-2xl: 8rem;
+
+  /* Container */
+  --container-max: 1200px;
+  --container-narrow: 740px;
+  --container-medium: 860px;
+
+  /* Transitions - matching Webflow 0.35s */
+  --transition-fast: 0.35s ease;
+  --transition-normal: 0.35s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Base Styles */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--color-text-muted);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+h1 {
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 70px;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: var(--space-sm);
+}
+
+.paragraph-large {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--color-text-muted);
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.container-narrow {
+  max-width: var(--container-narrow);
+}
+
+.container-medium {
+  max-width: var(--container-medium);
+}
+
+/* Page Wrapper */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper main {
+  flex: 1;
+}
+
+/* Section */
+.section {
+  padding: 160px 0; /* Matching Webflow original */
+}
+
+.section-sm {
+  padding: var(--space-lg) 0;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-lg) 0;
+}
+
+/* Highlight */
+.highlight {
+  color: var(--color-primary);
+}
+
+.skills {
+  font-style: italic;
+  color: var(--color-primary);
+}
+
+/* Rich Text */
+.rich-text {
+  line-height: 1.8;
+}
+
+.rich-text p {
+  margin-bottom: var(--space-sm);
+}
+
+.rich-text ul,
+.rich-text ol {
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-md);
+}
+
+.rich-text li {
+  margin-bottom: var(--space-xs);
+}
+
+.rich-text strong {
+  font-weight: 700;
+}
+
+/* Strong text globally */
+strong {
+  font-weight: 700;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  color: white;
+}
+
+/* Form Elements */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background-color: var(--color-background);
+  transition: border-color var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :root {
+    --space-lg: 3rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+  }
+
+  .section {
+    padding: var(--space-lg) 0;
+  }
+}

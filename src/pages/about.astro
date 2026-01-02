@@ -1,0 +1,297 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const experience = [
+  {
+    company: 'Aldea AI',
+    period: 'July 2025 / Present',
+    role: 'Principal AI Content Engineer',
+    description: "I train LLMs on the corpuses of world-renown experts, evaluate them for safety and ethical conduct, and develop full-stack A.I. apps.",
+    logo: '/images/logos/aldea.png',
+  },
+  {
+    company: 'J.P. Morgan Chase',
+    period: 'May 2024 / July 2025',
+    role: 'AI Content Engineer',
+    description: "I iterated on the product design of AI tools for wealth advisors, evaluating them qualitatively and quantitatively at scale. My work spanned their design, research, ML, data, and developer teams.",
+    logo: '/images/logos/jpmorgan.png',
+  },
+  {
+    company: 'Minoan Mystery',
+    period: 'Dec 2023 / June 2024',
+    role: 'AI UX Copywriter',
+    description: "I interviewed design, research, and UX leaders from the AI UX and DeepMind teams at Google, digested their learnings, and ghostwrote/edited PRs and blogs.",
+    logo: '/images/seal-of-minos.png',
+  },
+  {
+    company: 'Google',
+    period: 'June 2022 / October 2023',
+    role: 'Sr. Content Designer',
+    description: "I co-created leadership skills curricula for engineers and Tech Googlers of all different roles and levels, and led the re-design for an internal Mentorship platform.",
+    logo: '/images/logos/google.png',
+  },
+  {
+    company: 'Chan Zuckerberg Initiative',
+    period: '2021 / 2022',
+    role: 'Sr. Content Designer',
+    description: "I co-launched a learning platform of video-narrated materials for napari, an open-source, Python-based image analysis tool.",
+    logo: '/images/logos/czi.svg',
+  },
+  {
+    company: 'Hugo & Cat',
+    period: 'July 2021 / Nov 2021',
+    role: 'Sr. Content Strategist',
+    description: "I audited the website of the world's largest surgical institution, then sprinted with a cutting-edge team to design and migrate it all to the Umbraco engine.",
+    logo: '/images/logos/hugo-cat.png',
+  },
+  {
+    company: 'Valtech',
+    period: '2020 / 2021',
+    role: 'Technical Content Strategist',
+    description: "I migrated Dolby Labs to the Sitecore platform, revised their information architecture, and did the same for the AONA.org, and IMAnet.org.",
+    logo: '/images/logos/valtech.jpg',
+  },
+];
+---
+
+<BaseLayout
+  title="A 'Cognitive Designer' with a penchant for poetry"
+  description="Writer, TypeScript enthusiast, and LLM expert. I craft blogs, videos, training, demos, and thought leadership materials used by startups and enterprise titans."
+>
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-hero-grid">
+        <div class="about-hero-image scale-animate">
+          <div class="image-reveal">
+            <img src="/images/tyrian-profile.png" alt="Tom di Mino" />
+            <div class="reveal-overlay"></div>
+          </div>
+        </div>
+        <div class="about-hero-content">
+          <h1 class="skew-animate">
+            Hi! I'm Tom di Mino. I live in Rosendale, NY, where I write, design, & consult in all things A.I.
+          </h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bio Section -->
+  <section class="section about-bio">
+    <div class="container container-medium">
+      <div class="rich-text fade-animate">
+        <p class="paragraph-large">
+          If Walt Whitman "contained multitudes," then I'm as 'cross-functional' as they come. Born a writer and voracious reader of science-fiction novels, I transitioned into tech at an early age, christened on message boards, MMORPGs, and historic turn-based games.
+        </p>
+        <p>
+          After rebranding a cloud-based SaaS suite for higher-ed, I sharpened into a copywriter with SEO acumen, before leading content strategy for enterprise-grade clients like Dolby Labs, and the American College of Surgeons.
+        </p>
+        <p>
+          In the last 3 years, I've co-led projects at Google, and Chan Zuckerberg Initiative, designing and launching learning curricula geared toward ML scientists, A.I. developers, and open-source in general. Recently, I steered the product design and 'agentic' flow behind an A.I./LLM "meeting assistant" for wealth advisors at the largest bank in the world.
+        </p>
+        <p>
+          As a life-long language lover, and die-hard nerd at heart, I verse myself in the many uses and limitations of LLMs from OpenAI, Anthropic, and Meta, and brainstorm with the brightest minds behind the most prescient frameworks in 'agentic' A.I. today.
+        </p>
+        <p>
+          When I'm not consulting for J.P. Morgan through my LLC, or delving deeper into TypeScript and LLM-assisted coding, you'll find me hiking with my partner in upstate New York, performing live poetry, and imbuing the digital with soul.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider fade-animate"></div>
+  </div>
+
+  <!-- Experience Section -->
+  <section class="section experience">
+    <div class="container">
+      <h2 class="skew-animate">My industry experience</h2>
+      <p class="paragraph-large fade-animate">
+        As a writer, designer, and AI programmer, I bring a syncretic and empathetic lens to any team or organization.
+      </p>
+
+      <div class="experience-grid" data-stagger>
+        {experience.map((job) => (
+          <div class="experience-card scale-animate">
+            <div class="experience-logo">
+              <img src={job.logo} alt={job.company} />
+            </div>
+            <div class="experience-content">
+              <div class="experience-header">
+                <h3>{job.company}</h3>
+                <span class="experience-period">{job.period}</span>
+              </div>
+              <p class="experience-role">{job.role}</p>
+              <p class="experience-description">{job.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section interested">
+    <div class="container container-narrow text-center">
+      <h2 class="skew-animate">Interested in working together? Get in touch today.</h2>
+      <p class="paragraph-large fade-animate">
+        We're all teeming with thoughts and ideas. I enjoy bridging the gaps, and finding new ways to integrate them.
+      </p>
+      <a href="/contact" class="circle-link scale-animate">
+        <span class="circle-link-text">Get in<br>touch</span>
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* About Hero */
+  .about-hero {
+    padding: var(--space-2xl) 0 var(--space-xl);
+    padding-top: calc(72px + var(--space-2xl));
+  }
+
+  .about-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .about-hero h1 {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    line-height: 1.3;
+  }
+
+  .about-hero-image img {
+    border-radius: 4px;
+  }
+
+  /* Bio Section */
+  .about-bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Experience Section */
+  .experience h2 {
+    margin-bottom: var(--space-sm);
+  }
+
+  .experience > .container > .paragraph-large {
+    margin-bottom: var(--space-xl);
+  }
+
+  .experience-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .experience-card {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    transition: box-shadow var(--transition-normal);
+  }
+
+  .experience-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .experience-logo {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .experience-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .experience-header h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0;
+  }
+
+  .experience-period {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .experience-role {
+    color: var(--color-primary);
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+  }
+
+  .experience-description {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+
+  /* CTA Section */
+  .interested {
+    background-color: var(--color-background-alt);
+  }
+
+  .interested h2 {
+    margin-bottom: var(--space-sm);
+  }
+
+  .interested .circle-link {
+    margin-top: var(--space-md);
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      padding-top: calc(72px + var(--space-lg));
+    }
+
+    .about-hero-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    .about-hero-content {
+      order: 2;
+    }
+
+    .experience-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .experience-logo {
+      margin: 0 auto;
+    }
+
+    .experience-header {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

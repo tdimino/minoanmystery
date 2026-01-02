@@ -1,16 +1,267 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
+const projects = [
+  {
+    slug: 'acs',
+    title: 'American College of Surgeons',
+    summary: "Partnered with Hugo & Cat, I audited the American College of Surgeons's website, and prioritized the migration of all their content, while redefining ACS's voice, tone, and brand.",
+    image: '/images/portfolio/hero-acs.jpg',
+  },
+  {
+    slug: 'czi',
+    title: 'Chan Zuckerberg Initiative',
+    summary: 'At CZI, I co-led the "Bravo Cohort" to design a learning platform and training materials for biology PhDs and imaging scientists.',
+    image: '/images/portfolio/hero-czi.png',
+  },
+  {
+    slug: 'dolby',
+    title: 'Dolby Laboratories',
+    summary: "On a small team at Valtech, I re-designed Dolby.com's consumer and professional websites, distilling them into twelve annotated templates still in-use by Dolby today.",
+    image: '/images/portfolio/hero-dolby.png',
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="An iconoclast against labyrinths, and soulless writing"
+  description="The human language system remains the most potent magic known to us. At Minoan Mystery, I dig to the root of what you do, and make it more powerful with words."
+>
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title skew-animate">
+        Poet-turned-<em>Content-Designer</em> with <em class="highlight-bold">Aldea AI</em>; ex-Google, CZI, & award-winning agencies like <strong>Hugo & Cat</strong>.
+      </h1>
+      <p class="paragraph-large fade-animate">
+        In my past life, I had a fondness for solving puzzles and following upstarts, so I'm quite smitten by any digital work involving: <span class="skill-link">enterprise-grade</span> website audits; <span class="skill-link">copy</span> and <span class="skill-link">UI design</span> for startups; <span class="skill-link">A.I integration</span>, tech <span class="skill-link">documentation</span>; UX <span class="skill-link">personas</span>; and <span class="skill-link">co-design</span> workshops.
+      </p>
+      <p class="cta-text fade-animate">
+        <strong>Perhaps <a href="/contact" class="link-highlight">we should work together</a></strong> <span class="cta-emoji">🔮</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Past Projects Section -->
+  <section class="section past-projects">
+    <div class="container">
+      <h2 class="section-title skew-animate">Past projects of interest</h2>
+      <div class="projects-list">
+        {projects.map((project, index) => (
+          <a href={`/portfolio/${project.slug}`} class={`project-row ${index % 2 === 1 ? 'reverse' : ''}`}>
+            <div class="project-content scale-animate">
+              <h3 class="project-title">
+                {project.title}
+              </h3>
+              <p class="project-summary">{project.summary}</p>
+              <span class="view-project">View project <span class="arrow">↗</span></span>
+            </div>
+            <div class="project-image scale-animate">
+              <img src={project.image} alt={project.title} loading="lazy" />
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding: var(--space-2xl) 0 var(--space-xl);
+    padding-top: calc(72px + var(--space-2xl));
+  }
+
+  .hero-title {
+    font-size: 60px;
+    font-weight: 500;
+    line-height: 70px;
+    margin-bottom: 24px;
+    color: var(--color-text);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .hero-title .highlight-bold {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .hero-title strong {
+    font-weight: 700;
+  }
+
+  .cta-text {
+    margin-top: var(--space-md);
+  }
+
+  /* Hero paragraph links should be dark, not muted */
+  .hero p a,
+  .hero .paragraph-large a {
+    color: rgb(13, 13, 13); /* Matching Webflow original */
+    text-decoration: underline;
+  }
+
+  .link-highlight {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background-color: var(--color-highlight);
+    padding: 0; /* Matching Webflow - no padding */
+  }
+
+  .link-highlight:hover {
+    color: var(--color-text);
+  }
+
+  .skill-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .skill-link:hover {
+    color: var(--color-text);
+  }
+
+  .cta-emoji {
+    font-size: 1rem;
+    margin-left: 0.25rem;
+  }
+
+  /* Section title */
+  .section-title {
+    font-size: 48px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  /* Projects list - staggered layout */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-lg);
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-row:first-child {
+    border-top: none;
+  }
+
+  .project-row.reverse {
+    direction: rtl;
+  }
+
+  .project-row.reverse > * {
+    direction: ltr;
+  }
+
+  .project-content {
+    padding-right: var(--space-md);
+  }
+
+  .project-row.reverse .project-content {
+    padding-right: 0;
+    padding-left: var(--space-md);
+  }
+
+  .project-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+  }
+
+  .project-summary {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .view-project {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-top: var(--space-sm);
+  }
+
+  .view-project .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .project-row:hover .view-project .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .project-image {
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .project-image img {
+    width: 636px; /* Matching Webflow original */
+    height: 292px; /* Matching Webflow original */
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .project-row:hover .project-image img {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: calc(72px + var(--space-lg));
+    }
+
+    .project-row,
+    .project-row.reverse {
+      grid-template-columns: 1fr;
+      direction: ltr;
+    }
+
+    .project-row.reverse > * {
+      direction: ltr;
+    }
+
+    .project-content,
+    .project-row.reverse .project-content {
+      padding: 0;
+      order: 2;
+    }
+
+    .project-image {
+      order: 1;
+    }
+  }
+</style>

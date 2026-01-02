@@ -1,0 +1,331 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const portfolioEntries = await getCollection('portfolio');
+  return portfolioEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title, client, team, role, website, heroImage, galleryProcess, gallerySolution, captionProcess, captionSolution } = entry.data;
+---
+
+<BaseLayout
+  title={title}
+  description={entry.data.summary}
+  image={heroImage}
+>
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="portfolio-hero">
+    <div class="container">
+      <div class="portfolio-hero-content">
+        <h1 class="skew-animate">{title}</h1>
+        <p class="paragraph-large fade-animate">{entry.data.summary}</p>
+      </div>
+    </div>
+    <!-- Scroll Down Button -->
+    <button class="scroll-down-btn" id="scroll-down" aria-label="Scroll down">
+      <span class="scroll-arrow">⌄</span>
+    </button>
+  </section>
+
+  <!-- Hero Image -->
+  <section class="portfolio-hero-image">
+    <div class="container">
+      <div class="image-reveal scale-animate">
+        <img src={heroImage} alt={title} />
+        <div class="reveal-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Details -->
+  <section class="section portfolio-details">
+    <div class="container">
+      <div class="details-grid fade-animate">
+        <div class="detail-item">
+          <span class="detail-label">Client</span>
+          <span class="detail-value">{client}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Team</span>
+          <span class="detail-value">{team}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Role</span>
+          <span class="detail-value">{role}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Website</span>
+          <a href={website} target="_blank" rel="noopener noreferrer" class="link-arrow">
+            <span>View live site</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider fade-animate"></div>
+  </div>
+
+  <!-- Main Content -->
+  <section class="section portfolio-content">
+    <div class="container container-medium">
+      <div class="rich-text fade-animate">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Gallery -->
+  {galleryProcess && galleryProcess.length > 0 && (
+    <section class="section portfolio-gallery">
+      <div class="container">
+        <h3 class="gallery-title skew-animate">Process</h3>
+        {captionProcess && <p class="gallery-caption text-muted">{captionProcess}</p>}
+        <div class="gallery-grid" data-stagger>
+          {galleryProcess.map((image) => (
+            <div class="gallery-item image-reveal scale-animate">
+              <img src={image.src} alt={image.alt} loading="lazy" />
+              <div class="reveal-overlay"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Solution Gallery -->
+  {gallerySolution && gallerySolution.length > 0 && (
+    <section class="section portfolio-gallery">
+      <div class="container">
+        <h3 class="gallery-title skew-animate">Solution</h3>
+        {captionSolution && <p class="gallery-caption text-muted">{captionSolution}</p>}
+        <div class="gallery-grid" data-stagger>
+          {gallerySolution.map((image) => (
+            <div class="gallery-item image-reveal scale-animate">
+              <img src={image.src} alt={image.alt} loading="lazy" />
+              <div class="reveal-overlay"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA Section -->
+  <section class="section interested">
+    <div class="container container-narrow text-center">
+      <h2 class="skew-animate">Interested in working together?</h2>
+      <p class="paragraph-large fade-animate">
+        We're all teeming with thoughts and ideas. I enjoy bridging the gaps, and finding new ways to integrate them.
+      </p>
+      <a href="/contact" class="circle-link scale-animate">
+        <span class="circle-link-text">Get in<br>touch</span>
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Portfolio Hero */
+  .portfolio-hero {
+    padding: var(--space-2xl) 0 var(--space-lg);
+    padding-top: calc(72px + var(--space-2xl));
+    position: relative;
+  }
+
+  .portfolio-hero h1 {
+    margin-bottom: var(--space-md);
+  }
+
+  .portfolio-hero-content {
+    max-width: var(--container-medium);
+  }
+
+  /* Scroll Down Button */
+  .scroll-down-btn {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 100;
+  }
+
+  .scroll-down-btn:hover {
+    border-color: var(--color-text);
+    transform: translateY(2px);
+  }
+
+  .scroll-arrow {
+    font-size: 24px;
+    color: var(--color-text);
+    line-height: 1;
+  }
+
+  /* Hero Image */
+  .portfolio-hero-image {
+    padding-bottom: var(--space-lg);
+  }
+
+  .portfolio-hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  /* Project Details */
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    padding: var(--space-md) 0;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .detail-label {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-value {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+  }
+
+  /* Portfolio Content */
+  .portfolio-content h2 {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .portfolio-content h2:first-child {
+    margin-top: 0;
+  }
+
+  .portfolio-content ul,
+  .portfolio-content ol {
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-md);
+  }
+
+  .portfolio-content li {
+    margin-bottom: var(--space-xs);
+  }
+
+  .portfolio-content strong {
+    color: var(--color-primary);
+  }
+
+  .portfolio-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .portfolio-content a:hover {
+    text-decoration: none;
+  }
+
+  /* Gallery */
+  .portfolio-gallery {
+    background-color: var(--color-background-alt);
+  }
+
+  .gallery-title {
+    margin-bottom: var(--space-xs);
+  }
+
+  .gallery-caption {
+    margin-bottom: var(--space-lg);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  /* CTA Section */
+  .interested {
+    background-color: var(--color-background);
+  }
+
+  .interested h2 {
+    margin-bottom: var(--space-sm);
+  }
+
+  .interested .circle-link {
+    margin-top: var(--space-md);
+  }
+
+  @media (max-width: 768px) {
+    .portfolio-hero {
+      padding-top: calc(72px + var(--space-lg));
+    }
+
+    .details-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .details-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .scroll-down-btn {
+      right: 20px;
+      bottom: 20px;
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>
+
+<script>
+  const scrollBtn = document.getElementById('scroll-down');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', () => {
+      window.scrollBy({
+        top: window.innerHeight * 0.8,
+        behavior: 'smooth'
+      });
+    });
+  }
+</script>
