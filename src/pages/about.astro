@@ -62,90 +62,87 @@ const experience = [
 >
   <Header slot="header" />
 
-  <!-- Hero Section -->
+  <!-- Hero Section with Bio - Matching Webflow 2-column layout -->
   <section class="about-hero">
     <div class="container">
       <div class="about-hero-grid">
-        <div class="about-hero-image scale-animate">
-          <div class="image-reveal">
-            <img src="/images/tyrian-profile.png" alt="Tom di Mino" />
-            <div class="reveal-overlay"></div>
-          </div>
+        <div class="about-hero-image">
+          <img src="/images/tyrian-profile.png" alt="Tom di Mino" />
         </div>
         <div class="about-hero-content">
-          <h1 class="skew-animate">
-            Hi! I'm Tom di Mino. I live in Rosendale, NY, where I write, design, & consult in all things A.I.
-          </h1>
+          <h1>Hi! I'm <strong>Tom di Mino</strong>. I live in Beacon, NY, where I write, design, & consult in all things <span class="highlight">A.I.</span></h1>
+          <div class="about-bio">
+            <p class="paragraph-large">
+              If Walt Whitman "contained multitudes," then I'm as 'cross-functional' as they come. Born a writer and voracious reader of science-fiction novels, I transitioned into tech at an early age, christened on message boards, MMORPGs, and historic turn-based games.
+            </p>
+            <p class="paragraph-large">
+              After rebranding a cloud-based SaaS suite for higher-ed, I sharpened into a copywriter with SEO acumen, before leading content strategy for enterprise-grade clients like <a href="/portfolio/dolby">Dolby Labs</a>, and the <a href="/portfolio/acs">American College of Surgeons</a>.
+            </p>
+            <p class="paragraph-large">
+              In the last 3 years, I've co-led projects at Google, and <a href="/portfolio/czi">Chan Zuckerberg Initiative</a>, designing and launching learning curricula geared toward ML scientists, A.I. developers, and open-source in general. Recently, I steered the product design and 'agentic' flow behind an A.I./LLM "meeting assistant" for wealth advisors at the largest bank in the world.
+            </p>
+            <p class="paragraph-large">
+              As a life-long language lover, and die-hard nerd at heart, I verse myself in the many uses and limitations of LLMs from OpenAI, Anthropic, and Meta, and brainstorm with the brightest minds behind the most prescient frameworks in 'agentic' A.I. today.
+            </p>
+            <p class="paragraph-large">
+              When I'm not consulting for J.P. Morgan through my LLC, or delving deeper into TypeScript and LLM-assisted coding, you'll find me hiking with my partner in upstate New York, performing live poetry, and <a href="https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf" target="_blank" class="skills">imbuing the digital with <em>soul</em>.</a>
+            </p>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bio Section -->
-  <section class="section about-bio">
-    <div class="container container-medium">
-      <div class="rich-text fade-animate">
-        <p class="paragraph-large">
-          If Walt Whitman "contained multitudes," then I'm as 'cross-functional' as they come. Born a writer and voracious reader of science-fiction novels, I transitioned into tech at an early age, christened on message boards, MMORPGs, and historic turn-based games.
-        </p>
-        <p>
-          After rebranding a cloud-based SaaS suite for higher-ed, I sharpened into a copywriter with SEO acumen, before leading content strategy for enterprise-grade clients like Dolby Labs, and the American College of Surgeons.
-        </p>
-        <p>
-          In the last 3 years, I've co-led projects at Google, and Chan Zuckerberg Initiative, designing and launching learning curricula geared toward ML scientists, A.I. developers, and open-source in general. Recently, I steered the product design and 'agentic' flow behind an A.I./LLM "meeting assistant" for wealth advisors at the largest bank in the world.
-        </p>
-        <p>
-          As a life-long language lover, and die-hard nerd at heart, I verse myself in the many uses and limitations of LLMs from OpenAI, Anthropic, and Meta, and brainstorm with the brightest minds behind the most prescient frameworks in 'agentic' A.I. today.
-        </p>
-        <p>
-          When I'm not consulting for J.P. Morgan through my LLC, or delving deeper into TypeScript and LLM-assisted coding, you'll find me hiking with my partner in upstate New York, performing live poetry, and imbuing the digital with soul.
-        </p>
       </div>
     </div>
   </section>
 
   <div class="container">
-    <div class="divider fade-animate"></div>
+    <div class="divider"></div>
   </div>
 
-  <!-- Experience Section -->
+  <!-- Experience Section - 2-column with sticky sidebar -->
   <section class="section experience">
     <div class="container">
-      <h2 class="skew-animate">My industry experience</h2>
-      <p class="paragraph-large fade-animate">
-        As a writer, designer, and AI programmer, I bring a syncretic and empathetic lens to any team or organization.
-      </p>
-
-      <div class="experience-grid" data-stagger>
-        {experience.map((job) => (
-          <div class="experience-card scale-animate">
-            <div class="experience-logo">
-              <img src={job.logo} alt={job.company} />
-            </div>
-            <div class="experience-content">
-              <div class="experience-header">
-                <h3>{job.company}</h3>
-                <span class="experience-period">{job.period}</span>
+      <div class="experience-layout">
+        <div class="experience-sidebar">
+          <h2>My industry experience</h2>
+          <p class="paragraph-3">As a writer, designer, and AI/ML engineer, I bring a syncretic and empathetic lens to any team or organization.</p>
+          <a href="https://tomdimino.com/Resume-of-Tom-di-Mino.pdf" target="_blank" class="resume-link">
+            Browse full resume <span class="resume-arrow">↗</span>
+          </a>
+        </div>
+        <div class="experience-list">
+          {experience.map((job, index) => (
+            <div class={`experience-card ${index === 0 ? 'first' : ''}`}>
+              <div class="experience-logo">
+                <img src={job.logo} alt={job.company} width="80" />
               </div>
-              <p class="experience-role">{job.role}</p>
-              <p class="experience-description">{job.description}</p>
+              <div class="experience-content">
+                <div class="experience-meta">
+                  <span class="company-name">{job.company}</span>
+                  <span class="text-divider"></span>
+                  <span class="experience-period">{job.period}</span>
+                </div>
+                <h3>{job.role}</h3>
+                <p class="experience-description">{job.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
+  <!-- CTA Section - 2-column layout matching Webflow -->
   <section class="section interested">
-    <div class="container container-narrow text-center">
-      <h2 class="skew-animate">Interested in working together? Get in touch today.</h2>
-      <p class="paragraph-large fade-animate">
-        We're all teeming with thoughts and ideas. I enjoy bridging the gaps, and finding new ways to integrate them.
-      </p>
-      <a href="/contact" class="circle-link scale-animate">
-        <span class="circle-link-text">Get in<br>touch</span>
-      </a>
+    <div class="container">
+      <div class="interested-grid">
+        <div class="interested-content">
+          <h2>Interested in working together? <a href="/contact" class="underline-heading">Get in touch</a> today.</h2>
+          <p class="paragraph-large">We're all teeming with thoughts and ideas. I enjoy bridging the gaps, and finding new ways to integrate them.</p>
+        </div>
+        <a href="/contact" class="circle-link" aria-label="Get in touch">
+          <span class="circle-link-icon"></span>
+          <span class="circle-bg-hover"></span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -153,145 +150,372 @@ const experience = [
 </BaseLayout>
 
 <style>
-  /* About Hero */
+  /* About Hero - Matching Webflow 2-column layout */
   .about-hero {
-    padding: var(--space-2xl) 0 var(--space-xl);
-    padding-top: calc(72px + var(--space-2xl));
+    padding: 100px 0 110px;
   }
 
   .about-hero-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-xl);
-    align-items: center;
-  }
-
-  .about-hero h1 {
-    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-    line-height: 1.3;
+    grid-template-columns: 1fr 1.8fr;
+    grid-column-gap: 116px;
+    grid-row-gap: 12px;
+    align-items: start;
   }
 
   .about-hero-image img {
-    border-radius: 4px;
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
-  /* Bio Section */
-  .about-bio p:last-child {
+  .about-hero h1 {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  .about-hero h1 strong {
+    font-weight: 700;
+  }
+
+  .about-bio {
+    margin-top: 0;
+  }
+
+  .about-bio .paragraph-large {
+    font-size: 22px;
+    line-height: 36px;
+    margin-bottom: 24px;
+  }
+
+  .about-bio .paragraph-large:last-child {
     margin-bottom: 0;
   }
 
-  /* Experience Section */
-  .experience h2 {
+  .about-bio a {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .about-bio a:hover {
+    color: var(--color-primary);
+  }
+
+  .about-bio .skills {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+
+  /* Experience Section - 2-column with sticky sidebar */
+  .section.experience {
+    padding: 80px 0 160px;
+  }
+
+  .experience-layout {
+    display: grid !important;
+    grid-template-columns: minmax(480px, 1fr) minmax(660px, 1.5fr) !important;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .experience-list {
+    margin-left: 20px;
+  }
+
+  .experience-sidebar {
+    position: sticky;
+    top: 24px;
+    margin-left: -20px;
+  }
+
+  .experience-sidebar h2 {
     margin-bottom: var(--space-sm);
   }
 
-  .experience > .container > .paragraph-large {
-    margin-bottom: var(--space-xl);
+  .experience-sidebar .paragraph-3 {
+    color: var(--color-text-muted);
+    font-size: 18px;
+    line-height: 30px;
+    margin-bottom: 0;
   }
 
-  .experience-grid {
+  .resume-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 48px;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 26px;
+    position: relative;
+    padding-bottom: 14px;
+  }
+
+  .resume-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text);
+    transition: width 0.3s ease;
+  }
+
+  .resume-link:hover::after {
+    width: 100%;
+  }
+
+  .resume-arrow {
+    margin-left: 10px;
+    font-weight: 400;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .resume-link:hover .resume-arrow {
+    animation: bounce-arrow 0.4s ease;
+  }
+
+  @keyframes bounce-arrow {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(3px, -3px); }
+    50% { transform: translate(0, 0); }
+    75% { transform: translate(2px, -2px); }
+  }
+
+  /* Experience Cards - Line separator style */
+  .experience-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
   }
 
   .experience-card {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: var(--space-md);
-    padding: var(--space-md);
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-    transition: box-shadow var(--transition-normal);
+    display: flex;
+    gap: 24px;
+    padding: 48px 0;
+    border-bottom: 1.5px solid var(--neutral-400, #cbcbcb);
   }
 
-  .experience-card:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  .experience-card.first {
+    border-top: 1.5px solid var(--neutral-400, #cbcbcb);
   }
 
   .experience-logo {
+    flex: none;
     width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .experience-logo img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 80px;
+    height: auto;
     object-fit: contain;
   }
 
-  .experience-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
+  .experience-content {
+    flex: 1;
   }
 
-  .experience-header h3 {
-    font-size: 1.125rem;
-    margin-bottom: 0;
+  .experience-meta {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: -8px;
+    margin-bottom: 6px;
+    font-size: 16px;
+    color: var(--color-text-muted);
+  }
+
+  .company-name {
+    font-weight: 500;
+  }
+
+  .text-divider {
+    width: 25px;
+    height: 1px;
+    background-color: var(--neutral-500, #acacac);
+    margin: 0 12px;
   }
 
   .experience-period {
     color: var(--color-text-muted);
-    font-size: 0.875rem;
   }
 
-  .experience-role {
-    color: var(--color-primary);
-    font-weight: 500;
-    margin-bottom: var(--space-xs);
+  .experience-content h3 {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 34px;
+    margin-bottom: 8px;
   }
 
   .experience-description {
     color: var(--color-text-muted);
-    font-size: 0.95rem;
+    font-size: 18px;
+    line-height: 30px;
     margin-bottom: 0;
   }
 
-  /* CTA Section */
+  /* CTA Section - 2-column layout */
   .interested {
-    background-color: var(--color-background-alt);
+    padding: 80px 0 160px;
+  }
+
+  .interested-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-xl);
+    align-items: center;
   }
 
   .interested h2 {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
+    font-size: 48px;
+    line-height: 64px;
+    max-width: 720px;
   }
 
-  .interested .circle-link {
-    margin-top: var(--space-md);
+  .interested .paragraph-large {
+    margin-bottom: 0;
+    max-width: 900px;
   }
 
-  @media (max-width: 768px) {
+  .underline-heading {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 5px solid var(--color-text);
+    padding-bottom: 3px;
+  }
+
+  .underline-heading:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* Circle Link - Matching Webflow */
+  .circle-link {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .circle-link-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14 5l7 7m0 0l-7 7m7-7H3'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+    transition: filter 0.35s ease;
+  }
+
+  .circle-bg-hover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: var(--color-text);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.35s ease, height 0.35s ease;
+    z-index: 1;
+  }
+
+  .circle-link:hover .circle-bg-hover {
+    width: 150%;
+    height: 150%;
+  }
+
+  .circle-link:hover .circle-link-icon {
+    filter: invert(1);
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
     .about-hero {
-      padding-top: calc(72px + var(--space-lg));
+      padding: 80px 0;
     }
 
     .about-hero-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-lg);
+      grid-row-gap: 50px;
+      text-align: center;
     }
 
-    .about-hero-content {
-      order: 2;
+    .about-hero-image {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .about-bio .paragraph-large {
+      text-align: left;
+    }
+
+    .experience-layout {
+      grid-template-columns: 1fr;
+      gap: 60px;
+    }
+
+    .experience-sidebar {
+      position: static;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      padding: 60px 0;
+    }
+
+    .about-hero h1 {
+      font-size: 22px;
+    }
+
+    .about-bio .paragraph-large {
+      font-size: 20px;
+      line-height: 30px;
     }
 
     .experience-card {
+      flex-direction: column;
+      padding: 40px 0;
+    }
+
+    .experience-logo {
+      margin-bottom: 16px;
+    }
+
+    .experience-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .text-divider {
+      display: none;
+    }
+
+    .interested-grid {
       grid-template-columns: 1fr;
       text-align: center;
     }
 
-    .experience-logo {
-      margin: 0 auto;
+    .interested h2 {
+      font-size: 32px;
+      line-height: 42px;
     }
 
-    .experience-header {
-      flex-direction: column;
-      align-items: center;
+    .circle-link {
+      margin: var(--space-md) auto 0;
     }
   }
 </style>
