@@ -1,0 +1,76 @@
+---
+// ImageZoom component - wraps images with zoom icon overlay
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+}
+
+const { src, alt, class: className } = Astro.props;
+---
+
+<div class="image-zoom-wrapper">
+  <img
+    src={src}
+    alt={alt}
+    class:list={['image-zoom', className]}
+    data-lightbox="true"
+    data-lightbox-group="content"
+    data-lightbox-src={src}
+  />
+  <div class="image-zoom-overlay">
+    <Icon name="lucide:zoom-in" class="zoom-icon" />
+  </div>
+</div>
+
+<style>
+  .image-zoom-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    margin: var(--space-lg) 0;
+  }
+
+  .image-zoom {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+  }
+
+  .image-zoom-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0);
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    pointer-events: none;
+  }
+
+  .zoom-icon {
+    width: 48px;
+    height: 48px;
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  .image-zoom-wrapper:hover .image-zoom {
+    transform: scale(1.02);
+  }
+
+  .image-zoom-wrapper:hover .image-zoom-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.3);
+  }
+</style>

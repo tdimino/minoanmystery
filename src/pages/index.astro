@@ -35,10 +35,10 @@ const projects = [
   <section class="hero">
     <div class="container">
       <h1 class="hero-title skew-animate">
-        Poet-turned-<em>Content-Designer</em> with <em class="highlight-bold">Aldea AI</em>; ex-Google, CZI, & award-winning agencies like <strong>Hugo & Cat</strong>.
+        Poet-turned <em>AI/ML engineer</em> at <a href="https://aldea.ai/" target="_blank" rel="noopener noreferrer" class="stealth-link"><span class="highlight-bold">Aldea AI</span></a>; <strong>ex-J.P. Morgan, Google, & CZI</strong>.
       </h1>
-      <p class="paragraph-large fade-animate">
-        In my past life, I had a fondness for solving puzzles and following upstarts, so I'm quite smitten by any digital work involving: <span class="skill-link">enterprise-grade</span> website audits; <span class="skill-link">copy</span> and <span class="skill-link">UI design</span> for startups; <span class="skill-link">A.I integration</span>, tech <span class="skill-link">documentation</span>; UX <span class="skill-link">personas</span>; and <span class="skill-link">co-design</span> workshops.
+      <p class="paragraph-large front-page fade-animate">
+        In my past life, I had a fondness for solving puzzles and following upstarts, so I'm quite smitten by any digital work involving: <span class="skills">enterprise-grade</span> website audits; <span class="skills">copy</span> and <span class="skills">UI design</span> for startups; <span class="skills">A.I integration</span>, tech <span class="skills">documentation</span>; UX <span class="skills">personas</span>; and <span class="skills">co-design</span> workshops.
       </p>
       <p class="cta-text fade-animate">
         <strong>Perhaps <a href="/contact" class="link-highlight">we should work together</a></strong> <span class="cta-emoji">🔮</span>
@@ -46,22 +46,36 @@ const projects = [
     </div>
   </section>
 
+  <!-- Divider -->
+  <div class="container">
+    <div class="divider"></div>
+  </div>
+
   <!-- Past Projects Section -->
   <section class="section past-projects">
     <div class="container">
       <h2 class="section-title skew-animate">Past projects of interest</h2>
       <div class="projects-list">
-        {projects.map((project, index) => (
-          <a href={`/portfolio/${project.slug}`} class={`project-row ${index % 2 === 1 ? 'reverse' : ''}`}>
+        {projects.map((project) => (
+          <a href={`/portfolio/${project.slug}`} class="project-row">
             <div class="project-content scale-animate">
               <h3 class="project-title">
                 {project.title}
               </h3>
               <p class="project-summary">{project.summary}</p>
-              <span class="view-project">View project <span class="arrow">↗</span></span>
+              <span class="view-project">
+                <span class="view-project-text">
+                  <span>View project</span>
+                  <span class="arrow-icon"></span>
+                </span>
+                <span class="view-project-underline"></span>
+              </span>
             </div>
             <div class="project-image scale-animate">
-              <img src={project.image} alt={project.title} loading="lazy" />
+              <div class="image-reveal-container">
+                <img src={project.image} alt={project.title} loading="lazy" />
+                <div class="image-reveal-overlay"></div>
+              </div>
             </div>
           </a>
         ))}
@@ -77,7 +91,6 @@ const projects = [
   /* Hero */
   .hero {
     padding: var(--space-2xl) 0 var(--space-xl);
-    padding-top: calc(72px + var(--space-2xl));
   }
 
   .hero-title {
@@ -105,6 +118,8 @@ const projects = [
 
   .cta-text {
     margin-top: var(--space-md);
+    font-size: 24px;
+    line-height: 36px;
   }
 
   /* Hero paragraph links should be dark, not muted */
@@ -121,23 +136,31 @@ const projects = [
     padding: 0; /* Matching Webflow - no padding */
   }
 
-  .link-highlight:hover {
-    color: var(--color-text);
+  .hero .link-highlight:hover {
+    color: var(--color-text-muted) !important;
   }
 
-  .skill-link {
+  .stealth-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .stealth-link:hover {
+    color: inherit;
+  }
+
+  /* Front page paragraph - Webflow exact */
+  .paragraph-large.front-page {
+    font-size: 24px;
+  }
+
+  /* Skills text - purple, same font weight as surrounding text */
+  .skills {
     color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-  }
-
-  .skill-link:hover {
-    color: var(--color-text);
   }
 
   .cta-emoji {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-left: 0.25rem;
   }
 
@@ -158,42 +181,38 @@ const projects = [
 
   .project-row {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: var(--space-lg);
-    align-items: center;
+    grid-template-columns: 1.1fr 1.4fr;
+    gap: 0;
+    align-items: stretch;
     text-decoration: none;
     color: inherit;
-    padding: var(--space-md) 0;
-    border-top: 1px solid var(--color-border);
+    border: 1px solid var(--color-border);
+    background: white;
+    transition: transform 0.35s ease;
   }
 
-  .project-row:first-child {
-    border-top: none;
-  }
-
-  .project-row.reverse {
-    direction: rtl;
-  }
-
-  .project-row.reverse > * {
-    direction: ltr;
+  .project-row:hover {
+    transform: scale(0.98);
   }
 
   .project-content {
-    padding-right: var(--space-md);
-  }
-
-  .project-row.reverse .project-content {
-    padding-right: 0;
-    padding-left: var(--space-md);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .project-title {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 700;
     margin-bottom: var(--space-sm);
     color: var(--color-text);
+    transition: color 0.35s ease;
+  }
+
+  .project-row:hover .project-title {
+    color: var(--color-text-muted);
   }
 
   .project-summary {
@@ -204,45 +223,108 @@ const projects = [
 
   .view-project {
     display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: var(--space-lg);
+    width: fit-content;
+  }
+
+  .view-project-text {
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 700;
     color: var(--color-text);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    margin-top: var(--space-sm);
   }
 
-  .view-project .arrow {
-    transition: transform 0.3s ease;
+  .view-project .arrow-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform var(--transition-fast);
   }
 
-  .project-row:hover .view-project .arrow {
-    transform: translate(2px, -2px);
+  .project-row:hover .view-project .arrow-icon {
+    transform: translate(4px, -4px);
+  }
+
+  .view-project-underline {
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text);
+    margin-top: 14px;
+    transition: width 0.35s ease;
+  }
+
+  .project-row:hover .view-project-underline {
+    width: 100%;
   }
 
   .project-image {
     overflow: hidden;
-    border-radius: 2px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+  }
+
+  .project-image .image-reveal-container {
+    height: 100%;
+    width: 100%;
   }
 
   .project-image img {
-    width: 636px; /* Matching Webflow original */
-    min-width: 636px; /* Ensure it doesn't shrink below this */
-    height: 292px; /* Matching Webflow original */
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
     object-fit: cover;
     display: block;
     transition: transform 0.4s ease;
   }
 
   .project-row:hover .project-image img {
-    transform: scale(1.02);
+    transform: scale(1.08);
+  }
+
+  /* Image reveal animation - black overlay swipes right to left */
+  .image-reveal-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-reveal-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #0d0d0d;
+    transform: translateX(0);
+  }
+
+  .image-reveal-container.revealed .image-reveal-overlay {
+    animation: reveal-swipe 1s ease-out forwards;
+  }
+
+  @keyframes reveal-swipe {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding-top: calc(72px + var(--space-lg));
+      padding-top: var(--space-lg);
+    }
+
+    /* Responsive front page paragraph - Webflow mobile */
+    .paragraph-large.front-page {
+      font-size: 18px;
     }
 
     .project-row,
@@ -266,3 +348,31 @@ const projects = [
     }
   }
 </style>
+
+<script>
+  // Reveal animation on scroll for project images
+  function initImageReveal() {
+    const revealContainers = document.querySelectorAll('.image-reveal-container');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.3
+    });
+
+    revealContainers.forEach(container => {
+      observer.observe(container);
+    });
+  }
+
+  // Run on initial load
+  initImageReveal();
+
+  // Re-run after View Transitions
+  document.addEventListener('astro:after-swap', initImageReveal);
+</script>

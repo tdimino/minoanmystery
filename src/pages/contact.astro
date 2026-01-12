@@ -29,16 +29,25 @@ import Footer from '../components/Footer.astro';
 
           <div class="contact-links scale-animate">
             <a href="mailto:contact@tomdimino.com" class="contact-link">
-              <span>Email</span>
-              <span class="arrow">&#8599;</span>
+              <span class="contact-link-text">
+                <span>Email</span>
+                <span class="arrow-icon"></span>
+              </span>
+              <span class="contact-link-underline"></span>
             </a>
             <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span>Calendly</span>
-              <span class="arrow">&#8599;</span>
+              <span class="contact-link-text">
+                <span>Calendly</span>
+                <span class="arrow-icon"></span>
+              </span>
+              <span class="contact-link-underline"></span>
             </a>
             <a href="https://www.linkedin.com/in/tomdimino" target="_blank" rel="noopener noreferrer" class="contact-link">
-              <span>LinkedIn</span>
-              <span class="arrow">&#8599;</span>
+              <span class="contact-link-text">
+                <span>LinkedIn</span>
+                <span class="arrow-icon"></span>
+              </span>
+              <span class="contact-link-underline"></span>
             </a>
           </div>
         </div>
@@ -89,12 +98,12 @@ import Footer from '../components/Footer.astro';
 
             <div class="form-actions">
               <button type="submit" class="submit-link">
-                <span>Submit message</span>
-                <span class="arrow">&#8599;</span>
+                <span class="submit-link-text">
+                  <span>Submit message</span>
+                  <span class="arrow-icon"></span>
+                </span>
+                <span class="submit-link-underline"></span>
               </button>
-              <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                Schedule a video call with me!
-              </a>
             </div>
           </form>
 
@@ -114,73 +123,117 @@ import Footer from '../components/Footer.astro';
 </BaseLayout>
 
 <style>
-  /* Contact Section */
+  /* Contact Section - Webflow Parity */
   .contact-section {
-    padding: var(--space-2xl) 0 var(--space-xl);
-    padding-top: calc(72px + var(--space-2xl));
+    padding-top: 100px;
+    padding-bottom: 110px;
   }
 
   .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
+    grid-template-columns: 1fr 1.1fr;
+    grid-column-gap: 54px;
     align-items: start;
   }
 
+  /* Heading */
   .contact-content h1 {
-    margin-bottom: var(--space-md);
+    font-size: 60px;
+    font-weight: 500;
+    line-height: 70px;
+    margin-bottom: 24px;
   }
 
+  /* Paragraph Large - Webflow exact */
+  .contact-content .paragraph-large {
+    font-size: 22px;
+    line-height: 36px;
+    color: #686868;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  /* Regular paragraphs */
   .contact-content p {
-    margin-bottom: var(--space-md);
-    line-height: 1.7;
+    font-size: 22px;
+    line-height: 36px;
+    color: #686868;
+    font-weight: 500;
+    margin-bottom: 24px;
   }
 
   .cta-text {
-    margin-bottom: var(--space-lg);
+    margin-bottom: 24px;
   }
 
+  /* Highlight text - purple italic */
   .highlight {
-    color: var(--color-primary);
+    color: #966a85;
     font-style: italic;
+    font-weight: 700;
   }
 
-  /* Contact Links */
+  /* Contact Links - Webflow grid layout */
   .contact-links {
-    display: flex;
-    gap: var(--space-lg);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 114px;
+    grid-row-gap: 32px;
+    justify-items: start;
+    margin-top: 56px;
   }
 
   .contact-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    font-size: 22px;
+    line-height: 24px;
+    font-weight: 700;
     color: var(--color-text);
     text-decoration: none;
     transition: color var(--transition-fast);
   }
 
-  .contact-link:hover {
-    color: var(--color-primary);
+  .contact-link-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 
-  .contact-link .arrow {
-    font-size: 0.9rem;
+  .arrow-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
     transition: transform var(--transition-fast);
   }
 
-  .contact-link:hover .arrow {
-    transform: translate(2px, -2px);
+  .contact-link:hover .arrow-icon {
+    transform: translate(4px, -4px);
+  }
+
+  /* Animated underline */
+  .contact-link-underline {
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text);
+    margin-top: 14px;
+    transition: width 0.35s ease;
+  }
+
+  .contact-link:hover .contact-link-underline {
+    width: 100%;
   }
 
   /* Contact Form */
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
   }
 
   .form-group {
@@ -188,67 +241,109 @@ import Footer from '../components/Footer.astro';
     flex-direction: column;
   }
 
-  .form-group input,
-  .form-group textarea {
+  /* Input fields - Webflow exact */
+  .form-group input {
     width: 100%;
-    padding: var(--space-sm) 0;
+    padding: 0 0 16px 0;
+    margin-bottom: 56px;
     border: none;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid #acacac;
     background: transparent;
-    font-size: 1rem;
+    font-size: 18px;
+    line-height: 20px;
     font-family: inherit;
+    font-weight: 500;
     color: var(--color-text);
     transition: border-color var(--transition-fast);
   }
 
-  .form-group input:focus,
-  .form-group textarea:focus {
+  .form-group input:focus {
     outline: none;
-    border-bottom-color: var(--color-primary);
+    border-bottom-color: var(--color-text);
   }
 
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: var(--color-text-muted);
+  .form-group input:hover {
+    border-bottom-color: var(--color-text);
   }
 
+  .form-group input::placeholder {
+    color: #acacac;
+  }
+
+  /* Textarea - Webflow exact */
   .form-group textarea {
+    width: 100%;
+    padding: 0 0 16px 0;
+    min-height: 100px;
+    border: none;
+    border-bottom: 1.5px solid #acacac;
+    background: transparent;
+    font-size: 18px;
+    line-height: 26px;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--color-text);
     resize: vertical;
-    min-height: 80px;
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-group textarea:focus,
+  .form-group textarea:hover {
+    outline: none;
+    border-bottom-color: var(--color-text);
+  }
+
+  .form-group textarea::placeholder {
+    color: #acacac;
   }
 
   /* Form Actions */
   .form-actions {
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
-    margin-top: var(--space-md);
+    margin-top: 56px;
   }
 
+  /* Submit button - Webflow exact */
   .submit-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     background: none;
     border: none;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 22px;
+    line-height: 24px;
+    font-weight: 700;
     color: var(--color-text);
     cursor: pointer;
     padding: 0;
     transition: color var(--transition-fast);
   }
 
-  .submit-link:hover {
-    color: var(--color-primary);
+  .submit-link-text {
+    display: inline-flex;
+    align-items: center;
   }
 
-  .submit-link .arrow {
-    transition: transform var(--transition-fast);
+  .submit-link .arrow-icon {
+    margin-left: 9px;
   }
 
-  .submit-link:hover .arrow {
-    transform: translate(2px, -2px);
+  .submit-link:hover .arrow-icon {
+    transform: translate(4px, -4px);
+  }
+
+  /* Animated underline for submit */
+  .submit-link-underline {
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text);
+    margin-top: 14px;
+    transition: width 0.35s ease;
+  }
+
+  .submit-link:hover .submit-link-underline {
+    width: 100%;
   }
 
   /* Form Messages */
@@ -274,25 +369,73 @@ import Footer from '../components/Footer.astro';
     color: #721c24;
   }
 
-  @media (max-width: 768px) {
+  /* Tablet breakpoint */
+  @media (max-width: 991px) {
     .contact-section {
-      padding-top: calc(72px + var(--space-lg));
+      padding-top: 100px;
+      padding-bottom: 110px;
     }
 
     .contact-grid {
+      grid-row-gap: 50px;
       grid-template-columns: 1fr;
-      gap: var(--space-xl);
     }
 
     .contact-links {
-      flex-direction: column;
-      gap: var(--space-md);
+      grid-row-gap: 40px;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  /* Mobile breakpoint */
+  @media (max-width: 767px) {
+    .contact-section {
+      padding-top: 80px;
+      padding-bottom: 90px;
     }
 
-    .form-actions {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-md);
+    .contact-content h1 {
+      text-align: center;
+    }
+
+    .contact-content .paragraph-large,
+    .contact-content p {
+      font-size: 20px;
+      line-height: 30px;
+      text-align: left;
+    }
+
+    .contact-links {
+      grid-column-gap: 30px;
+      margin-top: 40px;
+    }
+
+    .contact-link {
+      font-size: 18px;
+      line-height: 20px;
+    }
+
+    .form-group input {
+      margin-bottom: 24px;
+      font-size: 16px;
+      line-height: 18px;
+    }
+
+    .form-group textarea {
+      font-size: 16px;
+      line-height: 22px;
+      min-height: 80px;
+    }
+
+    .submit-link {
+      font-size: 20px;
+      line-height: 22px;
+    }
+
+    .submit-link .arrow {
+      margin-left: 6px;
+      font-size: 16px;
+      line-height: 16px;
     }
   }
 </style>

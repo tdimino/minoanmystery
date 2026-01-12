@@ -1,5 +1,18 @@
 import { defineCollection, z } from 'astro:content';
 
+// Gallery image schema for lightbox galleries
+const galleryImageSchema = z.object({
+  src: z.string(),
+  caption: z.string(),
+});
+
+// Gallery schema - each gallery is triggered by a specific inline image
+const gallerySchema = z.object({
+  id: z.string(),
+  trigger: z.string(), // filename that triggers this gallery
+  images: z.array(galleryImageSchema),
+});
+
 const portfolio = defineCollection({
   type: 'content',
   schema: z.object({
@@ -9,18 +22,11 @@ const portfolio = defineCollection({
     role: z.string(),
     website: z.string().url(),
     heroImage: z.string(),
+    parallaxImage: z.string().optional(),
+    tagline: z.string().optional(),
     summary: z.string(),
     order: z.number(),
-    galleryProcess: z.array(z.object({
-      src: z.string(),
-      alt: z.string(),
-    })).optional(),
-    gallerySolution: z.array(z.object({
-      src: z.string(),
-      alt: z.string(),
-    })).optional(),
-    captionProcess: z.string().optional(),
-    captionSolution: z.string().optional(),
+    galleries: z.array(gallerySchema).optional(),
   }),
 });
 

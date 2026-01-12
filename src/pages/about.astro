@@ -7,7 +7,7 @@ const experience = [
   {
     company: 'Aldea AI',
     period: 'July 2025 / Present',
-    role: 'Principal AI Content Engineer',
+    role: 'Principal AI/ML Engineer',
     description: "I train LLMs on the corpuses of world-renown experts, evaluate them for safety and ethical conduct, and develop full-stack A.I. apps.",
     logo: '/images/logos/aldea.png',
   },
@@ -67,10 +67,13 @@ const experience = [
     <div class="container">
       <div class="about-hero-grid">
         <div class="about-hero-image">
-          <img src="/images/tyrian-profile.png" alt="Tom di Mino" />
+          <div class="image-reveal-container">
+            <img src="/images/tyrian-profile.png" alt="Tom di Mino" />
+            <div class="image-reveal-overlay"></div>
+          </div>
         </div>
-        <div class="about-hero-content">
-          <h1>Hi! I'm <strong>Tom di Mino</strong>. I live in Beacon, NY, where I write, design, & consult in all things <span class="highlight">A.I.</span></h1>
+        <div class="about-hero-content animate-on-scroll">
+          <h1>Hi! I'm <strong>Tom di Mino</strong>. I live in Beacon, NY, where I write, design, & consult in all things <span class="ai-underline">A.I.</span></h1>
           <div class="about-bio">
             <p class="paragraph-large">
               If Walt Whitman "contained multitudes," then I'm as 'cross-functional' as they come. Born a writer and voracious reader of science-fiction novels, I transitioned into tech at an early age, christened on message boards, MMORPGs, and historic turn-based games.
@@ -101,14 +104,15 @@ const experience = [
   <section class="section experience">
     <div class="container">
       <div class="experience-layout">
-        <div class="experience-sidebar">
+        <div class="experience-sidebar animate-on-scroll">
           <h2>My industry experience</h2>
           <p class="paragraph-3">As a writer, designer, and AI/ML engineer, I bring a syncretic and empathetic lens to any team or organization.</p>
           <a href="https://tomdimino.com/Resume-of-Tom-di-Mino.pdf" target="_blank" class="resume-link">
-            Browse full resume <span class="resume-arrow">↗</span>
+            <span class="resume-link-text">Browse full resume <span class="resume-arrow-icon"></span></span>
+            <span class="resume-link-underline"></span>
           </a>
         </div>
-        <div class="experience-list">
+        <div class="experience-list animate-scale-in">
           {experience.map((job, index) => (
             <div class={`experience-card ${index === 0 ? 'first' : ''}`}>
               <div class="experience-logo">
@@ -157,22 +161,79 @@ const experience = [
 
   .about-hero-grid {
     display: grid;
-    grid-template-columns: 1fr 1.8fr;
-    grid-column-gap: 116px;
+    grid-template-columns: 1fr 1.2fr;
+    grid-column-gap: 50px;
     grid-row-gap: 12px;
     align-items: start;
+  }
+
+  .about-hero-content {
+    max-width: 680px;
+  }
+
+  .about-hero-image {
+    max-width: 500px;
   }
 
   .about-hero-image img {
     width: 100%;
     height: auto;
+    min-height: 700px;
+    object-fit: cover;
     display: block;
   }
 
+  /* Image reveal animation - black overlay swipes left to right */
+  .image-reveal-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-reveal-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: #0d0d0d;
+    animation: reveal-swipe 1s ease-out 0.3s forwards;
+  }
+
+  @keyframes reveal-swipe {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Content scroll-triggered animation - matches Webflow */
+  /* Skew + translate animation (for text content) */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(36%) skew(-6deg, -1deg);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0) skew(0, 0);
+  }
+
+  /* Scale animation (for cards/lists) */
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-scale-in.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   .about-hero h1 {
-    font-size: 26px;
+    font-size: 58px;
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.2;
     margin-bottom: 24px;
   }
 
@@ -180,11 +241,16 @@ const experience = [
     font-weight: 700;
   }
 
+  .ai-underline {
+    text-decoration: underline;
+  }
+
   .about-bio {
     margin-top: 0;
   }
 
   .about-bio .paragraph-large {
+    color: var(--neutral-600, #686868);
     font-size: 22px;
     line-height: 36px;
     margin-bottom: 24px;
@@ -243,48 +309,47 @@ const experience = [
 
   .resume-link {
     display: inline-flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     margin-top: 48px;
     color: var(--color-text);
     text-decoration: none;
     font-size: 24px;
     font-weight: 700;
     line-height: 26px;
-    position: relative;
-    padding-bottom: 14px;
+    width: fit-content;
   }
 
-  .resume-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-text);
-    transition: width 0.3s ease;
+  .resume-link-text {
+    display: inline-flex;
+    align-items: center;
   }
 
-  .resume-link:hover::after {
-    width: 100%;
-  }
-
-  .resume-arrow {
-    margin-left: 10px;
-    font-weight: 400;
+  .resume-arrow-icon {
     display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
     transition: transform 0.3s ease;
   }
 
-  .resume-link:hover .resume-arrow {
-    animation: bounce-arrow 0.4s ease;
+  .resume-link:hover .resume-arrow-icon {
+    transform: translate(4px, -4px);
   }
 
-  @keyframes bounce-arrow {
-    0%, 100% { transform: translate(0, 0); }
-    25% { transform: translate(3px, -3px); }
-    50% { transform: translate(0, 0); }
-    75% { transform: translate(2px, -2px); }
+  .resume-link-underline {
+    width: 0;
+    height: 2px;
+    background-color: var(--color-text);
+    margin-top: 14px;
+    transition: width 0.35s ease;
+  }
+
+  .resume-link:hover .resume-link-underline {
+    width: 100%;
   }
 
   /* Experience Cards - Line separator style */
@@ -394,12 +459,12 @@ const experience = [
     border-bottom-color: var(--color-primary);
   }
 
-  /* Circle Link - Matching Webflow */
+  /* Circle Link - Chevron with left-to-right fill */
   .circle-link {
     position: relative;
     width: 120px;
     height: 120px;
-    border: 2px solid var(--color-text);
+    border: 1px solid var(--color-text);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -408,36 +473,34 @@ const experience = [
   }
 
   .circle-link-icon {
-    width: 24px;
-    height: 24px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M14 5l7 7m0 0l-7 7m7-7H3'/%3E%3C/svg%3E");
+    width: 30px;
+    height: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
     position: relative;
     z-index: 2;
-    transition: filter 0.35s ease;
+    transition: background-image 0.35s ease;
   }
 
   .circle-bg-hover {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 0;
-    height: 0;
+    height: 100%;
     background-color: var(--color-text);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.35s ease, height 0.35s ease;
+    transition: width 0.35s ease;
     z-index: 1;
   }
 
   .circle-link:hover .circle-bg-hover {
-    width: 150%;
-    height: 150%;
+    width: 100%;
   }
 
   .circle-link:hover .circle-link-icon {
-    filter: invert(1);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
   }
 
   /* Responsive */
@@ -519,3 +582,33 @@ const experience = [
     }
   }
 </style>
+
+<script>
+  // Scroll-triggered animation using IntersectionObserver
+  function initAboutAnimations() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% is visible
+        rootMargin: '-50px 0px' // Start animation 50px before element enters viewport
+      }
+    );
+
+    // Observe all animated elements
+    document.querySelectorAll('.animate-on-scroll, .animate-scale-in').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  // Run on initial load
+  initAboutAnimations();
+
+  // Re-run after View Transitions
+  document.addEventListener('astro:after-swap', initAboutAnimations);
+</script>

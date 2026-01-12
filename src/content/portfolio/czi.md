@@ -5,20 +5,38 @@ team: "Bravo Cohort, CZI Imaging"
 role: "Sr. Content Designer"
 website: "https://chanzuckerberg.github.io/napari-segmentation-workshop/intro.html"
 heroImage: "/images/portfolio/hero-czi.png"
+parallaxImage: "/images/portfolio/czi-hero-napari.gif"
+tagline: ""
 summary: "At CZI, I co-led the \"Bravo Cohort\" to design a learning platform and training materials for biology PhDs and imaging scientists."
 order: 2
-galleryProcess:
-  - src: "/images/portfolio/mural-thumb.png"
-    alt: "Mural board from co-design workshop"
-  - src: "/images/portfolio/napari.png"
-    alt: "napari interface"
-gallerySolution:
-  - src: "/images/portfolio/cellpose.jpg"
-    alt: "Cell segmentation in napari"
-  - src: "/images/portfolio/setup-tutorial.jpg"
-    alt: "Setup tutorial page"
-captionProcess: "Co-design workshops and research synthesis"
-captionSolution: "Final learning platform and tutorials"
+galleries:
+  - id: "napari-ecosystem"
+    trigger: "mural-thumb.png"
+    images:
+      - src: "/images/portfolio/Mural.png"
+        caption: "Our 2nd co-design workshop on Mural, facilitated over Zoom with 7 participating imaging scientists."
+      - src: "/images/portfolio/IS-audit.png"
+        caption: "Summary of our imaging scientists' audit findings, synthesized with my own audit of the napari ecosystem."
+      - src: "/images/portfolio/bravo-cohort.png"
+        caption: "My brilliant teammates, including my fellow co-lead, Dannielle McCarthy (application scientist)."
+  - id: "cellpose-lesson"
+    trigger: "cellpose.jpg"
+    images:
+      - src: "/images/portfolio/cellpose.jpg"
+        caption: "An example of lesson from our MVP on using the Cellpose plugin for cell segmentation."
+      - src: "/images/portfolio/what-is-napari.png"
+        caption: "An explanation of napari and its applications, intended for research biologists new to the tool."
+      - src: "/images/portfolio/PartSeg.png"
+        caption: "An example of a Jupyter book lesson on using the PartSeg plugin for cell segmentation."
+  - id: "setup-tutorial"
+    trigger: "setup-tutorial.jpg"
+    images:
+      - src: "/images/portfolio/setup-tutorial.jpg"
+        caption: "An early manifest of the 'Setup Tutorial' page template."
+      - src: "/images/portfolio/pro-proto.png"
+        caption: "Converting one of our manifests into a Sitecore prototype."
+      - src: "/images/portfolio/Hardware.jpg"
+        caption: "An early manifest of the 'Hardware' page template."
 ---
 
 ## Challenge
@@ -38,6 +56,8 @@ Hired as a Sr. Content Designer by CZI, my responsibilities also included those 
 
 As co-lead of the "Bravo Cohort", I plugged into the CZI Slack, partook in daily and weekly stand-ups, and bi-monthly napari community meetings. I acted as a mediator between our staff UX researcher, two application scientists, a product manager, and SWE on my team.
 
+![Mural board from co-design workshop](/images/portfolio/mural-thumb.png)
+
 ## Action
 
 After vetting my 6-month project plan, I met with staff ML engineers at CZI to gain basic literacy in Python, install and use napari myself.
@@ -49,6 +69,8 @@ After vetting my 6-month project plan, I met with staff ML engineers at CZI to g
 
 Building upon our co-design workshops, we assigned individual lessons from a larger "napari cell segmentation" course to our 8 volunteer research scientists. I forked a Jupyter Book template, modified it using Markdown, HTML and CSS, and acted as copy editor of all submitted lesson drafts.
 
+![Cell segmentation in napari](/images/portfolio/cellpose.jpg)
+
 ## Results
 
 Despite the bandwidth constraints of our 8 research scientists, we launched our napari learning platform with time to polish video content, and refine our UI.
@@ -56,6 +78,8 @@ Despite the bandwidth constraints of our 8 research scientists, we launched our 
 - Our "napari cell segmentation" course included **15 modules, an extensive installation of Python, and 3 workflows** for new users to replicate.
 - Biology PhDs at low-tech research labs (without expensive software) can now reliably install napari and apply it in the field of microscopy.
 - The napari community **has blossomed to include 300+ plugins** on napari-hub.org, gaining adoption alongside tools like Fiji and CellProfiler.
+
+![Setup tutorial page](/images/portfolio/setup-tutorial.jpg)
 
 ## Takeaways
 

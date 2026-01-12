@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Lightbox from '../../components/Lightbox.astro';
 
 export async function getStaticPaths() {
   const portfolioEntries = await getCollection('portfolio');
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const { title, client, team, role, website, heroImage, galleryProcess, gallerySolution, captionProcess, captionSolution } = entry.data;
+const { title, client, team, role, website, heroImage, parallaxImage, tagline, galleries } = entry.data;
 ---
 
 <BaseLayout
@@ -24,34 +25,49 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
 >
   <Header slot="header" />
 
-  <!-- Hero Section -->
+  <!-- Hero Section: Title and Summary -->
   <section class="portfolio-hero">
     <div class="container">
-      <div class="portfolio-hero-content">
-        <h1 class="skew-animate">{title}</h1>
-        <p class="paragraph-large fade-animate">{entry.data.summary}</p>
-      </div>
-    </div>
-    <!-- Scroll Down Button -->
-    <button class="scroll-down-btn" id="scroll-down" aria-label="Scroll down">
-      <span class="scroll-arrow">⌄</span>
-    </button>
-  </section>
-
-  <!-- Hero Image -->
-  <section class="portfolio-hero-image">
-    <div class="container">
-      <div class="image-reveal scale-animate">
-        <img src={heroImage} alt={title} />
-        <div class="reveal-overlay"></div>
+      <div class="portfolio-hero-grid">
+        <div class="portfolio-hero-content">
+          <h1>{title}</h1>
+          <p class="paragraph-large">{entry.data.summary}</p>
+        </div>
+        <!-- Scroll Down Button -->
+        <button class="scroll-down-btn" id="scroll-down" aria-label="Scroll down">
+          <svg class="scroll-arrow" width="32" height="18" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 2L12 12L22 2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Project Details -->
-  <section class="section portfolio-details">
+  <!-- Parallax Image Section -->
+  {parallaxImage && (
+    <section class="parallax-section" style={`--bg-image: url(${parallaxImage});`}>
+      <div class="parallax-overlay"></div>
+      {tagline && (
+        <div class="parallax-tagline">
+          <span>{tagline}</span>
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- Fallback hero image if no parallax -->
+  {!parallaxImage && heroImage && (
+    <section class="hero-image-section">
+      <div class="container">
+        <img src={heroImage} alt={title} class="fade-up" />
+      </div>
+    </section>
+  )}
+
+  <!-- Project Details Bar -->
+  <section class="portfolio-details">
     <div class="container">
-      <div class="details-grid fade-animate">
+      <div class="details-grid fade-up">
         <div class="detail-item">
           <span class="detail-label">Client</span>
           <span class="detail-value">{client}</span>
@@ -67,75 +83,44 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
         <div class="detail-item">
           <span class="detail-label">Website</span>
           <a href={website} target="_blank" rel="noopener noreferrer" class="link-arrow">
-            <span>View live site</span>
-            <span class="arrow">→</span>
+            <span>Live preview</span>
+            <span class="arrow">&#8599;</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="container">
-    <div class="divider fade-animate"></div>
-  </div>
-
-  <!-- Main Content -->
-  <section class="section portfolio-content">
+  <!-- Main Content with Inline Images -->
+  <section class="portfolio-content">
     <div class="container container-medium">
-      <div class="rich-text fade-animate">
+      <div class="rich-text">
         <Content />
       </div>
     </div>
   </section>
 
-  <!-- Process Gallery -->
-  {galleryProcess && galleryProcess.length > 0 && (
-    <section class="section portfolio-gallery">
-      <div class="container">
-        <h3 class="gallery-title skew-animate">Process</h3>
-        {captionProcess && <p class="gallery-caption text-muted">{captionProcess}</p>}
-        <div class="gallery-grid" data-stagger>
-          {galleryProcess.map((image) => (
-            <div class="gallery-item image-reveal scale-animate">
-              <img src={image.src} alt={image.alt} loading="lazy" />
-              <div class="reveal-overlay"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Solution Gallery -->
-  {gallerySolution && gallerySolution.length > 0 && (
-    <section class="section portfolio-gallery">
-      <div class="container">
-        <h3 class="gallery-title skew-animate">Solution</h3>
-        {captionSolution && <p class="gallery-caption text-muted">{captionSolution}</p>}
-        <div class="gallery-grid" data-stagger>
-          {gallerySolution.map((image) => (
-            <div class="gallery-item image-reveal scale-animate">
-              <img src={image.src} alt={image.alt} loading="lazy" />
-              <div class="reveal-overlay"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-
   <!-- CTA Section -->
   <section class="section interested">
-    <div class="container container-narrow text-center">
-      <h2 class="skew-animate">Interested in working together?</h2>
-      <p class="paragraph-large fade-animate">
-        We're all teeming with thoughts and ideas. I enjoy bridging the gaps, and finding new ways to integrate them.
-      </p>
-      <a href="/contact" class="circle-link scale-animate">
-        <span class="circle-link-text">Get in<br>touch</span>
-      </a>
+    <div class="container">
+      <div class="interested-grid">
+        <div class="interested-content">
+          <h2 class="fade-up">Interested in working together?<br><a href="/contact" class="interested-link">Get in touch</a> today.</h2>
+          <p class="paragraph-large fade-up">
+            As human beings of the Digital Age, we're all teeming with thoughts and ideas. I enjoy bridging the gaps between them.
+          </p>
+        </div>
+        <a href="/contact" class="arrow-circle fade-up" aria-label="Get in touch">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
+
+  <!-- Lightbox Component with Gallery Data -->
+  <Lightbox galleries={galleries || []} />
 
   <Footer slot="footer" />
 </BaseLayout>
@@ -143,65 +128,118 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
 <style>
   /* Portfolio Hero */
   .portfolio-hero {
-    padding: var(--space-2xl) 0 var(--space-lg);
-    padding-top: calc(72px + var(--space-2xl));
-    position: relative;
+    padding: var(--space-2xl) 0 var(--space-xl);
+  }
+
+  .portfolio-hero-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
   }
 
   .portfolio-hero h1 {
+    font-size: clamp(48px, 6vw, 72px);
+    line-height: 1.1;
     margin-bottom: var(--space-md);
   }
 
   .portfolio-hero-content {
     max-width: var(--container-medium);
+    flex: 1;
   }
 
   /* Scroll Down Button */
   .scroll-down-btn {
-    position: fixed;
-    right: 40px;
-    bottom: 40px;
-    width: 56px;
-    height: 56px;
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 1px solid var(--color-border);
-    background: var(--color-background);
+    border: 2px solid #1a1a1a;
+    background: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all var(--transition-fast);
-    z-index: 100;
   }
 
   .scroll-down-btn:hover {
-    border-color: var(--color-text);
-    transform: translateY(2px);
+    background: var(--color-text);
+  }
+
+  .scroll-down-btn:hover .scroll-arrow {
+    color: var(--color-background);
   }
 
   .scroll-arrow {
-    font-size: 24px;
     color: var(--color-text);
-    line-height: 1;
+    transition: color var(--transition-fast);
   }
 
-  /* Hero Image */
-  .portfolio-hero-image {
+  /* Parallax Section */
+  .parallax-section {
+    position: relative;
+    height: 70vh;
+    min-height: 400px;
+    background-image: var(--bg-image);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  .parallax-tagline {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .parallax-tagline span {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Hero Image Section (fallback) */
+  .hero-image-section {
     padding-bottom: var(--space-lg);
   }
 
-  .portfolio-hero-image img {
+  .hero-image-section img {
     width: 100%;
     height: auto;
     border-radius: 4px;
   }
 
   /* Project Details */
+  .portfolio-details {
+    background: var(--color-background);
+    padding: var(--space-lg) 0;
+  }
+
   .details-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-lg);
-    padding: var(--space-md) 0;
   }
 
   .detail-item {
@@ -211,25 +249,56 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
   }
 
   .detail-label {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-transform: capitalize;
   }
 
   .detail-value {
-    font-family: var(--font-heading);
-    font-size: 1.125rem;
+    font-size: 1rem;
+    color: var(--neutral-600);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 1rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .link-arrow span:first-child {
+    text-decoration: underline;
+  }
+
+  .link-arrow .arrow {
+    font-size: 1rem;
+    text-decoration: none;
   }
 
   /* Portfolio Content */
-  .portfolio-content h2 {
-    margin-top: var(--space-xl);
-    margin-bottom: var(--space-md);
+  .portfolio-content {
+    padding: var(--space-xl) 0;
   }
 
-  .portfolio-content h2:first-child {
+  :global(.portfolio-content .rich-text h2) {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  :global(.portfolio-content .rich-text > h2:first-child),
+  :global(.portfolio-content .rich-text > .content-section:first-child h2) {
     margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .portfolio-content p {
+    margin-bottom: var(--space-md);
   }
 
   .portfolio-content ul,
@@ -244,6 +313,7 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
 
   .portfolio-content strong {
     color: var(--color-primary);
+    font-weight: 700;
   }
 
   .portfolio-content a {
@@ -255,47 +325,152 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
     text-decoration: none;
   }
 
-  /* Gallery */
-  .portfolio-gallery {
-    background-color: var(--color-background-alt);
+  /* Image figure wrapper (added via JS, need :global) */
+  :global(.image-figure) {
+    display: block;
+    width: 100%;
+    margin: var(--space-lg) 0;
   }
 
-  .gallery-title {
-    margin-bottom: var(--space-xs);
-  }
-
-  .gallery-caption {
-    margin-bottom: var(--space-lg);
-  }
-
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-md);
-  }
-
-  .gallery-item img {
+  :global(.image-figure img) {
     width: 100%;
     height: auto;
+    display: block;
+    cursor: zoom-in;
     border-radius: 4px;
+    margin: 0;
+  }
+
+  :global(.image-figure figcaption) {
+    text-align: center;
+    margin-top: 16px;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* Fallback for unwrapped images */
+  .portfolio-content img:not(.image-figure img) {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: var(--space-lg) 0;
+    cursor: zoom-in;
   }
 
   /* CTA Section */
   .interested {
     background-color: var(--color-background);
+    padding: var(--space-2xl) 0;
+  }
+
+  .interested-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .interested-content {
+    max-width: 800px;
   }
 
   .interested h2 {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.2;
   }
 
-  .interested .circle-link {
-    margin-top: var(--space-md);
+  .interested-link {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 3px solid var(--color-text);
+    padding-bottom: 4px;
   }
 
+  .interested-link:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .interested .paragraph-large {
+    color: var(--color-text-muted);
+    margin-bottom: 0;
+  }
+
+  .arrow-circle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
+    color: var(--color-text);
+    transition: all var(--transition-fast);
+  }
+
+  .arrow-circle:hover {
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  /* Content sections (created by JS, need :global) */
+  /* Note: Section dividers are handled by h2 styles, not content-section */
+  :global(.content-section) {
+    margin-bottom: 0;
+  }
+
+  /* Scroll-triggered animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Section fade animations (created by JS, need :global) */
+  :global(.fade-section) {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  :global(.fade-section.visible) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Responsive */
   @media (max-width: 768px) {
     .portfolio-hero {
-      padding-top: calc(72px + var(--space-lg));
+      padding: var(--space-lg) 0;
+    }
+
+    .portfolio-hero-grid {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+
+    .scroll-down-btn {
+      width: 64px;
+      height: 64px;
+      align-self: flex-end;
+    }
+
+    .parallax-section {
+      background-attachment: scroll;
+      height: 50vh;
     }
 
     .details-grid {
@@ -308,17 +483,11 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
     .details-grid {
       grid-template-columns: 1fr;
     }
-
-    .scroll-down-btn {
-      right: 20px;
-      bottom: 20px;
-      width: 48px;
-      height: 48px;
-    }
   }
 </style>
 
 <script>
+  // Scroll button functionality
   const scrollBtn = document.getElementById('scroll-down');
   if (scrollBtn) {
     scrollBtn.addEventListener('click', () => {
@@ -328,4 +497,146 @@ const { title, client, team, role, website, heroImage, galleryProcess, gallerySo
       });
     });
   }
+
+  // Group content into sections for section-based animations
+  const contentArea = document.querySelector('.portfolio-content .rich-text');
+  if (contentArea) {
+    const children = Array.from(contentArea.children);
+    let currentSection = null;
+
+    children.forEach((child) => {
+      if (child.tagName === 'H2') {
+        // Create a new section wrapper
+        currentSection = document.createElement('div');
+        currentSection.className = 'content-section fade-section';
+        child.parentNode.insertBefore(currentSection, child);
+        currentSection.appendChild(child);
+      } else if (currentSection) {
+        currentSection.appendChild(child);
+      } else {
+        // Content before first h2, wrap it too
+        currentSection = document.createElement('div');
+        currentSection.className = 'content-section fade-section';
+        child.parentNode.insertBefore(currentSection, child);
+        currentSection.appendChild(child);
+      }
+    });
+  }
+
+  // Scroll-triggered fade based on position in viewport
+  const fadeElements = document.querySelectorAll('.fade-section');
+
+  function updateFadeOnScroll() {
+    const viewportHeight = window.innerHeight;
+    const fadeZone = viewportHeight * 0.25; // Bottom 25% of viewport fades
+
+    fadeElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const elementTop = rect.top;
+      const elementBottom = rect.bottom;
+
+      // Check if element is in viewport
+      if (elementBottom > 0 && elementTop < viewportHeight) {
+        // Calculate opacity based on position
+        let opacity = 1;
+
+        // Fade in from bottom
+        if (elementTop > viewportHeight - fadeZone) {
+          opacity = 1 - (elementTop - (viewportHeight - fadeZone)) / fadeZone;
+        }
+
+        // Fade out at top
+        if (elementBottom < fadeZone) {
+          opacity = elementBottom / fadeZone;
+        }
+
+        opacity = Math.max(0, Math.min(1, opacity));
+        el.style.opacity = opacity;
+        el.style.transform = `translateY(${(1 - opacity) * 20}px)`;
+
+        if (opacity > 0.1) {
+          el.classList.add('visible');
+        }
+      } else {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(20px)';
+        el.classList.remove('visible');
+      }
+    });
+  }
+
+  // Run on scroll and on load
+  window.addEventListener('scroll', updateFadeOnScroll, { passive: true });
+  updateFadeOnScroll();
+
+  // Simple fade-in for non-section elements
+  const simpleObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => {
+    simpleObserver.observe(el);
+  });
+
+  // Get gallery data from the Lightbox component's script tag
+  const galleryDataEl = document.getElementById('gallery-data');
+  const galleries = galleryDataEl ? JSON.parse(galleryDataEl.textContent || '[]') : [];
+
+  // Helper function to get filename from path
+  function getFilename(path: string): string {
+    return path.split('/').pop() || path;
+  }
+
+  // Helper function to find caption for an image
+  function findCaptionForImage(src: string): string | null {
+    const filename = getFilename(src).toLowerCase();
+
+    // First check if this image is a gallery trigger
+    for (const gallery of galleries) {
+      if (filename.includes(gallery.trigger.toLowerCase())) {
+        // Return the caption of the first image in the gallery
+        return gallery.images[0]?.caption || null;
+      }
+    }
+
+    // Also check if this image appears in any gallery's images array
+    for (const gallery of galleries) {
+      for (const img of gallery.images) {
+        const galleryFilename = getFilename(img.src).toLowerCase();
+        if (filename.includes(galleryFilename) || galleryFilename.includes(filename)) {
+          return img.caption;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  // Make inline images trigger lightbox and add captions
+  document.querySelectorAll('.portfolio-content img').forEach(img => {
+    // Add lightbox attributes
+    img.setAttribute('data-lightbox', 'true');
+    img.setAttribute('data-lightbox-group', 'content');
+    img.setAttribute('data-lightbox-src', img.src);
+
+    // Create figure wrapper
+    const figure = document.createElement('figure');
+    figure.className = 'image-figure';
+
+    // Wrap the image in figure
+    img.parentNode.insertBefore(figure, img);
+    figure.appendChild(img);
+
+    // Find and add caption
+    const caption = findCaptionForImage(img.src);
+    if (caption) {
+      const figcaption = document.createElement('figcaption');
+      figcaption.textContent = caption;
+      figure.appendChild(figcaption);
+    }
+  });
 </script>

@@ -1,0 +1,301 @@
+---
+// Lightbox component for image galleries
+// Usage: Add data-lightbox-group="groupname" to images you want in a gallery
+// Or pass galleries prop for predefined gallery groups with specific captions
+
+interface GalleryImage {
+  src: string;
+  caption: string;
+}
+
+interface Gallery {
+  id: string;
+  trigger: string; // filename that triggers this gallery
+  images: GalleryImage[];
+}
+
+interface Props {
+  galleries?: Gallery[];
+}
+
+const { galleries = [] } = Astro.props;
+---
+
+<div id="lightbox-overlay" class="lightbox-overlay" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+  <button class="lightbox-prev" aria-label="Previous image">&#8249;</button>
+  <button class="lightbox-next" aria-label="Next image">&#8250;</button>
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="" />
+    <div class="lightbox-caption"></div>
+  </div>
+  <div class="lightbox-counter"></div>
+</div>
+
+<!-- Store gallery data for JS access -->
+<script id="gallery-data" type="application/json" set:html={JSON.stringify(galleries)} />
+
+<style>
+  .lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .lightbox-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox-content {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lightbox-content img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .lightbox-caption {
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    max-width: 600px;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 48px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+    z-index: 10001;
+  }
+
+  .lightbox-close:hover {
+    opacity: 0.7;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 64px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 20px;
+    transition: opacity 0.2s ease;
+    z-index: 10001;
+  }
+
+  .lightbox-prev {
+    left: 20px;
+  }
+
+  .lightbox-next {
+    right: 20px;
+  }
+
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    opacity: 0.7;
+  }
+
+  .lightbox-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .lightbox-prev,
+    .lightbox-next {
+      font-size: 40px;
+      padding: 10px;
+    }
+
+    .lightbox-prev {
+      left: 10px;
+    }
+
+    .lightbox-next {
+      right: 10px;
+    }
+
+    .lightbox-close {
+      top: 10px;
+      right: 15px;
+      font-size: 36px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('lightbox-overlay');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const caption = overlay?.querySelector('.lightbox-caption');
+    const counter = overlay?.querySelector('.lightbox-counter');
+    const closeBtn = overlay?.querySelector('.lightbox-close');
+    const prevBtn = overlay?.querySelector('.lightbox-prev');
+    const nextBtn = overlay?.querySelector('.lightbox-next');
+
+    if (!overlay || !lightboxImg) return;
+
+    // Load gallery data from embedded JSON
+    interface GalleryImage {
+      src: string;
+      caption: string;
+    }
+
+    interface Gallery {
+      id: string;
+      trigger: string;
+      images: GalleryImage[];
+    }
+
+    let galleries: Gallery[] = [];
+    const galleryDataEl = document.getElementById('gallery-data');
+    if (galleryDataEl) {
+      try {
+        galleries = JSON.parse(galleryDataEl.textContent || '[]');
+      } catch (e) {
+        console.error('Failed to parse gallery data:', e);
+      }
+    }
+
+    let currentGalleryImages: GalleryImage[] = [];
+    let currentIndex = 0;
+
+    // Extract filename from path
+    function getFilename(path: string): string {
+      return path.split('/').pop() || '';
+    }
+
+    // Find gallery by trigger filename
+    function findGalleryByTrigger(src: string): Gallery | undefined {
+      const filename = getFilename(src).toLowerCase();
+      return galleries.find(g => filename.includes(g.trigger.toLowerCase()));
+    }
+
+    // Use event delegation for lightbox images
+    document.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest('[data-lightbox]') as HTMLElement;
+      if (!target) return;
+
+      e.preventDefault();
+
+      // Get the image source
+      const imgEl = target.tagName === 'IMG' ? target as HTMLImageElement : target.querySelector('img');
+      const src = imgEl?.src || target.dataset.lightboxSrc || '';
+
+      // Check if there's a predefined gallery for this image
+      const gallery = findGalleryByTrigger(src);
+
+      if (gallery && gallery.images.length > 0) {
+        // Use predefined gallery
+        currentGalleryImages = gallery.images;
+        currentIndex = 0;
+      } else {
+        // Fallback: create single-image gallery from clicked image
+        const alt = (imgEl as HTMLImageElement)?.alt || '';
+        currentGalleryImages = [{ src, caption: alt }];
+        currentIndex = 0;
+      }
+
+      showImage(currentIndex);
+      overlay.classList.add('is-active');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function showImage(index: number) {
+      const item = currentGalleryImages[index];
+      if (!item) return;
+
+      lightboxImg.src = item.src;
+      lightboxImg.alt = item.caption;
+
+      if (caption) {
+        caption.textContent = item.caption;
+      }
+
+      if (counter && currentGalleryImages.length > 1) {
+        counter.textContent = `${index + 1} / ${currentGalleryImages.length}`;
+      } else if (counter) {
+        counter.textContent = '';
+      }
+    }
+
+    function closeLightbox() {
+      overlay.classList.remove('is-active');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+      showImage(currentIndex);
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % currentGalleryImages.length;
+      showImage(currentIndex);
+    }
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    prevBtn?.addEventListener('click', showPrev);
+    nextBtn?.addEventListener('click', showNext);
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('is-active')) return;
+
+      switch (e.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          showPrev();
+          break;
+        case 'ArrowRight':
+          showNext();
+          break;
+      }
+    });
+  });
+</script>

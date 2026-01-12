@@ -1,0 +1,68 @@
+---
+interface Props {
+  backgroundImage: string;
+  tagline?: string;
+}
+
+const { backgroundImage, tagline } = Astro.props;
+---
+
+<section class="parallax-section" style={`--bg-image: url(${backgroundImage});`}>
+  <div class="parallax-overlay"></div>
+  {tagline && (
+    <div class="parallax-tagline">
+      <span>{tagline}</span>
+    </div>
+  )}
+</section>
+
+<style>
+  .parallax-section {
+    position: relative;
+    height: 70vh;
+    min-height: 400px;
+    background-image: var(--bg-image);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  }
+
+  .parallax-tagline {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .parallax-tagline span {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Disable fixed attachment on mobile (causes issues on iOS) */
+  @media (max-width: 768px) {
+    .parallax-section {
+      background-attachment: scroll;
+      height: 50vh;
+    }
+  }
+</style>

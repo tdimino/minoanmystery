@@ -5,16 +5,31 @@ team: "Valtech"
 role: "Technical Content Strategist"
 website: "https://www.dolby.com/"
 heroImage: "/images/portfolio/hero-dolby.png"
+parallaxImage: "/images/portfolio/dolby-hero-parallax.png"
 summary: "On a small team at Valtech, I re-designed Dolby.com's consumer and professional websites, distilling them into twelve annotated templates still in-use by Dolby today."
 order: 3
-galleryProcess:
-  - src: "/images/portfolio/legacy-dolby-home.jpg"
-    alt: "Legacy Dolby homepage before redesign"
-gallerySolution:
-  - src: "/images/portfolio/dolby-final-thumb.jpg"
-    alt: "Redesigned Dolby page template"
-captionProcess: "Legacy site audit and analysis"
-captionSolution: "Final template designs in Sitecore"
+galleries:
+  - id: "legacy-dolby"
+    trigger: "legacy-dolby-home.jpg"
+    images:
+      - src: "/images/portfolio/legacy-dolby-home.jpg"
+        caption: "The legacy Dolby.com home page."
+      - src: "/images/portfolio/legacy-dolby-1.jpg"
+        caption: "The legacy Dolby 'professionals' page."
+  - id: "setup-tutorial"
+    trigger: "setup-tutorial.jpg"
+    images:
+      - src: "/images/portfolio/setup-tutorial.jpg"
+        caption: "An early manifest for the proposed 'Setup Tutorial' page type."
+  - id: "dolby-templates"
+    trigger: "dolby-final-template.jpg"
+    images:
+      - src: "/images/portfolio/dolby-final-template.jpg"
+        caption: "Our final, annotated demo of the 'Dolby Technologies' page for casual fans."
+      - src: "/images/portfolio/Professional-Education.jpg"
+        caption: "Our final, annotated demo of the 'Professional Education' page for technical users."
+      - src: "/images/portfolio/Case-Study.jpg"
+        caption: "Our final, annotated demo of the 'Case Studies' page for technical users."
 ---
 
 ## Challenge
@@ -34,6 +49,8 @@ As a consultant at Valtech, I became the Lead Content Strategist on the Dolby La
 
 Conferring with my product manager via Teams, I held daily stand-ups with her and our front-end engineering lead, ensuring I had access to the styling behind our design components, and approval for my creative direction.
 
+![Legacy Dolby homepage before redesign](/images/portfolio/legacy-dolby-home.jpg)
+
 ## Action
 
 With the relatively short timeframe allotted to me (in the middle of May 2020), I quickly executed on a few parallel workstreams:
@@ -45,6 +62,8 @@ With the relatively short timeframe allotted to me (in the middle of May 2020), 
 
 Upon reaching a consensus internally, I worked tirelessly with our front-end devs to launch a fully-functional demo of these 12 page archetypes on Sitecore. As needed, I requested new components, or modified existing ones, to achieve our unified vision.
 
+![An early manifest for the proposed "Setup Tutorial" page type](/images/portfolio/setup-tutorial.jpg)
+
 ## Results
 
 I pitched our set of 12 page templates, from cinematic landing pages to Dolby Atmos technical specs, and won approval from the Dolby Labs marketing team.
@@ -52,6 +71,8 @@ I pitched our set of 12 page templates, from cinematic landing pages to Dolby At
 - We migrated Dolby Labs, and converted thousands of webpages to fit my 12 page templates, within the next 3 months.
 - My visual designs, layouts, and themes have been retained and applied by Dolby Labs **for over 4 years and counting**.
 - Dolby Labs has automated the launch of new domains for developers, like Dolby.io, and Dolby Experiential for casual fans.
+
+![Our finalized, annotated page template for Dolby professionals](/images/portfolio/dolby-final-template.jpg)
 
 ## Takeaways
 

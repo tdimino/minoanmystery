@@ -5,18 +5,38 @@ team: "Hugo & Cat"
 role: "Sr. Content Designer"
 website: "https://www.facs.org/"
 heroImage: "/images/portfolio/hero-acs.jpg"
+parallaxImage: "/images/portfolio/acs-hero-parallax.jpg"
+tagline: ""
 summary: "Partnered with Hugo & Cat, I audited the American College of Surgeons's website, and prioritized the migration of all their content, while redefining ACS's voice, tone, and brand."
 order: 1
-galleryProcess:
-  - src: "/images/portfolio/acs-audit-thumb.jpg"
-    alt: "ACS content audit spreadsheet"
-  - src: "/images/portfolio/acs-labels.png"
-    alt: "ACS taxonomy labels"
-gallerySolution:
-  - src: "/images/portfolio/acs-solution-thumb.png"
-    alt: "ACS redesigned homepage"
-captionProcess: "Content audit and taxonomy development"
-captionSolution: "Final design implementation"
+galleries:
+  - id: "acs-audit"
+    trigger: "acs-audit-thumb.jpg"
+    images:
+      - src: "/images/portfolio/acs-audit.jpg"
+        caption: "A glimpse at the audit sheet that siphoned a portion of my soul."
+      - src: "/images/portfolio/acs-workshops.png"
+        caption: "An example of a Figma workshop conducted with our team and ACS stakeholders."
+      - src: "/images/portfolio/acs-voice.png"
+        caption: "A slide from a deck on observations about voice and tone across the ACS site."
+  - id: "acs-taxonomy"
+    trigger: "acs-labels.png"
+    images:
+      - src: "/images/portfolio/acs-labels.png"
+        caption: "A slide from an audit findings and recommendations deck."
+      - src: "/images/portfolio/acs-redundancies.png"
+        caption: "A slide on redundancies within the legacy ACS navigation."
+      - src: "/images/portfolio/acs-landing-audit.jpg"
+        caption: "A slide on the weaknesses of legacy ACS landing pages."
+  - id: "acs-solution"
+    trigger: "acs-solution-thumb.png"
+    images:
+      - src: "/images/portfolio/acs-moving-forward.jpg"
+        caption: "A proposed ACS.org homepage, showcasing our recommended voice and tone."
+      - src: "/images/portfolio/acs-proven-approach.jpg"
+        caption: "A proposed ACS.org landing page, focused on hospital administrators."
+      - src: "/images/portfolio/acs-taxonomy.png"
+        caption: "My taxonomy for the redesigned ACS.org, encompassing their extensive library of surgical and patient-facing content."
 ---
 
 ## Challenge
@@ -36,6 +56,8 @@ Hugo & Cat hired me (on a 3-6 month project basis) as their Lead Sr. Content Str
 
 Along the way, I plugged into Hugo & Cat's workstreams on Slack, took part in daily stand-ups and weekly client calls on Zoom, and became the living single-source-of-truth for any given web page on ACS.org and its raison d'etre.
 
+![ACS content audit spreadsheet](/images/portfolio/acs-audit-thumb.jpg)
+
 ## Action
 
 In order to grasp ACS, and their audiences' content needs, I took advantage of the team Hugo & Cat had already assembled:
@@ -47,6 +69,8 @@ In order to grasp ACS, and their audiences' content needs, I took advantage of t
 
 Once we had solidified a design direction for ACS, I developed a new taxonomy which enhanced navigation and search functionality within the site. In tandem, I annotated our audit sheet, marking pages that were to be prioritized, merged, or omitted for the migration to Umbraco.
 
+![ACS taxonomy labels](/images/portfolio/acs-labels.png)
+
 ## Results
 
 After we presented our final set of design proposals to the ACS leadership, we received their blessings to commence with their migration to Umbraco.
@@ -54,6 +78,8 @@ After we presented our final set of design proposals to the ACS leadership, we r
 - Within 9 months, the ACS saw a **40% increase in its member applications**, and a **42% increase in average user session duration**.
 - ACS renewed its contract with Hugo & Cat for the expansion of its patient-centric content. I returned to spearhead much of this.
 - Between 2022 and 2024 (at the conclusion of their migration) ACS surged **from 84,000 to 93,241 members** across 144 countries.
+
+![ACS redesigned homepage](/images/portfolio/acs-solution-thumb.png)
 
 ## Takeaways
 

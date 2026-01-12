@@ -48,6 +48,16 @@
 
 /* CSS Variables */
 :root {
+  /* Webflow neutral color scale */
+  --neutral-100: white;
+  --neutral-200: #f9f9f9;
+  --neutral-300: #dfdfdf;
+  --neutral-400: #cbcbcb;
+  --neutral-500: #acacac;
+  --neutral-600: #686868;
+  --neutral-700: #966a85;
+  --neutral-800: #0d0d0d;
+
   /* Colors - Matching Webflow original */
   --color-primary: #966a85; /* rgb(150, 106, 133) - lighter purple/pink */
   --color-primary-dark: #5c1a5c;
@@ -56,7 +66,7 @@
   --color-text-muted: #686868; /* rgb(104, 104, 104) */
   --color-background: #ffffff;
   --color-background-alt: #f5f5f5;
-  --color-border: #e5e5e5;
+  --color-border: #dfdfdf; /* Match Webflow --neutral-300 */
   --color-accent: #d4af37;
   --color-highlight: rgb(255, 248, 201); /* Pale yellow highlight - matches Webflow */
 
@@ -72,10 +82,10 @@
   --space-xl: 6rem;
   --space-2xl: 8rem;
 
-  /* Container */
-  --container-max: 1200px;
+  /* Container - Matching Webflow 1216px */
+  --container-max: 1216px;
   --container-narrow: 740px;
-  --container-medium: 860px;
+  --container-medium: 740px;
 
   /* Transitions - matching Webflow 0.35s */
   --transition-fast: 0.35s ease;
@@ -117,16 +127,24 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: 48px;
+  font-weight: 500;
   line-height: 64px;
+  margin-bottom: 16px;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 34px;
+  margin-bottom: 16px;
 }
 
 h4 {
-  font-size: 1.25rem;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 26px;
+  margin-bottom: 16px;
 }
 
 p {
@@ -134,10 +152,18 @@ p {
 }
 
 .paragraph-large {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 500;
   line-height: 36px;
   color: var(--color-text-muted);
+}
+
+/* Figcaption - Webflow style */
+figcaption {
+  text-align: center;
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
 }
 
 /* Links */
@@ -151,12 +177,12 @@ a:hover {
   color: var(--color-primary);
 }
 
-/* Container */
+/* Container - Matching Webflow */
 .container {
   width: 100%;
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-md);
+  padding: 0 24px;
 }
 
 .container-narrow {
@@ -227,8 +253,8 @@ a:hover {
 }
 
 .skills {
-  font-style: italic;
   color: var(--color-primary);
+  font-weight: 600;
 }
 
 /* Rich Text */
@@ -257,6 +283,7 @@ a:hover {
 /* Strong text globally */
 strong {
   font-weight: 700;
+  color: var(--color-text);
 }
 
 /* Images */
