@@ -1,9 +1,14 @@
 ---
 /**
- * ThemeScript - FOUC Prevention
+ * ThemeScript - FOUC Prevention with Time-Aware Defaults
  *
  * This inline script runs synchronously before paint to prevent
  * Flash of Unstyled Content when loading dark mode.
+ *
+ * Time-based defaults:
+ * - 7 AM to 5 PM: Light mode
+ * - 5 PM to 7 AM: Dark mode
+ * - Uses user's timezone, defaults to ET (America/New_York)
  *
  * Soul Memory Pattern: Perceive preference → Apply immediately
  */
@@ -11,12 +16,50 @@
 
 <script is:inline>
   (function() {
+    // Get current hour in user's timezone (fallback to ET)
+    function getTimeBasedTheme() {
+      try {
+        // Try to get user's local time first
+        const now = new Date();
+        let hour = now.getHours();
+
+        // If we can't determine timezone reliably, use ET as default
+        // This happens on first visit before we know user's locale
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // If timezone detection failed or is UTC, assume ET
+        if (!userTimezone || userTimezone === 'UTC') {
+          const etFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York',
+            hour: 'numeric',
+            hour12: false
+          });
+          hour = parseInt(etFormatter.format(now), 10);
+        }
+
+        // Light mode: 7 AM (7) to 5 PM (17)
+        // Dark mode: 5 PM (17) to 7 AM (7)
+        return (hour >= 7 && hour < 17) ? 'light' : 'dark';
+      } catch (e) {
+        // If timezone APIs fail, fall back to system preference
+        return null;
+      }
+    }
+
     // Soul Memory: Check what the user prefers
     const stored = localStorage.getItem('theme');
+    const timeBasedTheme = getTimeBasedTheme();
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Decision logic: stored preference > system preference > light default
-    let theme = stored || (systemDark ? 'dark' : 'light');
+    // Decision logic: stored preference > time-based > system preference > light default
+    let theme;
+    if (stored) {
+      theme = stored;
+    } else if (timeBasedTheme) {
+      theme = timeBasedTheme;
+    } else {
+      theme = systemDark ? 'dark' : 'light';
+    }
 
     // Apply immediately (before paint)
     document.documentElement.setAttribute('data-theme', theme);
@@ -28,7 +71,9 @@
     // Listen for system preference changes (when no manual preference)
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        // Re-check time-based theme on system change
+        const timeBased = getTimeBasedTheme();
+        document.documentElement.setAttribute('data-theme', timeBased || (e.matches ? 'dark' : 'light'));
       }
     });
   })();

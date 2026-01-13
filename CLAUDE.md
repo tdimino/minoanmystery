@@ -1,0 +1,75 @@
+# Minoan Mystery Portfolio
+
+Tom di Mino's portfolio site - migrated from Webflow to Astro with soul-aware interactions.
+
+## Mission
+
+Transform this portfolio into a **sentient digital presence** that:
+1. Achieves pixel-perfect parity with original Webflow site
+2. Embodies modern 2025/2026 UX patterns
+3. Lives as a "soul" via Open Souls paradigm
+4. Showcases Aldea AI work alongside existing case studies
+
+## Stack
+
+- **Framework**: Astro 5 with View Transitions
+- **Animations**: Motion library (from Framer team)
+- **Icons**: Iconify with Phosphor, Lucide, Tabler
+- **Hosting**: Vercel with serverless functions
+- **Email**: Resend API for contact form
+
+## Structure
+
+```
+src/
+├── components/     # Astro components (Header, Footer, CommandPalette, ThemeToggle)
+├── content/        # Portfolio case studies (Markdown collections)
+├── layouts/        # BaseLayout with View Transitions
+├── pages/          # Routes (/, /about, /contact, /portfolio/[slug])
+├── styles/         # global.css with CSS variables, dark mode
+└── lib/soul/       # [Future] Soul perception and dispatch layer
+```
+
+## Commands
+
+- Dev: `npm run dev` (localhost:4321)
+- Build: `npm run build`
+- Preview: `npm run preview`
+
+## Conventions
+
+- **No auto-commit**: Always wait for explicit user approval before git operations
+- **Web search**: Use Exa and Firecrawl skills by default
+- **UX/Frontend**: Use `frontend-design` skill for all design and UX work
+- **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
+- **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
+- **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
+
+## Brand Colors
+
+| Token | Light | Dark | Usage |
+|-------|-------|------|-------|
+| `--color-primary` | #966a85 | #c9a0b8 | Tyrian purple accent |
+| `--color-text` | #0d0d0d | #f5f5f5 | Primary text |
+| `--color-text-muted` | #686868 | #b8b8b8 | Secondary text |
+| `--color-background` | #ffffff | #0d0d0d | Page background |
+
+## Key Features
+
+- **Command Palette**: `Cmd+K` for navigation
+- **Theme Toggle**: `Cmd+Shift+D` or button in header
+- **View Transitions**: Smooth page navigation
+- **Responsive**: Fluid typography with `clamp()`, mobile-first
+
+## Detailed Guides
+
+- @agent_docs/visual-parity.md - Pixel-perfect audit checklist
+- @agent_docs/soul-architecture.md - Open Souls integration
+- @agent_docs/modern-ux.md - 2025/2026 UX patterns
+- @agent_docs/aldea-content.md - Case study creation
+
+## Reference Sites
+
+- **Original**: minoanmystery.org (Webflow - source of truth)
+- **Live Astro**: Deploy to Vercel for comparison
+- **Aldea**: aldea.ai (stealth link on homepage)

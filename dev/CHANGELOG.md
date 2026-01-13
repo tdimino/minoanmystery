@@ -1,12 +1,62 @@
 # Minoan Mystery - Development Changelog
 
+## Session: January 12, 2026 (Late Night)
+
+### Soul Integration Planning
+
+Prepared comprehensive implementation plan for Soul Integration using the Open Souls paradigm, adapted from the Aldea Soul Engine for frontend-first deployment.
+
+#### New Documentation (`agent_docs/`)
+- `aldea-content.md` - Aldea AI case study content strategy
+- `modern-ux.md` - Modern UX patterns (gradient blobs, bento grid, magnetic cursors)
+- `soul-architecture.md` - Open Souls integration conceptual framework
+
+#### Implementation Plans (`plans/`)
+- `command-palette-dark-mode-plan.md` - Documentation of completed Command Palette & Dark Mode features
+- `soul-integration-plan.md` - Full Soul Integration implementation plan (Phases 1-5)
+
+#### Soul Engine Architecture (Planned)
+```
+src/lib/soul/
+├── index.ts              # Main export, soul initialization
+├── types.ts              # TypeScript interfaces (PerceptionEvent, UserModel, SoulState, SoulAction)
+├── perception.ts         # Event capture (click, scroll, hover, navigation, idle)
+├── memory.ts             # WorkingMemory + UserModel (localStorage)
+├── processes.ts          # Mental process state machine
+├── dispatch.ts           # Action execution (DOM, toasts, UI)
+└── triggers.ts           # 5 core rule-based triggers
+```
+
+#### 5 Core Triggers (Planned)
+1. **Returning Visitor** - visitCount > 1 → "Welcome back" toast
+2. **Deep Reader** - scrollDepth > 70% AND time > 2min → Subtle CTA highlight
+3. **Explorer** - pagesViewed >= 3 in session → "You seem curious" hint
+4. **Contact Bound** - hover on contact link > 1s → Personalized CTA text
+5. **Idle Wanderer** - idle > 30s → Ambient animation intensifies
+
+#### New Components (Planned)
+- `src/components/SoulHint.astro` - Cmd+K hint badge (bottom-right, hides after 3 uses)
+- `src/components/FloatingDialogue.astro` - Toast-style soul messages
+
+#### Project Configuration
+- `CLAUDE.md` - Claude Code project instructions
+
+---
+
 ## Session: January 12, 2026 (Evening)
 
 ### Dark Mode Implementation
 Added full dark mode support with theme toggle and WCAG-compliant contrast ratios.
 
+#### Time-Based Theme Defaults (`src/components/ThemeScript.astro`)
+- Light mode: 7 AM to 5 PM
+- Dark mode: 5 PM to 7 AM
+- Uses user's local timezone via `Intl.DateTimeFormat`
+- Falls back to ET (America/New_York) if timezone detection fails
+- Priority: stored preference > time-based > system preference
+
 #### New Components
-- `src/components/ThemeScript.astro` - FOUC prevention script (runs before styles)
+- `src/components/ThemeScript.astro` - FOUC prevention script with time-aware defaults
 - `src/components/ThemeToggle.astro` - Sun/moon toggle button with keyboard shortcut (Cmd+Shift+D)
 - `src/components/CommandPalette.astro` - Command palette UI (Cmd+K) with navigation commands
 
