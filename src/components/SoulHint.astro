@@ -1,0 +1,141 @@
+---
+/**
+ * SoulHint Component
+ *
+ * A subtle, fixed-position badge that hints at the command palette.
+ * Hides after user has used the palette 3+ times.
+ */
+---
+
+<button
+  class="soul-hint"
+  aria-label="Open command palette (⌘K)"
+  data-soul-id="soul-hint-button"
+>
+  <kbd>⌘K</kbd>
+</button>
+
+<style>
+  .soul-hint {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--color-background-alt, #f5f5f5);
+    border: 1px solid var(--color-border, #e5e5e5);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--color-text-muted, #666);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .soul-hint:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .soul-hint:active {
+    transform: scale(0.98);
+  }
+
+  .soul-hint kbd {
+    font-family: inherit;
+    font-weight: 500;
+  }
+
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .soul-hint {
+      transition: none;
+    }
+  }
+
+  /* Dark mode */
+  :global([data-theme='dark']) .soul-hint {
+    background: rgba(30, 30, 30, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  :global([data-theme='dark']) .soul-hint:hover {
+    box-shadow: 0 4px 16px rgba(150, 106, 133, 0.3);
+    border-color: rgba(150, 106, 133, 0.4);
+  }
+
+  /* Mobile: show Ctrl instead of Cmd */
+  @media (max-width: 768px) {
+    .soul-hint {
+      bottom: 16px;
+      right: 16px;
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  }
+</style>
+
+<script>
+  class SoulHintController {
+    private button: HTMLButtonElement | null;
+
+    constructor() {
+      this.button = document.querySelector('.soul-hint');
+      this.init();
+    }
+
+    private init(): void {
+      if (!this.button) return;
+
+      // Handle click
+      this.button.addEventListener('click', () => {
+        this.openPalette();
+      });
+
+      // Update kbd text based on platform
+      this.updatePlatformKey();
+
+      // Listen for Astro view transitions
+      document.addEventListener('astro:after-swap', () => {
+        this.button = document.querySelector('.soul-hint');
+        this.updatePlatformKey();
+      });
+    }
+
+    private openPalette(): void {
+      // Dispatch keyboard event to open command palette
+      const event = new KeyboardEvent('keydown', {
+        key: 'k',
+        metaKey: true,
+        ctrlKey: true,
+        bubbles: true
+      });
+      document.dispatchEvent(event);
+
+      // Also dispatch custom event as fallback
+      document.dispatchEvent(new CustomEvent('open-command-palette'));
+    }
+
+    private updatePlatformKey(): void {
+      if (!this.button) return;
+
+      const kbd = this.button.querySelector('kbd');
+      if (!kbd) return;
+
+      // Detect platform
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+        navigator.userAgent.toUpperCase().indexOf('MAC') >= 0;
+
+      kbd.textContent = isMac ? '⌘K' : 'Ctrl+K';
+    }
+  }
+
+  // Initialize
+  new SoulHintController();
+</script>

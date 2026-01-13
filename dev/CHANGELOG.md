@@ -1,5 +1,47 @@
 # Minoan Mystery - Development Changelog
 
+## Session: January 13, 2026
+
+### Soul Engine Implementation & Polish
+
+Implemented the Soul Engine infrastructure and made various dark mode and UX polish improvements.
+
+#### Soul Engine (`src/lib/soul/`)
+- `index.ts` - Main export and soul initialization
+- `types.ts` - TypeScript interfaces (PerceptionEvent, UserModel, SoulState, SoulAction, Trigger)
+- `perception.ts` - Event capture (click, scroll, hover, navigation, idle, focus)
+- `memory.ts` - SoulMemory class with localStorage persistence
+- `processes.ts` - Mental process state machine
+- `dispatch.ts` - Action execution (toasts, highlights, CTA updates, animations)
+- `triggers.ts` - 5 core rule-based triggers (Contact Bound CTA disabled for now)
+
+#### New Components
+- `src/components/SoulHint.astro` - Cmd+K hint badge (always visible)
+- `src/components/FloatingDialogue.astro` - Toast-style soul messages
+
+#### Command Palette Enhancements
+- ESC button now clickable to close palette
+- Single-key shortcuts (H, A, C, I) work when input is empty
+- Listens for `open-command-palette` custom event from SoulHint
+
+#### Dark Mode Polish (`src/pages/about.astro`)
+- Aldea and Minoan Mystery logos invert to white via CSS `filter: invert(1)`
+- Resume arrow icon inverts to white
+- Circle link chevron inverts to white (and back to black on hover)
+- Chevron size increased to 50px
+
+#### Layout Adjustments
+- About hero grid changed from `1fr 1.2fr` to `1fr 1.25fr`
+
+#### Favicon
+- New multi-resolution `favicon.ico` (16, 32, 48, 64px) with transparent background
+- Removed old `favicon.svg` and `favicon.png`
+
+#### Content Updates
+- Dolby case study: "enterprise-grade domain" → "enterprise-grade ecosystem"
+
+---
+
 ## Session: January 12, 2026 (Late Night)
 
 ### Soul Integration Planning

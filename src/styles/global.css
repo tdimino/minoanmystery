@@ -445,3 +445,77 @@ button,
     padding: var(--space-lg) 0;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Soul Engine Animations
+   ───────────────────────────────────────────────────────────── */
+
+/* Pulse animation for highlights */
+@keyframes soul-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(150, 106, 133, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(150, 106, 133, 0);
+  }
+}
+
+.soul-pulse {
+  animation: soul-pulse 2s ease-in-out infinite;
+}
+
+/* Intensify animation for idle state */
+@keyframes soul-intensify {
+  0%, 100% {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.1) saturate(1.2);
+    transform: scale(1.02);
+  }
+}
+
+.soul-intensify {
+  animation: soul-intensify 4s ease-in-out infinite;
+}
+
+/* Calm animation (reduce intensity) */
+.soul-calm {
+  animation: none;
+  transition: filter 0.5s ease, transform 0.5s ease;
+  filter: brightness(1) saturate(1);
+  transform: scale(1);
+}
+
+/* Attention animation */
+@keyframes soul-attention {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: scale(1.02);
+  }
+  20%, 40%, 60%, 80% {
+    transform: scale(0.98);
+  }
+}
+
+.soul-attention {
+  animation: soul-attention 0.8s ease-in-out;
+}
+
+/* Glow effect for highlights */
+.soul-glow {
+  box-shadow: 0 0 20px rgba(150, 106, 133, 0.6);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .soul-pulse,
+  .soul-intensify,
+  .soul-attention {
+    animation: none;
+  }
+}

@@ -2,6 +2,8 @@
 import { ViewTransitions } from 'astro:transitions';
 import ThemeScript from '../components/ThemeScript.astro';
 import CommandPalette from '../components/CommandPalette.astro';
+import SoulHint from '../components/SoulHint.astro';
+import FloatingDialogue from '../components/FloatingDialogue.astro';
 import '../styles/global.css';
 import '../styles/animations.css';
 
@@ -172,5 +174,44 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
   <!-- Command Palette - Global keyboard shortcut -->
   <CommandPalette />
+
+  <!-- Soul Engine Components -->
+  <SoulHint />
+  <FloatingDialogue />
+
+  <!-- Soul Engine Initialization -->
+  <script>
+    import { initSoul, getSoul, setupViewTransitions } from '../lib/soul';
+
+    // Initialize soul engine
+    function initSoulEngine() {
+      try {
+        initSoul();
+        setupViewTransitions();
+      } catch (e) {
+        console.warn('[Soul] Initialization failed:', e);
+      }
+    }
+
+    // Run on initial load
+    initSoulEngine();
+
+    // Re-initialize after view transitions
+    document.addEventListener('astro:after-swap', () => {
+      // Soul persists across transitions, just re-evaluate
+      try {
+        const soul = getSoul();
+        if (soul) {
+          soul.processes.evaluate();
+          soul.triggers.evaluate();
+        } else {
+          initSoulEngine();
+        }
+      } catch (e) {
+        // Fallback: reinitialize
+        initSoulEngine();
+      }
+    });
+  </script>
 </body>
 </html>

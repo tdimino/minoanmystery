@@ -161,7 +161,7 @@ const experience = [
 
   .about-hero-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1fr 1.25fr;
     grid-column-gap: 50px;
     grid-row-gap: 12px;
     align-items: start;
@@ -340,6 +340,11 @@ const experience = [
     transform: translate(4px, -4px);
   }
 
+  /* Invert resume arrow to white in dark mode */
+  :global([data-theme='dark']) .resume-arrow-icon {
+    filter: invert(1);
+  }
+
   .resume-link-underline {
     width: 0;
     height: 2px;
@@ -378,6 +383,12 @@ const experience = [
     width: 80px;
     height: auto;
     object-fit: contain;
+  }
+
+  /* Invert dark logos to white in dark mode */
+  :global([data-theme='dark']) .experience-logo img[src*="aldea"],
+  :global([data-theme='dark']) .experience-logo img[src*="seal-of-minos"] {
+    filter: invert(1);
   }
 
   .experience-content {
@@ -473,8 +484,8 @@ const experience = [
   }
 
   .circle-link-icon {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
@@ -501,6 +512,11 @@ const experience = [
 
   .circle-link:hover .circle-link-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  }
+
+  /* Invert circle link chevron to white in dark mode */
+  :global([data-theme='dark']) .circle-link-icon {
+    filter: invert(1);
   }
 
   /* Responsive */

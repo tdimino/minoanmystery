@@ -1,0 +1,245 @@
+---
+/**
+ * FloatingDialogue Component
+ *
+ * Toast-style soul messages that appear in the bottom-right corner.
+ * Supports message queuing and different message types.
+ */
+---
+
+<div id="soul-dialogue" class="soul-dialogue" role="status" aria-live="polite">
+  <div class="soul-dialogue-content">
+    <span class="soul-dialogue-icon"></span>
+    <span class="soul-dialogue-text"></span>
+    <button class="soul-dialogue-dismiss" aria-label="Dismiss">×</button>
+  </div>
+</div>
+
+<style>
+  .soul-dialogue {
+    position: fixed;
+    bottom: 80px; /* Above SoulHint */
+    right: 24px;
+    max-width: 320px;
+    background: var(--color-background, #ffffff);
+    border: 1px solid var(--color-border, #e5e5e5);
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+    z-index: 1000;
+  }
+
+  .soul-dialogue.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .soul-dialogue-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .soul-dialogue-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .soul-dialogue-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text, #222);
+  }
+
+  .soul-dialogue-dismiss {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--color-text-muted, #666);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0;
+    margin: -4px -4px 0 0;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .soul-dialogue-dismiss:hover {
+    opacity: 1;
+  }
+
+  /* Message types */
+  .soul-dialogue[data-type='welcome'] {
+    border-left: 3px solid var(--color-primary, #966a85);
+  }
+
+  .soul-dialogue[data-type='welcome'] .soul-dialogue-icon::before {
+    content: '✨';
+  }
+
+  .soul-dialogue[data-type='hint'] {
+    border-left: 3px solid var(--color-gold, #d4af37);
+  }
+
+  .soul-dialogue[data-type='hint'] .soul-dialogue-icon::before {
+    content: '💡';
+  }
+
+  .soul-dialogue[data-type='info'] .soul-dialogue-icon::before {
+    content: '🌀';
+  }
+
+  /* Dark mode */
+  :global([data-theme='dark']) .soul-dialogue {
+    background: rgba(25, 25, 25, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  :global([data-theme='dark']) .soul-dialogue-text {
+    color: var(--color-text, #f5f5f5);
+  }
+
+  :global([data-theme='dark']) .soul-dialogue-dismiss {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  :global([data-theme='dark']) .soul-dialogue-dismiss:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .soul-dialogue {
+      bottom: 70px;
+      right: 16px;
+      left: 16px;
+      max-width: none;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .soul-dialogue {
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  interface ToastPayload {
+    message: string;
+    duration: number;
+    type?: 'info' | 'welcome' | 'hint';
+  }
+
+  class SoulDialogue {
+    private element: HTMLElement | null;
+    private textEl: HTMLElement | null;
+    private queue: ToastPayload[] = [];
+    private isShowing = false;
+    private hideTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    constructor() {
+      this.element = document.getElementById('soul-dialogue');
+      this.textEl = this.element?.querySelector('.soul-dialogue-text') || null;
+      this.init();
+    }
+
+    private init(): void {
+      if (!this.element) return;
+
+      // Dismiss button
+      const dismissBtn = this.element.querySelector('.soul-dialogue-dismiss');
+      dismissBtn?.addEventListener('click', () => this.hide());
+
+      // Listen for toast events from dispatch
+      document.addEventListener('soul:toast', ((e: CustomEvent<ToastPayload>) => {
+        this.show(e.detail);
+      }) as EventListener);
+
+      // Click outside to dismiss
+      document.addEventListener('click', (e) => {
+        if (this.isShowing && this.element && !this.element.contains(e.target as Node)) {
+          // Don't dismiss on click if within the first 500ms
+          // This prevents accidental dismissal right after showing
+        }
+      });
+
+      // Handle Astro view transitions
+      document.addEventListener('astro:after-swap', () => {
+        this.element = document.getElementById('soul-dialogue');
+        this.textEl = this.element?.querySelector('.soul-dialogue-text') || null;
+      });
+    }
+
+    show(payload: ToastPayload): void {
+      if (this.isShowing) {
+        // Queue the message
+        this.queue.push(payload);
+        return;
+      }
+
+      this.isShowing = true;
+
+      if (!this.element || !this.textEl) return;
+
+      // Set content and type
+      this.textEl.textContent = payload.message;
+      this.element.setAttribute('data-type', payload.type || 'info');
+      this.element.classList.add('is-visible');
+
+      // Auto-hide after duration
+      if (this.hideTimeout) {
+        clearTimeout(this.hideTimeout);
+      }
+
+      this.hideTimeout = setTimeout(() => {
+        this.hide();
+      }, payload.duration || 4000);
+    }
+
+    hide(): void {
+      if (!this.element) return;
+
+      this.element.classList.remove('is-visible');
+      this.isShowing = false;
+
+      if (this.hideTimeout) {
+        clearTimeout(this.hideTimeout);
+        this.hideTimeout = null;
+      }
+
+      // Show next queued message
+      if (this.queue.length > 0) {
+        const next = this.queue.shift()!;
+        setTimeout(() => this.show(next), 400);
+      }
+    }
+
+    // Public API for direct calls
+    toast(message: string, duration = 4000, type: ToastPayload['type'] = 'info'): void {
+      this.show({ message, duration, type });
+    }
+  }
+
+  // Initialize and expose globally
+  const soulDialogue = new SoulDialogue();
+  (window as unknown as Record<string, unknown>).soulDialogue = soulDialogue;
+</script>

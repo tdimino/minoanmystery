@@ -76,4 +76,4 @@ I pitched our set of 12 page templates, from cinematic landing pages to Dolby At
 
 ## Takeaways
 
-Given the right vantage point, even an immense enterprise-grade domain like Dolby Labs can be deconstructed. **Auditing under tight constraints forces you to look past the fluff** and see the function of a web page for what it is. Once you have a shared vision for a redesign, you can work wonders within a single sprint.
+Given the right vantage point, even an immense enterprise-grade ecosystem like Dolby Labs can be deconstructed. **Auditing under tight constraints forces you to look past the fluff** and see the function of a web page for what it is. Once you have a shared vision for a redesign, you can work wonders within a single sprint.
