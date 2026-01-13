@@ -269,6 +269,51 @@
     to { opacity: 0; transform: scale(0.95) translateY(-10px); }
   }
 
+  /* Chat mode styles */
+  .command-palette.is-chat-mode .command-search-icon {
+    color: var(--color-primary);
+  }
+
+  .command-chat-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .chat-hint-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :global(.command-suggestion) {
+    border-left: 2px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+
+  :global(.command-suggestion:hover),
+  :global(.command-suggestion.is-active) {
+    border-left-color: var(--color-primary);
+  }
+
+  :global(.soul-read-more) {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  :global(.soul-read-more:hover) {
+    text-decoration: underline;
+  }
+
   /* Mobile adjustments */
   @media (max-width: 767px) {
     .command-palette {
@@ -326,22 +371,42 @@
     sparkles: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>',
     compass: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>',
     info: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
+    oracle: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line><line x1="8" x2="16" y1="22" y2="22"></line></svg>',
+    suggestion: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
   };
+
+  // Import mode manager dynamically
+  type PaletteMode = 'command' | 'chat';
+
+  interface SuggestedQuestion {
+    id: string;
+    text: string;
+    icon: string;
+    priority: number;
+  }
 
   class CommandPaletteSoul {
     private palette: HTMLElement;
     private input: HTMLInputElement;
     private results: HTMLElement;
+    private searchIcon: HTMLElement;
     private commands: Command[] = [];
     private activeIndex: number = 0;
     private filteredCommands: Command[] = [];
     private memory: SoulMemory;
     private boundKeydown: (e: KeyboardEvent) => void;
 
+    // Chat mode state
+    private mode: PaletteMode = 'command';
+    private suggestions: SuggestedQuestion[] = [];
+    private isLoadingChat: boolean = false;
+    private suggestionDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
     constructor() {
       this.palette = document.getElementById('command-palette')!;
       this.input = document.getElementById('command-input') as HTMLInputElement;
       this.results = document.getElementById('command-results')!;
+      this.searchIcon = this.palette.querySelector('.command-search-icon') as HTMLElement;
 
       // Load soul memory
       this.memory = this.loadMemory();
@@ -352,6 +417,9 @@
       // Bind events
       this.boundKeydown = this.handleGlobalKeydown.bind(this);
       this.bindEvents();
+
+      // Load default suggestions
+      this.loadSuggestions();
     }
 
     private loadMemory(): SoulMemory {
@@ -657,6 +725,8 @@
       const q = query.toLowerCase().trim();
 
       if (!q) {
+        // Reset to command mode
+        this.setMode('command');
         // Soul Memory: Show recent commands first
         this.filteredCommands = this.prioritizeByMemory(this.commands);
       } else {
@@ -665,10 +735,80 @@
           const searchable = [cmd.label, ...(cmd.keywords || [])].join(' ').toLowerCase();
           return searchable.includes(q);
         });
+
+        // Detect mode based on input and matches
+        const newMode = this.detectMode(query, this.filteredCommands.length > 0);
+        this.setMode(newMode);
+
+        // If in chat mode with no matches, request suggestions
+        if (newMode === 'chat' && this.filteredCommands.length === 0) {
+          this.requestSuggestions(query);
+        }
       }
 
       this.activeIndex = 0;
       this.render();
+    }
+
+    private detectMode(input: string, hasMatches: boolean): PaletteMode {
+      // Always command mode if matches exist
+      if (hasMatches) return 'command';
+
+      const trimmed = input.trim();
+      if (!trimmed) return 'command';
+
+      // Question patterns indicate chat mode
+      const questionPatterns = /^(what|who|when|where|why|how|can|could|should|would|tell|explain|describe|show|give|is|are|do|does|did)/i;
+      if (questionPatterns.test(trimmed)) return 'chat';
+
+      // Multi-word natural language = chat mode
+      const words = trimmed.split(/\s+/);
+      if (words.length >= 3) return 'chat';
+
+      return 'command';
+    }
+
+    private setMode(mode: PaletteMode) {
+      if (this.mode === mode) return;
+      this.mode = mode;
+
+      // Update visual indicators
+      if (mode === 'chat') {
+        this.searchIcon.innerHTML = icons.oracle;
+        this.input.placeholder = 'Ask the Oracle...';
+        this.palette.classList.add('is-chat-mode');
+      } else {
+        this.searchIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>';
+        this.input.placeholder = 'What would you like to do?';
+        this.palette.classList.remove('is-chat-mode');
+      }
+    }
+
+    private loadSuggestions() {
+      // Default suggestions - these will be context-aware
+      this.suggestions = [
+        { id: 'who-is-tom', text: 'Who is Tom di Mino?', icon: 'user', priority: 1 },
+        { id: 'what-does-tom-do', text: 'What kind of work does Tom do?', icon: 'briefcase', priority: 2 },
+        { id: 'explain-labyrinth', text: 'What is this labyrinth?', icon: 'compass', priority: 3 },
+      ];
+    }
+
+    private requestSuggestions(input: string) {
+      // Cancel any pending request
+      if (this.suggestionDebounceTimer) {
+        clearTimeout(this.suggestionDebounceTimer);
+      }
+
+      // Debounce suggestion updates
+      this.suggestionDebounceTimer = setTimeout(() => {
+        // Filter suggestions based on input
+        const q = input.toLowerCase();
+        const filtered = this.suggestions.filter(s =>
+          s.text.toLowerCase().includes(q) || q.length < 3
+        ).slice(0, 3);
+
+        this.render(); // Re-render with suggestions
+      }, 1500);
     }
 
     private prioritizeByMemory(commands: Command[]): Command[] {
@@ -682,6 +822,12 @@
     }
 
     private render() {
+      // If in chat mode with no commands, show suggestions
+      if (this.mode === 'chat' && this.filteredCommands.length === 0) {
+        this.renderChatMode();
+        return;
+      }
+
       // Group commands
       const groups = new Map<string, Command[]>();
 
@@ -736,6 +882,57 @@
       });
     }
 
+    private renderChatMode() {
+      let html = '';
+
+      // Chat mode hint
+      html += `<div class="command-chat-hint">
+        <span class="chat-hint-icon">${icons.oracle}</span>
+        <span>Press Enter to ask the Oracle</span>
+      </div>`;
+
+      // Show suggestions
+      if (this.suggestions.length > 0) {
+        html += `<div class="command-group">`;
+        html += `<div class="command-group-title">Suggested Questions</div>`;
+
+        this.suggestions.forEach((suggestion, index) => {
+          const isActive = index === this.activeIndex;
+          const iconSvg = icons[suggestion.icon] || icons.suggestion;
+          html += `
+            <div class="command-item command-suggestion ${isActive ? 'is-active' : ''}" data-suggestion-id="${suggestion.id}" data-index="${index}">
+              <div class="command-item-left">
+                <span class="command-item-icon">${iconSvg}</span>
+                <span class="command-item-label">${suggestion.text}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      this.results.innerHTML = html;
+
+      // Add click handlers for suggestions
+      this.results.querySelectorAll('.command-suggestion').forEach(item => {
+        item.addEventListener('click', () => {
+          const id = item.getAttribute('data-suggestion-id');
+          const suggestion = this.suggestions.find(s => s.id === id);
+          if (suggestion) {
+            this.input.value = suggestion.text;
+            this.submitChat(suggestion.text);
+          }
+        });
+
+        item.addEventListener('mouseenter', () => {
+          const index = parseInt(item.getAttribute('data-index') || '0');
+          this.activeIndex = index;
+          this.updateActive();
+        });
+      });
+    }
+
     private navigate(delta: number) {
       this.activeIndex = Math.max(0, Math.min(this.filteredCommands.length - 1, this.activeIndex + delta));
       this.updateActive();
@@ -752,8 +949,158 @@
     }
 
     private executeActive() {
+      // In chat mode with no commands, submit the chat query
+      if (this.mode === 'chat' && this.filteredCommands.length === 0) {
+        const query = this.input.value.trim();
+        if (query) {
+          this.submitChat(query);
+        } else if (this.suggestions[this.activeIndex]) {
+          // Submit the selected suggestion
+          this.submitChat(this.suggestions[this.activeIndex].text);
+        }
+        return;
+      }
+
+      // Execute command
       const cmd = this.filteredCommands[this.activeIndex];
       if (cmd) this.execute(cmd);
+    }
+
+    private async submitChat(query: string) {
+      if (this.isLoadingChat || !query.trim()) return;
+
+      this.isLoadingChat = true;
+
+      // Close palette immediately
+      this.close();
+
+      // Show loading toast
+      const loadingEvent = new CustomEvent('soul:toast', {
+        detail: { message: 'Consulting the depths...', duration: 0, type: 'info' }
+      });
+      document.dispatchEvent(loadingEvent);
+
+      try {
+        // Make API request
+        const response = await fetch('/api/soul/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query,
+            visitorContext: this.getVisitorContext(),
+            conversationHistory: this.getConversationHistory()
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Save to conversation history
+        this.saveToConversation(query, data.message);
+
+        // Truncate response for toast
+        const truncated = this.truncateResponse(data.message, 120);
+        const hasMore = data.message.length > 120;
+
+        // Show response toast
+        const responseEvent = new CustomEvent('soul:toast', {
+          detail: {
+            message: hasMore
+              ? `${truncated}... <a href="/labyrinth" class="soul-read-more">Read more →</a>`
+              : truncated,
+            duration: hasMore ? 8000 : 5000,
+            type: 'info',
+            hasHtml: hasMore
+          }
+        });
+        document.dispatchEvent(responseEvent);
+
+      } catch (error) {
+        console.error('[CommandPalette] Chat error:', error);
+
+        // Show error toast
+        const errorEvent = new CustomEvent('soul:toast', {
+          detail: {
+            message: "The Oracle's connection wavers. Try again in a moment.",
+            duration: 5000,
+            type: 'hint'
+          }
+        });
+        document.dispatchEvent(errorEvent);
+      } finally {
+        this.isLoadingChat = false;
+      }
+    }
+
+    private truncateResponse(text: string, maxLength: number): string {
+      if (text.length <= maxLength) return text;
+      const lastSpace = text.lastIndexOf(' ', maxLength);
+      return lastSpace > 0 ? text.slice(0, lastSpace) : text.slice(0, maxLength);
+    }
+
+    private getVisitorContext(): Record<string, unknown> {
+      try {
+        const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+        return {
+          currentPage: window.location.pathname,
+          pagesViewed: memory.pagesViewed || [],
+          visitCount: memory.visitCount || 1,
+          behavioralType: memory.behavioralType || 'explorer'
+        };
+      } catch {
+        return { currentPage: window.location.pathname };
+      }
+    }
+
+    private getConversationHistory(): Array<{ role: string; content: string }> {
+      try {
+        const conversation = JSON.parse(localStorage.getItem('minoan-soul-conversation') || '{}');
+        const messages = conversation.messages || [];
+        // Return last 10 messages for context
+        return messages.slice(-10).map((m: { role: string; content: string }) => ({
+          role: m.role,
+          content: m.content
+        }));
+      } catch {
+        return [];
+      }
+    }
+
+    private saveToConversation(query: string, response: string) {
+      try {
+        const conversation = JSON.parse(localStorage.getItem('minoan-soul-conversation') || '{"messages":[],"schemaVersion":1}');
+        const now = Date.now();
+
+        conversation.messages.push({
+          id: `msg_${now}_user`,
+          role: 'user',
+          content: query,
+          timestamp: now,
+          page: window.location.pathname
+        });
+
+        conversation.messages.push({
+          id: `msg_${now}_assistant`,
+          role: 'assistant',
+          content: response,
+          timestamp: now + 1,
+          page: window.location.pathname
+        });
+
+        conversation.lastUpdated = now;
+
+        // Trim if exceeding 100 messages
+        if (conversation.messages.length > 100) {
+          conversation.messages = conversation.messages.slice(-100);
+        }
+
+        localStorage.setItem('minoan-soul-conversation', JSON.stringify(conversation));
+      } catch (e) {
+        console.error('[CommandPalette] Failed to save conversation:', e);
+      }
     }
 
     private execute(cmd: Command) {

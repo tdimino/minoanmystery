@@ -13,7 +13,7 @@
 
 import type { Trigger, UserModel, PerceptionEvent } from './types';
 import { getSoulMemory } from './memory';
-import { getSoulDispatch } from './dispatch';
+import { getSoulDispatch, SoulDispatch } from './dispatch';
 
 // ─────────────────────────────────────────────────────────────
 // Trigger Definitions

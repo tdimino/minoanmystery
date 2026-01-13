@@ -147,6 +147,7 @@
     message: string;
     duration: number;
     type?: 'info' | 'welcome' | 'hint';
+    hasHtml?: boolean; // If true, render message as HTML
   }
 
   class SoulDialogue {
@@ -190,6 +191,17 @@
     }
 
     show(payload: ToastPayload): void {
+      // If duration is 0 and we're already showing, replace immediately (for loading states)
+      if (payload.duration === 0 && this.isShowing) {
+        if (this.hideTimeout) {
+          clearTimeout(this.hideTimeout);
+          this.hideTimeout = null;
+        }
+        // Replace current message
+        this.updateContent(payload);
+        return;
+      }
+
       if (this.isShowing) {
         // Queue the message
         this.queue.push(payload);
@@ -201,18 +213,71 @@
       if (!this.element || !this.textEl) return;
 
       // Set content and type
-      this.textEl.textContent = payload.message;
-      this.element.setAttribute('data-type', payload.type || 'info');
+      this.updateContent(payload);
       this.element.classList.add('is-visible');
 
-      // Auto-hide after duration
+      // Auto-hide after duration (0 = no auto-hide)
       if (this.hideTimeout) {
         clearTimeout(this.hideTimeout);
       }
 
-      this.hideTimeout = setTimeout(() => {
-        this.hide();
-      }, payload.duration || 4000);
+      if (payload.duration > 0) {
+        this.hideTimeout = setTimeout(() => {
+          this.hide();
+        }, payload.duration);
+      }
+    }
+
+    private updateContent(payload: ToastPayload): void {
+      if (!this.element || !this.textEl) return;
+
+      // Set content - use innerHTML for HTML content, textContent otherwise
+      if (payload.hasHtml) {
+        // Basic sanitization: only allow safe tags
+        const sanitized = this.sanitizeHtml(payload.message);
+        this.textEl.innerHTML = sanitized;
+      } else {
+        this.textEl.textContent = payload.message;
+      }
+
+      this.element.setAttribute('data-type', payload.type || 'info');
+    }
+
+    private sanitizeHtml(html: string): string {
+      // Remove script tags and event handlers
+      let sanitized = html
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/on\w+="[^"]*"/gi, '')
+        .replace(/on\w+='[^']*'/gi, '');
+
+      // Only allow specific tags: a, strong, em, code
+      const allowedTags = ['a', 'strong', 'em', 'code', 'b', 'i'];
+      const tagPattern = /<\/?([a-z]+)[^>]*>/gi;
+
+      sanitized = sanitized.replace(tagPattern, (match, tag) => {
+        const lowerTag = tag.toLowerCase();
+        if (allowedTags.includes(lowerTag)) {
+          // For <a> tags, ensure safe attributes
+          if (lowerTag === 'a') {
+            const hrefMatch = match.match(/href="([^"]*)"/i);
+            const classMatch = match.match(/class="([^"]*)"/i);
+            if (match.includes('</')) return '</a>';
+            if (hrefMatch) {
+              const href = hrefMatch[1];
+              const className = classMatch ? classMatch[1] : '';
+              // Only allow relative URLs or https
+              if (href.startsWith('/') || href.startsWith('https://')) {
+                return `<a href="${href}" class="${className}">`;
+              }
+            }
+            return '';
+          }
+          return match;
+        }
+        return '';
+      });
+
+      return sanitized;
     }
 
     hide(): void {

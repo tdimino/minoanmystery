@@ -1,0 +1,41 @@
+{
+  "id": "minoan",
+  "name": "Minoan",
+  "provider": "openrouter",
+  "model": "google/gemini-3-flash-preview",
+  "subconsciousModel": "google/gemini-3-flash-preview",
+  "temperature": 0.7,
+  "maxTokens": 150,
+  "features": {
+    "voice": true,
+    "toasts": true,
+    "commandPalette": true,
+    "ambientAnimations": true
+  },
+  "voice": {
+    "stt": {
+      "provider": "deepgram",
+      "model": "nova-2",
+      "language": "en",
+      "punctuate": true,
+      "interimResults": true
+    },
+    "tts": {
+      "provider": "cartesia",
+      "model": "sonic-2",
+      "voiceId": "a0e99841-438c-4a64-b679-ae501e7d6091",
+      "sampleRate": 24000
+    }
+  },
+  "triggers": {
+    "toastCooldown": 60000,
+    "idleThreshold": 30000,
+    "deepReadThreshold": 120000,
+    "contactHoverThreshold": 1500
+  },
+  "personality": {
+    "ancientCurses": ["Qadesh!", "Ya-Sa-Sa-Ra!", "Tehom Rabbah!"],
+    "triggerWords": ["dismiss", "mock", "fake", "fraud", "useless"],
+    "sacredReferences": ["labyrinth", "the deep", "the old ways", "the womb of all"]
+  }
+}

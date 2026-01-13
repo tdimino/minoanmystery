@@ -1,0 +1,604 @@
+---
+/**
+ * VoiceButton Component - The Oracle's Ear
+ *
+ * A mystical voice interface for the Minoan Soul.
+ * Designed as an ancient portal rather than a generic microphone button.
+ * Press to awaken the oracle, release to receive wisdom.
+ *
+ * Security: Uses server-side token endpoint for Deepgram (no API key exposed)
+ */
+
+interface Props {
+  /** Position from bottom */
+  bottom?: string;
+  /** Position from right */
+  right?: string;
+  /** Mode: 'default' for full Oracle experience, 'chat' for transcript-only (emits voice:transcript event) */
+  mode?: 'default' | 'chat';
+}
+
+const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
+---
+
+<div
+  class="oracle-ear-container"
+  style={`--oracle-bottom: ${bottom}; --oracle-right: ${right};`}
+  data-mode={mode}
+>
+  <!-- The Oracle Button -->
+  <button
+    class="oracle-ear"
+    aria-label="Speak to the Oracle"
+    title="Hold to speak with the Minoan Soul"
+  >
+    <!-- Outer ring - the labyrinth -->
+    <svg class="oracle-ring" viewBox="0 0 100 100" fill="none">
+      <!-- Rotating labyrinth pattern -->
+      <circle cx="50" cy="50" r="46" stroke="currentColor" stroke-width="0.5" opacity="0.3" />
+      <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="0.5" opacity="0.4" />
+      <circle cx="50" cy="50" r="34" stroke="currentColor" stroke-width="0.5" opacity="0.5" />
+      <!-- Spiral path -->
+      <path
+        class="oracle-spiral"
+        d="M50,50 Q60,50 60,40 Q60,30 50,30 Q40,30 40,40 Q40,50 50,50 Q55,50 55,45 Q55,40 50,40 Q45,40 45,45 Q45,50 50,50"
+        stroke="currentColor"
+        stroke-width="1"
+        fill="none"
+        opacity="0.6"
+      />
+    </svg>
+
+    <!-- Inner core - the ear/portal -->
+    <div class="oracle-core">
+      <!-- Idle: Ancient ear symbol -->
+      <svg class="oracle-icon oracle-icon-ear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 8.5a6 6 0 0 1 12 0c0 5.5-6 8.5-6 11" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 19.5v2" stroke-linecap="round"/>
+        <path d="M10 12a2 2 0 0 0 4 0c0-1-2-3-2-3s-2 2-2 3z" fill="currentColor" opacity="0.3"/>
+      </svg>
+
+      <!-- Listening: Pulsing waves -->
+      <div class="oracle-icon oracle-icon-listening">
+        <span class="listening-wave"></span>
+        <span class="listening-wave"></span>
+        <span class="listening-wave"></span>
+      </div>
+
+      <!-- Speaking: Sound emanating -->
+      <svg class="oracle-icon oracle-icon-speaking" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 9v6l4-3-4-3z" fill="currentColor" opacity="0.5"/>
+        <path d="M14 8c1 1.5 1 4.5 0 6" stroke-linecap="round"/>
+        <path d="M17 6c1.5 2.5 1.5 7.5 0 10" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Ripple effects -->
+    <div class="oracle-ripples">
+      <span class="ripple"></span>
+      <span class="ripple"></span>
+      <span class="ripple"></span>
+    </div>
+  </button>
+
+  <!-- Transcript display - ancient tablet style -->
+  <div class="oracle-tablet" aria-live="polite">
+    <div class="tablet-inner">
+      <span class="tablet-text"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .oracle-ear-container {
+    position: fixed;
+    bottom: var(--oracle-bottom);
+    right: var(--oracle-right);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  /* The Oracle Button */
+  .oracle-ear {
+    --oracle-primary: var(--color-primary, #966a85);
+    --oracle-gold: #d4af37;
+    --oracle-deep: #5c1a5c;
+
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(
+      135deg,
+      var(--oracle-primary) 0%,
+      var(--oracle-deep) 100%
+    );
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 4px 20px rgba(92, 26, 92, 0.3),
+      0 0 40px rgba(150, 106, 133, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition:
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.3s ease;
+    overflow: visible;
+  }
+
+  .oracle-ear::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--oracle-gold), transparent, var(--oracle-gold));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .oracle-ear:hover {
+    transform: scale(1.08);
+    box-shadow:
+      0 6px 30px rgba(92, 26, 92, 0.4),
+      0 0 60px rgba(150, 106, 133, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .oracle-ear:hover::before {
+    opacity: 0.6;
+  }
+
+  /* Recording state */
+  .oracle-ear.listening {
+    transform: scale(0.95);
+    background: linear-gradient(
+      135deg,
+      #c9506c 0%,
+      #8b2942 100%
+    );
+    box-shadow:
+      0 4px 20px rgba(201, 80, 108, 0.4),
+      0 0 60px rgba(201, 80, 108, 0.3);
+  }
+
+  .oracle-ear.listening::before {
+    opacity: 0.8;
+    animation: oracle-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes oracle-glow {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.1); }
+  }
+
+  /* Speaking state */
+  .oracle-ear.speaking {
+    background: linear-gradient(
+      135deg,
+      var(--oracle-primary) 0%,
+      var(--oracle-gold) 50%,
+      var(--oracle-primary) 100%
+    );
+    background-size: 200% 200%;
+    animation: oracle-shimmer 2s ease infinite;
+  }
+
+  @keyframes oracle-shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* The labyrinth ring */
+  .oracle-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: ring-rotate 20s linear infinite;
+  }
+
+  .oracle-ear:hover .oracle-ring,
+  .oracle-ear.listening .oracle-ring {
+    animation-duration: 8s;
+  }
+
+  .oracle-ear.listening .oracle-ring {
+    animation-duration: 3s;
+  }
+
+  @keyframes ring-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .oracle-spiral {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: spiral-draw 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes spiral-draw {
+    from { stroke-dashoffset: 200; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Inner core */
+  .oracle-core {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Icon states */
+  .oracle-icon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+
+  .oracle-ear:not(.listening):not(.speaking) .oracle-icon-ear {
+    display: block;
+  }
+
+  .oracle-ear.listening .oracle-icon-listening {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  .oracle-ear.speaking .oracle-icon-speaking {
+    display: block;
+  }
+
+  /* Listening waves */
+  .listening-wave {
+    width: 4px;
+    height: 12px;
+    background: white;
+    border-radius: 2px;
+    animation: wave-pulse 0.8s ease-in-out infinite;
+  }
+
+  .listening-wave:nth-child(1) { animation-delay: 0s; height: 8px; }
+  .listening-wave:nth-child(2) { animation-delay: 0.15s; height: 16px; }
+  .listening-wave:nth-child(3) { animation-delay: 0.3s; height: 8px; }
+
+  @keyframes wave-pulse {
+    0%, 100% { transform: scaleY(0.5); opacity: 0.6; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+
+  /* Ripple effects */
+  .oracle-ripples {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: none;
+  }
+
+  .oracle-ear.listening .oracle-ripples,
+  .oracle-ear.speaking .oracle-ripples {
+    display: block;
+  }
+
+  .ripple {
+    position: absolute;
+    inset: 0;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple-expand 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .ripple:nth-child(1) { animation-delay: 0s; }
+  .ripple:nth-child(2) { animation-delay: 0.66s; }
+  .ripple:nth-child(3) { animation-delay: 1.33s; }
+
+  @keyframes ripple-expand {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  /* Tablet transcript display */
+  .oracle-tablet {
+    max-width: 300px;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      var(--oracle-gold) 0%,
+      #b8962e 50%,
+      var(--oracle-gold) 100%
+    );
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    box-shadow:
+      0 4px 20px rgba(212, 175, 55, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .oracle-tablet.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .tablet-inner {
+    padding: 0.875rem 1.125rem;
+    background: var(--color-surface, #faf8f7);
+    border-radius: 6px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  :global([data-theme='dark']) .tablet-inner {
+    background: rgba(20, 18, 20, 0.95);
+    color: #e8e4e8;
+  }
+
+  .tablet-text {
+    color: var(--color-text, #0d0d0d);
+    display: block;
+  }
+
+  :global([data-theme='dark']) .tablet-text {
+    color: #e8e4e8;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .oracle-ear-container {
+      bottom: 5rem;
+      right: 1rem;
+    }
+
+    .oracle-ear {
+      width: 56px;
+      height: 56px;
+    }
+
+    .oracle-tablet {
+      max-width: 260px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .oracle-ear,
+    .oracle-tablet {
+      transition: none;
+    }
+
+    .oracle-ring,
+    .oracle-spiral,
+    .listening-wave,
+    .ripple,
+    .oracle-ear.listening::before,
+    .oracle-ear.speaking {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { getDeepgramSTT, getCartesiaTTS } from '../lib/soul/voice';
+
+  class OracleController {
+    private button: HTMLButtonElement;
+    private container: HTMLElement;
+    private tablet: HTMLElement;
+    private tabletText: HTMLElement;
+    private stt: ReturnType<typeof getDeepgramSTT>;
+    private tts: ReturnType<typeof getCartesiaTTS>;
+    private isListening = false;
+    private isSpeaking = false;
+    private currentTranscript = '';
+    private mode: 'default' | 'chat';
+
+    constructor(container: HTMLElement) {
+      this.container = container;
+      this.button = container.querySelector('.oracle-ear')!;
+      this.tablet = container.querySelector('.oracle-tablet')!;
+      this.tabletText = container.querySelector('.tablet-text')!;
+      this.mode = (container.dataset.mode as 'default' | 'chat') || 'default';
+
+      // Initialize voice clients (API keys handled server-side)
+      this.stt = getDeepgramSTT();
+      this.tts = getCartesiaTTS();
+
+      this.setupEventListeners();
+    }
+
+    private setupEventListeners(): void {
+      // Mouse events for desktop
+      this.button.addEventListener('mousedown', this.startListening.bind(this));
+      this.button.addEventListener('mouseup', this.stopListening.bind(this));
+      this.button.addEventListener('mouseleave', this.stopListening.bind(this));
+
+      // Touch events for mobile
+      this.button.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.startListening();
+      });
+      this.button.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        this.stopListening();
+      });
+
+      // Keyboard accessibility
+      this.button.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          this.startListening();
+        }
+      });
+      this.button.addEventListener('keyup', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          this.stopListening();
+        }
+      });
+    }
+
+    private async startListening(): Promise<void> {
+      if (this.isListening || this.isSpeaking) return;
+
+      this.currentTranscript = '';
+      this.isListening = true;
+      this.button.classList.add('listening');
+      this.showTablet('The Oracle listens...');
+
+      try {
+        await this.stt.start({
+          onInterim: (text) => {
+            this.currentTranscript = text;
+            this.showTablet(text || 'The Oracle listens...');
+          },
+          onFinal: (text) => {
+            this.currentTranscript = text;
+            this.showTablet(text);
+          },
+          onError: (error) => {
+            console.error('[Oracle] STT error:', error);
+            this.showTablet('The spirits are restless...');
+            this.resetState();
+          },
+          onStop: () => {
+            if (this.isListening) {
+              this.resetState();
+            }
+          },
+        });
+      } catch (error) {
+        console.error('[Oracle] Failed to awaken:', error);
+        this.showTablet('Grant the Oracle your voice...');
+        this.resetState();
+      }
+    }
+
+    private async stopListening(): Promise<void> {
+      if (!this.isListening) return;
+
+      this.isListening = false;
+      this.button.classList.remove('listening');
+      this.stt.stop();
+
+      const transcript = this.currentTranscript.trim();
+      if (transcript) {
+        if (this.mode === 'chat') {
+          // In chat mode, emit transcript event for parent to handle
+          this.hideTablet();
+          document.dispatchEvent(
+            new CustomEvent('voice:transcript', {
+              detail: { transcript },
+            })
+          );
+        } else {
+          // Default mode: full Oracle experience with TTS response
+          await this.consultOracle(transcript);
+        }
+      } else {
+        this.hideTablet();
+      }
+    }
+
+    private async consultOracle(message: string): Promise<void> {
+      this.showTablet('Consulting the depths...');
+
+      try {
+        const response = await fetch('/api/soul/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            context: {
+              currentPage: window.location.pathname,
+              timestamp: Date.now(),
+              inputMethod: 'voice',
+            },
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Oracle silent');
+        }
+
+        const data = await response.json();
+        const oracleResponse = data.response || data.message || 'The labyrinth remembers.';
+
+        this.showTablet(oracleResponse);
+
+        // Speak the oracle's wisdom
+        this.isSpeaking = true;
+        this.button.classList.add('speaking');
+
+        await this.tts.speak(oracleResponse, {
+          onEnd: () => {
+            this.isSpeaking = false;
+            this.button.classList.remove('speaking');
+            setTimeout(() => this.hideTablet(), 4000);
+          },
+          onError: (error) => {
+            console.error('[Oracle] Voice failed:', error);
+            this.isSpeaking = false;
+            this.button.classList.remove('speaking');
+          },
+        });
+      } catch (error) {
+        console.error('[Oracle] Consultation failed:', error);
+        this.showTablet('The Oracle is silent...');
+        setTimeout(() => this.hideTablet(), 3000);
+      }
+    }
+
+    private showTablet(text: string): void {
+      this.tabletText.textContent = text;
+      this.tablet.classList.add('visible');
+    }
+
+    private hideTablet(): void {
+      this.tablet.classList.remove('visible');
+    }
+
+    private resetState(): void {
+      this.isListening = false;
+      this.isSpeaking = false;
+      this.button.classList.remove('listening', 'speaking');
+    }
+  }
+
+  // Initialize on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll<HTMLElement>('.oracle-ear-container');
+    containers.forEach((container) => new OracleController(container));
+  });
+
+  // Re-initialize after Astro navigation
+  document.addEventListener('astro:after-swap', () => {
+    const containers = document.querySelectorAll<HTMLElement>('.oracle-ear-container');
+    containers.forEach((container) => new OracleController(container));
+  });
+</script>

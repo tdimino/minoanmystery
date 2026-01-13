@@ -4,6 +4,7 @@ import ThemeScript from '../components/ThemeScript.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import SoulHint from '../components/SoulHint.astro';
 import FloatingDialogue from '../components/FloatingDialogue.astro';
+import VoiceButton from '../components/VoiceButton.astro';
 import '../styles/global.css';
 import '../styles/animations.css';
 
@@ -189,6 +190,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <!-- Soul Engine Components -->
   <SoulHint />
   <FloatingDialogue />
+  <VoiceButton />
 
   <!-- Soul Engine Initialization -->
   <script>

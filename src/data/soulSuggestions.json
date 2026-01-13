@@ -1,0 +1,103 @@
+{
+  "suggestions": [
+    {
+      "id": "who-is-tom",
+      "text": "Who is Tom di Mino?",
+      "icon": "user",
+      "priority": 1,
+      "pages": ["*"]
+    },
+    {
+      "id": "what-does-tom-do",
+      "text": "What kind of work does Tom do?",
+      "icon": "briefcase",
+      "priority": 2,
+      "pages": ["*"]
+    },
+    {
+      "id": "aldea-work",
+      "text": "Tell me about Tom's work at Aldea",
+      "icon": "cpu",
+      "priority": 3,
+      "condition": "visitCount > 1",
+      "pages": ["*"]
+    },
+    {
+      "id": "explain-labyrinth",
+      "text": "What is this labyrinth?",
+      "icon": "compass",
+      "priority": 4,
+      "pages": ["*"]
+    },
+    {
+      "id": "contact-info",
+      "text": "How can I get in touch with Tom?",
+      "icon": "mail",
+      "priority": 5,
+      "pages": ["*"]
+    },
+    {
+      "id": "dolby-details",
+      "text": "Tell me more about the Dolby project",
+      "icon": "briefcase",
+      "priority": 1,
+      "pages": ["/portfolio/dolby", "/"]
+    },
+    {
+      "id": "acs-details",
+      "text": "What was Tom's role at the ACS?",
+      "icon": "briefcase",
+      "priority": 1,
+      "pages": ["/portfolio/acs"]
+    },
+    {
+      "id": "czi-details",
+      "text": "Tell me about the CZI project",
+      "icon": "briefcase",
+      "priority": 1,
+      "pages": ["/portfolio/czi", "/"]
+    },
+    {
+      "id": "ai-expertise",
+      "text": "What is Tom's experience with AI?",
+      "icon": "sparkles",
+      "priority": 2,
+      "pages": ["/about", "/"]
+    },
+    {
+      "id": "poet-to-engineer",
+      "text": "How did Tom go from poet to engineer?",
+      "icon": "book",
+      "priority": 3,
+      "pages": ["/about"]
+    },
+    {
+      "id": "schedule-call",
+      "text": "I'd like to schedule a call",
+      "icon": "calendar",
+      "priority": 1,
+      "pages": ["/contact"]
+    },
+    {
+      "id": "what-services",
+      "text": "What services does Tom offer?",
+      "icon": "briefcase",
+      "priority": 2,
+      "pages": ["/contact"]
+    }
+  ],
+  "fallbackSuggestions": [
+    {
+      "id": "explore-portfolio",
+      "text": "Show me Tom's best work",
+      "icon": "compass",
+      "priority": 1
+    },
+    {
+      "id": "random-fact",
+      "text": "Tell me something interesting",
+      "icon": "sparkles",
+      "priority": 2
+    }
+  ]
+}
