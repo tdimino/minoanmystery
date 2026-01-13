@@ -210,6 +210,11 @@ import Footer from '../components/Footer.astro';
     transform: translate(4px, -4px);
   }
 
+  /* Invert arrows to white in dark mode */
+  :global([data-theme='dark']) .arrow-icon {
+    filter: invert(1);
+  }
+
   /* Animated underline */
   .contact-link-underline {
     width: 0;

@@ -83,4 +83,4 @@ Despite the bandwidth constraints of our 8 research scientists, we launched our 
 
 ## Takeaways
 
-Reflecting on the learning materials that we built, their dependencies, and the workstreams we followed, I came away understanding this: project plans are great for achieving a consensus, but **flexibility and improvisation are beyond vital when you're leading a project.** In the face of the unforeseen, you need to take charge and maintain morale to deliver your desired product.
+On a small team operating under a tight deadline—with external variables beyond your control—**your project plan must be nimble and adaptable.** Milestones should help you reach consensus and gather feedback at critical stages. But in the face of the unforeseen, you have to **take charge and maintain morale** to deliver your MLP (minimal-*lovable*-product).

@@ -111,9 +111,8 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
           </p>
         </div>
         <a href="/contact" class="arrow-circle fade-up" aria-label="Get in touch">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <span class="circle-bg-hover"></span>
+          <span class="circle-icon"></span>
         </a>
       </div>
     </div>
@@ -403,21 +402,52 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
   }
 
   .arrow-circle {
+    position: relative;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 120px;
     height: 120px;
-    border: 2px solid var(--color-text);
+    border: 1px solid var(--color-text);
     border-radius: 50%;
-    color: var(--color-text);
-    transition: all var(--transition-fast);
+    overflow: hidden;
   }
 
-  .arrow-circle:hover {
-    background: var(--color-text);
-    color: var(--color-background);
+  .circle-icon {
+    width: 50px;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+    transition: background-image 0.35s ease;
+  }
+
+  .arrow-circle .circle-bg-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--color-text);
+    border-radius: 50%;
+    transition: width 0.35s ease;
+    z-index: 1;
+  }
+
+  .arrow-circle:hover .circle-bg-hover {
+    width: 100%;
+  }
+
+  .arrow-circle:hover .circle-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  }
+
+  /* Invert circle icon to white in dark mode */
+  :global([data-theme='dark']) .circle-icon {
+    filter: invert(1);
   }
 
   /* Content sections (created by JS, need :global) */
@@ -487,156 +517,157 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 </style>
 
 <script>
-  // Scroll button functionality
-  const scrollBtn = document.getElementById('scroll-down');
-  if (scrollBtn) {
-    scrollBtn.addEventListener('click', () => {
-      window.scrollBy({
-        top: window.innerHeight * 0.8,
-        behavior: 'smooth'
+  // Initialize portfolio page functionality
+  function initPortfolioPage() {
+    // Scroll button functionality
+    const scrollBtn = document.getElementById('scroll-down');
+    if (scrollBtn) {
+      // Remove old listeners by cloning
+      const newBtn = scrollBtn.cloneNode(true);
+      scrollBtn.parentNode?.replaceChild(newBtn, scrollBtn);
+      newBtn.addEventListener('click', () => {
+        window.scrollBy({
+          top: window.innerHeight * 0.8,
+          behavior: 'smooth'
+        });
       });
-    });
-  }
+    }
 
-  // Group content into sections for section-based animations
-  const contentArea = document.querySelector('.portfolio-content .rich-text');
-  if (contentArea) {
-    const children = Array.from(contentArea.children);
-    let currentSection = null;
+    // Group content into sections for section-based animations
+    // Only do this if not already done
+    const contentArea = document.querySelector('.portfolio-content .rich-text');
+    if (contentArea && !contentArea.querySelector('.content-section')) {
+      const children = Array.from(contentArea.children);
+      let currentSection: HTMLElement | null = null;
 
-    children.forEach((child) => {
-      if (child.tagName === 'H2') {
-        // Create a new section wrapper
-        currentSection = document.createElement('div');
-        currentSection.className = 'content-section fade-section';
-        child.parentNode.insertBefore(currentSection, child);
-        currentSection.appendChild(child);
-      } else if (currentSection) {
-        currentSection.appendChild(child);
-      } else {
-        // Content before first h2, wrap it too
-        currentSection = document.createElement('div');
-        currentSection.className = 'content-section fade-section';
-        child.parentNode.insertBefore(currentSection, child);
-        currentSection.appendChild(child);
-      }
-    });
-  }
-
-  // Scroll-triggered fade based on position in viewport
-  const fadeElements = document.querySelectorAll('.fade-section');
-
-  function updateFadeOnScroll() {
-    const viewportHeight = window.innerHeight;
-    const fadeZone = viewportHeight * 0.25; // Bottom 25% of viewport fades
-
-    fadeElements.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const elementTop = rect.top;
-      const elementBottom = rect.bottom;
-
-      // Check if element is in viewport
-      if (elementBottom > 0 && elementTop < viewportHeight) {
-        // Calculate opacity based on position
-        let opacity = 1;
-
-        // Fade in from bottom
-        if (elementTop > viewportHeight - fadeZone) {
-          opacity = 1 - (elementTop - (viewportHeight - fadeZone)) / fadeZone;
+      children.forEach((child) => {
+        if (child.tagName === 'H2') {
+          currentSection = document.createElement('div');
+          currentSection.className = 'content-section fade-section';
+          child.parentNode?.insertBefore(currentSection, child);
+          currentSection.appendChild(child);
+        } else if (currentSection) {
+          currentSection.appendChild(child);
+        } else {
+          currentSection = document.createElement('div');
+          currentSection.className = 'content-section fade-section';
+          child.parentNode?.insertBefore(currentSection, child);
+          currentSection.appendChild(child);
         }
+      });
+    }
 
-        // Fade out at top
-        if (elementBottom < fadeZone) {
-          opacity = elementBottom / fadeZone;
+    // Scroll-triggered fade based on position in viewport
+    const fadeElements = document.querySelectorAll('.fade-section');
+
+    function updateFadeOnScroll() {
+      const viewportHeight = window.innerHeight;
+      const fadeZone = viewportHeight * 0.25;
+
+      fadeElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elementTop = rect.top;
+        const elementBottom = rect.bottom;
+
+        if (elementBottom > 0 && elementTop < viewportHeight) {
+          let opacity = 1;
+          if (elementTop > viewportHeight - fadeZone) {
+            opacity = 1 - (elementTop - (viewportHeight - fadeZone)) / fadeZone;
+          }
+          if (elementBottom < fadeZone) {
+            opacity = elementBottom / fadeZone;
+          }
+          opacity = Math.max(0, Math.min(1, opacity));
+          (el as HTMLElement).style.opacity = String(opacity);
+          (el as HTMLElement).style.transform = `translateY(${(1 - opacity) * 20}px)`;
+          if (opacity > 0.1) {
+            el.classList.add('visible');
+          }
+        } else {
+          (el as HTMLElement).style.opacity = '0';
+          (el as HTMLElement).style.transform = 'translateY(20px)';
+          el.classList.remove('visible');
         }
+      });
+    }
 
-        opacity = Math.max(0, Math.min(1, opacity));
-        el.style.opacity = opacity;
-        el.style.transform = `translateY(${(1 - opacity) * 20}px)`;
+    window.addEventListener('scroll', updateFadeOnScroll, { passive: true });
+    updateFadeOnScroll();
 
-        if (opacity > 0.1) {
+    // Simple fade-in for non-section elements (details bar, CTA, etc.)
+    const simpleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      // Reset and re-observe
+      el.classList.remove('visible');
+      simpleObserver.observe(el);
+    });
+
+    // Trigger immediate check for elements already in viewport
+    setTimeout(() => {
+      document.querySelectorAll('.fade-up').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
           el.classList.add('visible');
         }
-      } else {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(20px)';
-        el.classList.remove('visible');
-      }
-    });
-  }
+      });
+    }, 50);
 
-  // Run on scroll and on load
-  window.addEventListener('scroll', updateFadeOnScroll, { passive: true });
-  updateFadeOnScroll();
+    // Gallery data and lightbox setup
+    const galleryDataEl = document.getElementById('gallery-data');
+    const galleries = galleryDataEl ? JSON.parse(galleryDataEl.textContent || '[]') : [];
 
-  // Simple fade-in for non-section elements
-  const simpleObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.fade-up').forEach(el => {
-    simpleObserver.observe(el);
-  });
-
-  // Get gallery data from the Lightbox component's script tag
-  const galleryDataEl = document.getElementById('gallery-data');
-  const galleries = galleryDataEl ? JSON.parse(galleryDataEl.textContent || '[]') : [];
-
-  // Helper function to get filename from path
-  function getFilename(path: string): string {
-    return path.split('/').pop() || path;
-  }
-
-  // Helper function to find caption for an image
-  function findCaptionForImage(src: string): string | null {
-    const filename = getFilename(src).toLowerCase();
-
-    // First check if this image is a gallery trigger
-    for (const gallery of galleries) {
-      if (filename.includes(gallery.trigger.toLowerCase())) {
-        // Return the caption of the first image in the gallery
-        return gallery.images[0]?.caption || null;
-      }
+    function getFilename(path: string): string {
+      return path.split('/').pop() || path;
     }
 
-    // Also check if this image appears in any gallery's images array
-    for (const gallery of galleries) {
-      for (const img of gallery.images) {
-        const galleryFilename = getFilename(img.src).toLowerCase();
-        if (filename.includes(galleryFilename) || galleryFilename.includes(filename)) {
-          return img.caption;
+    function findCaptionForImage(src: string): string | null {
+      const filename = getFilename(src).toLowerCase();
+      for (const gallery of galleries) {
+        if (filename.includes(gallery.trigger.toLowerCase())) {
+          return gallery.images[0]?.caption || null;
         }
       }
+      for (const gallery of galleries) {
+        for (const img of gallery.images) {
+          const galleryFilename = getFilename(img.src).toLowerCase();
+          if (filename.includes(galleryFilename) || galleryFilename.includes(filename)) {
+            return img.caption;
+          }
+        }
+      }
+      return null;
     }
 
-    return null;
+    // Make inline images trigger lightbox and add captions (only if not already done)
+    document.querySelectorAll('.portfolio-content img:not([data-lightbox])').forEach(img => {
+      img.setAttribute('data-lightbox', 'true');
+      img.setAttribute('data-lightbox-group', 'content');
+      img.setAttribute('data-lightbox-src', (img as HTMLImageElement).src);
+
+      const figure = document.createElement('figure');
+      figure.className = 'image-figure';
+      img.parentNode?.insertBefore(figure, img);
+      figure.appendChild(img);
+
+      const caption = findCaptionForImage((img as HTMLImageElement).src);
+      if (caption) {
+        const figcaption = document.createElement('figcaption');
+        figcaption.textContent = caption;
+        figure.appendChild(figcaption);
+      }
+    });
   }
 
-  // Make inline images trigger lightbox and add captions
-  document.querySelectorAll('.portfolio-content img').forEach(img => {
-    // Add lightbox attributes
-    img.setAttribute('data-lightbox', 'true');
-    img.setAttribute('data-lightbox-group', 'content');
-    img.setAttribute('data-lightbox-src', img.src);
+  // Run on initial load
+  initPortfolioPage();
 
-    // Create figure wrapper
-    const figure = document.createElement('figure');
-    figure.className = 'image-figure';
-
-    // Wrap the image in figure
-    img.parentNode.insertBefore(figure, img);
-    figure.appendChild(img);
-
-    // Find and add caption
-    const caption = findCaptionForImage(img.src);
-    if (caption) {
-      const figcaption = document.createElement('figcaption');
-      figcaption.textContent = caption;
-      figure.appendChild(figcaption);
-    }
-  });
+  // Re-run after View Transitions
+  document.addEventListener('astro:after-swap', initPortfolioPage);
 </script>

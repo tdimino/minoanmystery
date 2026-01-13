@@ -83,4 +83,4 @@ After we presented our final set of design proposals to the ACS leadership, we r
 
 ## Takeaways
 
-My greatest mentor at Hugo & Cat, [Julia Murphy](https://www.linkedin.com/in/juliamurphy2/), impressed on me this simple idea: **everyone on your team should have some stake in your work**. Co-design sessions are some of the best ways to facilitate this, and tap into the passions of your teammates. When someone can see their influence in the final product, they'll care that much more about it.
+My greatest mentor at Hugo & Cat, [Julia Murphy](https://www.linkedin.com/in/juliamurphy2/), impressed on me this simple idea: **everyone on your team should have some stake in your work**. Co-design sessions are some of the best ways to facilitate this, and tap into the creativity of your entire team. When someone can see their mark in the final product, they'll care that much more about it.
