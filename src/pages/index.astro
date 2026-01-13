@@ -253,6 +253,11 @@ const projects = [
     transform: translate(4px, -4px);
   }
 
+  /* Invert arrow to white in dark mode */
+  :global([data-theme='dark']) .view-project .arrow-icon {
+    filter: invert(1);
+  }
+
   .view-project-underline {
     width: 0;
     height: 2px;
