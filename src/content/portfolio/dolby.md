@@ -7,6 +7,7 @@ website: "https://www.dolby.com/"
 heroImage: "/images/portfolio/hero-dolby.png"
 parallaxImage: "/images/portfolio/dolby-hero-parallax.png"
 summary: "On a small team at Valtech, I re-designed Dolby.com's consumer and professional websites, distilling them into twelve annotated templates still in-use by Dolby today."
+duration: "April 2020 (4 weeks)"
 order: 3
 galleries:
   - id: "legacy-dolby"

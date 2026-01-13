@@ -25,6 +25,7 @@ const portfolio = defineCollection({
     parallaxImage: z.string().optional(),
     tagline: z.string().optional(),
     summary: z.string(),
+    duration: z.string().optional(),
     order: z.number(),
     galleries: z.array(gallerySchema).optional(),
   }),

@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const { title, client, team, role, website, heroImage, parallaxImage, tagline, galleries } = entry.data;
+const { title, client, team, role, website, heroImage, parallaxImage, tagline, galleries, duration } = entry.data;
 ---
 
 <BaseLayout
@@ -80,11 +80,25 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
           <span class="detail-label">Role</span>
           <span class="detail-value">{role}</span>
         </div>
+        {duration && (
+          <div class="detail-item">
+            <span class="detail-label">Date</span>
+            <span class="detail-value">
+              <span class="date-year">{duration.split(' (')[0]}</span>
+              {duration.includes('(') && (
+                <span class="date-duration">{duration.match(/\(([^)]+)\)/)?.[1]}</span>
+              )}
+            </span>
+          </div>
+        )}
         <div class="detail-item">
           <span class="detail-label">Website</span>
           <a href={website} target="_blank" rel="noopener noreferrer" class="link-arrow">
-            <span>Live preview</span>
-            <span class="arrow">&#8599;</span>
+            <span class="link-row">
+              <span class="link-text">Live preview</span>
+              <span class="link-arrow-icon"></span>
+            </span>
+            <span class="link-underline"></span>
           </a>
         </div>
       </div>
@@ -237,8 +251,9 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 
   .details-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, auto));
     gap: var(--space-lg);
+    justify-content: space-between;
   }
 
   .detail-item {
@@ -259,22 +274,65 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     color: var(--neutral-600);
   }
 
+  .date-year {
+    display: block;
+  }
+
+  .date-duration {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+  }
+
   .link-arrow {
     display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+    text-decoration: none;
+  }
+
+  .link-row {
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+  }
+
+  .link-arrow .link-text {
     font-size: 1rem;
     color: var(--color-text);
-    text-decoration: none;
   }
 
-  .link-arrow span:first-child {
-    text-decoration: underline;
+  .link-arrow-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform var(--transition-fast);
   }
 
-  .link-arrow .arrow {
-    font-size: 1rem;
-    text-decoration: none;
+  .link-underline {
+    width: 0;
+    height: 1px;
+    background-color: var(--color-text);
+    margin-top: 2px;
+    transition: width 0.35s ease;
+  }
+
+  .link-arrow:hover .link-underline {
+    width: 100%;
+  }
+
+  .link-arrow:hover .link-arrow-icon {
+    transform: translate(3px, -3px);
+  }
+
+  /* Invert arrow to white in dark mode */
+  :global([data-theme='dark']) .link-arrow-icon {
+    filter: invert(1);
   }
 
   /* Portfolio Content */

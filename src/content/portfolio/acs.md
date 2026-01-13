@@ -8,6 +8,7 @@ heroImage: "/images/portfolio/hero-acs.jpg"
 parallaxImage: "/images/portfolio/acs-hero-parallax.jpg"
 tagline: ""
 summary: "Partnered with Hugo & Cat, I audited the American College of Surgeons's website, and prioritized the migration of all their content, while redefining ACS's voice, tone, and brand."
+duration: "2021 (6 months)"
 order: 1
 galleries:
   - id: "acs-audit"
