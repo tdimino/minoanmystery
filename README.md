@@ -1,43 +1,78 @@
-# Astro Starter Kit: Minimal
+<p align="center">
+  <img src="public/images/tanit.svg" alt="Symbol of Tanit" width="80"/>
+</p>
+
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/badge/Version-1.0.0-blue.svg" alt="Version"></a>
+</p>
+
+# Minoan Mystery
+
+Portfolio site for **Tom di Mino** — a cross-functional "Cognitive Designer" based in Beacon, NY.
+
+## About
+
+Writer, TypeScript enthusiast, and LLM expert. I craft blogs, videos, training, demos, and thought leadership materials for startups and enterprise titans alike.
+
+**Current**: Principal AI/ML Engineer at [Aldea AI](https://aldea.ai), which pioneers cutting-edge STT/TTS and post-Transformer LLMs—training and serving AI advisors that internalize the spirit, wisdom, and methodologies of world-renowned experts.
+
+**Previously**: AI Content Engineer at J.P. Morgan Chase, Sr. Content Designer at Google and CZI, and Technical Content Strategist at Valtech (Dolby Labs) and Hugo & Cat (American College of Surgeons).
+
+### Skills
+
+- **AI/ML**: Cognitive engineering, LLM training & evaluation, agentic architectures, prompt engineering
+- **Content**: Creative writing, UX writing, information architecture, voice & tone
+- **Engineering**: TypeScript, Python, LangGraph, Open Souls, Astro, React
+- **Design**: Instructional design, co-design facilitation, prototyping
+- **Languages**: Spanish (fluent), Italian, French, plus Arabic, Biblical Hebrew, Ugaritic, Sanskrit, Classical Latin, Ancient Greek
+
+### Writing
+
+My newsletter [*Knossot ha Kotharot*](https://tomdimino.substack.com/) reconstructs ancient wisdom through a Minoan lens—exploring how mystical language can inform more human-centered AI design.
+
+### Links
+
+- [LinkedIn](https://www.linkedin.com/in/tomdimino/)
+- [Blog](https://tomdimino.substack.com/)
+
+## Stack
+
+- **Framework**: Astro 5 with View Transitions
+- **Animations**: Motion library (from Framer team)
+- **Hosting**: Vercel
+- **Email**: Resend API
+
+## Commands
 
 ```sh
-npm create astro@latest -- --template minimal
+npm run dev      # Start dev server (localhost:4321)
+npm run build    # Build for production
+npm run preview  # Preview production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── components/     # Header, Footer, CommandPalette, ThemeToggle
+├── content/        # Portfolio case studies (Markdown)
+├── layouts/        # BaseLayout with View Transitions
+├── pages/          # Routes (/, /about, /contact, /portfolio/[slug])
+├── styles/         # CSS variables, dark mode
+└── lib/soul/       # Soul perception and dispatch layer
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Features
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- **Command Palette**: `Cmd+K` for navigation
+- **Dark Mode**: Time-based defaults, toggle with `Cmd+Shift+D`
+- **View Transitions**: Smooth page navigation
+- **Responsive**: Fluid typography with `clamp()`
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Brand Colors
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Token                  | Light   | Dark    |
+| ---------------------- | ------- | ------- |
+| `--color-primary`      | #966a85 | #c9a0b8 |
+| `--color-text`         | #0d0d0d | #f5f5f5 |
+| `--color-background`   | #ffffff | #0d0d0d |
