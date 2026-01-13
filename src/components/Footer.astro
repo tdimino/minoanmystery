@@ -3,7 +3,7 @@ const currentYear = new Date().getFullYear();
 
 const mainLinks = [
   { href: '/', label: 'Home' },
-  { href: '/ai-llms', label: 'A.I./LLMs' },
+  { href: 'https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', label: 'A.I./LLMs', external: true },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
   { href: 'https://tomdimino.substack.com/', label: 'Blog', external: true },
@@ -145,6 +145,12 @@ const socialLinks = [
     height: 158px !important;
     max-width: 158px;
     object-fit: contain;
+    transition: filter 0.3s ease;
+  }
+
+  /* Purple-tinted logo for dark mode */
+  :global([data-theme="dark"]) .footer-logo-img {
+    filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(280deg) brightness(0.85);
   }
 
   .footer-description {
@@ -256,6 +262,12 @@ const socialLinks = [
     width: 28px;
     height: 28px;
     object-fit: contain;
+    transition: filter 0.3s ease;
+  }
+
+  /* Invert Tom di Mino icon for dark mode */
+  :global([data-theme="dark"]) .social-icon-img {
+    filter: brightness(0) invert(1);
   }
 
   @media (max-width: 768px) {
@@ -264,7 +276,16 @@ const socialLinks = [
       gap: var(--space-lg);
     }
 
+    .footer-brand {
+      align-items: center;
+    }
+
+    .footer-logo {
+      justify-content: center;
+    }
+
     .footer-description {
+      text-align: left;
       max-width: none;
     }
 

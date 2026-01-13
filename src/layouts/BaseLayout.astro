@@ -1,5 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import ThemeScript from '../components/ThemeScript.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 import '../styles/global.css';
 import '../styles/animations.css';
 
@@ -24,6 +26,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content={Astro.generator}>
+
+  <!-- Theme Script - MUST be before styles to prevent FOUC -->
+  <ThemeScript />
 
   <!-- Primary Meta Tags -->
   <title>{title} | Minoan Mystery</title>
@@ -164,5 +169,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     // Re-run after view transitions
     document.addEventListener('astro:after-swap', initAnimations);
   </script>
+
+  <!-- Command Palette - Global keyboard shortcut -->
+  <CommandPalette />
 </body>
 </html>

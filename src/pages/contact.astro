@@ -55,17 +55,9 @@ import Footer from '../components/Footer.astro';
         <!-- Right Column - Form -->
         <div class="contact-form-wrapper">
           <form
-            name="contact"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
+            id="contact-form"
             class="contact-form fade-animate"
           >
-            <!-- Honeypot field for spam protection -->
-            <p class="visually-hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-            </p>
-
             <div class="form-group">
               <input
                 type="text"
@@ -92,14 +84,15 @@ import Footer from '../components/Footer.astro';
                 name="message"
                 rows="4"
                 maxlength="5000"
+                required
                 placeholder="A tidbit about a potential project, or business offer you'd like to propose."
               ></textarea>
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="submit-link">
+              <button type="submit" class="submit-link" id="submit-btn">
                 <span class="submit-link-text">
-                  <span>Submit message</span>
+                  <span class="submit-text">Submit message</span>
                   <span class="arrow-icon"></span>
                 </span>
                 <span class="submit-link-underline"></span>
@@ -441,32 +434,52 @@ import Footer from '../components/Footer.astro';
 </style>
 
 <script>
-  // Handle form submission with Netlify
-  const form = document.querySelector('.contact-form');
+  // Handle form submission with Resend API
+  const form = document.getElementById('contact-form');
   const successMessage = document.getElementById('form-success');
   const errorMessage = document.getElementById('form-error');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitText = submitBtn?.querySelector('.submit-text');
 
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Disable button and show loading state
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitText) submitText.textContent = 'Sending...';
+
       const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+      };
 
       try {
-        const response = await fetch('/', {
+        const response = await fetch('/api/contact', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formData).toString(),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
         });
 
         if (response.ok) {
           form.style.display = 'none';
           successMessage.style.display = 'block';
         } else {
+          const result = await response.json();
+          console.error('Form error:', result.error);
           errorMessage.style.display = 'block';
+          // Reset button
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitText) submitText.textContent = 'Submit message';
         }
       } catch (error) {
+        console.error('Submit error:', error);
         errorMessage.style.display = 'block';
+        // Reset button
+        if (submitBtn) submitBtn.disabled = false;
+        if (submitText) submitText.textContent = 'Submit message';
       }
     });
   }

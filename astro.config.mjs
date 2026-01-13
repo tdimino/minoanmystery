@@ -2,10 +2,13 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.minoanmystery.org',
+  output: 'static',
+  adapter: vercel(),
   integrations: [
     sitemap(),
     icon({

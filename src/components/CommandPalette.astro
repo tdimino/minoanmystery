@@ -1,0 +1,703 @@
+---
+/**
+ * CommandPalette - The Soul's Thought Interface
+ *
+ * Soul Pattern: Perceive Cmd+K → Show options → Execute command
+ *
+ * Features:
+ * - Cmd+K / Ctrl+K to open
+ * - ESC to close
+ * - Fuzzy search filtering
+ * - Keyboard navigation (arrow keys + enter)
+ * - Soul memory: prioritizes recent commands
+ * - Works with View Transitions
+ */
+---
+
+<div id="command-palette" class="command-palette" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="command-overlay"></div>
+  <div class="command-container">
+    <div class="command-header">
+      <svg class="command-search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        id="command-input"
+        class="command-input"
+        placeholder="What would you like to do?"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd class="command-kbd">ESC</kbd>
+    </div>
+
+    <div class="command-results" id="command-results">
+      <!-- Results populated by JavaScript -->
+    </div>
+
+    <div class="command-footer">
+      <span class="command-hint">
+        <kbd>&uarr;&darr;</kbd> navigate
+        <kbd>&crarr;</kbd> select
+        <kbd>esc</kbd> close
+      </span>
+      <span class="command-hint-right">
+        <kbd>&#8984;K</kbd> to open
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .command-palette {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .command-palette.is-open {
+    display: flex;
+  }
+
+  .command-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .command-container {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    background: var(--color-palette-bg);
+    border: 1px solid var(--color-palette-border);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform-origin: top center;
+  }
+
+  .command-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--color-border);
+    gap: 12px;
+  }
+
+  .command-search-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .command-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    font-family: var(--font-body);
+    color: var(--color-text);
+    outline: none;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .command-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .command-kbd {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 11px;
+    padding: 4px 8px;
+    background: var(--color-kbd);
+    border-radius: 4px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .command-results {
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .command-results:empty::after {
+    content: 'No results found';
+    display: block;
+    padding: 24px;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 14px;
+  }
+
+  /* Command groups */
+  :global(.command-group) {
+    margin-bottom: 8px;
+  }
+
+  :global(.command-group:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.command-group-title) {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    padding: 8px 12px 4px;
+  }
+
+  :global(.command-item) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  :global(.command-item:hover),
+  :global(.command-item.is-active) {
+    background: var(--color-background-alt);
+  }
+
+  :global(.command-item-left) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  :global(.command-item-icon) {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :global(.command-item-icon svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  :global(.command-item-label) {
+    font-size: 15px;
+    color: var(--color-text);
+  }
+
+  :global(.command-item-shortcut) {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 11px;
+    color: var(--color-text-muted);
+  }
+
+  .command-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+  }
+
+  .command-hint,
+  .command-hint-right {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .command-hint kbd,
+  .command-hint-right kbd {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--color-kbd);
+    border-radius: 3px;
+  }
+
+  /* Animation classes */
+  .command-palette.is-animating-in .command-overlay {
+    animation: fadeIn 0.2s ease forwards;
+  }
+
+  .command-palette.is-animating-in .command-container {
+    animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .command-palette.is-animating-out .command-overlay {
+    animation: fadeOut 0.15s ease forwards;
+  }
+
+  .command-palette.is-animating-out .command-container {
+    animation: scaleOut 0.15s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  @keyframes scaleOut {
+    from { opacity: 1; transform: scale(1) translateY(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-10px); }
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 767px) {
+    .command-palette {
+      padding-top: 10vh;
+    }
+
+    .command-container {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    .command-input {
+      font-size: 16px;
+    }
+
+    .command-hint-right {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Command Palette Soul - The Soul's Thought Interface
+  // Pattern: Perception -> Memory -> Dispatch
+
+  interface Command {
+    id: string;
+    label: string;
+    shortcut?: string;
+    icon: string;
+    group: string;
+    action: () => void;
+    keywords?: string[];
+  }
+
+  interface SoulMemory {
+    recentCommands: string[];
+    visitCount: number;
+  }
+
+  // Icon SVGs
+  const icons: Record<string, string> = {
+    home: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
+    user: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
+    mail: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>',
+    cpu: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M15 2v2"></path><path d="M15 20v2"></path><path d="M2 15h2"></path><path d="M2 9h2"></path><path d="M20 15h2"></path><path d="M20 9h2"></path><path d="M9 2v2"></path><path d="M9 20v2"></path></svg>',
+    briefcase: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>',
+    moon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>',
+    sun: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
+    monitor: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>',
+    linkedin: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
+    github: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
+    calendar: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>',
+    book: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>',
+  };
+
+  class CommandPaletteSoul {
+    private palette: HTMLElement;
+    private input: HTMLInputElement;
+    private results: HTMLElement;
+    private commands: Command[] = [];
+    private activeIndex: number = 0;
+    private filteredCommands: Command[] = [];
+    private memory: SoulMemory;
+    private boundKeydown: (e: KeyboardEvent) => void;
+
+    constructor() {
+      this.palette = document.getElementById('command-palette')!;
+      this.input = document.getElementById('command-input') as HTMLInputElement;
+      this.results = document.getElementById('command-results')!;
+
+      // Load soul memory
+      this.memory = this.loadMemory();
+
+      // Register commands
+      this.registerCommands();
+
+      // Bind events
+      this.boundKeydown = this.handleGlobalKeydown.bind(this);
+      this.bindEvents();
+    }
+
+    private loadMemory(): SoulMemory {
+      return {
+        recentCommands: JSON.parse(localStorage.getItem('recentCommands') || '[]'),
+        visitCount: parseInt(localStorage.getItem('visitCount') || '1'),
+      };
+    }
+
+    private registerCommands() {
+      this.commands = [
+        // Navigation
+        {
+          id: 'nav-home',
+          label: 'Go to Home',
+          shortcut: 'G H',
+          icon: 'home',
+          group: 'Navigation',
+          action: () => window.location.href = '/',
+          keywords: ['home', 'start', 'beginning', 'index']
+        },
+        {
+          id: 'nav-about',
+          label: 'Go to About',
+          shortcut: 'G A',
+          icon: 'user',
+          group: 'Navigation',
+          action: () => window.location.href = '/about',
+          keywords: ['about', 'bio', 'who', 'me']
+        },
+        {
+          id: 'nav-contact',
+          label: 'Go to Contact',
+          shortcut: 'G C',
+          icon: 'mail',
+          group: 'Navigation',
+          action: () => window.location.href = '/contact',
+          keywords: ['contact', 'email', 'message', 'hire', 'reach']
+        },
+        {
+          id: 'nav-ai',
+          label: 'Go to A.I./LLMs',
+          shortcut: 'G I',
+          icon: 'cpu',
+          group: 'Navigation',
+          action: () => window.open('https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', '_blank'),
+          keywords: ['ai', 'llm', 'artificial', 'intelligence', 'machine', 'learning']
+        },
+
+        // Portfolio
+        {
+          id: 'portfolio-dolby',
+          label: 'View Dolby Case Study',
+          icon: 'briefcase',
+          group: 'Portfolio',
+          action: () => window.location.href = '/portfolio/dolby',
+          keywords: ['dolby', 'audio', 'sound', 'entertainment', 'case study']
+        },
+        {
+          id: 'portfolio-acs',
+          label: 'View ACS Case Study',
+          icon: 'briefcase',
+          group: 'Portfolio',
+          action: () => window.location.href = '/portfolio/acs',
+          keywords: ['acs', 'surgeons', 'medical', 'healthcare', 'case study']
+        },
+        {
+          id: 'portfolio-czi',
+          label: 'View CZI Case Study',
+          icon: 'briefcase',
+          group: 'Portfolio',
+          action: () => window.location.href = '/portfolio/czi',
+          keywords: ['czi', 'chan', 'zuckerberg', 'napari', 'science', 'case study']
+        },
+
+        // Theme
+        {
+          id: 'theme-toggle',
+          label: 'Toggle Dark Mode',
+          shortcut: '&#8984;&#8679;D',
+          icon: 'moon',
+          group: 'Preferences',
+          action: () => {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+          },
+          keywords: ['dark', 'light', 'theme', 'mode', 'toggle', 'night']
+        },
+        {
+          id: 'theme-system',
+          label: 'Use System Theme',
+          icon: 'monitor',
+          group: 'Preferences',
+          action: () => {
+            localStorage.removeItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', systemDark ? 'dark' : 'light');
+          },
+          keywords: ['system', 'auto', 'automatic', 'default', 'os']
+        },
+
+        // External
+        {
+          id: 'external-linkedin',
+          label: 'Open LinkedIn',
+          icon: 'linkedin',
+          group: 'External',
+          action: () => window.open('https://www.linkedin.com/in/tomdimino', '_blank'),
+          keywords: ['linkedin', 'social', 'profile', 'connect', 'network']
+        },
+        {
+          id: 'external-github',
+          label: 'Open GitHub',
+          icon: 'github',
+          group: 'External',
+          action: () => window.open('https://github.com/tdimino', '_blank'),
+          keywords: ['github', 'code', 'repository', 'projects', 'source']
+        },
+        {
+          id: 'external-calendly',
+          label: 'Schedule a Call',
+          icon: 'calendar',
+          group: 'External',
+          action: () => window.open('https://calendly.com/tomdimino/', '_blank'),
+          keywords: ['schedule', 'meeting', 'call', 'book', 'calendly', 'appointment']
+        },
+        {
+          id: 'external-blog',
+          label: 'Read Blog (Substack)',
+          icon: 'book',
+          group: 'External',
+          action: () => window.open('https://tomdimino.substack.com/', '_blank'),
+          keywords: ['blog', 'substack', 'writing', 'articles', 'posts']
+        },
+      ];
+    }
+
+    private handleGlobalKeydown(e: KeyboardEvent) {
+      // Cmd+K / Ctrl+K to open
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        this.open();
+      }
+
+      // ESC to close (global)
+      if (e.key === 'Escape' && this.isOpen()) {
+        this.close();
+      }
+    }
+
+    private bindEvents() {
+      document.addEventListener('keydown', this.boundKeydown);
+
+      // Input filtering
+      this.input?.addEventListener('input', () => {
+        this.filter(this.input.value);
+      });
+
+      // Keyboard navigation within palette
+      this.palette?.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          this.navigate(1);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          this.navigate(-1);
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          this.executeActive();
+        }
+      });
+
+      // Click overlay to close
+      this.palette?.querySelector('.command-overlay')?.addEventListener('click', () => {
+        this.close();
+      });
+    }
+
+    open() {
+      this.palette.classList.add('is-open', 'is-animating-in');
+      this.input.value = '';
+      this.filter('');
+
+      // Focus input after animation starts
+      requestAnimationFrame(() => {
+        this.input.focus();
+      });
+
+      // Remove animation class after complete
+      setTimeout(() => {
+        this.palette.classList.remove('is-animating-in');
+      }, 250);
+
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      this.palette.classList.add('is-animating-out');
+
+      setTimeout(() => {
+        this.palette.classList.remove('is-open', 'is-animating-out');
+        document.body.style.overflow = '';
+      }, 200);
+    }
+
+    isOpen(): boolean {
+      return this.palette.classList.contains('is-open');
+    }
+
+    private filter(query: string) {
+      const q = query.toLowerCase().trim();
+
+      if (!q) {
+        // Soul Memory: Show recent commands first
+        this.filteredCommands = this.prioritizeByMemory(this.commands);
+      } else {
+        // Fuzzy search
+        this.filteredCommands = this.commands.filter(cmd => {
+          const searchable = [cmd.label, ...(cmd.keywords || [])].join(' ').toLowerCase();
+          return searchable.includes(q);
+        });
+      }
+
+      this.activeIndex = 0;
+      this.render();
+    }
+
+    private prioritizeByMemory(commands: Command[]): Command[] {
+      const recent = new Set(this.memory.recentCommands);
+
+      return [...commands].sort((a, b) => {
+        const aRecent = recent.has(a.id) ? 0 : 1;
+        const bRecent = recent.has(b.id) ? 0 : 1;
+        return aRecent - bRecent;
+      });
+    }
+
+    private render() {
+      // Group commands
+      const groups = new Map<string, Command[]>();
+
+      this.filteredCommands.forEach(cmd => {
+        if (!groups.has(cmd.group)) {
+          groups.set(cmd.group, []);
+        }
+        groups.get(cmd.group)!.push(cmd);
+      });
+
+      // Render HTML
+      let html = '';
+      let globalIndex = 0;
+
+      groups.forEach((cmds, groupName) => {
+        html += `<div class="command-group">`;
+        html += `<div class="command-group-title">${groupName}</div>`;
+
+        cmds.forEach(cmd => {
+          const isActive = globalIndex === this.activeIndex;
+          const iconSvg = icons[cmd.icon] || '';
+          html += `
+            <div class="command-item ${isActive ? 'is-active' : ''}" data-command-id="${cmd.id}" data-index="${globalIndex}">
+              <div class="command-item-left">
+                <span class="command-item-icon">${iconSvg}</span>
+                <span class="command-item-label">${cmd.label}</span>
+              </div>
+              ${cmd.shortcut ? `<span class="command-item-shortcut">${cmd.shortcut}</span>` : ''}
+            </div>
+          `;
+          globalIndex++;
+        });
+
+        html += `</div>`;
+      });
+
+      this.results.innerHTML = html;
+
+      // Add click handlers
+      this.results.querySelectorAll('.command-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const id = item.getAttribute('data-command-id');
+          const cmd = this.commands.find(c => c.id === id);
+          if (cmd) this.execute(cmd);
+        });
+
+        item.addEventListener('mouseenter', () => {
+          const index = parseInt(item.getAttribute('data-index') || '0');
+          this.activeIndex = index;
+          this.updateActive();
+        });
+      });
+    }
+
+    private navigate(delta: number) {
+      this.activeIndex = Math.max(0, Math.min(this.filteredCommands.length - 1, this.activeIndex + delta));
+      this.updateActive();
+    }
+
+    private updateActive() {
+      this.results.querySelectorAll('.command-item').forEach((item, i) => {
+        item.classList.toggle('is-active', i === this.activeIndex);
+      });
+
+      // Scroll active into view
+      const active = this.results.querySelector('.is-active');
+      active?.scrollIntoView({ block: 'nearest' });
+    }
+
+    private executeActive() {
+      const cmd = this.filteredCommands[this.activeIndex];
+      if (cmd) this.execute(cmd);
+    }
+
+    private execute(cmd: Command) {
+      // Soul Memory: Remember this command
+      this.memory.recentCommands = [cmd.id, ...this.memory.recentCommands.filter(id => id !== cmd.id)].slice(0, 5);
+      localStorage.setItem('recentCommands', JSON.stringify(this.memory.recentCommands));
+
+      // Close palette
+      this.close();
+
+      // Execute after animation
+      setTimeout(() => {
+        cmd.action();
+      }, 200);
+    }
+
+    destroy() {
+      document.removeEventListener('keydown', this.boundKeydown);
+    }
+  }
+
+  // Initialize
+  let paletteSoul: CommandPaletteSoul | null = null;
+
+  function initCommandPalette() {
+    if (paletteSoul) {
+      paletteSoul.destroy();
+    }
+    if (document.getElementById('command-palette')) {
+      paletteSoul = new CommandPaletteSoul();
+    }
+  }
+
+  // Run on load
+  initCommandPalette();
+
+  // Re-initialize after View Transitions
+  document.addEventListener('astro:after-swap', initCommandPalette);
+</script>

@@ -91,6 +91,71 @@
   --transition-fast: 0.35s ease;
   --transition-normal: 0.35s ease;
   --transition-slow: 0.5s ease;
+
+  /* Command palette specific */
+  --color-overlay: rgba(13, 13, 13, 0.5);
+  --color-palette-bg: #ffffff;
+  --color-palette-border: #dfdfdf;
+  --color-palette-input-bg: #f5f5f5;
+  --color-kbd: #e5e5e5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK THEME - The Soul's Night Vision
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --color-background: #0d0d0d;
+  --color-background-alt: #1a1a1a;
+  --color-text: #f5f5f5;
+  --color-text-muted: #b8b8b8;     /* Brightened for better contrast (10.29:1) */
+  --color-border: #2a2a2a;
+  --color-primary: #c9a0b8;        /* Brightened for better contrast (8.52:1) */
+  --color-primary-dark: #966a85;
+  --color-highlight: rgba(201, 160, 184, 0.35);  /* Brighter purple tint for visibility */
+
+  /* Neutral scale for dark mode */
+  --neutral-100: #0d0d0d;
+  --neutral-200: #1a1a1a;
+  --neutral-300: #2a2a2a;
+  --neutral-400: #3a3a3a;
+  --neutral-500: #686868;
+  --neutral-600: #b8b8b8;
+  --neutral-700: #c9a0b8;
+  --neutral-800: #f5f5f5;
+
+  /* Command palette dark */
+  --color-overlay: rgba(0, 0, 0, 0.7);
+  --color-palette-bg: #1a1a1a;
+  --color-palette-border: #333333;
+  --color-palette-input-bg: #0d0d0d;
+  --color-kbd: #2a2a2a;
+}
+
+/* System preference detection - applies when no manual theme is set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --color-background: #0d0d0d;
+    --color-background-alt: #1a1a1a;
+    --color-text: #f5f5f5;
+    --color-text-muted: #b8b8b8;
+    --color-border: #2a2a2a;
+    --color-primary: #c9a0b8;
+    --color-primary-dark: #966a85;
+    --color-highlight: rgba(201, 160, 184, 0.35);
+    --neutral-100: #0d0d0d;
+    --neutral-200: #1a1a1a;
+    --neutral-300: #2a2a2a;
+    --neutral-400: #3a3a3a;
+    --neutral-500: #686868;
+    --neutral-600: #b8b8b8;
+    --neutral-700: #c9a0b8;
+    --neutral-800: #f5f5f5;
+    --color-overlay: rgba(0, 0, 0, 0.7);
+    --color-palette-bg: #1a1a1a;
+    --color-palette-border: #333333;
+    --color-palette-input-bg: #0d0d0d;
+    --color-kbd: #2a2a2a;
+  }
 }
 
 /* Base Styles */
@@ -120,30 +185,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 60px;
+  font-size: clamp(36px, 5vw + 1rem, 60px);
   font-weight: 500;
-  line-height: 70px;
+  line-height: 1.17; /* 70/60 */
   margin-bottom: 24px;
 }
 
 h2 {
-  font-size: 48px;
+  font-size: clamp(32px, 4vw + 1rem, 48px);
   font-weight: 500;
-  line-height: 64px;
+  line-height: 1.33; /* 64/48 */
   margin-bottom: 16px;
 }
 
 h3 {
-  font-size: 26px;
+  font-size: clamp(20px, 2.5vw + 0.5rem, 26px);
   font-weight: 600;
-  line-height: 34px;
+  line-height: 1.31; /* 34/26 */
   margin-bottom: 16px;
 }
 
 h4 {
-  font-size: 22px;
+  font-size: clamp(18px, 2vw + 0.5rem, 22px);
   font-weight: 700;
-  line-height: 26px;
+  line-height: 1.18; /* 26/22 */
   margin-bottom: 16px;
 }
 
@@ -152,9 +217,9 @@ p {
 }
 
 .paragraph-large {
-  font-size: 22px;
+  font-size: clamp(18px, 1.5vw + 0.75rem, 22px);
   font-weight: 500;
-  line-height: 36px;
+  line-height: 1.64; /* 36/22 */
   color: var(--color-text-muted);
 }
 
@@ -317,17 +382,22 @@ img {
   color: white;
 }
 
-/* Form Elements */
+/* Form Elements - Touch-friendly (WCAG 2.2) */
 input,
 textarea,
 select {
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 16px; /* Prevents iOS zoom on focus */
   padding: 0.75rem 1rem;
+  min-height: 48px; /* Touch target minimum */
   border: 1px solid var(--color-border);
   border-radius: 0;
   background-color: var(--color-background);
   transition: border-color var(--transition-fast);
+}
+
+textarea {
+  min-height: 100px; /* Override for textarea */
 }
 
 input:focus,
@@ -335,6 +405,11 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--color-primary);
+}
+
+button,
+.btn {
+  min-height: 44px; /* Touch target minimum */
 }
 
 /* Utilities */

@@ -1,0 +1,35 @@
+---
+/**
+ * ThemeScript - FOUC Prevention
+ *
+ * This inline script runs synchronously before paint to prevent
+ * Flash of Unstyled Content when loading dark mode.
+ *
+ * Soul Memory Pattern: Perceive preference → Apply immediately
+ */
+---
+
+<script is:inline>
+  (function() {
+    // Soul Memory: Check what the user prefers
+    const stored = localStorage.getItem('theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Decision logic: stored preference > system preference > light default
+    let theme = stored || (systemDark ? 'dark' : 'light');
+
+    // Apply immediately (before paint)
+    document.documentElement.setAttribute('data-theme', theme);
+
+    // Soul Memory: Track if this is a returning visitor
+    const visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
+    localStorage.setItem('visitCount', visits.toString());
+
+    // Listen for system preference changes (when no manual preference)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+  })();
+</script>

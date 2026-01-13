@@ -1,5 +1,47 @@
 # Minoan Mystery - Development Changelog
 
+## Session: January 12, 2026 (Evening)
+
+### Dark Mode Implementation
+Added full dark mode support with theme toggle and WCAG-compliant contrast ratios.
+
+#### New Components
+- `src/components/ThemeScript.astro` - FOUC prevention script (runs before styles)
+- `src/components/ThemeToggle.astro` - Sun/moon toggle button with keyboard shortcut (Cmd+Shift+D)
+- `src/components/CommandPalette.astro` - Command palette UI (Cmd+K) with navigation commands
+
+#### Dark Theme Colors (`src/styles/global.css`)
+- Background: #0d0d0d
+- Text: #f5f5f5 (17.83:1 contrast ratio)
+- Muted text: #b8b8b8 (10.29:1 contrast ratio)
+- Primary accent: #c9a0b8 (8.52:1 contrast ratio)
+- All colors exceed WCAG AA requirements
+
+#### Header Updates (`src/components/Header.astro`)
+- Added ThemeToggle to desktop nav and mobile menu
+- Nav link color changed from hardcoded `rgb(34,34,34)` to `var(--color-text)` for dark mode support
+- Mobile menu restructured with flexbox for better footer positioning
+- Theme toggle now works in both desktop and mobile views
+
+#### Footer Updates (`src/components/Footer.astro`)
+- Logo filter for dark mode (purple tint via CSS filter)
+- Tom di Mino social icon inverted to white for dark mode
+
+#### Index Page Updates (`src/pages/index.astro`)
+- Project card background changed from `white` to `var(--color-background)`
+- Hero links updated to use `var(--color-text)` instead of hardcoded colors
+- Highlight color brightened for dark mode visibility
+
+#### BaseLayout Updates (`src/layouts/BaseLayout.astro`)
+- Integrated ThemeScript in `<head>` before styles
+- Added CommandPalette component
+
+#### Link Updates
+- A.I./LLMs nav link now points to external PDF: https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf
+- Opens in new tab with proper rel attributes
+
+---
+
 ## Session: January 12, 2026
 
 ### Visual Parity Fixes (Webflow to Astro Migration)
@@ -51,6 +93,24 @@
   - .paragraph-large: 22px/36px
 - Figcaption: centered, 16px margin-top
 
+### Mobile Optimization (2025/2026 Best Practices)
+
+#### Fluid Typography (`src/styles/global.css`)
+All headings now use `clamp()` for smooth scaling:
+- h1: `clamp(36px, 5vw + 1rem, 60px)` with line-height 1.17
+- h2: `clamp(32px, 4vw + 1rem, 48px)` with line-height 1.33
+- h3: `clamp(20px, 2.5vw + 0.5rem, 26px)` with line-height 1.31
+- h4: `clamp(18px, 2vw + 0.5rem, 22px)` with line-height 1.18
+- .paragraph-large: `clamp(18px, 1.5vw + 0.75rem, 22px)` with line-height 1.64
+
+#### Touch Targets (WCAG 2.2 Compliance)
+- Form inputs: min-height 48px, font-size 16px (prevents iOS zoom)
+- Buttons: min-height 44px
+- Textarea: min-height 100px
+
+#### Homepage Typography Fix
+- `.paragraph-large.front-page`: 24px → 22px (Webflow exact)
+
 ### New Components Added
 - `src/components/Lightbox.astro` - Image gallery lightbox
 - `src/components/ParallaxHero.astro` - Parallax header for portfolio pages
@@ -64,10 +124,10 @@ Gallery images copied from Webflow export for proper lightbox functionality:
 
 ### Pending Work (from Plan)
 
-#### High Priority
-- [ ] Typography fix: `.paragraph-large.front-page` 24px → 22px
-- [ ] Touch targets: Ensure 44px minimum for accessibility
-- [ ] Fluid typography with clamp()
+#### High Priority - COMPLETED
+- [x] Typography fix: `.paragraph-large.front-page` 24px → 22px
+- [x] Touch targets: Ensure 44px minimum for accessibility
+- [x] Fluid typography with clamp()
 
 #### Medium Priority
 - [ ] CSS Container Queries for responsive components

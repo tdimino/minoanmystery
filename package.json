@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/vercel": "^9.0.3",
     "@iconify-json/devicon": "^1.2.56",
     "@iconify-json/heroicons": "^1.2.3",
     "@iconify-json/hugeicons": "^1.2.22",
@@ -26,6 +27,7 @@
     "astro-icon": "^1.1.5",
     "gsap": "^3.14.2",
     "lightningcss": "^1.30.2",
-    "motion": "^12.23.26"
+    "motion": "^12.23.26",
+    "resend": "^6.7.0"
   }
 }
