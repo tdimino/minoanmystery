@@ -1,0 +1,719 @@
+---
+/**
+ * The Labyrinth - Soul Conversation Page
+ *
+ * Full chat interface for extended conversations with the Oracle.
+ * Displays conversation history and allows continued dialogue.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VoiceButton from '../components/VoiceButton.astro';
+---
+
+<BaseLayout title="The Labyrinth - Soul Chat">
+  <main class="labyrinth-page">
+    <header class="labyrinth-header">
+      <a href="/" class="labyrinth-back" aria-label="Back to home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        <span>Back</span>
+      </a>
+      <div class="labyrinth-title">
+        <h1>The Oracle's Chamber</h1>
+        <p>Converse with Minoan, guide of this digital labyrinth.</p>
+      </div>
+      <button class="labyrinth-clear" id="clear-conversation" aria-label="Clear conversation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="labyrinth-container">
+      <div id="conversation-history" class="conversation-history">
+        <div class="conversation-empty" id="conversation-empty">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+            </svg>
+          </div>
+          <p>The Oracle awaits your first question.</p>
+          <p class="empty-hint">Type below or use Cmd+K to begin.</p>
+        </div>
+      </div>
+
+      <form id="labyrinth-form" class="labyrinth-form">
+        <div class="form-input-wrapper">
+          <input
+            type="text"
+            id="labyrinth-input"
+            class="labyrinth-input"
+            placeholder="Ask the Oracle..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" class="labyrinth-submit" aria-label="Send message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="form-hints">
+          <kbd>Enter</kbd> to send
+          <span class="hint-separator">•</span>
+          <span class="voice-hint">Hold Oracle button to speak</span>
+          <span class="hint-separator">•</span>
+          <kbd>Cmd+K</kbd> for commands
+        </div>
+      </form>
+    </div>
+
+    <!-- Voice input button (chat mode - transcript only) -->
+    <VoiceButton mode="chat" bottom="2rem" right="1.5rem" />
+  </main>
+</BaseLayout>
+
+<style>
+  .labyrinth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 72px; /* Header height */
+  }
+
+  .labyrinth-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background);
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+  }
+
+  .labyrinth-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+  }
+
+  .labyrinth-back:hover {
+    color: var(--color-primary);
+  }
+
+  .labyrinth-title {
+    text-align: center;
+    flex: 1;
+  }
+
+  .labyrinth-title h1 {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .labyrinth-title p {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin: 4px 0 0;
+  }
+
+  .labyrinth-clear {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .labyrinth-clear:hover {
+    background: var(--color-background-alt);
+    color: var(--color-text);
+  }
+
+  .labyrinth-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 24px;
+  }
+
+  .conversation-history {
+    flex: 1;
+    padding: 24px 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .conversation-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 48px 24px;
+  }
+
+  .empty-icon {
+    opacity: 0.3;
+    margin-bottom: 16px;
+    color: var(--color-primary);
+  }
+
+  .empty-hint {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 8px;
+  }
+
+  /* Message bubbles */
+  :global(.message) {
+    display: flex;
+    gap: 12px;
+    max-width: 85%;
+  }
+
+  :global(.message-user) {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  :global(.message-assistant) {
+    align-self: flex-start;
+  }
+
+  :global(.message-avatar) {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  :global(.message-user .message-avatar) {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  :global(.message-assistant .message-avatar) {
+    background: var(--color-background-alt);
+    color: var(--color-primary);
+  }
+
+  :global(.message-content) {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  :global(.message-user .message-content) {
+    background: var(--color-primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  :global(.message-assistant .message-content) {
+    background: var(--color-background-alt);
+    color: var(--color-text);
+    border-bottom-left-radius: 4px;
+  }
+
+  :global(.message-meta) {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  :global(.message-page) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: var(--color-background-alt);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--color-text-muted);
+  }
+
+  /* Loading state */
+  :global(.message-loading .message-content) {
+    display: flex;
+    gap: 4px;
+    padding: 16px 20px;
+  }
+
+  :global(.loading-dot) {
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: loading-pulse 1.4s ease-in-out infinite;
+  }
+
+  :global(.loading-dot:nth-child(1)) { animation-delay: 0s; }
+  :global(.loading-dot:nth-child(2)) { animation-delay: 0.2s; }
+  :global(.loading-dot:nth-child(3)) { animation-delay: 0.4s; }
+
+  @keyframes loading-pulse {
+    0%, 60%, 100% { opacity: 0.3; transform: scale(1); }
+    30% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Form */
+  .labyrinth-form {
+    padding: 16px 0 24px;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+
+  .form-input-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .labyrinth-input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    font-size: 16px;
+    font-family: var(--font-body);
+    background: var(--color-background);
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .labyrinth-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(150, 106, 133, 0.1);
+  }
+
+  .labyrinth-input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .labyrinth-submit {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .labyrinth-submit:hover {
+    transform: scale(1.05);
+  }
+
+  .labyrinth-submit:active {
+    transform: scale(0.95);
+  }
+
+  .labyrinth-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-hints {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .form-hints kbd {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--color-background-alt);
+    border-radius: 4px;
+  }
+
+  .hint-separator {
+    opacity: 0.3;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .labyrinth-header {
+      padding: 16px;
+      top: 60px;
+    }
+
+    .labyrinth-title h1 {
+      font-size: 18px;
+    }
+
+    .labyrinth-title p {
+      display: none;
+    }
+
+    .labyrinth-container {
+      padding: 0 16px;
+    }
+
+    :global(.message) {
+      max-width: 90%;
+    }
+
+    .form-hints {
+      display: none;
+    }
+  }
+
+  /* Dark mode adjustments */
+  :global([data-theme='dark']) .labyrinth-input {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  :global([data-theme='dark']) .labyrinth-input:focus {
+    box-shadow: 0 0 0 3px rgba(201, 160, 184, 0.2);
+  }
+</style>
+
+<script>
+  import { getSSEStreamClient } from '../lib/soul/sseClient';
+  import { StreamRenderer, injectStreamingStyles } from '../lib/soul/streamRenderer';
+
+  interface ChatMessage {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp: number;
+    page?: string;
+  }
+
+  interface ConversationThread {
+    messages: ChatMessage[];
+    lastUpdated: number;
+    schemaVersion: number;
+  }
+
+  class LabyrinthChat {
+    private history: HTMLElement;
+    private form: HTMLFormElement;
+    private input: HTMLInputElement;
+    private submitBtn: HTMLButtonElement;
+    private clearBtn: HTMLButtonElement;
+    private emptyState: HTMLElement;
+    private isLoading = false;
+
+    constructor() {
+      this.history = document.getElementById('conversation-history')!;
+      this.form = document.getElementById('labyrinth-form') as HTMLFormElement;
+      this.input = document.getElementById('labyrinth-input') as HTMLInputElement;
+      this.submitBtn = this.form.querySelector('.labyrinth-submit') as HTMLButtonElement;
+      this.clearBtn = document.getElementById('clear-conversation') as HTMLButtonElement;
+      this.emptyState = document.getElementById('conversation-empty')!;
+
+      this.init();
+    }
+
+    private init() {
+      // Inject streaming styles
+      injectStreamingStyles();
+
+      // Load conversation history
+      this.renderHistory();
+
+      // Form submission
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.sendMessage();
+      });
+
+      // Clear conversation
+      this.clearBtn.addEventListener('click', () => {
+        if (confirm('Clear all conversation history?')) {
+          this.clearConversation();
+        }
+      });
+
+      // Voice input (from VoiceButton in chat mode)
+      document.addEventListener('voice:transcript', ((e: CustomEvent<{ transcript: string }>) => {
+        const { transcript } = e.detail;
+        if (transcript) {
+          this.input.value = transcript;
+          this.sendMessage();
+        }
+      }) as EventListener);
+
+      // Check for message ID in URL (deep link)
+      const params = new URLSearchParams(window.location.search);
+      const msgId = params.get('msg');
+      if (msgId) {
+        setTimeout(() => this.scrollToMessage(msgId), 100);
+      }
+
+      // Focus input
+      this.input.focus();
+    }
+
+    private loadConversation(): ConversationThread {
+      try {
+        const stored = localStorage.getItem('minoan-soul-conversation');
+        if (stored) {
+          return JSON.parse(stored);
+        }
+      } catch (e) {
+        console.error('Failed to load conversation:', e);
+      }
+      return { messages: [], lastUpdated: Date.now(), schemaVersion: 1 };
+    }
+
+    private saveConversation(thread: ConversationThread) {
+      localStorage.setItem('minoan-soul-conversation', JSON.stringify(thread));
+    }
+
+    private renderHistory() {
+      const thread = this.loadConversation();
+
+      if (thread.messages.length === 0) {
+        this.emptyState.style.display = 'flex';
+        return;
+      }
+
+      this.emptyState.style.display = 'none';
+
+      // Clear existing messages (except empty state)
+      this.history.querySelectorAll('.message').forEach(el => el.remove());
+
+      // Render messages
+      thread.messages.forEach(msg => {
+        this.renderMessage(msg);
+      });
+
+      // Scroll to bottom
+      this.scrollToBottom();
+    }
+
+    private renderMessage(msg: ChatMessage, isLoading = false) {
+      const messageEl = document.createElement('div');
+      messageEl.className = `message message-${msg.role}${isLoading ? ' message-loading' : ''}`;
+      messageEl.id = `msg-${msg.id}`;
+
+      const avatarIcon = msg.role === 'user'
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>';
+
+      const content = isLoading
+        ? '<span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>'
+        : this.formatContent(msg.content);
+
+      const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const pageTag = msg.page && msg.page !== '/labyrinth'
+        ? `<span class="message-page">${msg.page}</span>`
+        : '';
+
+      messageEl.innerHTML = `
+        <div class="message-avatar">${avatarIcon}</div>
+        <div class="message-bubble">
+          <div class="message-content">${content}</div>
+          <div class="message-meta">${time} ${pageTag}</div>
+        </div>
+      `;
+
+      this.history.appendChild(messageEl);
+      return messageEl;
+    }
+
+    private formatContent(content: string): string {
+      // Basic markdown-like formatting
+      return content
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code>$1</code>')
+        .replace(/\n/g, '<br>');
+    }
+
+    private async sendMessage() {
+      const query = this.input.value.trim();
+      if (!query || this.isLoading) return;
+
+      this.isLoading = true;
+      this.submitBtn.disabled = true;
+      this.input.value = '';
+      this.emptyState.style.display = 'none';
+
+      // Add user message
+      const userMsg: ChatMessage = {
+        id: `${Date.now()}_user`,
+        role: 'user',
+        content: query,
+        timestamp: Date.now(),
+        page: '/labyrinth'
+      };
+      this.renderMessage(userMsg);
+
+      // Add loading state (will be converted to streaming message)
+      const loadingMsg: ChatMessage = {
+        id: 'streaming',
+        role: 'assistant',
+        content: '',
+        timestamp: Date.now()
+      };
+      const loadingEl = this.renderMessage(loadingMsg, true);
+      this.scrollToBottom();
+
+      try {
+        // Initialize stream renderer
+        const renderer = new StreamRenderer(loadingEl);
+        renderer.start();
+
+        // Get SSE stream client
+        const sseClient = getSSEStreamClient();
+        const { stream } = sseClient.sendMessage(query, this.getConversationHistory());
+
+        let finalResponse = '';
+
+        // Consume the stream
+        for await (const chunk of stream) {
+          if (chunk.type === 'chunk' && chunk.text) {
+            renderer.appendChunk(chunk.text);
+            this.scrollToBottom();
+          } else if (chunk.type === 'done') {
+            finalResponse = chunk.fullResponse || renderer.getText();
+            renderer.finalize(finalResponse, this.formatContent.bind(this));
+          } else if (chunk.type === 'error') {
+            renderer.showError(chunk.error || "The Oracle's connection wavers.");
+            this.isLoading = false;
+            this.submitBtn.disabled = false;
+            this.input.focus();
+            return;
+          }
+        }
+
+        // Update element ID for final message
+        loadingEl.id = `msg-${Date.now()}_assistant`;
+
+        // Create assistant message record
+        const assistantMsg: ChatMessage = {
+          id: `${Date.now()}_assistant`,
+          role: 'assistant',
+          content: finalResponse,
+          timestamp: Date.now(),
+          page: '/labyrinth'
+        };
+
+        // Save to localStorage
+        const thread = this.loadConversation();
+        thread.messages.push(userMsg, assistantMsg);
+        thread.lastUpdated = Date.now();
+
+        // Trim if needed
+        if (thread.messages.length > 100) {
+          thread.messages = thread.messages.slice(-100);
+        }
+
+        this.saveConversation(thread);
+
+      } catch (error) {
+        console.error('Chat error:', error);
+        loadingEl.remove();
+
+        // Show error message
+        const errorMsg: ChatMessage = {
+          id: `${Date.now()}_error`,
+          role: 'assistant',
+          content: "The Oracle's connection wavers. Try again in a moment.",
+          timestamp: Date.now()
+        };
+        this.renderMessage(errorMsg);
+      }
+
+      this.isLoading = false;
+      this.submitBtn.disabled = false;
+      this.input.focus();
+      this.scrollToBottom();
+    }
+
+    private getVisitorContext() {
+      try {
+        const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+        return {
+          currentPage: '/labyrinth',
+          pagesViewed: memory.pagesViewed || [],
+          visitCount: memory.visitCount || 1,
+          behavioralType: memory.behavioralType || 'explorer'
+        };
+      } catch {
+        return { currentPage: '/labyrinth' };
+      }
+    }
+
+    private getConversationHistory() {
+      const thread = this.loadConversation();
+      return thread.messages.slice(-10).map(m => ({
+        role: m.role,
+        content: m.content
+      }));
+    }
+
+    private clearConversation() {
+      localStorage.removeItem('minoan-soul-conversation');
+      this.history.querySelectorAll('.message').forEach(el => el.remove());
+      this.emptyState.style.display = 'flex';
+      this.input.focus();
+    }
+
+    private scrollToBottom() {
+      this.history.scrollTop = this.history.scrollHeight;
+    }
+
+    private scrollToMessage(msgId: string) {
+      const el = document.getElementById(`msg-${msgId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('is-highlighted');
+        setTimeout(() => el.classList.remove('is-highlighted'), 2000);
+      }
+    }
+  }
+
+  // Initialize
+  new LabyrinthChat();
+
+  // Handle view transitions
+  document.addEventListener('astro:after-swap', () => {
+    if (window.location.pathname === '/labyrinth') {
+      new LabyrinthChat();
+    }
+  });
+</script>

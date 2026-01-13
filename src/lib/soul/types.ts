@@ -116,6 +116,7 @@ export interface ToastPayload {
   message: string;
   duration: number;       // milliseconds
   type?: 'info' | 'welcome' | 'hint';
+  hasHtml?: boolean;      // if true, render message as HTML
 }
 
 export interface HighlightPayload {
@@ -210,3 +211,26 @@ export const DEFAULT_CONFIG: SoulConfig = {
 
   storageKey: 'minoan-soul-memory'
 };
+
+// ─────────────────────────────────────────────────────────────
+// SSE Streaming Types
+// ─────────────────────────────────────────────────────────────
+
+export type SSEEventType = 'start' | 'chunk' | 'done' | 'error';
+
+export interface SSEChunk {
+  type: 'chunk' | 'done' | 'error';
+  text?: string;           // Incremental text chunk
+  fullResponse?: string;   // Complete response (only on 'done')
+  error?: string;          // Error message (only on 'error')
+}
+
+export interface SSEStreamOptions {
+  signal?: AbortSignal;
+  timeout?: number;        // Request timeout in ms
+}
+
+export interface SSEStreamController {
+  stream: AsyncIterable<SSEChunk>;
+  abort: () => void;
+}
