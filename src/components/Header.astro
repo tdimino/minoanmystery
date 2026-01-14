@@ -157,6 +157,7 @@ function isActive(href: string): boolean {
     align-items: center;
     color: var(--color-text);
     transition: color var(--transition-fast);
+    position: relative; /* For pseudo-element positioning */
   }
 
   .nav-logo:hover {
@@ -166,6 +167,192 @@ function isActive(href: string): boolean {
   .logo-img {
     height: 58px;
     width: auto;
+    transition: opacity 0.3s ease;
+    position: relative;
+    z-index: 1; /* Keep main image crisp on top of glow */
+  }
+
+  .nav-logo:hover .logo-img {
+    opacity: 0.85;
+  }
+
+  /* Edge-tracing glow effect - dark mode only
+     Colors: Rich magenta-purple that complements Tyrian purple (#c9a0b8)
+     Primary glow: #d175b8 (vivid pink-magenta)
+     Accent: #a855f7 (purple-violet for depth)
+     Electric: #e879f9 (bright fuchsia for crackle)
+  */
+  :global([data-theme='dark']) .nav-logo::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: url('/images/header-logo.png') center/contain no-repeat;
+    /* Stacked drop-shadows trace the alpha channel edges */
+    filter: drop-shadow(0 0 3px #d175b8)
+            drop-shadow(0 0 6px #c9a0b8)
+            drop-shadow(0 0 10px #a855f7)
+            drop-shadow(0 0 16px rgba(168, 85, 247, 0.5));
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+    animation: logo-edge-glow 4s ease-in-out infinite;
+  }
+
+  /* Electric crackling effect - subtle static overlay */
+  :global([data-theme='dark']) .nav-logo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: url('/images/header-logo.png') center/contain no-repeat;
+    /* Sharp, flickering glow for electric crackle - bright fuchsia/magenta */
+    filter: drop-shadow(0 0 1px #e879f9)
+            drop-shadow(0 0 2px #f0abfc)
+            drop-shadow(0 0 3px #d175b8);
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    animation: logo-electric-crackle 0.15s steps(2) infinite;
+  }
+
+  /* Breathing animation for glow */
+  @keyframes logo-edge-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 2px #d175b8)
+              drop-shadow(0 0 5px #c9a0b8)
+              drop-shadow(0 0 8px #a855f7)
+              drop-shadow(0 0 14px rgba(168, 85, 247, 0.4));
+      opacity: 0.45;
+    }
+    50% {
+      filter: drop-shadow(0 0 4px #d175b8)
+              drop-shadow(0 0 8px #c9a0b8)
+              drop-shadow(0 0 14px #a855f7)
+              drop-shadow(0 0 22px rgba(168, 85, 247, 0.6));
+      opacity: 0.65;
+    }
+  }
+
+  /* Electric crackling animation - random flicker pattern */
+  @keyframes logo-electric-crackle {
+    0% {
+      opacity: 0;
+      filter: drop-shadow(0 0 1px #e879f9)
+              drop-shadow(0 0 2px #f0abfc)
+              drop-shadow(0 0 3px #d175b8);
+    }
+    10% {
+      opacity: 0.3;
+      filter: drop-shadow(0 0 2px #f0abfc)
+              drop-shadow(0 0 4px #e879f9)
+              drop-shadow(0 0 6px #d175b8);
+    }
+    15% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.15;
+      filter: drop-shadow(0 0 1px #f0abfc)
+              drop-shadow(0 0 3px #e879f9);
+    }
+    30% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 0.25;
+      filter: drop-shadow(0 0 2px #e879f9)
+              drop-shadow(0 0 5px #f0abfc)
+              drop-shadow(0 0 8px #d175b8);
+    }
+    65% {
+      opacity: 0;
+    }
+    85% {
+      opacity: 0.2;
+      filter: drop-shadow(0 0 1px #f0abfc)
+              drop-shadow(0 0 2px #e879f9);
+    }
+    90%, 100% {
+      opacity: 0;
+    }
+  }
+
+  /* Hover state - intensified glow */
+  :global([data-theme='dark']) .nav-logo:hover::before {
+    filter: drop-shadow(0 0 5px #d175b8)
+            drop-shadow(0 0 10px #c9a0b8)
+            drop-shadow(0 0 18px #a855f7)
+            drop-shadow(0 0 28px rgba(168, 85, 247, 0.7));
+    opacity: 0.75;
+    animation: none;
+  }
+
+  /* Hover state - more intense crackling */
+  :global([data-theme='dark']) .nav-logo:hover::after {
+    animation: logo-electric-crackle-intense 0.1s steps(2) infinite;
+  }
+
+  /* More intense crackling on hover */
+  @keyframes logo-electric-crackle-intense {
+    0% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 0.4;
+      filter: drop-shadow(0 0 2px #f0abfc)
+              drop-shadow(0 0 5px #e879f9)
+              drop-shadow(0 0 8px #d175b8);
+    }
+    12% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.35;
+      filter: drop-shadow(0 0 3px #f0abfc)
+              drop-shadow(0 0 6px #e879f9);
+    }
+    25% {
+      opacity: 0;
+    }
+    45% {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 4px #e879f9)
+              drop-shadow(0 0 8px #f0abfc)
+              drop-shadow(0 0 12px #d175b8);
+    }
+    50% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 0.3;
+      filter: drop-shadow(0 0 2px #f0abfc)
+              drop-shadow(0 0 4px #e879f9);
+    }
+    75%, 100% {
+      opacity: 0;
+    }
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    :global([data-theme='dark']) .nav-logo::before {
+      animation: none;
+      filter: drop-shadow(0 0 3px #c9a0b8)
+              drop-shadow(0 0 6px #c9a0b8)
+              drop-shadow(0 0 10px #c9a0b8);
+      opacity: 0.5;
+    }
+    :global([data-theme='dark']) .nav-logo::after {
+      animation: none;
+      opacity: 0;
+    }
   }
 
   .nav-links {
