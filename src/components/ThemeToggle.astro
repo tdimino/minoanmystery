@@ -95,17 +95,23 @@
     transform: rotate(-90deg) scale(0.8);
   }
 
-  /* Mobile adjustments */
+  /* Mobile adjustments - maintain 44px touch target */
   @media (max-width: 767px) {
     .theme-toggle {
-      width: 40px;
-      height: 40px;
+      /* Keep 44px for WCAG 2.2 / Apple HIG touch target */
+      width: 44px;
+      height: 44px;
     }
 
     .theme-toggle svg {
       width: 18px;
       height: 18px;
     }
+  }
+
+  /* Touch feedback */
+  .theme-toggle:active {
+    transform: scale(0.95);
   }
 </style>
 

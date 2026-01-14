@@ -280,8 +280,8 @@ const experience = [
   }
 
   .experience-layout {
-    display: grid !important;
-    grid-template-columns: minmax(480px, 1fr) minmax(660px, 1.5fr) !important;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
     gap: 30px;
     align-items: start;
   }
@@ -541,12 +541,18 @@ const experience = [
     }
 
     .experience-layout {
-      grid-template-columns: 1fr;
-      gap: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
     .experience-sidebar {
       position: static;
+      margin-left: 0;
+    }
+
+    .experience-list {
+      margin-left: 0;
     }
   }
 
@@ -556,31 +562,59 @@ const experience = [
     }
 
     .about-hero h1 {
-      font-size: 22px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .about-hero-image img {
+      min-height: auto;
     }
 
     .about-bio .paragraph-large {
-      font-size: 20px;
-      line-height: 30px;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .section.experience {
+      padding: 60px 0 80px;
+    }
+
+    .experience-sidebar h2 {
+      font-size: 32px;
     }
 
     .experience-card {
       flex-direction: column;
-      padding: 40px 0;
+      padding: 32px 0;
     }
 
     .experience-logo {
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+
+    .experience-content h3 {
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .experience-description {
+      font-size: 16px;
+      line-height: 26px;
     }
 
     .experience-meta {
       flex-direction: column;
       align-items: flex-start;
       gap: 4px;
+      margin-top: 0;
     }
 
     .text-divider {
       display: none;
+    }
+
+    .interested {
+      padding: 60px 0 80px;
     }
 
     .interested-grid {
@@ -589,8 +623,8 @@ const experience = [
     }
 
     .interested h2 {
-      font-size: 32px;
-      line-height: 42px;
+      font-size: 28px;
+      line-height: 1.3;
     }
 
     .circle-link {

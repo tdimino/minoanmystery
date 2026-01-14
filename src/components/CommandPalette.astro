@@ -55,16 +55,21 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    display: none;
+    display: flex;
     align-items: flex-start;
     justify-content: center;
     padding-top: 15vh;
     padding-left: 16px;
     padding-right: 16px;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
   }
 
   .command-palette.is-open {
-    display: flex;
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
   }
 
   .command-overlay {

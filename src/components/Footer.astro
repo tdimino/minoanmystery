@@ -211,9 +211,12 @@ const socialLinks = [
     text-decoration: none;
     transition: color var(--transition-fast);
     font-weight: 500;
+    padding: 8px 0; /* Touch-friendly vertical padding */
+    display: inline-block;
   }
 
-  .footer-link:hover {
+  .footer-link:hover,
+  .footer-link:active {
     color: var(--color-primary);
   }
 
@@ -241,13 +244,15 @@ const socialLinks = [
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 44px;  /* WCAG 2.2 / Apple HIG minimum */
+    height: 44px;
+    padding: 10px; /* Icon stays ~24px, touch target is 44px */
     color: var(--color-text);
     transition: transform 0.15s ease-in-out, color var(--transition-fast);
   }
 
-  .social-link:hover {
+  .social-link:hover,
+  .social-link:active {
     color: var(--color-primary);
     animation: bounce 0.3s ease-in-out;
   }

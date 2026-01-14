@@ -73,13 +73,22 @@
     cursor: pointer;
     font-size: 18px;
     line-height: 1;
+    /* 44px touch target with centered × symbol */
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0;
-    margin: -4px -4px 0 0;
+    margin: -12px -12px -12px 0; /* Negative margin to expand hit area without affecting layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0.6;
     transition: opacity 0.2s ease;
   }
 
-  .soul-dialogue-dismiss:hover {
+  .soul-dialogue-dismiss:hover,
+  .soul-dialogue-dismiss:active {
     opacity: 1;
   }
 

@@ -66,6 +66,8 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 
   <!-- Project Details Bar -->
   <section class="portfolio-details">
+    <div class="corner-left"></div>
+    <div class="corner-right"></div>
     <div class="container">
       <div class="details-grid fade-up">
         <div class="detail-item">
@@ -80,6 +82,16 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
           <span class="detail-label">Role</span>
           <span class="detail-value">{role}</span>
         </div>
+        <div class="detail-item">
+          <span class="detail-label">Website</span>
+          <a href={website} target="_blank" rel="noopener noreferrer" class="link-arrow">
+            <span class="link-row">
+              <span class="link-text">Live preview</span>
+              <span class="link-arrow-icon"></span>
+            </span>
+            <span class="link-underline"></span>
+          </a>
+        </div>
         {duration && (
           <div class="detail-item">
             <span class="detail-label">Date</span>
@@ -91,16 +103,6 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
             </span>
           </div>
         )}
-        <div class="detail-item">
-          <span class="detail-label">Website</span>
-          <a href={website} target="_blank" rel="noopener noreferrer" class="link-arrow">
-            <span class="link-row">
-              <span class="link-text">Live preview</span>
-              <span class="link-arrow-icon"></span>
-            </span>
-            <span class="link-underline"></span>
-          </a>
-        </div>
       </div>
     </div>
   </section>
@@ -165,10 +167,10 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
   /* Scroll Down Button */
   .scroll-down-btn {
     flex-shrink: 0;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    border: 2px solid #1a1a1a;
+    border: 2px solid var(--color-text);
     background: transparent;
     cursor: pointer;
     display: flex;
@@ -193,11 +195,11 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
   /* Parallax Section */
   .parallax-section {
     position: relative;
-    height: 70vh;
-    min-height: 400px;
+    height: 580px;
+    margin-top: 70px;
     background-image: var(--bg-image);
     background-attachment: fixed;
-    background-position: center;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
@@ -243,34 +245,80 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     border-radius: 4px;
   }
 
-  /* Project Details */
+  /* Project Details - Overlapping Card */
   .portfolio-details {
+    background: var(--neutral-100, #fff);
+    padding: 50px 56px;
+    margin-top: -69px;
+    position: relative;
+    z-index: 10;
+  }
+
+  :global(.dark) .portfolio-details {
     background: var(--color-background);
-    padding: var(--space-lg) 0;
+  }
+
+  /* Corner frame - image at edges, solid bars inset from edges */
+  .corner-frame {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 2%,
+      var(--neutral-100, #fff) 2%,
+      var(--neutral-100, #fff) 10%,
+      transparent 10%,
+      transparent 90%,
+      var(--neutral-100, #fff) 90%,
+      var(--neutral-100, #fff) 98%,
+      transparent 98%,
+      transparent 100%
+    );
+  }
+
+  :global(.dark) .corner-frame {
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 2%,
+      var(--color-background) 2%,
+      var(--color-background) 10%,
+      transparent 10%,
+      transparent 90%,
+      var(--color-background) 90%,
+      var(--color-background) 98%,
+      transparent 98%,
+      transparent 100%
+    );
   }
 
   .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, auto));
-    gap: var(--space-lg);
-    justify-content: space-between;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px 40px;
   }
 
   .detail-item {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: 14px;
   }
 
   .detail-label {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
+    line-height: 20px;
     color: var(--color-text);
-    text-transform: capitalize;
   }
 
   .detail-value {
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
     color: var(--neutral-600);
   }
 
@@ -556,20 +604,64 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
       align-self: flex-end;
     }
 
+    .scroll-down-btn .scroll-arrow {
+      width: 24px;
+      height: 14px;
+    }
+
     .parallax-section {
       background-attachment: scroll;
-      height: 50vh;
+      height: 330px;
+      margin-top: 40px;
+      background-size: auto 180%;
+      background-position: center 85%;
+    }
+
+    .portfolio-details {
+      padding: 32px 24px;
+      margin-top: -40px;
     }
 
     .details-grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-md);
+      gap: 32px 24px;
+      justify-items: center;
+      text-align: center;
     }
-  }
 
-  @media (max-width: 480px) {
-    .details-grid {
-      grid-template-columns: 1fr;
+    .detail-item {
+      align-items: center;
+    }
+
+    .detail-label {
+      font-size: 16px;
+    }
+
+    .detail-value {
+      font-size: 16px;
+    }
+
+    /* Date (5th item) - in first column, centered like others */
+    .detail-item:nth-child(5) {
+      grid-column: 1;
+    }
+
+    /* CTA Section - Mobile: centered text, circle at bottom-left */
+    .interested-grid {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .interested-content {
+      width: 100%;
+      text-align: center;
+    }
+
+    .arrow-circle {
+      width: 100px;
+      height: 100px;
+      align-self: flex-start;
+      margin-top: var(--space-lg);
     }
   }
 </style>

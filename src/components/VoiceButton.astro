@@ -92,8 +92,9 @@ const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
 <style>
   .oracle-ear-container {
     position: fixed;
-    bottom: var(--oracle-bottom);
-    right: var(--oracle-right);
+    /* Safe-area-inset support for notched devices (iPhone X+) */
+    bottom: max(var(--oracle-bottom), calc(1.5rem + env(safe-area-inset-bottom)));
+    right: max(var(--oracle-right), env(safe-area-inset-right));
     z-index: 1000;
     display: flex;
     flex-direction: column;

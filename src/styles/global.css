@@ -400,11 +400,20 @@ textarea {
   min-height: 100px; /* Override for textarea */
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: none;
   border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(150, 106, 133, 0.2);
+}
+
+/* Visible focus ring for all interactive elements */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 button,
@@ -517,5 +526,41 @@ button,
   .soul-intensify,
   .soul-attention {
     animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Mobile Touch Optimization
+   ───────────────────────────────────────────────────────────── */
+
+/* Prevent 300ms tap delay on older browsers */
+a,
+button,
+input,
+select,
+textarea,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* Safe area support for notched devices */
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+}
+
+/* Ensure body respects safe areas */
+body {
+  padding-bottom: var(--safe-area-bottom);
+}
+
+/* Mobile touch target enforcement */
+@media (max-width: 768px) {
+  /* Minimum touch target - enforced globally on mobile */
+  a:not(.nav-logo):not(.footer-logo),
+  button:not(.hamburger) {
+    min-height: 44px;
   }
 }

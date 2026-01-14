@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Version-1.0.0-blue.svg" alt="Version"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Version-1.1.0-blue.svg" alt="Version"></a>
 </p>
 
 # Minoan Mystery
@@ -68,6 +68,8 @@ src/
 - **Dark Mode**: Time-based defaults, toggle with `Cmd+Shift+D`
 - **View Transitions**: Smooth page navigation
 - **Responsive**: Fluid typography with `clamp()`
+- **Mobile UX**: Touch-friendly targets, optimized parallax sections, 2-column detail grids
+- **Soul Engine**: Perception layer for user behavior tracking and personalized interactions
 
 ## Brand Colors
 
