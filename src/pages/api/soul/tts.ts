@@ -36,13 +36,13 @@ function checkRateLimit(ip: string): boolean {
 // Voice configuration - Cartesia voices
 // See: https://docs.cartesia.ai/getting-started/available-voices
 const voiceConfig = {
-  // Default to a warm, slightly mysterious female voice
-  voiceId: 'a0e99841-438c-4a64-b679-ae501e7d6091', // Barbershop Man (warm male)
+  // Classy British Man - sardonic, intellectual tone for Kothar/Artifex Maximus
+  voiceId: '95856005-0332-41b0-935f-352e296aa0df',
   // Alternative voices:
-  // '79a125e8-cd45-4c13-8a67-188112f4dd22' - British Lady
+  // '63ff761f-c1e8-414b-b969-d1833d1c870c' - Confident British Man
   // 'a0e99841-438c-4a64-b679-ae501e7d6091' - Barbershop Man
-  // 'bf991597-6c13-47e4-8411-91ec2de5c466' - Newsman
-  modelId: 'sonic-2',
+  // '79a125e8-cd45-4c13-8a67-188112f4dd22' - British Lady
+  modelId: 'sonic-3',
   outputFormat: {
     container: 'wav' as const,
     sampleRate: 24000,

@@ -55,7 +55,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    color: var(--color-primary, #966a85);
+  }
+
+  .soul-dialogue-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
   .soul-dialogue-text {
@@ -97,20 +102,12 @@
     border-left: 3px solid var(--color-primary, #966a85);
   }
 
-  .soul-dialogue[data-type='welcome'] .soul-dialogue-icon::before {
-    content: '✨';
-  }
-
   .soul-dialogue[data-type='hint'] {
     border-left: 3px solid var(--color-gold, #d4af37);
   }
 
-  .soul-dialogue[data-type='hint'] .soul-dialogue-icon::before {
-    content: '💡';
-  }
-
-  .soul-dialogue[data-type='info'] .soul-dialogue-icon::before {
-    content: '🌀';
+  .soul-dialogue[data-type='hint'] .soul-dialogue-icon {
+    color: var(--color-gold, #d4af37);
   }
 
   /* Dark mode */
@@ -159,9 +156,20 @@
     hasHtml?: boolean; // If true, render message as HTML
   }
 
+  // Phosphor icons (SVG)
+  const SOUL_ICONS: Record<string, string> = {
+    // Spiral - for info/oracle messages
+    info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M232,128a104,104,0,0,1-208,0c0-57.44,46.56-104,104-104a8,8,0,0,1,0,16,88.1,88.1,0,0,0-88,88,88,88,0,0,0,176,0,8,8,0,0,1,16,0ZM128,56a72.08,72.08,0,0,0-72,72,8,8,0,0,0,16,0,56.06,56.06,0,0,1,56-56,8,8,0,0,0,0-16Zm0,40a32,32,0,1,0,32,32A32,32,0,0,0,128,96Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,128,144Z"/></svg>',
+    // Sparkle - for welcome messages
+    welcome: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208,144a15.78,15.78,0,0,1-10.42,14.94l-51.65,19-19,51.65a15.92,15.92,0,0,1-29.88,0l-19-51.65-51.65-19a15.92,15.92,0,0,1,0-29.88l51.65-19,19-51.65a15.92,15.92,0,0,1,29.88,0l19,51.65,51.65,19A15.78,15.78,0,0,1,208,144ZM152,48h16V64a8,8,0,0,0,16,0V48h16a8,8,0,0,0,0-16H184V16a8,8,0,0,0-16,0V32H152a8,8,0,0,0,0,16Zm88,32h-8V72a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0V96h8a8,8,0,0,0,0-16Z"/></svg>',
+    // Lightbulb - for hint messages
+    hint: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45a8,8,0,0,0,7.87,6.61,8.54,8.54,0,0,0,1.4-.12A8,8,0,0,0,183.89,94.66Z"/></svg>',
+  };
+
   class SoulDialogue {
     private element: HTMLElement | null;
     private textEl: HTMLElement | null;
+    private iconEl: HTMLElement | null;
     private queue: ToastPayload[] = [];
     private isShowing = false;
     private hideTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -169,6 +177,7 @@
     constructor() {
       this.element = document.getElementById('soul-dialogue');
       this.textEl = this.element?.querySelector('.soul-dialogue-text') || null;
+      this.iconEl = this.element?.querySelector('.soul-dialogue-icon') || null;
       this.init();
     }
 
@@ -196,6 +205,7 @@
       document.addEventListener('astro:after-swap', () => {
         this.element = document.getElementById('soul-dialogue');
         this.textEl = this.element?.querySelector('.soul-dialogue-text') || null;
+        this.iconEl = this.element?.querySelector('.soul-dialogue-icon') || null;
       });
     }
 
@@ -249,7 +259,13 @@
         this.textEl.textContent = payload.message;
       }
 
-      this.element.setAttribute('data-type', payload.type || 'info');
+      // Set icon based on type
+      const type = payload.type || 'info';
+      if (this.iconEl) {
+        this.iconEl.innerHTML = SOUL_ICONS[type] || SOUL_ICONS.info;
+      }
+
+      this.element.setAttribute('data-type', type);
     }
 
     private sanitizeHtml(html: string): string {

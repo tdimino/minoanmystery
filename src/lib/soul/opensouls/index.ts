@@ -64,7 +64,14 @@ export {
 } from './hooks';
 
 // Providers
-export { OpenRouterProvider, createOpenRouterProvider } from './providers';
+export {
+  OpenRouterProvider,
+  createOpenRouterProvider,
+  GroqProvider,
+  createGroqProvider,
+  BasetenProvider,
+  createBasetenProvider,
+} from './providers';
 
 // Mental Processes
 export {
@@ -83,26 +90,34 @@ export {
 export type {
   ProcessContext,
   ProcessReturn,
-  VisitorModel,
+  HydratedUserModel,
 } from './mentalProcesses';
 
 // Perception / Memory Integration
 export {
+  // New architecture
+  memoryIntegrate,
+  SoulOrchestrator,
+  getSoulOrchestrator,
+  resetSoulOrchestrator,
+  // Backward compatibility aliases
   MemoryIntegrator,
   getMemoryIntegrator,
   resetMemoryIntegrator,
 } from './perception';
 
-export type { MemoryIntegratorConfig } from './perception';
+export type { OrchestratorConfig, MemoryIntegratorConfig } from './perception';
 
 // LLM Provider setup
-import { setLLMProvider, getLLMProvider } from './core/CognitiveStep';
-import { OpenRouterProvider } from './providers';
+import { setLLMProvider, getLLMProvider, registerProvider, stripModelPrefix } from './core/CognitiveStep';
+import { OpenRouterProvider, GroqProvider, BasetenProvider } from './providers';
 import { registerActionHandlers } from './hooks';
 import { WorkingMemory, ChatMessageRoleEnum } from './core';
+import { PERSONA_MODEL, THINKING_MODEL, getModelForRole, getProviderFromModel } from './core';
 import type { SoulConfig, DispatchAction, ScheduledEvent } from './core';
 
-export { setLLMProvider, getLLMProvider };
+export { setLLMProvider, getLLMProvider, registerProvider, stripModelPrefix };
+export { PERSONA_MODEL, THINKING_MODEL, getModelForRole, getProviderFromModel };
 
 /**
  * Open Souls Engine instance
@@ -122,6 +137,8 @@ let openSoulsEngine: OpenSoulsEngine | null = null;
  */
 export async function initializeOpenSouls(options: {
   apiKey: string;
+  groqApiKey?: string;
+  basetenApiKey?: string;
   config?: SoulConfig;
   personality?: string;
   handlers?: {
@@ -131,12 +148,32 @@ export async function initializeOpenSouls(options: {
     onScheduleEvent?: (event: ScheduledEvent) => void;
   };
 }): Promise<OpenSoulsEngine> {
-  // Initialize LLM provider
-  const provider = new OpenRouterProvider({
+  // Initialize default OpenRouter provider
+  const openRouterProvider = new OpenRouterProvider({
     apiKey: options.apiKey,
     defaultModel: options.config?.model ?? 'google/gemini-3-flash-preview',
   });
-  setLLMProvider(provider);
+  setLLMProvider(openRouterProvider);
+
+  // Register Groq provider if API key provided
+  if (options.groqApiKey) {
+    const groqProvider = new GroqProvider({
+      apiKey: options.groqApiKey,
+      defaultModel: 'moonshotai/kimi-k2-instruct',
+    });
+    registerProvider('groq', groqProvider);
+    console.log('[OpenSouls] Groq provider registered (Kimi K2, Qwen3, Llama available)');
+  }
+
+  // Register Baseten provider if API key provided
+  if (options.basetenApiKey) {
+    const basetenProvider = new BasetenProvider({
+      apiKey: options.basetenApiKey,
+      defaultModel: 'moonshotai/kimi-k2',
+    });
+    registerProvider('baseten', basetenProvider);
+    console.log('[OpenSouls] Baseten provider registered');
+  }
 
   // Register action handlers
   if (options.handlers) {

@@ -50,26 +50,38 @@
   </div>
 </div>
 
+<!-- Soul Loading Overlay - centered fullscreen -->
+<div id="soul-loading-overlay" class="soul-loading-overlay" role="status" aria-live="polite">
+  <div class="soul-loading-backdrop"></div>
+  <div class="soul-loading-content">
+    <div class="soul-loading-icon">
+      <!-- Phosphor Spiral icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M232,128a104,104,0,0,1-208,0c0-57.44,46.56-104,104-104a8,8,0,0,1,0,16,88.1,88.1,0,0,0-88,88,88,88,0,0,0,176,0,8,8,0,0,1,16,0ZM128,56a72.08,72.08,0,0,0-72,72,8,8,0,0,0,16,0,56.06,56.06,0,0,1,56-56,8,8,0,0,0,0-16Zm0,40a32,32,0,1,0,32,32A32,32,0,0,0,128,96Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,128,144Z"/>
+      </svg>
+    </div>
+    <div class="soul-loading-text">
+      <span class="soul-loading-message">Consulting the depths</span>
+      <span class="soul-loading-cursor">|</span>
+    </div>
+  </div>
+</div>
+
 <style>
   .command-palette {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    display: flex;
+    display: none;
     align-items: flex-start;
     justify-content: center;
     padding-top: 15vh;
     padding-left: 16px;
     padding-right: 16px;
-    visibility: hidden;
-    pointer-events: none;
-    opacity: 0;
   }
 
   .command-palette.is-open {
-    visibility: visible;
-    pointer-events: auto;
-    opacity: 1;
+    display: flex;
   }
 
   .command-overlay {
@@ -338,6 +350,107 @@
       display: none;
     }
   }
+
+  /* ─────────────────────────────────────────────────────────────
+     Soul Loading Overlay - Centered fullscreen with terminal animation
+     ───────────────────────────────────────────────────────────── */
+
+  .soul-loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .soul-loading-overlay.is-visible {
+    display: flex;
+  }
+
+  .soul-loading-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: fadeIn 0.25s ease forwards;
+  }
+
+  .soul-loading-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px 60px;
+    background: var(--color-background, #ffffff);
+    border: 1px solid var(--color-border, #e5e5e5);
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .soul-loading-icon {
+    color: var(--color-primary, #966a85);
+    animation: spin 2s linear infinite;
+  }
+
+  .soul-loading-icon svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .soul-loading-text {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 16px;
+    color: var(--color-text, #222);
+    letter-spacing: 0.02em;
+  }
+
+  .soul-loading-message {
+    /* Terminal style */
+  }
+
+  .soul-loading-cursor {
+    animation: blink 0.8s step-end infinite;
+    color: var(--color-primary, #966a85);
+    font-weight: bold;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Dark mode */
+  :global([data-theme='dark']) .soul-loading-content {
+    background: rgba(20, 20, 20, 0.98);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  :global([data-theme='dark']) .soul-loading-text {
+    color: var(--color-text, #f5f5f5);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .soul-loading-icon {
+      animation: none;
+    }
+    .soul-loading-cursor {
+      animation: none;
+      opacity: 1;
+    }
+  }
 </style>
 
 <script>
@@ -357,6 +470,7 @@
   interface SoulMemory {
     recentCommands: string[];
     visitCount: number;
+    userName?: string;
   }
 
   // Icon SVGs
@@ -378,6 +492,8 @@
     info: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
     oracle: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line><line x1="8" x2="16" y1="22" y2="22"></line></svg>',
     suggestion: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>',
+    volume: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>',
+    trash: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>',
   };
 
   // Import mode manager dynamically
@@ -406,12 +522,14 @@
     private suggestions: SuggestedQuestion[] = [];
     private isLoadingChat: boolean = false;
     private suggestionDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+    private loadingOverlay: HTMLElement | null = null;
 
     constructor() {
       this.palette = document.getElementById('command-palette')!;
       this.input = document.getElementById('command-input') as HTMLInputElement;
       this.results = document.getElementById('command-results')!;
       this.searchIcon = this.palette.querySelector('.command-search-icon') as HTMLElement;
+      this.loadingOverlay = document.getElementById('soul-loading-overlay');
 
       // Load soul memory
       this.memory = this.loadMemory();
@@ -428,10 +546,24 @@
     }
 
     private loadMemory(): SoulMemory {
+      // Load from both localStorage keys
+      const soulMemory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
       return {
         recentCommands: JSON.parse(localStorage.getItem('recentCommands') || '[]'),
-        visitCount: parseInt(localStorage.getItem('visitCount') || '1'),
+        visitCount: soulMemory.visitCount || parseInt(localStorage.getItem('visitCount') || '1'),
+        userName: soulMemory.userName,
       };
+    }
+
+    private getPersonalizedPlaceholder(): string {
+      const name = this.memory.userName || 'visitor';
+      const greetings = [
+        `Hey ${name}, what would you like to do?`,
+        `What can I help you with, ${name}?`,
+        `Welcome back, ${name}. What's on your mind?`,
+      ];
+      // Pick a consistent greeting based on name length
+      return greetings[name.length % greetings.length];
     }
 
     private registerCommands() {
@@ -440,7 +572,7 @@
         {
           id: 'nav-home',
           label: 'Go to Home',
-          shortcut: 'H',
+          shortcut: '⌃H',
           icon: 'home',
           group: 'Navigation',
           action: () => window.location.href = '/',
@@ -449,7 +581,7 @@
         {
           id: 'nav-about',
           label: 'Go to About',
-          shortcut: 'A',
+          shortcut: '⌃A',
           icon: 'user',
           group: 'Navigation',
           action: () => window.location.href = '/about',
@@ -458,7 +590,7 @@
         {
           id: 'nav-contact',
           label: 'Go to Contact',
-          shortcut: 'C',
+          shortcut: '⌃C',
           icon: 'mail',
           group: 'Navigation',
           action: () => window.location.href = '/contact',
@@ -467,11 +599,11 @@
         {
           id: 'nav-ai',
           label: 'Go to A.I./LLMs',
-          shortcut: 'I',
+          shortcut: '⌃I',
           icon: 'cpu',
           group: 'Navigation',
-          action: () => window.open('https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', '_blank'),
-          keywords: ['ai', 'llm', 'artificial', 'intelligence', 'machine', 'learning']
+          action: () => window.location.href = '/labyrinth',
+          keywords: ['ai', 'llm', 'artificial', 'intelligence', 'machine', 'learning', 'labyrinth', 'chat', 'oracle']
         },
 
         // Portfolio
@@ -504,7 +636,7 @@
         {
           id: 'theme-toggle',
           label: 'Toggle Dark Mode',
-          shortcut: '&#8984;&#8679;D',
+          shortcut: '⌃D',
           icon: 'moon',
           group: 'Preferences',
           action: () => {
@@ -526,6 +658,36 @@
             document.documentElement.setAttribute('data-theme', systemDark ? 'dark' : 'light');
           },
           keywords: ['system', 'auto', 'automatic', 'default', 'os']
+        },
+        {
+          id: 'tts-toggle',
+          label: 'Toggle Voice (TTS)',
+          icon: 'volume',
+          group: 'Preferences',
+          action: () => {
+            const current = localStorage.getItem('ttsEnabled') === 'true';
+            const next = !current;
+            localStorage.setItem('ttsEnabled', String(next));
+            this.showSoulResponse(next ? 'Voice enabled. The Oracle will speak.' : 'Voice disabled. The Oracle will remain silent.');
+          },
+          keywords: ['voice', 'tts', 'speech', 'audio', 'sound', 'speaker', 'mute', 'unmute']
+        },
+        {
+          id: 'clear-conversation',
+          label: 'Clear Conversation',
+          icon: 'trash',
+          group: 'Preferences',
+          action: () => {
+            if (confirm('Clear all conversation history with Kothar?')) {
+              localStorage.removeItem('minoan-soul-conversation');
+              this.showSoulResponse('Conversation cleared. The slate is clean.');
+              // If on labyrinth page, refresh to show empty state
+              if (window.location.pathname === '/labyrinth') {
+                window.location.reload();
+              }
+            }
+          },
+          keywords: ['clear', 'delete', 'reset', 'conversation', 'chat', 'history', 'erase']
         },
 
         // External
@@ -592,8 +754,8 @@
           label: 'About this site',
           icon: 'info',
           group: 'Soul',
-          action: () => this.showSoulResponse('This site is built with Astro, animated with Motion, and guided by a soul engine that perceives your journey through the labyrinth.'),
-          keywords: ['site', 'about', 'built', 'tech', 'stack', 'astro']
+          action: () => this.showSoulResponse('I am Kothar wa Khasis, divine craftsman. I forged this labyrinth from Astro and Motion, breathing soul into its corridors. Each page turn, each scroll—I perceive them all. Tom is the architect; I am the builder who gave it life.'),
+          keywords: ['site', 'about', 'built', 'tech', 'stack', 'astro', 'kothar']
         },
       ];
     }
@@ -635,8 +797,9 @@
           this.executeActive();
         }
 
-        // Shortcut keys work when input is empty
-        if (this.input.value === '' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        // Shortcut keys work with Control key (handled by handleSingleKeyShortcuts for consistency)
+        // This is kept as a backup for in-palette shortcuts
+        if (e.ctrlKey && !e.metaKey && !e.altKey) {
           const key = e.key.toLowerCase();
           let cmd: Command | undefined;
 
@@ -645,6 +808,7 @@
             case 'a': cmd = this.commands.find(c => c.id === 'nav-about'); break;
             case 'c': cmd = this.commands.find(c => c.id === 'nav-contact'); break;
             case 'i': cmd = this.commands.find(c => c.id === 'nav-ai'); break;
+            case 'd': cmd = this.commands.find(c => c.id === 'theme-toggle'); break;
           }
 
           if (cmd) {
@@ -671,12 +835,12 @@
     }
 
     private handleSingleKeyShortcuts(e: KeyboardEvent) {
-      // Don't handle if palette is open or if modifier keys are pressed
-      if (this.isOpen() || e.metaKey || e.ctrlKey || e.altKey) return;
+      // Require Control key, works with or without palette open
+      if (!e.ctrlKey || e.metaKey || e.altKey) return;
 
-      // Don't handle if user is typing in an input
+      // Don't handle if user is typing in an input (unless palette is open, where we handle it)
       const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+      if (!this.isOpen() && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
 
       const key = e.key.toLowerCase();
       let action: (() => void) | null = null;
@@ -686,17 +850,29 @@
         case 'a': action = () => window.location.href = '/about'; break;
         case 'c': action = () => window.location.href = '/contact'; break;
         case 'i': action = () => window.open('https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', '_blank'); break;
+        case 'd': action = () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'light';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        }; break;
       }
 
       if (action) {
         e.preventDefault();
+        // Close palette if open
+        if (this.isOpen()) this.close();
         action();
       }
     }
 
     open() {
+      // Reload memory in case userName was updated
+      this.memory = this.loadMemory();
+
       this.palette.classList.add('is-open', 'is-animating-in');
       this.input.value = '';
+      this.input.placeholder = this.getPersonalizedPlaceholder();
       this.filter('');
 
       // Focus input after animation starts
@@ -724,6 +900,24 @@
 
     isOpen(): boolean {
       return this.palette.classList.contains('is-open');
+    }
+
+    // Loading overlay methods
+    private showLoadingOverlay(): void {
+      if (!this.loadingOverlay) {
+        this.loadingOverlay = document.getElementById('soul-loading-overlay');
+      }
+      if (this.loadingOverlay) {
+        this.loadingOverlay.classList.add('is-visible');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    private hideLoadingOverlay(): void {
+      if (this.loadingOverlay) {
+        this.loadingOverlay.classList.remove('is-visible');
+        document.body.style.overflow = '';
+      }
     }
 
     private filter(query: string) {
@@ -780,11 +974,12 @@
       // Update visual indicators
       if (mode === 'chat') {
         this.searchIcon.innerHTML = icons.oracle;
-        this.input.placeholder = 'Ask the Oracle...';
+        const name = this.memory.userName || 'visitor';
+        this.input.placeholder = `Ask Kothar, ${name}...`;
         this.palette.classList.add('is-chat-mode');
       } else {
         this.searchIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>';
-        this.input.placeholder = 'What would you like to do?';
+        this.input.placeholder = this.getPersonalizedPlaceholder();
         this.palette.classList.remove('is-chat-mode');
       }
     }
@@ -979,11 +1174,8 @@
       // Close palette immediately
       this.close();
 
-      // Show loading toast
-      const loadingEvent = new CustomEvent('soul:toast', {
-        detail: { message: 'Consulting the depths...', duration: 0, type: 'info' }
-      });
-      document.dispatchEvent(loadingEvent);
+      // Show centered loading overlay with terminal animation
+      this.showLoadingOverlay();
 
       try {
         // Make API request
@@ -1002,6 +1194,9 @@
         }
 
         const data = await response.json();
+
+        // Hide loading overlay before showing response
+        this.hideLoadingOverlay();
 
         // Save to conversation history
         this.saveToConversation(query, data.message);
@@ -1025,6 +1220,9 @@
 
       } catch (error) {
         console.error('[CommandPalette] Chat error:', error);
+
+        // Hide loading overlay
+        this.hideLoadingOverlay();
 
         // Show error toast
         const errorEvent = new CustomEvent('soul:toast', {
@@ -1178,12 +1376,13 @@
 
     private showSoulStatus(): void {
       const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+      const userName = memory.userName || 'visitor';
       const visitCount = memory.visitCount || 1;
       const pagesViewed = memory.pagesViewed?.length || 0;
       const state = memory.currentState || 'greeting';
       const behavioral = memory.behavioralType || 'explorer';
 
-      const statusMessage = `Soul perceives: Visit #${visitCount}, ${pagesViewed} pages explored. ` +
+      const statusMessage = `Soul perceives ${userName}: Visit #${visitCount}, ${pagesViewed} pages explored. ` +
         `State: ${state}. Pattern: ${behavioral}. ` +
         `The labyrinth remembers.`;
 

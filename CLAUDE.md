@@ -25,10 +25,29 @@ src/
 ├── components/     # Astro components (Header, Footer, CommandPalette, ThemeToggle)
 ├── content/        # Portfolio case studies (Markdown collections)
 ├── layouts/        # BaseLayout with View Transitions
-├── pages/          # Routes (/, /about, /contact, /portfolio/[slug])
+├── pages/          # Routes (/, /about, /contact, /portfolio/[slug], /labyrinth)
 ├── styles/         # global.css with CSS variables, dark mode
-└── lib/soul/       # [Future] Soul perception and dispatch layer
+└── lib/soul/       # Soul Engine (Open Souls paradigm)
+    ├── opensouls/  # Core Open Souls implementation
+    │   ├── core/           # WorkingMemory, CognitiveStep, utils
+    │   ├── cognitiveSteps/ # externalDialog, internalMonologue, mentalQuery
+    │   ├── mentalProcesses/# greeting, curious, engaged, ready, returning
+    │   ├── perception/     # SoulOrchestrator, memoryIntegrate
+    │   └── subprocesses/   # modelsTheVisitor (background visitor modeling)
+    ├── memory.ts   # SoulMemory class (localStorage persistence)
+    ├── types.ts    # UserModel, HydratedUserModel, SoulState
+    └── perception.ts # Event capture (click, scroll, hover, navigation)
 ```
+
+## Soul Engine Architecture
+
+The Soul Engine follows the Open Souls paradigm with:
+
+- **SoulOrchestrator** - Main orchestration layer, handles perception-response cycle
+- **HydratedUserModel** - Extends persisted `UserModel` with computed values (timeOnSite, isReturning, etc.)
+- **Mental Processes** - State machine: greeting → curious → engaged → ready
+- **Cognitive Steps** - Pure LLM transformations (externalDialog, internalMonologue, mentalQuery)
+- **modelsTheVisitor** - Background subprocess that builds visitor understanding
 
 ## Commands
 
@@ -60,6 +79,8 @@ src/
 - **Theme Toggle**: `Cmd+Shift+D` or button in header
 - **View Transitions**: Smooth page navigation
 - **Responsive**: Fluid typography with `clamp()`, mobile-first
+- **Soul Engine**: Visitor modeling with Open Souls paradigm
+- **Labyrinth**: `/labyrinth` chat interface with Kothar (Oracle persona)
 
 ## Detailed Guides
 

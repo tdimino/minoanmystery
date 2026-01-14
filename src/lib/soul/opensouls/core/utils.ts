@@ -177,3 +177,59 @@ export function createDeferredPromise<T>(): {
 
   return { promise, resolve, reject };
 }
+
+// ─────────────────────────────────────────────────────────────
+// Name Extraction (Instant, no LLM call)
+// Pattern from Open Souls samantha-dreams
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Patterns for extracting names from user messages
+ * Handles common introduction patterns like:
+ * - "Hi, I'm Tom"
+ * - "My name is Sarah"
+ * - "Tom here!"
+ * - "Call me Mike"
+ */
+const NAME_PATTERNS = [
+  // Standard introductions
+  /^(?:hi[,!]?\s+)?(?:I'm|I am|my name is|this is|it's)\s+([a-z]+)/i,
+  /^(?:hi|hey|hello)[,!]?\s+(?:I'm|it's|this is)\s+([a-z]+)/i,
+  // Name at start or end
+  /^([a-z]+)\s+here[.!]?$/i,
+  /^-\s*([a-z]+)$/i,
+  // Casual variations
+  /(?:call me|I go by|name's|just)\s+([a-z]+)/i,
+  // Just a name (short messages like "Tomar" or "I'm Tomar!")
+  /^(?:I'm|im)\s+([a-z]+)[.!]?$/i,
+  // Name anywhere in "my name is X" pattern
+  /my name (?:is|'s)\s+([a-z]+)/i,
+];
+
+/**
+ * extractNameHeuristic - Extract a name from a message using pattern matching
+ *
+ * Instant extraction with no LLM call. Returns null if no valid name found.
+ * Names are normalized to have uppercase first letter.
+ *
+ * @example
+ * extractNameHeuristic("Hi, I'm Tom!") // "Tom"
+ * extractNameHeuristic("My name is Sarah") // "Sarah"
+ * extractNameHeuristic("i'm tomar") // "Tomar"
+ * extractNameHeuristic("Hello there") // null
+ */
+export function extractNameHeuristic(content: string): string | null {
+  for (const pattern of NAME_PATTERNS) {
+    const match = content.match(pattern);
+    if (match?.[1]) {
+      // Normalize: uppercase first letter, lowercase rest
+      const rawName = match[1].trim();
+      const name = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
+      // Validate: 2-20 chars, only letters
+      if (name.length >= 2 && name.length <= 20 && /^[A-Za-z]+$/.test(name)) {
+        return name;
+      }
+    }
+  }
+  return null;
+}

@@ -16,8 +16,15 @@ import {
   externalDialog,
   indentNicely,
   setLLMProvider,
+  registerProvider,
+  PERSONA_MODEL,
+  THINKING_MODEL,
 } from '../../../lib/soul/opensouls';
-import { OpenRouterProvider } from '../../../lib/soul/opensouls/providers';
+import {
+  OpenRouterProvider,
+  GroqProvider,
+  BasetenProvider,
+} from '../../../lib/soul/opensouls/providers';
 
 // Mark as server-rendered (required for POST endpoints)
 export const prerender = false;
@@ -74,26 +81,50 @@ function loadSoulConfig(): Record<string, unknown> {
   }
 }
 
-// Initialize provider (lazy, on first request)
-let providerInitialized = false;
+// Initialize providers (lazy, on first request)
+let providersInitialized = false;
 
-function ensureProvider(): void {
-  if (providerInitialized) return;
+function ensureProviders(): void {
+  if (providersInitialized) return;
 
-  const apiKey = import.meta.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
+  // OpenRouter - default provider for persona/external dialog
+  const openrouterKey = import.meta.env.OPENROUTER_API_KEY;
+  if (!openrouterKey) {
     throw new Error('OPENROUTER_API_KEY environment variable is required');
   }
 
-  const provider = new OpenRouterProvider({
-    apiKey,
+  const openRouterProvider = new OpenRouterProvider({
+    apiKey: openrouterKey,
     defaultModel: 'google/gemini-3-flash-preview',
     siteUrl: 'https://minoanmystery.org',
     siteName: 'Minoan Mystery',
   });
+  setLLMProvider(openRouterProvider);
 
-  setLLMProvider(provider);
-  providerInitialized = true;
+  // Groq - ultra-low latency for thinking/internal steps (Kimi K2, Qwen3)
+  const groqKey = import.meta.env.GROQ_API_KEY;
+  if (groqKey) {
+    const groqProvider = new GroqProvider({
+      apiKey: groqKey,
+      defaultModel: 'moonshotai/kimi-k2-instruct',
+    });
+    registerProvider('groq', groqProvider);
+    console.log('[Soul Chat] Groq provider registered (Kimi K2, Qwen3 available)');
+  }
+
+  // Baseten - fallback provider
+  const basetenKey = import.meta.env.BASETEN_API_KEY;
+  if (basetenKey) {
+    const basetenProvider = new BasetenProvider({
+      apiKey: basetenKey,
+      defaultModel: 'moonshotai/kimi-k2',
+    });
+    registerProvider('baseten', basetenProvider);
+    console.log('[Soul Chat] Baseten provider registered');
+  }
+
+  providersInitialized = true;
+  console.log(`[Soul Chat] Providers initialized. Persona: ${PERSONA_MODEL}, Thinking: ${THINKING_MODEL}`);
 }
 
 // Request body interface
@@ -126,7 +157,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
 
   try {
-    ensureProvider();
+    ensureProviders();
 
     const body: ChatRequest = await request.json();
     const { query, visitorContext, conversationHistory, stream } = body;
@@ -186,13 +217,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const instructions = buildInstructions(visitorContext);
 
     if (stream) {
-      // Streaming response
+      // Streaming response - use PERSONA_MODEL for external dialog
       const [newMemory, responseStream, resultPromise] = await externalDialog(
         memory,
         instructions,
         {
           stream: true,
-          model: config.model as string,
+          model: PERSONA_MODEL,
           temperature: config.temperature as number,
         }
       );
@@ -222,13 +253,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         },
       });
     } else {
-      // Non-streaming response
+      // Non-streaming response - use PERSONA_MODEL for external dialog
       const [newMemory, response] = await externalDialog(
         memory,
         instructions,
         {
           stream: false,
-          model: config.model as string,
+          model: PERSONA_MODEL,
           temperature: config.temperature as number,
         }
       );

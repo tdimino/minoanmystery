@@ -204,7 +204,9 @@ export class ProcessManager {
       curious: 'Exploring the site, showing interest',
       engaged: 'Deep reading, highly engaged',
       ready: 'Ready for contact, conversion intent',
-      returning: 'Recognized visitor, personalized experience'
+      returning: 'Recognized visitor, personalized experience',
+      dormant: 'Extended idle, soul reflecting on journey',
+      exiting: 'Exit intent detected, saving journey'
     };
 
     return descriptions[s];

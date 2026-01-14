@@ -41,6 +41,7 @@ function createDefaultUserModel(): UserModel {
     clickedElements: [],
 
     inferredInterests: [],
+    readinessSignals: [],
     behavioralType: 'explorer',
     currentState: 'greeting',
 
@@ -277,6 +278,45 @@ export class SoulMemory {
     return this.update({ behavioralType: type });
   }
 
+  // ─── User Identity ──────────────────────────────────────────
+
+  getUserName(): string | undefined {
+    return this.memory.userName;
+  }
+
+  setUserName(name: string): UserModel {
+    return this.update({ userName: name });
+  }
+
+  // ─── Visitor Modeling (Open Souls userModel pattern) ────────
+
+  getVisitorModel(): string | undefined {
+    return this.memory.visitorModel;
+  }
+
+  setVisitorModel(model: string): UserModel {
+    return this.update({ visitorModel: model });
+  }
+
+  getVisitorWhispers(): string | undefined {
+    return this.memory.visitorWhispers;
+  }
+
+  setVisitorWhispers(whispers: string): UserModel {
+    return this.update({ visitorWhispers: whispers });
+  }
+
+  getLastTopics(): string[] {
+    return this.memory.lastTopics || [];
+  }
+
+  addTopic(topic: string): UserModel {
+    const topics = this.memory.lastTopics || [];
+    // Keep last 5 topics
+    const updated = [topic, ...topics.filter(t => t !== topic)].slice(0, 5);
+    return this.update({ lastTopics: updated });
+  }
+
   // ─── Interest Inference ────────────────────────────────────
 
   addInferredInterest(interest: string): UserModel {
@@ -286,6 +326,30 @@ export class SoulMemory {
     }
 
     return this.update({ inferredInterests: interests });
+  }
+
+  // ─── Readiness Signals ────────────────────────────────────
+
+  getReadinessSignals(): string[] {
+    return [...(this.memory.readinessSignals || [])];
+  }
+
+  addReadinessSignal(signal: string): UserModel {
+    const signals = [...(this.memory.readinessSignals || [])];
+    if (!signals.includes(signal)) {
+      signals.push(signal);
+    }
+    return this.update({ readinessSignals: signals });
+  }
+
+  // ─── Portfolio Tracking ───────────────────────────────────
+
+  getLastProject(): string | undefined {
+    return this.memory.lastProject;
+  }
+
+  setLastProject(project: string): UserModel {
+    return this.update({ lastProject: project });
   }
 
   // ─── Utility Methods ───────────────────────────────────────
@@ -308,6 +372,7 @@ export class SoulMemory {
   debug(): void {
     console.group('[SoulMemory] Current State');
     console.log('Session ID:', this.memory.sessionId);
+    console.log('User Name:', this.memory.userName || 'visitor');
     console.log('Visit Count:', this.memory.visitCount);
     console.log('Current State:', this.memory.currentState);
     console.log('Behavioral Type:', this.memory.behavioralType);
@@ -316,6 +381,10 @@ export class SoulMemory {
     console.log('Time per Page:', this.memory.timePerPage);
     console.log('Palette Uses:', this.memory.paletteUses);
     console.log('Idle Time:', this.memory.idleTime);
+    console.log('─── Visitor Model ───');
+    console.log('Visitor Model:', this.memory.visitorModel || '(not yet built)');
+    console.log('Visitor Whispers:', this.memory.visitorWhispers || '(silent)');
+    console.log('Last Topics:', this.memory.lastTopics || []);
     console.groupEnd();
   }
 

@@ -7,3 +7,5 @@ export { internalMonologue } from './internalMonologue';
 export { decision, type DecisionOptions } from './decision';
 export { mentalQuery } from './mentalQuery';
 export { brainstorm, type BrainstormOptions } from './brainstorm';
+export { visitorNotes, type VisitorNotesOptions } from './visitorNotes';
+export { visitorWhispers, type WhispersContext } from './visitorWhispers';

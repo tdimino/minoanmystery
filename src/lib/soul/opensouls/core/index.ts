@@ -30,3 +30,37 @@ export {
 
 export { createCognitiveStep } from './CognitiveStep';
 export { indentNicely, safeName, stripEntityAndVerb } from './utils';
+
+// Memory Regions
+export {
+  REGIONS,
+  REGION_CONFIGS,
+  getRegionalOrder,
+  getRegionConfig,
+  isCompressible,
+  isPersistent,
+  createRegionMemory,
+  createVisitorContextMemory,
+  createPortfolioInterestMemory,
+  createConversationSummaryMemory,
+  type RegionName,
+  type RegionConfig,
+} from './regions';
+
+// Memory Compression
+export {
+  MemoryCompressor,
+  getDefaultCompressor,
+  compressIfNeeded,
+  type CompressionConfig,
+} from './MemoryCompressor';
+
+// Model Configuration
+export {
+  PERSONA_MODEL,
+  THINKING_MODEL,
+  getModelForRole,
+  getProviderFromModel,
+  stripProviderPrefix,
+  type ModelRole,
+} from './models';

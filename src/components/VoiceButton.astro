@@ -552,22 +552,30 @@ const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
 
         this.showTablet(oracleResponse);
 
-        // Speak the oracle's wisdom
-        this.isSpeaking = true;
-        this.button.classList.add('speaking');
+        // Check if TTS is enabled (default: false)
+        const ttsEnabled = localStorage.getItem('ttsEnabled') === 'true';
 
-        await this.tts.speak(oracleResponse, {
-          onEnd: () => {
-            this.isSpeaking = false;
-            this.button.classList.remove('speaking');
-            setTimeout(() => this.hideTablet(), 4000);
-          },
-          onError: (error) => {
-            console.error('[Oracle] Voice failed:', error);
-            this.isSpeaking = false;
-            this.button.classList.remove('speaking');
-          },
-        });
+        if (ttsEnabled) {
+          // Speak the oracle's wisdom
+          this.isSpeaking = true;
+          this.button.classList.add('speaking');
+
+          await this.tts.speak(oracleResponse, {
+            onEnd: () => {
+              this.isSpeaking = false;
+              this.button.classList.remove('speaking');
+              setTimeout(() => this.hideTablet(), 4000);
+            },
+            onError: (error) => {
+              console.error('[Oracle] Voice failed:', error);
+              this.isSpeaking = false;
+              this.button.classList.remove('speaking');
+            },
+          });
+        } else {
+          // TTS disabled - just show tablet and hide after delay
+          setTimeout(() => this.hideTablet(), 6000);
+        }
       } catch (error) {
         console.error('[Oracle] Consultation failed:', error);
         this.showTablet('The Oracle is silent...');

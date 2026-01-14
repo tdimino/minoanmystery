@@ -1,9 +1,9 @@
 {
   "id": "minoan",
   "name": "Minoan",
-  "provider": "openrouter",
-  "model": "google/gemini-3-flash-preview",
-  "subconsciousModel": "google/gemini-3-flash-preview",
+  "provider": "groq",
+  "personaModel": "groq/kimi-k2",
+  "thinkingModel": "google/gemini-3-flash-preview",
   "temperature": 0.7,
   "maxTokens": 150,
   "features": {

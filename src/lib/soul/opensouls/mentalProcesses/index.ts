@@ -10,8 +10,10 @@ import { curiousProcess } from './curious';
 import { engagedProcess } from './engaged';
 import { readyProcess } from './ready';
 import { returningProcess } from './returning';
+import { dormantProcess } from './dormant';
+import { exitingProcess } from './exiting';
 import { ProcessRunner } from './runner';
-import type { SoulState, VisitorModel } from './types';
+import type { SoulState, HydratedUserModel } from './types';
 
 // Re-export all processes
 export { greetingProcess } from './greeting';
@@ -19,10 +21,11 @@ export { curiousProcess } from './curious';
 export { engagedProcess } from './engaged';
 export { readyProcess } from './ready';
 export { returningProcess } from './returning';
+export { dormantProcess } from './dormant';
+export { exitingProcess } from './exiting';
 
 // Re-export types
-export type { ProcessContext, ProcessReturn, VisitorModel, SoulActions, Perception, SoulState } from './types';
-export { defaultVisitorModel } from './types';
+export type { ProcessContext, ProcessReturn, HydratedUserModel, SoulActions, Perception, SoulState } from './types';
 
 // Re-export runner
 export { ProcessRunner } from './runner';
@@ -36,6 +39,8 @@ export const processRegistry = {
   engaged: engagedProcess,
   ready: readyProcess,
   returning: returningProcess,
+  dormant: dormantProcess,
+  exiting: exitingProcess,
 } as const;
 
 /**
@@ -50,6 +55,8 @@ export function createProcessRunner(): ProcessRunner {
   runner.registerProcess('engaged', engagedProcess);
   runner.registerProcess('ready', readyProcess);
   runner.registerProcess('returning', returningProcess);
+  runner.registerProcess('dormant', dormantProcess);
+  runner.registerProcess('exiting', exitingProcess);
 
   return runner;
 }
@@ -57,24 +64,24 @@ export function createProcessRunner(): ProcessRunner {
 /**
  * Determine the appropriate initial state based on visitor model
  */
-export function getInitialState(visitorModel: VisitorModel): SoulState {
+export function getInitialState(userModel: HydratedUserModel): SoulState {
   // Returning visitors start in returning state
-  if (visitorModel.isReturning || visitorModel.visitCount > 1) {
+  if (userModel.isReturning || userModel.visitCount > 1) {
     return 'returning';
   }
 
   // If they've already shown readiness signals
-  if (visitorModel.readinessSignals.length > 0) {
+  if (userModel.readinessSignals.length > 0) {
     return 'ready';
   }
 
   // If they've explored multiple pages
-  if (visitorModel.pagesViewed.length >= 3) {
+  if (userModel.pagesViewed.length >= 3) {
     return 'curious';
   }
 
   // If they're deeply engaged on current page
-  if (visitorModel.scrollDepth > 0.7 && visitorModel.timeOnCurrentPage > 90000) {
+  if (userModel.scrollDepth > 0.7 && userModel.timeOnCurrentPage > 90000) {
     return 'engaged';
   }
 
@@ -96,11 +103,17 @@ export function getInitialState(visitorModel: VisitorModel): SoulState {
  * returning ──(exploring)──▶ curious
  *     │
  *     └──(readiness)──▶ ready
+ *
+ * ANY ──(45s+ idle)──▶ dormant ──(activity)──▶ curious
+ *                          │
+ *                          └──(5min+ idle)──▶ exiting ──(return)──▶ curious
  */
 export const stateTransitions: Record<SoulState, SoulState[]> = {
-  greeting: ['curious', 'engaged', 'ready', 'returning'],
-  curious: ['engaged', 'ready'],
-  engaged: ['ready'],
-  ready: [], // Terminal state (until next session)
-  returning: ['curious', 'engaged', 'ready'],
+  greeting: ['curious', 'engaged', 'ready', 'returning', 'dormant'],
+  curious: ['engaged', 'ready', 'dormant'],
+  engaged: ['ready', 'curious', 'dormant'],
+  ready: ['dormant'], // Can transition to dormant if idle
+  returning: ['curious', 'engaged', 'ready', 'dormant'],
+  dormant: ['curious', 'engaged', 'exiting'],
+  exiting: ['curious'], // Can return from exit
 };

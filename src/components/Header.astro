@@ -5,8 +5,8 @@ const currentPath = Astro.url.pathname;
 
 const leftNav = [
   { href: '/', label: 'Home' },
-  { href: '/portfolio', label: 'Portfolio', hasDropdown: true },
-  { href: 'https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', label: 'A.I./LLMs', external: true },
+  { href: '/portfolio', label: 'Portfolio', hasDropdown: true, dropdownKey: 'portfolio' },
+  { href: '#', label: 'A.I./LLMs', hasDropdown: true, dropdownKey: 'ai' },
 ];
 
 const rightNav = [
@@ -19,6 +19,11 @@ const portfolioItems = [
   { href: '/portfolio/dolby', label: 'Dolby.com' },
   { href: '/portfolio/acs', label: 'The American College of Surgeons' },
   { href: '/portfolio/czi', label: 'Chan Zuckerberg Initiative' },
+];
+
+const aiItems = [
+  { href: 'https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', label: '"Imbuing A.I. with soul"', external: true },
+  { href: '/labyrinth', label: 'The Labyrinth A.I. Chat' },
 ];
 
 function isActive(href: string): boolean {
@@ -47,11 +52,25 @@ function isActive(href: string): boolean {
               {link.label}
               {link.hasDropdown && <span class="dropdown-arrow">&#9662;</span>}
             </a>
-            {link.hasDropdown && (
+            {link.hasDropdown && link.dropdownKey === 'portfolio' && (
               <ul class="dropdown-menu">
                 {portfolioItems.map((item) => (
                   <li>
                     <a href={item.href} class="dropdown-link">{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {link.hasDropdown && link.dropdownKey === 'ai' && (
+              <ul class="dropdown-menu">
+                {aiItems.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class="dropdown-link"
+                      target={item.external ? '_blank' : undefined}
+                      rel={item.external ? 'noopener noreferrer' : undefined}
+                    >{item.label}</a>
                   </li>
                 ))}
               </ul>
@@ -99,7 +118,9 @@ function isActive(href: string): boolean {
   <ul class="mobile-nav-links">
     <li class="mobile-nav-item"><a href="/" class="mobile-nav-link">Home</a></li>
     <li class="mobile-nav-item"><a href="/about" class="mobile-nav-link">About</a></li>
-    <li class="mobile-nav-item"><a href="https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">A.I./LLMs</a></li>
+    <li class="mobile-nav-item"><span class="mobile-nav-label">A.I./LLMs</span></li>
+    <li class="mobile-nav-item"><a href="https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf" class="mobile-nav-link sublink" target="_blank" rel="noopener noreferrer">"Imbuing A.I. with soul"</a></li>
+    <li class="mobile-nav-item"><a href="/labyrinth" class="mobile-nav-link sublink">The Labyrinth A.I. Chat</a></li>
     <li class="mobile-nav-item"><span class="mobile-nav-label">Portfolio</span></li>
     <li class="mobile-nav-item"><a href="/portfolio/czi" class="mobile-nav-link sublink">CZI</a></li>
     <li class="mobile-nav-item"><a href="/portfolio/acs" class="mobile-nav-link sublink">ACS</a></li>
@@ -397,6 +418,8 @@ function isActive(href: string): boolean {
   .mobile-menu.is-open .mobile-nav-item:nth-child(7) { animation-delay: 0.35s; }
   .mobile-menu.is-open .mobile-nav-item:nth-child(8) { animation-delay: 0.4s; }
   .mobile-menu.is-open .mobile-nav-item:nth-child(9) { animation-delay: 0.45s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(10) { animation-delay: 0.5s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(11) { animation-delay: 0.55s; }
 
   @keyframes slideInNav {
     to {
@@ -512,8 +535,24 @@ function isActive(href: string): boolean {
     font-weight: 500;
   }
 
-  /* Mobile breakpoint */
-  @media (max-width: 768px) {
+  /* Tablet breakpoint - Priority+ pattern: collapse nav earlier */
+  @media (max-width: 1024px) {
+    .nav-link {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+
+    .dropdown-link {
+      font-size: 16px;
+    }
+
+    .logo-img {
+      height: 48px;
+    }
+  }
+
+  /* Earlier hamburger on smaller tablets */
+  @media (max-width: 900px) {
     .nav {
       justify-content: center;
     }
@@ -529,6 +568,10 @@ function isActive(href: string): boolean {
       transform: translateX(-50%);
     }
 
+    .logo-img {
+      height: 54px;
+    }
+
     .hamburger {
       display: flex;
       position: absolute;
@@ -542,6 +585,17 @@ function isActive(href: string): boolean {
 
     .dropdown-menu {
       display: none;
+    }
+  }
+
+  /* Mobile breakpoint */
+  @media (max-width: 768px) {
+    .logo-img {
+      height: 48px;
+    }
+
+    .hamburger {
+      right: 16px;
     }
   }
 </style>

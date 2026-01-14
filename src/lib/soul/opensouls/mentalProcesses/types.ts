@@ -6,6 +6,7 @@
 
 import type { WorkingMemory } from '../core/WorkingMemory';
 import type { Perception as CorePerception, SoulState, SoulActions } from '../core/types';
+import type { UserModel } from '../../types';
 
 // Re-export types used by mental processes
 export type { SoulState, SoulActions };
@@ -19,33 +20,27 @@ export interface Perception extends CorePerception {
 }
 
 /**
+ * Hydrated UserModel with computed values for mental processes
+ * Extends UserModel with live computed values (timeOnSite, isReturning, etc.)
+ */
+export interface HydratedUserModel extends UserModel {
+  // Computed values (live, not persisted)
+  timeOnSite: number;
+  timeOnCurrentPage: number;
+  sessionDuration: number;
+  scrollDepth: number;
+  isReturning: boolean;
+}
+
+/**
  * Context passed to each mental process
  */
 export interface ProcessContext {
   sessionId: string;
   workingMemory: WorkingMemory;
   perception?: Perception;
-  visitorModel: VisitorModel;
+  userModel: HydratedUserModel;
   actions: SoulActions;
-}
-
-/**
- * Visitor model - behavioral data about the current visitor
- */
-export interface VisitorModel {
-  sessionId: string;
-  visitCount: number;
-  pagesViewed: string[];
-  currentPage: string;
-  timeOnSite: number;
-  timeOnCurrentPage: number;
-  scrollDepth: number;
-  behavioralType: 'scanner' | 'reader' | 'explorer' | 'focused';
-  inferredInterests: string[];
-  readinessSignals: string[];
-  isReturning: boolean;
-  lastProject?: string;
-  paletteUses?: number;
 }
 
 /**
@@ -71,7 +66,7 @@ export interface ProcessDefinition {
   name: SoulState;
   process: MentalProcess;
   /** Conditions that trigger transition TO this state */
-  transitionConditions?: (visitor: VisitorModel) => boolean;
+  transitionConditions?: (user: HydratedUserModel) => boolean;
 }
 
 /**
@@ -83,20 +78,3 @@ export interface ProcessTransition {
   reason: string;
   timestamp: number;
 }
-
-/**
- * Default visitor model for new sessions
- */
-export const defaultVisitorModel: VisitorModel = {
-  sessionId: '',
-  visitCount: 1,
-  pagesViewed: [],
-  currentPage: '/',
-  timeOnSite: 0,
-  timeOnCurrentPage: 0,
-  scrollDepth: 0,
-  behavioralType: 'explorer',
-  inferredInterests: [],
-  readinessSignals: [],
-  isReturning: false,
-};

@@ -1,5 +1,56 @@
 # Minoan Mystery - Development Changelog
 
+## Session: January 14, 2026
+
+### Soul Engine Refactoring & Type Consolidation
+
+Major refactoring of the Soul Engine to follow Open Souls patterns more closely, with significant type system cleanup.
+
+#### Type System Consolidation
+
+**UserModel/VisitorModel Merge**
+- Eliminated separate `VisitorModel` type (~40 lines of conversion code removed)
+- Created `HydratedUserModel` pattern: extends `UserModel` with computed values
+- Added new fields to `UserModel`:
+  - `readinessSignals: string[]` - signals indicating readiness to contact
+  - `lastProject?: string` - last portfolio project viewed
+- Added getter/setter methods to `SoulMemory`:
+  - `getReadinessSignals()`, `addReadinessSignal()`
+  - `getLastProject()`, `setLastProject()`
+
+**Architecture Cleanup**
+- Deleted deprecated `MemoryIntegrator.ts` (replaced by `SoulOrchestrator.ts`)
+- Renamed `convertUserModel()` → `hydrateUserModel()` for clarity
+- Updated `ProcessContext` to use `userModel: HydratedUserModel` instead of `visitorModel`
+- Updated all mental processes to destructure `userModel` instead of `visitorModel`
+
+#### Name Extraction Improvements (`src/lib/soul/opensouls/core/utils.ts`)
+- Case-insensitive regex patterns (`[a-z]+` with `/i` flag)
+- Name normalization (uppercase first letter, lowercase rest)
+- Added console.log debugging for troubleshooting
+- More pattern variations for common phrasings
+
+#### Visitor Modeling Optimizations (`src/lib/soul/opensouls/subprocesses/modelsTheVisitor.ts`)
+- Added `minInteractionsBeforeUpdate` gate (default: 2 messages before updating model)
+- Combined two `mentalQuery` calls into one (reduced LLM calls)
+- Adjusted whispers prompt to focus on curiosity over doubts
+
+#### UI Changes
+- Removed privacy footer from `/labyrinth` page (deferred for later implementation)
+
+#### Files Changed
+- `src/lib/soul/types.ts` - Added new UserModel fields
+- `src/lib/soul/memory.ts` - Added getter/setter methods
+- `src/lib/soul/opensouls/mentalProcesses/types.ts` - Created HydratedUserModel
+- `src/lib/soul/opensouls/perception/SoulOrchestrator.ts` - Updated hydration logic
+- `src/lib/soul/opensouls/perception/memoryIntegrate.ts` - Updated type references
+- `src/lib/soul/opensouls/mentalProcesses/*.ts` - Updated all processes
+- `src/lib/soul/opensouls/subprocesses/modelsTheVisitor.ts` - LLM optimizations
+- `src/pages/labyrinth.astro` - Removed privacy UI, improved name extraction
+- Deleted: `src/lib/soul/opensouls/perception/MemoryIntegrator.ts`
+
+---
+
 ## Session: January 13, 2026
 
 ### Soul Engine Implementation & Polish

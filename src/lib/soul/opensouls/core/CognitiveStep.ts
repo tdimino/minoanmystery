@@ -26,24 +26,65 @@ export interface LLMProvider {
       temperature?: number;
       maxTokens?: number;
       stream?: boolean;
+      thinkingEffort?: 'none' | 'low' | 'medium' | 'high';
     }
   ): Promise<string | AsyncIterable<string>>;
 }
 
-// Global provider instance (set by initialization)
-let globalProvider: LLMProvider | null = null;
+// Provider registry for multi-provider support
+const providerRegistry: Map<string, LLMProvider> = new Map();
 
-export function setLLMProvider(provider: LLMProvider): void {
-  globalProvider = provider;
+// Default provider (for models without prefix)
+let defaultProvider: LLMProvider | null = null;
+
+/**
+ * Register an LLM provider with a prefix (e.g., 'groq', 'openrouter')
+ */
+export function registerProvider(prefix: string, provider: LLMProvider): void {
+  providerRegistry.set(prefix, provider);
 }
 
-export function getLLMProvider(): LLMProvider {
-  if (!globalProvider) {
+/**
+ * Set the default provider (for models without a prefix)
+ */
+export function setLLMProvider(provider: LLMProvider): void {
+  defaultProvider = provider;
+  // Also register as 'openrouter' for explicit prefix usage
+  registerProvider('openrouter', provider);
+}
+
+/**
+ * Get the appropriate provider for a model
+ * Models with 'groq/' prefix use Groq, others use default
+ */
+export function getLLMProvider(model?: string): LLMProvider {
+  if (model) {
+    // Check for provider prefix
+    const prefixMatch = model.match(/^([a-z]+)\//);
+    if (prefixMatch) {
+      const prefix = prefixMatch[1];
+      const provider = providerRegistry.get(prefix);
+      if (provider) {
+        return provider;
+      }
+      // If prefix not found, warn and fall through to default
+      console.warn(`[LLMProvider] Unknown prefix '${prefix}', using default provider`);
+    }
+  }
+
+  if (!defaultProvider) {
     throw new Error(
       'LLM provider not initialized. Call setLLMProvider() before using cognitive steps.'
     );
   }
-  return globalProvider;
+  return defaultProvider;
+}
+
+/**
+ * Strip provider prefix from model string for API calls
+ */
+export function stripModelPrefix(model: string): string {
+  return model.replace(/^[a-z]+\//, '');
 }
 
 /**
@@ -77,9 +118,13 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
     | [WorkingMemory, PostProcessReturnType]
     | [WorkingMemory, AsyncIterable<string>, Promise<PostProcessReturnType>]
   > {
-    const provider = getLLMProvider();
+    // Get provider based on model prefix (e.g., 'groq/kimi-k2' uses Groq provider)
+    const provider = getLLMProvider(opts?.model);
     const config = factory(userArgs);
     const stream = opts?.stream ?? false;
+
+    // Strip provider prefix from model for API call
+    const modelForApi = opts?.model ? stripModelPrefix(opts.model) : undefined;
 
     // Build the command message
     const commandMemory = config.command(memory);
@@ -96,7 +141,7 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
         createDeferredPromise<PostProcessReturnType>();
 
       const responseStream = (await provider.generate(messages, {
-        model: opts?.model,
+        model: modelForApi,
         temperature: opts?.temperature,
         stream: true,
       })) as AsyncIterable<string>;
@@ -143,7 +188,7 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
     } else {
       // Non-streaming mode
       const response = (await provider.generate(messages, {
-        model: opts?.model,
+        model: modelForApi,
         temperature: opts?.temperature,
         stream: false,
       })) as string;

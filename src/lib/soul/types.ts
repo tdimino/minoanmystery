@@ -57,7 +57,9 @@ export type SoulState =
   | 'curious'     // Exploring multiple pages
   | 'engaged'     // Spending time on case studies
   | 'ready'       // Heading toward contact
-  | 'returning';  // Recognized visitor, personalized
+  | 'returning'   // Recognized visitor, personalized
+  | 'dormant'     // Extended idle (45s+), soul reflects
+  | 'exiting';    // Exit intent detected, save journey
 
 export type BehavioralType =
   | 'scanner'     // Quick browsing, low scroll depth
@@ -76,6 +78,24 @@ export interface UserModel {
   firstVisit: number;           // timestamp
   lastVisit: number;            // timestamp
 
+  // User identity (extracted from conversation)
+  userName?: string;            // User's name if known
+
+  // ─────────────────────────────────────────────────────────────
+  // Visitor Modeling (Open Souls userModel pattern)
+  // ─────────────────────────────────────────────────────────────
+
+  // Persona blueprint of the visitor - how they think, talk, what they care about
+  // Updated by Kothar as he learns more about the visitor
+  visitorModel?: string;
+
+  // Daimonic whispers - what the visitor's inner voice might be saying
+  // Represents their unspoken needs, expectations, or curiosities
+  visitorWhispers?: string;
+
+  // Last topics discussed - for continuity
+  lastTopics?: string[];
+
   // Navigation tracking
   pagesViewed: string[];
   currentPage: string;
@@ -88,8 +108,12 @@ export interface UserModel {
 
   // Inferred state
   inferredInterests: string[];
+  readinessSignals: string[];           // signals indicating readiness to contact
   behavioralType: BehavioralType;
   currentState: SoulState;
+
+  // Portfolio tracking
+  lastProject?: string;                 // last portfolio project viewed
 
   // Interaction tracking
   lastInteraction: number;      // timestamp

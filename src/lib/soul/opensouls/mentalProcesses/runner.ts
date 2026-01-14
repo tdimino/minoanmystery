@@ -12,7 +12,7 @@ import type {
   MentalProcess,
   ProcessDefinition,
   ProcessTransition,
-  VisitorModel,
+  HydratedUserModel,
   SoulState,
   Perception,
 } from './types';
@@ -95,10 +95,10 @@ export class ProcessRunner {
   }
 
   /**
-   * Evaluate automatic transitions based on visitor model
+   * Evaluate automatic transitions based on user model
    */
-  evaluateTransitions(visitorModel: VisitorModel): SoulState | null {
-    const v = visitorModel;
+  evaluateTransitions(userModel: HydratedUserModel): SoulState | null {
+    const v = userModel;
 
     // Returning visitor detection
     if (v.isReturning && this.currentState === 'greeting') {
@@ -135,7 +135,7 @@ export class ProcessRunner {
    */
   async evaluateAndRun(context: ProcessContext): Promise<ProcessReturn> {
     // Check for automatic transitions first
-    const autoTransition = this.evaluateTransitions(context.visitorModel);
+    const autoTransition = this.evaluateTransitions(context.userModel);
     if (autoTransition) {
       this.transition(autoTransition, 'auto_evaluation');
     }
