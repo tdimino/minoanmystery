@@ -298,13 +298,16 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 
   .details-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px 40px;
+    grid-template-columns: 0.7fr 1.2fr 1.1fr 1fr;
+    gap: 16px 24px;
+    justify-items: center;
+    text-align: center;
   }
 
   .detail-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 14px;
   }
 
@@ -338,7 +341,15 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     flex-direction: column;
     align-items: flex-start;
     width: fit-content;
-    text-decoration: none;
+    text-decoration: none !important;
+    outline: none !important;
+    border: none !important;
+  }
+
+  .link-arrow *,
+  .link-arrow *::before,
+  .link-arrow *::after {
+    text-decoration: none !important;
   }
 
   .link-row {
@@ -347,7 +358,8 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
   }
 
   .link-arrow .link-text {
-    font-size: 1rem;
+    font-size: 18px;
+    font-weight: 700;
     color: var(--color-text);
   }
 
@@ -362,11 +374,17 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     transition: transform var(--transition-fast);
   }
 
+  /* Override animations.css ::after underline */
+  .link-arrow::after {
+    display: none !important;
+  }
+
+  /* Use the .link-underline span instead - only show on hover */
   .link-underline {
     width: 0;
-    height: 1px;
+    height: 2px;
     background-color: var(--color-text);
-    margin-top: 2px;
+    margin-top: 0;
     transition: width 0.35s ease;
   }
 
@@ -618,7 +636,7 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     }
 
     .portfolio-details {
-      padding: 32px 24px;
+      padding: 48px 24px 32px;
       margin-top: -40px;
     }
 
@@ -634,11 +652,11 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     }
 
     .detail-label {
-      font-size: 16px;
+      font-size: 18px;
     }
 
     .detail-value {
-      font-size: 16px;
+      font-size: 18px;
     }
 
     /* Date (5th item) - in first column, centered like others */

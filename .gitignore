@@ -26,3 +26,4 @@ pnpm-debug.log*
 .vercel/
 .vercel
 .env*.local
+src/pages/og-preview.astro

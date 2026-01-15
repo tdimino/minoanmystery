@@ -288,6 +288,10 @@ const socialLinks = [
   }
 
   @media (max-width: 768px) {
+    .footer {
+      padding-top: 60px;
+    }
+
     .footer-content {
       grid-template-columns: 1fr;
       gap: var(--space-lg);
@@ -304,12 +308,35 @@ const socialLinks = [
     .footer-description {
       text-align: left;
       max-width: none;
+      font-weight: 600;
+    }
+
+    .footer-link-inline {
+      text-decoration-thickness: 2px;
+    }
+
+    .footer-heading {
+      font-weight: 800;
     }
 
     .footer-bottom {
       flex-direction: column;
       gap: var(--space-md);
       text-align: center;
+    }
+
+    .footer-link {
+      line-height: 1;
+      padding: 4px 0;
+      font-weight: 600;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .copyright {
+      font-weight: 600;
     }
   }
 </style>

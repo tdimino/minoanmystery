@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Version-1.1.0-blue.svg" alt="Version"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Version-1.2.0-blue.svg" alt="Version"></a>
 </p>
 
 # Minoan Mystery
