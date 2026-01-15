@@ -11,6 +11,7 @@ summary: "Partnered with Hugo & Cat, I audited the American College of Surgeons'
 duration: "2021 (6 months)"
 order: 1
 category: "enterprise"
+disciplines: ["ux-research", "content-strategy"]
 galleries:
   - id: "acs-audit"
     trigger: "acs-audit-thumb.jpg"

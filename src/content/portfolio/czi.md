@@ -11,6 +11,7 @@ summary: "At CZI, I co-led the \"Bravo Cohort\" to design a learning platform an
 duration: "2021 – 2022 (8 months)"
 order: 2
 category: "nonprofit"
+disciplines: ["ux-research", "instructional-design"]
 galleries:
   - id: "napari-ecosystem"
     trigger: "mural-thumb.png"

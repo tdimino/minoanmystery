@@ -7,8 +7,21 @@ import Footer from '../../components/Footer.astro';
 // Fetch all portfolio entries, sorted by order
 const portfolios = (await getCollection('portfolio')).sort((a, b) => a.data.order - b.data.order);
 
-// Get unique categories from portfolios
-const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boolean))] as string[];
+// Get unique categories and disciplines from portfolios
+// Include all available categories even if not currently used
+const allCategories = ['enterprise', 'startup', 'nonprofit', 'ai'];
+const usedCategories = new Set(portfolios.map(p => p.data.category).filter(Boolean));
+const categories = allCategories.filter(c => usedCategories.has(c) || c === 'startup');
+const disciplines = [...new Set(portfolios.flatMap(p => p.data.disciplines || []))] as string[];
+
+// Discipline display names
+const disciplineLabels: Record<string, string> = {
+  'content-strategy': 'Content Strategy',
+  'ux-design': 'UX Design',
+  'ux-research': 'UX Research',
+  'ai-engineering': 'AI Engineering',
+  'instructional-design': 'Instructional Design',
+};
 ---
 
 <BaseLayout
@@ -22,31 +35,43 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
     <div class="container">
       <h1 class="hero-title skew-animate">Case Studies</h1>
       <p class="paragraph-large fade-animate">
-        A curated collection of work spanning content strategy, UX design, and AI engineering—from enterprise transformations to nonprofit innovations.
+        I've spent the last decade untangling complexity—auditing thousand-page websites, building learning platforms for scientists, and training AI on expert knowledge.
       </p>
     </div>
   </section>
 
-  <!-- Filter Section -->
+  <!-- Filter Section - Single unified row -->
   <section class="filter-section">
     <div class="container">
-      <div class="filter-pills" role="tablist" aria-label="Filter case studies by category">
+      <div class="filter-pills" role="tablist" aria-label="Filter case studies">
         <button
           class="filter-pill active"
-          data-category="all"
+          data-filter="all"
           role="tab"
           aria-selected="true"
         >
           All
         </button>
+        <span class="filter-separator"></span>
         {categories.map((category) => (
           <button
             class="filter-pill"
-            data-category={category}
+            data-filter={`category:${category}`}
             role="tab"
             aria-selected="false"
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}
+          </button>
+        ))}
+        <span class="filter-separator"></span>
+        {disciplines.map((discipline) => (
+          <button
+            class="filter-pill"
+            data-filter={`discipline:${discipline}`}
+            role="tab"
+            aria-selected="false"
+          >
+            {disciplineLabels[discipline] || discipline}
           </button>
         ))}
       </div>
@@ -62,6 +87,7 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
             href={`/portfolio/${entry.slug}`}
             class="portfolio-card skew-animate"
             data-category={entry.data.category || 'uncategorized'}
+            data-disciplines={entry.data.disciplines?.join(',') || ''}
             style={`animation-delay: ${index * 0.1}s`}
           >
             <div class="card-image-wrapper">
@@ -74,9 +100,20 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
               <div class="card-image-overlay"></div>
             </div>
             <div class="card-content">
-              {entry.data.category && (
-                <span class="category-badge">{entry.data.category}</span>
-              )}
+              <div class="card-meta">
+                {entry.data.category && (
+                  <>
+                    <span class="category-tag">{entry.data.category}</span>
+                    <span class="meta-separator">—</span>
+                  </>
+                )}
+                {entry.data.disciplines?.map((discipline, i) => (
+                  <>
+                    <span class="discipline-tag">{disciplineLabels[discipline] || discipline}</span>
+                    {i < (entry.data.disciplines?.length || 0) - 1 && <span class="meta-separator">·</span>}
+                  </>
+                ))}
+              </div>
               <h3 class="card-title">{entry.data.title}</h3>
               <p class="card-summary">{entry.data.summary}</p>
               <span class="card-cta">
@@ -135,7 +172,7 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
   }
 
   .portfolio-hero .paragraph-large {
-    max-width: 720px;
+    max-width: 900px;
     color: var(--color-text-muted);
   }
 
@@ -147,7 +184,15 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
   .filter-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .filter-separator {
+    width: 1px;
+    height: 20px;
+    background: var(--color-border);
+    margin: 0 4px;
   }
 
   .filter-pill {
@@ -174,9 +219,14 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
     color: #fff;
   }
 
+  :global([data-theme="dark"]) .filter-pill.active {
+    background: #6d4463;
+    border-color: #6d4463;
+  }
+
   /* Portfolio Grid */
   .portfolio-grid-section {
-    padding-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
   }
 
   .portfolio-grid {
@@ -253,22 +303,37 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
     flex-grow: 1;
   }
 
-  .category-badge {
-    display: inline-block;
-    width: fit-content;
-    padding: 4px 12px;
-    font-size: 12px;
+  .card-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .category-tag {
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-primary);
-    background: rgba(150, 106, 133, 0.1);
-    border-radius: 100px;
-    margin-bottom: 12px;
+    color: var(--color-text-muted);
   }
 
-  :global([data-theme="dark"]) .category-badge {
-    background: rgba(201, 160, 184, 0.15);
+  .discipline-tag {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    letter-spacing: 0.01em;
+  }
+
+  :global([data-theme="dark"]) .discipline-tag {
+    color: #c9a0b8;
+  }
+
+  .meta-separator {
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    font-size: 13px;
   }
 
   .card-title {
@@ -283,35 +348,48 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
     font-size: 16px;
     line-height: 1.6;
     color: var(--color-text-muted);
-    margin: 0 0 auto;
+    margin: 0 0 16px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    padding-bottom: 16px;
   }
 
   /* Card CTA */
   .card-cta {
     display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 6px;
     margin-top: auto;
+    position: relative;
   }
 
   .cta-text {
-    display: inline-flex;
-    align-items: center;
     font-size: 16px;
     font-weight: 600;
     color: var(--color-text);
+    position: relative;
+  }
+
+  .cta-text::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-text);
+    transition: width 0.35s ease;
+  }
+
+  .portfolio-card:hover .cta-text::after {
+    width: 100%;
   }
 
   .cta-arrow {
     display: inline-block;
     width: 14px;
     height: 14px;
-    margin-left: 8px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
@@ -327,15 +405,7 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
   }
 
   .cta-underline {
-    width: 0;
-    height: 1px;
-    background: var(--color-text);
-    margin-top: 2px;
-    transition: width 0.35s ease;
-  }
-
-  .portfolio-card:hover .cta-underline {
-    width: 100%;
+    display: none;
   }
 
   /* Empty State */
@@ -369,7 +439,7 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
 
   /* CTA Section */
   .cta-section {
-    padding: var(--space-2xl) 0;
+    padding: var(--space-xl) 0 var(--space-2xl);
   }
 
   .cta-grid {
@@ -377,7 +447,7 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
     justify-content: space-between;
     align-items: center;
     gap: var(--space-xl);
-    padding-top: var(--space-xl);
+    padding-top: var(--space-lg);
     border-top: 1px solid var(--color-border);
   }
 
@@ -517,71 +587,90 @@ const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boole
 
 <script>
   function initPortfolioFilters() {
-    const filterPills = document.querySelectorAll('.filter-pill');
+    const pills = document.querySelectorAll('.filter-pill[data-filter]');
     const cards = document.querySelectorAll('.portfolio-card');
     const grid = document.querySelector('.portfolio-grid');
     const emptyState = document.querySelector('.empty-state');
     const resetBtn = document.querySelector('.reset-filter');
 
+    // Current filter state
+    let activeFilter = 'all';
+
     // Get initial filter from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const initialCategory = urlParams.get('category') || 'all';
+    const urlCategory = urlParams.get('category');
+    const urlDiscipline = urlParams.get('discipline');
+    if (urlCategory) activeFilter = `category:${urlCategory}`;
+    else if (urlDiscipline) activeFilter = `discipline:${urlDiscipline}`;
 
-    // Set initial active state
-    filterPills.forEach(pill => {
-      if (pill.getAttribute('data-category') === initialCategory) {
-        pill.classList.add('active');
-        pill.setAttribute('aria-selected', 'true');
-      } else {
-        pill.classList.remove('active');
-        pill.setAttribute('aria-selected', 'false');
-      }
+    // Set initial active states
+    pills.forEach(pill => {
+      const isActive = pill.getAttribute('data-filter') === activeFilter;
+      pill.classList.toggle('active', isActive);
+      pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    // Apply initial filter
-    filterCards(initialCategory);
+    // Apply initial filters
+    filterCards();
 
     // Filter click handler
-    filterPills.forEach(pill => {
+    pills.forEach(pill => {
       pill.addEventListener('click', () => {
-        const category = pill.getAttribute('data-category');
+        activeFilter = pill.getAttribute('data-filter') || 'all';
 
         // Update active state
-        filterPills.forEach(p => {
-          p.classList.remove('active');
-          p.setAttribute('aria-selected', 'false');
+        pills.forEach(p => {
+          const isActive = p.getAttribute('data-filter') === activeFilter;
+          p.classList.toggle('active', isActive);
+          p.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
-        pill.classList.add('active');
-        pill.setAttribute('aria-selected', 'true');
 
-        // Update URL
-        const url = new URL(window.location.href);
-        if (category === 'all') {
-          url.searchParams.delete('category');
-        } else {
-          url.searchParams.set('category', category);
-        }
-        window.history.replaceState({}, '', url);
-
-        // Filter cards
-        filterCards(category);
+        updateURL();
+        filterCards();
       });
     });
 
     // Reset button handler
     resetBtn?.addEventListener('click', () => {
-      const allPill = document.querySelector('.filter-pill[data-category="all"]');
-      if (allPill) {
-        (allPill as HTMLElement).click();
-      }
+      activeFilter = 'all';
+      pills.forEach(p => {
+        const isActive = p.getAttribute('data-filter') === 'all';
+        p.classList.toggle('active', isActive);
+        p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      updateURL();
+      filterCards();
     });
 
-    function filterCards(category: string) {
+    function updateURL() {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('category');
+      url.searchParams.delete('discipline');
+
+      if (activeFilter.startsWith('category:')) {
+        url.searchParams.set('category', activeFilter.replace('category:', ''));
+      } else if (activeFilter.startsWith('discipline:')) {
+        url.searchParams.set('discipline', activeFilter.replace('discipline:', ''));
+      }
+      window.history.replaceState({}, '', url);
+    }
+
+    function filterCards() {
       let visibleCount = 0;
 
       cards.forEach(card => {
         const cardCategory = card.getAttribute('data-category');
-        const shouldShow = category === 'all' || cardCategory === category;
+        const cardDisciplines = (card.getAttribute('data-disciplines') || '').split(',').filter(Boolean);
+
+        let shouldShow = true;
+        if (activeFilter === 'all') {
+          shouldShow = true;
+        } else if (activeFilter.startsWith('category:')) {
+          shouldShow = cardCategory === activeFilter.replace('category:', '');
+        } else if (activeFilter.startsWith('discipline:')) {
+          const filterDiscipline = activeFilter.replace('discipline:', '');
+          shouldShow = cardDisciplines.includes(filterDiscipline);
+        }
 
         if (shouldShow) {
           card.classList.remove('hidden');

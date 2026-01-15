@@ -6,10 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Portfolio Index Page**: New `/portfolio` page displaying all case studies in a filterable card grid
-  - Category-based filtering (All, Enterprise, Nonprofit) with URL param persistence
+  - Unified single-row filter with category and discipline pills (modern 2025 pattern)
+  - Multi-discipline support per portfolio item (array-based `disciplines` field)
+  - Discipline tags: UX Research, UX Design, Content Strategy, Instructional Design, AI Engineering
+  - Category + disciplines shown inline on cards: "ENTERPRISE — UX Research · Content Strategy"
   - Responsive 3-column grid (desktop) → 2-column (tablet) → 1-column (mobile)
-  - Category badges, hover animations, and smooth filter transitions
-- **Content Schema**: Added `category` and `tags` fields to portfolio collection for filtering
+  - Smooth filter transitions with URL param persistence
+- **Content Schema**: Added `category`, `disciplines` (array), and `tags` fields to portfolio collection
 - **README Screenshots**: Added visual documentation
   - Home page in dark mode with Tyrian purple accents
   - Labyrinth chat interface with Kothar

@@ -83,6 +83,10 @@ src/
 - **View Transitions**: Smooth page navigation
 - **Responsive**: Fluid typography with `clamp()`
 - **Mobile UX**: Touch-friendly targets, optimized parallax sections, 2-column detail grids
+- **Portfolio Index**: Filterable case study grid with:
+  - Category filters (Enterprise, Startup, Nonprofit)
+  - Multi-discipline tags (UX Research, UX Design, Content Strategy, etc.)
+  - URL-persisted filter state
 - **Soul Engine**: Open Souls paradigm implementation with:
   - Visitor modeling via background subprocesses
   - Mental process state machine (greeting → curious → engaged → ready)

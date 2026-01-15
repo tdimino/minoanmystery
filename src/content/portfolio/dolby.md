@@ -10,6 +10,7 @@ summary: "On a small team at Valtech, I re-designed Dolby.com's consumer and pro
 duration: "April 2020 (4 weeks)"
 order: 3
 category: "enterprise"
+disciplines: ["ux-design", "content-strategy"]
 galleries:
   - id: "legacy-dolby"
     trigger: "legacy-dolby-home.jpg"
