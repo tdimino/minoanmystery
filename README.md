@@ -35,6 +35,20 @@ My newsletter [*Knossot ha Kotharot*](https://tomdimino.substack.com/) reconstru
 - [LinkedIn](https://www.linkedin.com/in/tomdimino/)
 - [Blog](https://tomdimino.substack.com/)
 
+## Screenshots
+
+<p align="center">
+  <img src="public/images/readme-home-dark.png" alt="Home page in dark mode" width="800"/>
+  <br/>
+  <em>Home page with Tyrian purple accents and portfolio cards</em>
+</p>
+
+<p align="center">
+  <img src="public/images/readme-labyrinth-kothar.png" alt="Kothar in the Labyrinth" width="800"/>
+  <br/>
+  <em>The Labyrinth — chat with Kothar, the site's resident soul</em>
+</p>
+
 ## Stack
 
 - **Framework**: Astro 5 with View Transitions

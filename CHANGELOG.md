@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Portfolio Index Page**: New `/portfolio` page displaying all case studies in a filterable card grid
+  - Category-based filtering (All, Enterprise, Nonprofit) with URL param persistence
+  - Responsive 3-column grid (desktop) → 2-column (tablet) → 1-column (mobile)
+  - Category badges, hover animations, and smooth filter transitions
+- **Content Schema**: Added `category` and `tags` fields to portfolio collection for filtering
+- **README Screenshots**: Added visual documentation
+  - Home page in dark mode with Tyrian purple accents
+  - Labyrinth chat interface with Kothar
 - **Social Media OG Images**: Proper 1200×630 Open Graph images for social sharing
   - `/images/og/default.png` - MinoanSocialSeal on Tyrian purple background
   - `/images/og/labyrinth.png` - Kothar avatar for the Labyrinth page
@@ -14,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - **API Endpoints**: `/api/soul/subprocess` for background visitor modeling, `/api/soul/personality` for soul personality
 
 ### Changed
+- **Header Navigation**: Added "View All Case Studies" link to portfolio dropdown menu
 - **BaseLayout**: Updated default OG image to `/images/og/default.png` with proper 1200×630 dimensions
 - **Labyrinth Page**: Custom OG image featuring Kothar avatar, updated title and description
 

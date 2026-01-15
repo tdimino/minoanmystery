@@ -27,6 +27,8 @@ const portfolio = defineCollection({
     summary: z.string(),
     duration: z.string().optional(),
     order: z.number(),
+    category: z.enum(['enterprise', 'startup', 'nonprofit', 'ai']).optional(),
+    tags: z.array(z.string()).optional(),
     galleries: z.array(gallerySchema).optional(),
   }),
 });

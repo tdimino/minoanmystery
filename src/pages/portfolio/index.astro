@@ -1,0 +1,612 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+// Fetch all portfolio entries, sorted by order
+const portfolios = (await getCollection('portfolio')).sort((a, b) => a.data.order - b.data.order);
+
+// Get unique categories from portfolios
+const categories = [...new Set(portfolios.map(p => p.data.category).filter(Boolean))] as string[];
+---
+
+<BaseLayout
+  title="Case Studies"
+  description="A curated collection of design, content strategy, and AI projects from enterprise clients, startups, and nonprofits."
+>
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="portfolio-hero">
+    <div class="container">
+      <h1 class="hero-title skew-animate">Case Studies</h1>
+      <p class="paragraph-large fade-animate">
+        A curated collection of work spanning content strategy, UX design, and AI engineering—from enterprise transformations to nonprofit innovations.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <div class="container">
+      <div class="filter-pills" role="tablist" aria-label="Filter case studies by category">
+        <button
+          class="filter-pill active"
+          data-category="all"
+          role="tab"
+          aria-selected="true"
+        >
+          All
+        </button>
+        {categories.map((category) => (
+          <button
+            class="filter-pill"
+            data-category={category}
+            role="tab"
+            aria-selected="false"
+          >
+            {category.charAt(0).toUpperCase() + category.slice(1)}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Grid -->
+  <section class="portfolio-grid-section">
+    <div class="container">
+      <div class="portfolio-grid">
+        {portfolios.map((entry, index) => (
+          <a
+            href={`/portfolio/${entry.slug}`}
+            class="portfolio-card skew-animate"
+            data-category={entry.data.category || 'uncategorized'}
+            style={`animation-delay: ${index * 0.1}s`}
+          >
+            <div class="card-image-wrapper">
+              <img
+                src={entry.data.heroImage}
+                alt={entry.data.title}
+                loading="lazy"
+                class="card-image"
+              />
+              <div class="card-image-overlay"></div>
+            </div>
+            <div class="card-content">
+              {entry.data.category && (
+                <span class="category-badge">{entry.data.category}</span>
+              )}
+              <h3 class="card-title">{entry.data.title}</h3>
+              <p class="card-summary">{entry.data.summary}</p>
+              <span class="card-cta">
+                <span class="cta-text">View project</span>
+                <span class="cta-arrow"></span>
+                <span class="cta-underline"></span>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" hidden>
+        <p>No case studies match the selected filter.</p>
+        <button class="reset-filter">Show all projects</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-grid">
+        <div class="cta-content">
+          <h2 class="fade-animate">
+            Interested in working together?<br/>
+            <a href="/contact" class="cta-link">Get in touch</a> today.
+          </h2>
+          <p class="paragraph-large fade-animate">
+            As human beings of the Digital Age, we're all teeming with thoughts and ideas. I enjoy bridging the gaps between them.
+          </p>
+        </div>
+        <a href="/contact" class="arrow-circle fade-animate" aria-label="Get in touch">
+          <span class="circle-bg-hover"></span>
+          <span class="circle-icon"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .portfolio-hero {
+    padding: var(--space-2xl) 0 var(--space-lg);
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
+  }
+
+  .portfolio-hero .paragraph-large {
+    max-width: 720px;
+    color: var(--color-text-muted);
+  }
+
+  /* Filter Section */
+  .filter-section {
+    padding-bottom: var(--space-lg);
+  }
+
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .filter-pill {
+    padding: 10px 20px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .filter-pill:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .filter-pill.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  /* Portfolio Grid */
+  .portfolio-grid-section {
+    padding-bottom: var(--space-xl);
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  /* Portfolio Card */
+  .portfolio-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .portfolio-card:hover {
+    transform: scale(0.98);
+    border-color: var(--color-primary);
+  }
+
+  .portfolio-card.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  /* Card Image */
+  .card-image-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .portfolio-card:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .card-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .portfolio-card:hover .card-image-overlay {
+    opacity: 1;
+  }
+
+  /* Card Content */
+  .card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .category-badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    background: rgba(150, 106, 133, 0.1);
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+
+  :global([data-theme="dark"]) .category-badge {
+    background: rgba(201, 160, 184, 0.15);
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 12px;
+    color: var(--color-text);
+  }
+
+  .card-summary {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0 0 auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding-bottom: 16px;
+  }
+
+  /* Card CTA */
+  .card-cta {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: auto;
+  }
+
+  .cta-text {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .cta-arrow {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.25s ease;
+  }
+
+  :global([data-theme="dark"]) .cta-arrow {
+    filter: invert(1);
+  }
+
+  .portfolio-card:hover .cta-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .cta-underline {
+    width: 0;
+    height: 1px;
+    background: var(--color-text);
+    margin-top: 2px;
+    transition: width 0.35s ease;
+  }
+
+  .portfolio-card:hover .cta-underline {
+    width: 100%;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-xl) 0;
+  }
+
+  .empty-state p {
+    font-size: 18px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .reset-filter {
+    padding: 12px 24px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color-primary);
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+  }
+
+  .reset-filter:hover {
+    opacity: 0.9;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .cta-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cta-content {
+    max-width: 800px;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.2;
+    margin-bottom: var(--space-md);
+  }
+
+  .cta-link {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 3px solid var(--color-text);
+    padding-bottom: 4px;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .cta-link:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .cta-content .paragraph-large {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* Arrow Circle */
+  .arrow-circle {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .circle-icon {
+    width: 50px;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+    transition: background-image 0.35s ease;
+  }
+
+  :global([data-theme="dark"]) .circle-icon {
+    filter: invert(1);
+  }
+
+  .circle-bg-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--color-text);
+    border-radius: 50%;
+    transition: width 0.35s ease;
+    z-index: 1;
+  }
+
+  .arrow-circle:hover .circle-bg-hover {
+    width: 100%;
+  }
+
+  .arrow-circle:hover .circle-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  }
+
+  /* Responsive - Tablet */
+  @media (max-width: 1024px) {
+    .portfolio-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  /* Responsive - Mobile */
+  @media (max-width: 768px) {
+    .portfolio-hero {
+      padding: var(--space-xl) 0 var(--space-md);
+    }
+
+    .filter-pills {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-pill {
+      flex-shrink: 0;
+    }
+
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 20px;
+    }
+
+    .cta-grid {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cta-content {
+      text-align: center;
+      width: 100%;
+    }
+
+    .arrow-circle {
+      width: 100px;
+      height: 100px;
+      align-self: flex-start;
+      margin-top: var(--space-lg);
+    }
+  }
+</style>
+
+<script>
+  function initPortfolioFilters() {
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.portfolio-card');
+    const grid = document.querySelector('.portfolio-grid');
+    const emptyState = document.querySelector('.empty-state');
+    const resetBtn = document.querySelector('.reset-filter');
+
+    // Get initial filter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('category') || 'all';
+
+    // Set initial active state
+    filterPills.forEach(pill => {
+      if (pill.getAttribute('data-category') === initialCategory) {
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+      } else {
+        pill.classList.remove('active');
+        pill.setAttribute('aria-selected', 'false');
+      }
+    });
+
+    // Apply initial filter
+    filterCards(initialCategory);
+
+    // Filter click handler
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const category = pill.getAttribute('data-category');
+
+        // Update active state
+        filterPills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+
+        // Update URL
+        const url = new URL(window.location.href);
+        if (category === 'all') {
+          url.searchParams.delete('category');
+        } else {
+          url.searchParams.set('category', category);
+        }
+        window.history.replaceState({}, '', url);
+
+        // Filter cards
+        filterCards(category);
+      });
+    });
+
+    // Reset button handler
+    resetBtn?.addEventListener('click', () => {
+      const allPill = document.querySelector('.filter-pill[data-category="all"]');
+      if (allPill) {
+        (allPill as HTMLElement).click();
+      }
+    });
+
+    function filterCards(category: string) {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const shouldShow = category === 'all' || cardCategory === category;
+
+        if (shouldShow) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Show/hide empty state
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.removeAttribute('hidden');
+          if (grid) (grid as HTMLElement).style.display = 'none';
+        } else {
+          emptyState.setAttribute('hidden', '');
+          if (grid) (grid as HTMLElement).style.display = '';
+        }
+      }
+    }
+  }
+
+  // Run on load
+  initPortfolioFilters();
+
+  // Re-run after View Transitions
+  document.addEventListener('astro:after-swap', initPortfolioFilters);
+</script>

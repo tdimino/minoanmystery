@@ -10,6 +10,7 @@ tagline: ""
 summary: "At CZI, I co-led the \"Bravo Cohort\" to design a learning platform and training materials for biology PhDs and imaging scientists."
 duration: "2021 – 2022 (8 months)"
 order: 2
+category: "nonprofit"
 galleries:
   - id: "napari-ecosystem"
     trigger: "mural-thumb.png"
