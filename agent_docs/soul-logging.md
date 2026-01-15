@@ -126,3 +126,75 @@ Call `getSoulLogger().printSummary()` to output cumulative stats:
 ├── Total Duration: 2,847ms
 └── State Transitions: greeting → curious
 ```
+
+---
+
+## Vercel CLI Logging (Production)
+
+API endpoints output structured JSON logs for Vercel CLI filtering.
+
+### Structured Log Schema
+
+```typescript
+{
+  event: 'request_start' | 'response_complete' | 'error';
+  correlationId: string;     // e.g., "soul_abc12345"
+  endpoint: string;          // e.g., "/api/soul/chat"
+  timestamp: string;         // ISO 8601
+
+  // Request metrics
+  messageLength?: number;    // Chat query length
+  historyLength?: number;    // Conversation history size
+  stream?: boolean;          // Streaming mode
+
+  // Response metrics
+  latencyMs?: number;        // Total request duration
+  responseLength?: number;   // Response character count
+  audioBytes?: number;       // TTS audio size
+
+  // Error details
+  error?: string;            // Error message
+  ip?: string;               // Rate-limited IP (truncated)
+}
+```
+
+### Vercel CLI Commands
+
+```bash
+# Real-time log streaming
+vercel logs --follow
+
+# Filter to Soul Engine requests
+vercel logs --follow 2>&1 | grep '"endpoint":"/api/soul'
+
+# View errors only
+vercel logs --since 1h 2>&1 | grep '"event":"error"'
+
+# Trace a specific request by correlation ID
+vercel logs --since 1h 2>&1 | grep "soul_abc12345"
+
+# Filter by endpoint
+vercel logs --follow 2>&1 | grep '"/api/soul/chat"'
+vercel logs --follow 2>&1 | grep '"/api/soul/tts"'
+vercel logs --follow 2>&1 | grep '"/api/soul/subprocess"'
+
+# JSON output for programmatic analysis
+vercel logs --output json --since 1h
+```
+
+### Log Retention
+
+| Vercel Plan | Retention |
+|-------------|-----------|
+| Hobby | 1 hour |
+| Pro | 3 days |
+| Enterprise | Custom |
+
+### Two-Layer Logging System
+
+| Layer | Format | Purpose | When Active |
+|-------|--------|---------|-------------|
+| **SoulLogger** | ANSI (colored boxes) | Local development | `SOUL_DEBUG=true` |
+| **API Logs** | JSON structured | Vercel CLI filtering | Always on |
+
+The SoulLogger provides rich visual debugging locally, while JSON API logs enable production monitoring via `vercel logs`.

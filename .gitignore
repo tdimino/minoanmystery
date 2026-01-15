@@ -24,3 +24,5 @@ pnpm-debug.log*
 .idea/
 .osgrep
 .vercel/
+.vercel
+.env*.local

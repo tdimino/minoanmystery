@@ -51,10 +51,20 @@ const voiceConfig = {
 };
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const correlationId = `soul_${crypto.randomUUID().slice(0, 8)}`;
+  const startTime = Date.now();
+
   // Use process.env for Vercel runtime, import.meta.env for local dev
   const cartesiaApiKey = process.env.CARTESIA_API_KEY || import.meta.env.CARTESIA_API_KEY;
 
   if (!cartesiaApiKey) {
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/tts',
+      error: 'missing_api_key',
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({ error: 'Cartesia API key not configured' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
@@ -64,6 +74,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   // Rate limiting
   const ip = clientAddress || 'unknown';
   if (!checkRateLimit(ip)) {
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/tts',
+      error: 'rate_limit_exceeded',
+      ip,
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
@@ -73,6 +91,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const body = await request.json();
     const { text, voiceId } = body;
+
+    console.log(JSON.stringify({
+      event: 'request_start',
+      correlationId,
+      endpoint: '/api/soul/tts',
+      textLength: text?.length || 0,
+      voiceId: voiceId || 'default',
+      timestamp: new Date().toISOString(),
+    }));
 
     if (!text || typeof text !== 'string') {
       return new Response(
@@ -135,6 +162,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     // Convert to Buffer for proper Response body type
     const responseBuffer = Buffer.from(buffer);
 
+    console.log(JSON.stringify({
+      event: 'response_complete',
+      correlationId,
+      endpoint: '/api/soul/tts',
+      latencyMs: Date.now() - startTime,
+      audioBytes: responseBuffer.byteLength,
+      timestamp: new Date().toISOString(),
+    }));
+
     return new Response(responseBuffer, {
       status: 200,
       headers: {
@@ -145,6 +181,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     });
   } catch (error) {
     console.error('[TTS API] Error:', error);
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/tts',
+      error: error instanceof Error ? error.message : String(error),
+      latencyMs: Date.now() - startTime,
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({ error: 'Text-to-speech failed', details: String(error) }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }

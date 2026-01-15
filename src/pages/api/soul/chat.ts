@@ -148,9 +148,20 @@ interface ChatRequest {
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const correlationId = `soul_${crypto.randomUUID().slice(0, 8)}`;
+  const startTime = Date.now();
+
   // Rate limiting
   const ip = clientAddress || 'unknown';
   if (!checkRateLimit(ip)) {
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/chat',
+      error: 'rate_limit_exceeded',
+      ip,
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
@@ -162,6 +173,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     const body: ChatRequest = await request.json();
     const { query, visitorContext, conversationHistory, stream } = body;
+
+    console.log(JSON.stringify({
+      event: 'request_start',
+      correlationId,
+      endpoint: '/api/soul/chat',
+      messageLength: query?.length || 0,
+      historyLength: conversationHistory?.length || 0,
+      stream: !!stream,
+      timestamp: new Date().toISOString(),
+    }));
 
     if (!query || typeof query !== 'string') {
       return new Response(
@@ -238,9 +259,29 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
             }
             const finalResult = await resultPromise;
+
+            console.log(JSON.stringify({
+              event: 'response_complete',
+              correlationId,
+              endpoint: '/api/soul/chat',
+              latencyMs: Date.now() - startTime,
+              responseLength: finalResult?.length || 0,
+              stream: true,
+              timestamp: new Date().toISOString(),
+            }));
+
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, fullResponse: finalResult })}\n\n`));
             controller.close();
           } catch (error) {
+            console.log(JSON.stringify({
+              event: 'error',
+              correlationId,
+              endpoint: '/api/soul/chat',
+              error: error instanceof Error ? error.message : String(error),
+              latencyMs: Date.now() - startTime,
+              stream: true,
+              timestamp: new Date().toISOString(),
+            }));
             controller.error(error);
           }
         },
@@ -265,6 +306,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         }
       );
 
+      console.log(JSON.stringify({
+        event: 'response_complete',
+        correlationId,
+        endpoint: '/api/soul/chat',
+        latencyMs: Date.now() - startTime,
+        responseLength: response?.length || 0,
+        stream: false,
+        timestamp: new Date().toISOString(),
+      }));
+
       return new Response(
         JSON.stringify({
           message: response,
@@ -278,6 +329,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
   } catch (error) {
     console.error('Soul chat error:', error);
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/chat',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      latencyMs: Date.now() - startTime,
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({
         error: 'Failed to process request',

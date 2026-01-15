@@ -99,7 +99,20 @@ export class SSEStreamClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        // Try to get error details from response
+        let errorDetails = '';
+        try {
+          const errorBody = await response.text();
+          errorDetails = errorBody.slice(0, 500); // Limit size
+        } catch {
+          errorDetails = 'Could not read error body';
+        }
+        console.error('[SSEClient] HTTP error:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorDetails,
+        });
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       // Check if response is SSE stream
@@ -161,6 +174,14 @@ export class SSEStreamClient {
       }
     } catch (error) {
       clearTimeout(timeoutId);
+
+      // Log detailed error for debugging
+      console.error('[SSEClient] Request failed:', {
+        error,
+        errorName: error instanceof Error ? error.name : 'Unknown',
+        errorMessage: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
+      });
 
       const errorMessage = this.getErrorMessage(error);
       this.dispatchEvent('error', { error: errorMessage });

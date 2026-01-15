@@ -118,8 +118,19 @@ interface SubprocessRequest {
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const correlationId = `soul_${crypto.randomUUID().slice(0, 8)}`;
+  const startTime = Date.now();
+
   const ip = clientAddress || 'unknown';
   if (!checkRateLimit(ip)) {
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/subprocess',
+      error: 'rate_limit_exceeded',
+      ip,
+      timestamp: new Date().toISOString(),
+    }));
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
@@ -131,6 +142,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     const body: SubprocessRequest = await request.json();
     const { sessionId, conversationHistory, userModel, visitorModel, visitorWhispers } = body;
+
+    console.log(JSON.stringify({
+      event: 'request_start',
+      correlationId,
+      endpoint: '/api/soul/subprocess',
+      sessionId: sessionId?.slice(0, 8),
+      historyLength: conversationHistory?.length || 0,
+      timestamp: new Date().toISOString(),
+    }));
 
     // Validate required fields
     if (!sessionId || !conversationHistory || conversationHistory.length < 2) {
@@ -227,9 +247,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     };
 
     // Run the subprocess with injected memory
-    console.log(`[Subprocess API] Running modelsTheVisitor for session ${sessionId.slice(0, 8)}...`);
-    const startTime = Date.now();
-
     await modelsTheVisitor(
       {
         sessionId,
@@ -244,15 +261,23 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       }
     );
 
-    const duration = Date.now() - startTime;
-    console.log(`[Subprocess API] Completed in ${duration}ms`);
+    console.log(JSON.stringify({
+      event: 'response_complete',
+      correlationId,
+      endpoint: '/api/soul/subprocess',
+      sessionId: sessionId.slice(0, 8),
+      latencyMs: Date.now() - startTime,
+      modelUpdated: updatedVisitorModel !== visitorModel,
+      whispersUpdated: updatedVisitorWhispers !== visitorWhispers,
+      timestamp: new Date().toISOString(),
+    }));
 
     return new Response(
       JSON.stringify({
         success: true,
         visitorModel: updatedVisitorModel,
         visitorWhispers: updatedVisitorWhispers,
-        duration,
+        duration: Date.now() - startTime,
       }),
       {
         status: 200,
@@ -261,6 +286,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     );
   } catch (error) {
     console.error('[Subprocess API] Error:', error);
+    console.log(JSON.stringify({
+      event: 'error',
+      correlationId,
+      endpoint: '/api/soul/subprocess',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      latencyMs: Date.now() - startTime,
+      timestamp: new Date().toISOString(),
+    }));
     // Sanitize error response - don't expose internal details
     return new Response(
       JSON.stringify({ error: 'Subprocess failed' }),
