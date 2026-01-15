@@ -81,6 +81,8 @@ function isActive(href: string): boolean {
 
       <a href="/" class="nav-logo" aria-label="Minoan Mystery Home">
         <img src="/images/header-logo.png" alt="Tom di Mino" class="logo-img" />
+        <!-- Lightning spark particles container -->
+        <div class="spark-container" id="spark-container" aria-hidden="true"></div>
       </a>
 
       <ul class="nav-links nav-right">
@@ -177,10 +179,11 @@ function isActive(href: string): boolean {
   }
 
   /* Edge-tracing glow effect - dark mode only
-     Colors: Rich magenta-purple that complements Tyrian purple (#c9a0b8)
-     Primary glow: #d175b8 (vivid pink-magenta)
-     Accent: #a855f7 (purple-violet for depth)
-     Electric: #e879f9 (bright fuchsia for crackle)
+     PALPATINE FORCE LIGHTNING STYLE
+     Primary glow: #60a5fa (electric blue)
+     Secondary: #8b5cf6 (purple-violet)
+     Core: #c4b5fd (light violet)
+     Crackle: #93c5fd / #dbeafe (bright blue-white)
   */
   :global([data-theme='dark']) .nav-logo::before {
     content: "";
@@ -191,151 +194,187 @@ function isActive(href: string): boolean {
     width: 100%;
     height: 100%;
     background: url('/images/header-logo.png') center/contain no-repeat;
-    /* Stacked drop-shadows trace the alpha channel edges */
-    filter: drop-shadow(0 0 3px #d175b8)
-            drop-shadow(0 0 6px #c9a0b8)
-            drop-shadow(0 0 10px #a855f7)
-            drop-shadow(0 0 16px rgba(168, 85, 247, 0.5));
-    opacity: 0.55;
+    /* Stacked drop-shadows - electric blue core with purple halo */
+    filter: drop-shadow(0 0 2px #c4b5fd)
+            drop-shadow(0 0 5px #60a5fa)
+            drop-shadow(0 0 10px #8b5cf6)
+            drop-shadow(0 0 18px rgba(96, 165, 250, 0.6))
+            drop-shadow(0 0 25px rgba(139, 92, 246, 0.4));
+    opacity: 0.6;
     z-index: 0;
     pointer-events: none;
-    animation: logo-edge-glow 4s ease-in-out infinite;
+    animation: logo-edge-glow 3s ease-in-out infinite;
   }
 
-  /* Electric crackling effect - subtle static overlay */
+  /* Electric crackling effect - Sith lightning flicker */
   :global([data-theme='dark']) .nav-logo::after {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
+    width: 130%;
+    height: 130%;
     background: url('/images/header-logo.png') center/contain no-repeat;
-    /* Sharp, flickering glow for electric crackle - bright fuchsia/magenta */
-    filter: drop-shadow(0 0 1px #e879f9)
-            drop-shadow(0 0 2px #f0abfc)
-            drop-shadow(0 0 3px #d175b8);
+    /* brightness(0) hides image, drop-shadows trace alpha edges */
+    filter: brightness(0) saturate(0)
+            drop-shadow(0 0 2px #fff)
+            drop-shadow(0 0 4px #dbeafe)
+            drop-shadow(0 0 6px #93c5fd)
+            drop-shadow(0 0 10px #60a5fa);
     opacity: 0;
     z-index: 0;
     pointer-events: none;
-    animation: logo-electric-crackle 0.15s steps(2) infinite;
+    animation: logo-force-lightning 0.12s steps(3) infinite;
   }
 
-  /* Breathing animation for glow */
+  /* Breathing animation for base glow */
   @keyframes logo-edge-glow {
     0%, 100% {
-      filter: drop-shadow(0 0 2px #d175b8)
-              drop-shadow(0 0 5px #c9a0b8)
-              drop-shadow(0 0 8px #a855f7)
-              drop-shadow(0 0 14px rgba(168, 85, 247, 0.4));
-      opacity: 0.45;
+      filter: drop-shadow(0 0 2px #c4b5fd)
+              drop-shadow(0 0 4px #60a5fa)
+              drop-shadow(0 0 8px #8b5cf6)
+              drop-shadow(0 0 14px rgba(96, 165, 250, 0.5))
+              drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
+      opacity: 0.5;
     }
     50% {
-      filter: drop-shadow(0 0 4px #d175b8)
-              drop-shadow(0 0 8px #c9a0b8)
-              drop-shadow(0 0 14px #a855f7)
-              drop-shadow(0 0 22px rgba(168, 85, 247, 0.6));
-      opacity: 0.65;
+      filter: drop-shadow(0 0 3px #c4b5fd)
+              drop-shadow(0 0 6px #60a5fa)
+              drop-shadow(0 0 12px #8b5cf6)
+              drop-shadow(0 0 20px rgba(96, 165, 250, 0.7))
+              drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+      opacity: 0.7;
     }
   }
 
-  /* Electric crackling animation - random flicker pattern */
-  @keyframes logo-electric-crackle {
+  /* Force Lightning crackling - chaotic, electric flicker */
+  @keyframes logo-force-lightning {
     0% {
       opacity: 0;
-      filter: drop-shadow(0 0 1px #e879f9)
-              drop-shadow(0 0 2px #f0abfc)
-              drop-shadow(0 0 3px #d175b8);
     }
-    10% {
-      opacity: 0.3;
-      filter: drop-shadow(0 0 2px #f0abfc)
-              drop-shadow(0 0 4px #e879f9)
-              drop-shadow(0 0 6px #d175b8);
+    5% {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 2px #fff)
+              drop-shadow(0 0 4px #dbeafe)
+              drop-shadow(0 0 6px #93c5fd)
+              drop-shadow(0 0 10px #60a5fa);
     }
-    15% {
+    8% {
       opacity: 0;
     }
-    25% {
-      opacity: 0.15;
-      filter: drop-shadow(0 0 1px #f0abfc)
-              drop-shadow(0 0 3px #e879f9);
+    15% {
+      opacity: 0.35;
+      filter: drop-shadow(0 0 1px #fff)
+              drop-shadow(0 0 3px #93c5fd)
+              drop-shadow(0 0 5px #8b5cf6);
     }
-    30% {
+    18% {
+      opacity: 0;
+    }
+    35% {
+      opacity: 0.45;
+      filter: drop-shadow(0 0 2px #dbeafe)
+              drop-shadow(0 0 5px #60a5fa)
+              drop-shadow(0 0 8px #8b5cf6);
+    }
+    40% {
+      opacity: 0;
+    }
+    55% {
+      opacity: 0.3;
+      filter: drop-shadow(0 0 1px #fff)
+              drop-shadow(0 0 2px #93c5fd);
+    }
+    58% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.55;
+      filter: drop-shadow(0 0 3px #fff)
+              drop-shadow(0 0 6px #dbeafe)
+              drop-shadow(0 0 10px #60a5fa)
+              drop-shadow(0 0 14px #8b5cf6);
+    }
+    80% {
+      opacity: 0;
+    }
+    92% {
+      opacity: 0.25;
+      filter: drop-shadow(0 0 1px #dbeafe)
+              drop-shadow(0 0 3px #60a5fa);
+    }
+    95%, 100% {
+      opacity: 0;
+    }
+  }
+
+  /* Hover state - UNLIMITED POWER */
+  :global([data-theme='dark']) .nav-logo:hover::before {
+    filter: drop-shadow(0 0 3px #fff)
+            drop-shadow(0 0 6px #c4b5fd)
+            drop-shadow(0 0 12px #60a5fa)
+            drop-shadow(0 0 20px #8b5cf6)
+            drop-shadow(0 0 30px rgba(96, 165, 250, 0.8))
+            drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
+    opacity: 0.85;
+    animation: none;
+  }
+
+  /* Hover state - intense crackling */
+  :global([data-theme='dark']) .nav-logo:hover::after {
+    animation: logo-force-lightning-intense 0.08s steps(3) infinite;
+  }
+
+  /* Intense Force Lightning on hover */
+  @keyframes logo-force-lightning-intense {
+    0% {
+      opacity: 0;
+    }
+    5% {
+      opacity: 0.7;
+      filter: drop-shadow(0 0 3px #fff)
+              drop-shadow(0 0 6px #dbeafe)
+              drop-shadow(0 0 10px #93c5fd)
+              drop-shadow(0 0 16px #60a5fa);
+    }
+    10% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 2px #fff)
+              drop-shadow(0 0 5px #93c5fd)
+              drop-shadow(0 0 8px #8b5cf6);
+    }
+    25% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.65;
+      filter: drop-shadow(0 0 4px #dbeafe)
+              drop-shadow(0 0 8px #60a5fa)
+              drop-shadow(0 0 14px #8b5cf6);
+    }
+    45% {
       opacity: 0;
     }
     60% {
-      opacity: 0.25;
-      filter: drop-shadow(0 0 2px #e879f9)
-              drop-shadow(0 0 5px #f0abfc)
-              drop-shadow(0 0 8px #d175b8);
+      opacity: 0.45;
+      filter: drop-shadow(0 0 2px #fff)
+              drop-shadow(0 0 4px #93c5fd);
     }
     65% {
       opacity: 0;
     }
-    85% {
-      opacity: 0.2;
-      filter: drop-shadow(0 0 1px #f0abfc)
-              drop-shadow(0 0 2px #e879f9);
+    80% {
+      opacity: 0.75;
+      filter: drop-shadow(0 0 4px #fff)
+              drop-shadow(0 0 8px #dbeafe)
+              drop-shadow(0 0 14px #60a5fa)
+              drop-shadow(0 0 20px #8b5cf6);
     }
-    90%, 100% {
-      opacity: 0;
-    }
-  }
-
-  /* Hover state - intensified glow */
-  :global([data-theme='dark']) .nav-logo:hover::before {
-    filter: drop-shadow(0 0 5px #d175b8)
-            drop-shadow(0 0 10px #c9a0b8)
-            drop-shadow(0 0 18px #a855f7)
-            drop-shadow(0 0 28px rgba(168, 85, 247, 0.7));
-    opacity: 0.75;
-    animation: none;
-  }
-
-  /* Hover state - more intense crackling */
-  :global([data-theme='dark']) .nav-logo:hover::after {
-    animation: logo-electric-crackle-intense 0.1s steps(2) infinite;
-  }
-
-  /* More intense crackling on hover */
-  @keyframes logo-electric-crackle-intense {
-    0% {
-      opacity: 0;
-    }
-    8% {
-      opacity: 0.4;
-      filter: drop-shadow(0 0 2px #f0abfc)
-              drop-shadow(0 0 5px #e879f9)
-              drop-shadow(0 0 8px #d175b8);
-    }
-    12% {
-      opacity: 0;
-    }
-    20% {
-      opacity: 0.35;
-      filter: drop-shadow(0 0 3px #f0abfc)
-              drop-shadow(0 0 6px #e879f9);
-    }
-    25% {
-      opacity: 0;
-    }
-    45% {
-      opacity: 0.5;
-      filter: drop-shadow(0 0 4px #e879f9)
-              drop-shadow(0 0 8px #f0abfc)
-              drop-shadow(0 0 12px #d175b8);
-    }
-    50% {
-      opacity: 0;
-    }
-    70% {
-      opacity: 0.3;
-      filter: drop-shadow(0 0 2px #f0abfc)
-              drop-shadow(0 0 4px #e879f9);
-    }
-    75%, 100% {
+    85%, 100% {
       opacity: 0;
     }
   }
@@ -352,6 +391,132 @@ function isActive(href: string): boolean {
     :global([data-theme='dark']) .nav-logo::after {
       animation: none;
       opacity: 0;
+    }
+    :global([data-theme='dark']) .spark-container {
+      display: none;
+    }
+  }
+
+  /* ============================================
+     LIGHTNING SPARK PARTICLES
+     Flame-like particles that lick around edges
+     ============================================ */
+  .spark-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+    display: none; /* Hidden by default, shown in dark mode via JS */
+  }
+
+  :global([data-theme='dark']) .spark-container {
+    display: block;
+  }
+
+  /* Individual spark particle */
+  :global(.spark) {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow:
+      0 0 2px #fff,
+      0 0 4px #dbeafe,
+      0 0 8px #60a5fa,
+      0 0 12px #8b5cf6;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Spark animation - flame-like licking motion */
+  :global(.spark.spark-animate) {
+    animation: spark-lick var(--spark-duration, 0.6s) ease-out forwards;
+  }
+
+  @keyframes spark-lick {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) scale(0.5);
+    }
+    10% {
+      opacity: 1;
+      transform: translate(var(--spark-x1, 2px), var(--spark-y1, -4px)) scale(1);
+    }
+    30% {
+      opacity: 0.9;
+      transform: translate(var(--spark-x2, 4px), var(--spark-y2, -10px)) scale(0.9);
+    }
+    60% {
+      opacity: 0.6;
+      transform: translate(var(--spark-x3, 6px), var(--spark-y3, -18px)) scale(0.7);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--spark-x4, 8px), var(--spark-y4, -28px)) scale(0.3);
+    }
+  }
+
+  /* Different spark sizes */
+  :global(.spark-sm) {
+    width: 2px;
+    height: 2px;
+    box-shadow:
+      0 0 1px #fff,
+      0 0 3px #93c5fd,
+      0 0 6px #60a5fa;
+  }
+
+  :global(.spark-lg) {
+    width: 6px;
+    height: 6px;
+    box-shadow:
+      0 0 3px #fff,
+      0 0 6px #dbeafe,
+      0 0 12px #60a5fa,
+      0 0 18px #8b5cf6;
+  }
+
+  /* Electric arc - thin lightning bolt shapes */
+  :global(.spark-arc) {
+    width: 2px;
+    height: 12px;
+    border-radius: 1px;
+    background: linear-gradient(to top, transparent, #60a5fa, #fff, #60a5fa, transparent);
+    box-shadow:
+      0 0 4px #60a5fa,
+      0 0 8px #8b5cf6;
+  }
+
+  :global(.spark-arc.spark-animate) {
+    animation: arc-flicker var(--spark-duration, 0.4s) ease-out forwards;
+  }
+
+  @keyframes arc-flicker {
+    0% {
+      opacity: 0;
+      transform: rotate(var(--arc-rotation, 0deg)) scaleY(0.3);
+    }
+    15% {
+      opacity: 1;
+      transform: rotate(var(--arc-rotation, 0deg)) scaleY(1);
+    }
+    40% {
+      opacity: 0.8;
+      transform: rotate(var(--arc-rotation, 0deg)) scaleY(1.2) translateY(-4px);
+    }
+    70% {
+      opacity: 0.4;
+      transform: rotate(var(--arc-rotation, 0deg)) scaleY(0.8) translateY(-8px);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(var(--arc-rotation, 0deg)) scaleY(0.2) translateY(-12px);
     }
   }
 
@@ -836,5 +1001,170 @@ function isActive(href: string): boolean {
       initialized = false;
       initMobileMenu();
     });
+  })();
+</script>
+
+<!-- Lightning Spark Particles Generator -->
+<script>
+  (function() {
+    let sparkInterval: ReturnType<typeof setInterval> | null = null;
+    let isHovering = false;
+
+    function initSparkParticles() {
+      const container = document.getElementById('spark-container');
+      const navLogo = document.querySelector('.nav-logo');
+      if (!container || !navLogo) return;
+
+      // Check if dark mode and reduced motion
+      const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark';
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) return;
+
+      // Spark spawn positions around the logo perimeter (relative %)
+      const spawnPoints = [
+        // Top edge of letters
+        { x: 20, y: 15 }, { x: 35, y: 10 }, { x: 50, y: 8 },
+        { x: 65, y: 10 }, { x: 80, y: 15 },
+        // Diagonal strokes
+        { x: 25, y: 30 }, { x: 40, y: 45 }, { x: 60, y: 45 },
+        { x: 75, y: 30 },
+        // Bottom corners
+        { x: 15, y: 70 }, { x: 30, y: 85 }, { x: 50, y: 90 },
+        { x: 70, y: 85 }, { x: 85, y: 70 },
+        // Side edges
+        { x: 10, y: 40 }, { x: 90, y: 40 },
+        { x: 12, y: 55 }, { x: 88, y: 55 },
+      ];
+
+      function createSpark() {
+        if (!isDarkMode()) return;
+
+        const spark = document.createElement('div');
+
+        // Random spark type
+        const sparkType = Math.random();
+        if (sparkType < 0.7) {
+          // Regular round spark
+          const size = Math.random();
+          spark.className = size < 0.4 ? 'spark spark-sm' : size < 0.85 ? 'spark' : 'spark spark-lg';
+        } else {
+          // Arc/bolt shape
+          spark.className = 'spark spark-arc';
+          spark.style.setProperty('--arc-rotation', `${Math.random() * 360}deg`);
+        }
+
+        // Random spawn position from predefined points
+        const spawnPoint = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+        const jitterX = (Math.random() - 0.5) * 10;
+        const jitterY = (Math.random() - 0.5) * 10;
+
+        spark.style.left = `${spawnPoint.x + jitterX}%`;
+        spark.style.top = `${spawnPoint.y + jitterY}%`;
+
+        // Random flame-like movement direction (mostly upward with some lateral)
+        const baseAngle = -90 + (Math.random() - 0.5) * 60; // -120 to -60 degrees (upward arc)
+        const distance = 15 + Math.random() * 25;
+        const rad = (baseAngle * Math.PI) / 180;
+
+        // Calculate movement points along the path
+        spark.style.setProperty('--spark-x1', `${Math.cos(rad) * distance * 0.2}px`);
+        spark.style.setProperty('--spark-y1', `${Math.sin(rad) * distance * 0.2}px`);
+        spark.style.setProperty('--spark-x2', `${Math.cos(rad) * distance * 0.5}px`);
+        spark.style.setProperty('--spark-y2', `${Math.sin(rad) * distance * 0.5}px`);
+        spark.style.setProperty('--spark-x3', `${Math.cos(rad) * distance * 0.75}px`);
+        spark.style.setProperty('--spark-y3', `${Math.sin(rad) * distance * 0.75}px`);
+        spark.style.setProperty('--spark-x4', `${Math.cos(rad) * distance}px`);
+        spark.style.setProperty('--spark-y4', `${Math.sin(rad) * distance}px`);
+
+        // Random duration
+        const duration = isHovering ? 0.3 + Math.random() * 0.3 : 0.5 + Math.random() * 0.4;
+        spark.style.setProperty('--spark-duration', `${duration}s`);
+
+        container.appendChild(spark);
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+          spark.classList.add('spark-animate');
+        });
+
+        // Remove after animation
+        setTimeout(() => {
+          spark.remove();
+        }, duration * 1000 + 100);
+      }
+
+      function startSparkLoop() {
+        if (sparkInterval) return;
+
+        // Base rate: spawn sparks periodically
+        const spawnRate = isHovering ? 40 : 120; // ms between spawns
+        sparkInterval = setInterval(() => {
+          if (isDarkMode()) {
+            createSpark();
+            // Sometimes spawn multiple sparks at once for bursts
+            if (Math.random() < (isHovering ? 0.5 : 0.2)) {
+              setTimeout(createSpark, 20);
+            }
+            if (isHovering && Math.random() < 0.3) {
+              setTimeout(createSpark, 40);
+            }
+          }
+        }, spawnRate);
+      }
+
+      function stopSparkLoop() {
+        if (sparkInterval) {
+          clearInterval(sparkInterval);
+          sparkInterval = null;
+        }
+      }
+
+      // Hover handlers for intensified effect
+      navLogo.addEventListener('mouseenter', () => {
+        isHovering = true;
+        stopSparkLoop();
+        startSparkLoop();
+      });
+
+      navLogo.addEventListener('mouseleave', () => {
+        isHovering = false;
+        stopSparkLoop();
+        startSparkLoop();
+      });
+
+      // Start the spark loop
+      startSparkLoop();
+
+      // Listen for theme changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'data-theme') {
+            if (!isDarkMode()) {
+              stopSparkLoop();
+            } else {
+              startSparkLoop();
+            }
+          }
+        });
+      });
+      observer.observe(document.documentElement, { attributes: true });
+
+      // Cleanup on page navigation
+      document.addEventListener('astro:before-swap', () => {
+        stopSparkLoop();
+        observer.disconnect();
+      });
+    }
+
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSparkParticles);
+    } else {
+      initSparkParticles();
+    }
+
+    // Re-init after View Transitions
+    document.addEventListener('astro:after-swap', initSparkParticles);
   })();
 </script>
