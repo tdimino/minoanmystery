@@ -9,6 +9,24 @@ import type { UserModel, SoulState, BehavioralType, SoulConfig } from './types';
 import { DEFAULT_CONFIG } from './types';
 
 // ─────────────────────────────────────────────────────────────
+// Soul Memory Interface (Dependency Injection Pattern)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Interface for soul memory operations used by visitor modeling.
+ * Allows server-side adapters to implement memory without localStorage.
+ * Following Open Souls pattern: explicit dependencies over singletons.
+ */
+export interface SoulMemoryInterface {
+  getVisitorModel(): string | undefined;
+  setVisitorModel(model: string): void;
+  getVisitorWhispers(): string | undefined;
+  setVisitorWhispers(whispers: string): void;
+  getUserName(): string | undefined;
+  addTopic(topic: string): void;
+}
+
+// ─────────────────────────────────────────────────────────────
 // UUID Generation
 // ─────────────────────────────────────────────────────────────
 

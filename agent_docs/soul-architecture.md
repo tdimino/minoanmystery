@@ -2,6 +2,8 @@
 
 Transform minoanmystery.org into a sentient digital presence using the Open Souls paradigm.
 
+> **Implementation Reference**: For technical details (cognitive steps, mental processes, subprocesses), see `@agent_docs/soul-engine-reference.md`
+
 ## Conceptual Framework
 
 The website as a **soul** that perceives, remembers, and reacts to user behavior.
@@ -102,7 +104,15 @@ type SoulState = 'greeting' | 'curious' | 'engaged' | 'ready' | 'returning';
 3. **Contextual Hints** - Embedded in page sections
 4. **Form Pre-fill** - Suggestions based on inferred needs
 
-## MVP Scope
+## Implementation Status
+
+| Phase | Status | Features |
+|-------|--------|----------|
+| Phase 1 | ✅ Complete | Perception, localStorage memory, returning visitor detection |
+| Phase 2 | ✅ Complete | Rule-based triggers, toast notifications, UI personalization |
+| Phase 3 | ✅ Complete | LLM cognitive steps, `/labyrinth` chat, streaming responses |
+
+## MVP Scope (Historical)
 
 Phase 1: Perception + Basic Memory
 - Track page views, scroll depth, time on page

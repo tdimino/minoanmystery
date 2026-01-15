@@ -12,6 +12,7 @@ import type {
   WorkingMemoryConfig,
   WorkingMemorySnapshot,
 } from './types';
+import { getSoulLogger } from './SoulLogger';
 
 export class WorkingMemory {
   readonly soulName: string;
@@ -125,12 +126,15 @@ export class WorkingMemory {
       ...memory,
       timestamp: memory.timestamp ?? new Date().toISOString(),
     };
-    return WorkingMemory.create(
+    const result = WorkingMemory.create(
       this.soulName,
       [...this._memories, timestamped],
       this._regionalOrder,
       this._regionConfigs
     );
+    // Log the mutation
+    getSoulLogger().memoryMutation('withMemory', this._memories.length, result.length);
+    return result;
   }
 
   /**
@@ -207,12 +211,15 @@ export class WorkingMemory {
       newOrder = [...this._regionalOrder, regionName];
     }
 
-    return WorkingMemory.create(
+    const result = WorkingMemory.create(
       this.soulName,
       [...filtered, ...newMemories],
       newOrder,
       newConfigs
     );
+    // Log the mutation with region name
+    getSoulLogger().memoryMutation('withRegion', this._memories.length, result.length, regionName);
+    return result;
   }
 
   /**

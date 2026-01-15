@@ -69,7 +69,11 @@ src/
 - **View Transitions**: Smooth page navigation
 - **Responsive**: Fluid typography with `clamp()`
 - **Mobile UX**: Touch-friendly targets, optimized parallax sections, 2-column detail grids
-- **Soul Engine**: Perception layer for user behavior tracking and personalized interactions
+- **Soul Engine**: Open Souls paradigm implementation with:
+  - Visitor modeling via background subprocesses
+  - Mental process state machine (greeting → curious → engaged → ready)
+  - Pure cognitive steps (externalDialog, internalMonologue, mentalQuery)
+  - `/labyrinth` chat interface with streaming responses
 
 ## Brand Colors
 

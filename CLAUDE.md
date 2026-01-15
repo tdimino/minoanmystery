@@ -26,6 +26,7 @@ src/
 ├── content/        # Portfolio case studies (Markdown collections)
 ├── layouts/        # BaseLayout with View Transitions
 ├── pages/          # Routes (/, /about, /contact, /portfolio/[slug], /labyrinth)
+│   └── api/soul/   # Soul API endpoints (chat, subprocess, personality, tts)
 ├── styles/         # global.css with CSS variables, dark mode
 └── lib/soul/       # Soul Engine (Open Souls paradigm)
     ├── opensouls/  # Core Open Souls implementation
@@ -33,8 +34,9 @@ src/
     │   ├── cognitiveSteps/ # externalDialog, internalMonologue, mentalQuery
     │   ├── mentalProcesses/# greeting, curious, engaged, ready, returning
     │   ├── perception/     # SoulOrchestrator, memoryIntegrate
+    │   ├── providers/      # LLM providers (OpenRouter, Groq, Baseten)
     │   └── subprocesses/   # modelsTheVisitor (background visitor modeling)
-    ├── memory.ts   # SoulMemory class (localStorage persistence)
+    ├── memory.ts   # SoulMemory + SoulMemoryInterface (DI pattern)
     ├── types.ts    # UserModel, HydratedUserModel, SoulState
     └── perception.ts # Event capture (click, scroll, hover, navigation)
 ```
@@ -63,6 +65,7 @@ The Soul Engine follows the Open Souls paradigm with:
 - **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
+- **Dynamic CTA text**: DISABLED - The contact-bound trigger's text scramble effect looks strange mid-transition. Keep `maxFires: 0` in `src/lib/soul/triggers.ts` until properly animated.
 
 ## Brand Colors
 
@@ -85,7 +88,9 @@ The Soul Engine follows the Open Souls paradigm with:
 ## Detailed Guides
 
 - @agent_docs/visual-parity.md - Pixel-perfect audit checklist
-- @agent_docs/soul-architecture.md - Open Souls integration
+- @agent_docs/soul-engine-reference.md - Cognitive steps, mental processes, subprocesses
+- @agent_docs/soul-logging.md - Logging & observability system
+- @agent_docs/soul-architecture.md - Conceptual framework and phase plan
 - @agent_docs/modern-ux.md - 2025/2026 UX patterns
 - @agent_docs/aldea-content.md - Case study creation
 

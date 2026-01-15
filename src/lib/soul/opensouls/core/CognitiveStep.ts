@@ -14,11 +14,13 @@ import type {
   CognitiveStepFactory,
 } from './types';
 import { createDeferredPromise } from './utils';
+import { getSoulLogger, type TokenUsage } from './SoulLogger';
 
 /**
  * LLM Provider interface - will be implemented by provider modules
  */
 export interface LLMProvider {
+  name: string;  // Provider name for logging (e.g., 'groq', 'openrouter')
   generate(
     messages: Array<{ role: string; content: string; name?: string }>,
     options: {
@@ -27,6 +29,7 @@ export interface LLMProvider {
       maxTokens?: number;
       stream?: boolean;
       thinkingEffort?: 'none' | 'low' | 'medium' | 'high';
+      onUsage?: (usage: TokenUsage) => void;  // Callback for token tracking
     }
   ): Promise<string | AsyncIterable<string>>;
 }
@@ -140,20 +143,30 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
       const { promise: postProcessPromise, resolve: resolvePostProcess } =
         createDeferredPromise<PostProcessReturnType>();
 
+      const logger = getSoulLogger();
+      const startTime = Date.now();
+      let tokenUsage: TokenUsage | undefined;
+
+      // Log cognitive step start
+      logger.cognitiveStepStart('cognitiveStep', memory.length, userArgs);
+      logger.providerCall(provider.name, modelForApi || 'default', messages.length);
+
       const responseStream = (await provider.generate(messages, {
         model: modelForApi,
         temperature: opts?.temperature,
         stream: true,
+        onUsage: (usage) => {
+          tokenUsage = usage;
+          logger.providerResponse(provider.name, usage, Date.now() - startTime);
+        },
       })) as AsyncIterable<string>;
 
       // Create a tee'd stream - one for the caller, one for post-processing
       let fullResponse = '';
-      const outputChunks: string[] = [];
 
       const outputStream = (async function* () {
         for await (const chunk of responseStream) {
           fullResponse += chunk;
-          outputChunks.push(chunk);
           yield chunk;
         }
 
@@ -169,6 +182,19 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
                 },
                 fullResponse as unknown as PostProcessReturnType,
               ];
+
+          // Log cognitive step completion
+          logger.cognitiveStepEnd(
+            'cognitiveStep',
+            fullResponse,
+            memory.length + 1,
+            {
+              model: modelForApi,
+              provider: provider.name,
+              tokens: tokenUsage,
+              streaming: true,
+            }
+          );
 
           resolvePostProcess(result);
         } catch (error) {
@@ -187,10 +213,22 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
       return [finishedMemory, outputStream, postProcessPromise];
     } else {
       // Non-streaming mode
+      const logger = getSoulLogger();
+      const startTime = Date.now();
+      let tokenUsage: TokenUsage | undefined;
+
+      // Log cognitive step start
+      logger.cognitiveStepStart('cognitiveStep', memory.length, userArgs);
+      logger.providerCall(provider.name, modelForApi || 'default', messages.length);
+
       const response = (await provider.generate(messages, {
         model: modelForApi,
         temperature: opts?.temperature,
         stream: false,
+        onUsage: (usage) => {
+          tokenUsage = usage;
+          logger.providerResponse(provider.name, usage, Date.now() - startTime);
+        },
       })) as string;
 
       // Run post-processing
@@ -213,6 +251,19 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
             content: response,
             name: memory.soulName,
           });
+
+      // Log cognitive step completion
+      logger.cognitiveStepEnd(
+        'cognitiveStep',
+        response,
+        finalMemory.length,
+        {
+          model: modelForApi,
+          provider: provider.name,
+          tokens: tokenUsage,
+          streaming: false,
+        }
+      );
 
       return [finalMemory, result];
     }

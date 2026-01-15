@@ -64,3 +64,16 @@ export {
   stripProviderPrefix,
   type ModelRole,
 } from './models';
+
+// Soul Logger
+export {
+  default as SoulLogger,
+  getSoulLogger,
+  resetSoulLogger,
+  soulLogger,
+  type TokenUsage,
+  type CognitiveStepLog,
+  type MemoryMutationLog,
+  type StateTransitionLog,
+  type LogLevel,
+} from './SoulLogger';

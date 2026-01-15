@@ -13,6 +13,7 @@ import type { PerceptionEvent, UserModel } from '../../types';
 import { onPerception } from '../../perception';
 import { getSoulMemory } from '../../memory';
 import { WorkingMemory } from '../core/WorkingMemory';
+import { ChatMessageRoleEnum } from '../core/types';
 import { extractNameHeuristic } from '../core/utils';
 import type { Perception, HydratedUserModel, SoulState, SoulActions, ProcessReturn } from '../mentalProcesses/types';
 import { ProcessRunner, createProcessRunner, getInitialState } from '../mentalProcesses';
@@ -119,11 +120,22 @@ function hydrateUserModel(userModel: UserModel, soulMemory: ReturnType<typeof ge
 
 export interface OrchestratorConfig {
   debug?: boolean;
+  /** Use API mode - delegates LLM calls to server-side endpoints */
+  apiMode?: boolean;
+  /** Called with the final complete response */
   onResponse?: (response: string) => void;
+  /** Called for each chunk during streaming (for incremental display) */
+  onStreamChunk?: (chunk: string) => void;
+  /** Called when streaming starts (for UI loading states) */
+  onStreamStart?: () => void;
+  /** Called when streaming completes */
+  onStreamEnd?: () => void;
   onToast?: (message: string, duration: number) => void;
   onHighlight?: (selector: string, style: string, duration: number) => void;
   onCTAUpdate?: (message: string) => void;
   onStateChange?: (from: SoulState, to: SoulState, reason: string) => void;
+  /** Called when visitor whispers are updated (from subprocess) */
+  onWhispersUpdate?: (whispers: string) => void;
 }
 
 export class SoulOrchestrator {
@@ -186,12 +198,21 @@ export class SoulOrchestrator {
     const rawModel = soulMemory.get();
     const hydratedModel = hydrateUserModel(rawModel, soulMemory);
 
+    // Extract visitor data for pure function (DI pattern)
+    const visitorData = {
+      userName: soulMemory.getUserName() || 'visitor',
+      visitorModel: soulMemory.getVisitorModel(),
+      visitorWhispers: soulMemory.getVisitorWhispers(),
+      lastTopics: soulMemory.getLastTopics(),
+    };
+
     // Use pure function to integrate perception into memory
     this.workingMemory = memoryIntegrate(
       perception,
       this.workingMemory,
       hydratedModel,
-      this.soulPersonality
+      this.soulPersonality,
+      visitorData
     );
 
     // Run the mental process
@@ -258,9 +279,8 @@ export class SoulOrchestrator {
         if (typeof message === 'string') {
           this.config.onResponse?.(message);
         } else {
-          this.collectStream(message).then((text) => {
-            this.config.onResponse?.(text);
-          });
+          // Stream incrementally with callbacks
+          this.streamWithCallbacks(message);
         }
       },
       log: (message: string, data?: unknown) => {
@@ -308,12 +328,25 @@ export class SoulOrchestrator {
     }
   }
 
-  private async collectStream(stream: AsyncIterable<string>): Promise<string> {
-    let result = '';
-    for await (const chunk of stream) {
-      result += chunk;
+  /**
+   * Stream response with incremental callbacks
+   * Calls onStreamStart, onStreamChunk for each chunk, onStreamEnd, then onResponse with full text
+   */
+  private async streamWithCallbacks(stream: AsyncIterable<string>): Promise<void> {
+    this.config.onStreamStart?.();
+
+    let fullText = '';
+    try {
+      for await (const chunk of stream) {
+        fullText += chunk;
+        this.config.onStreamChunk?.(chunk);
+      }
+    } catch (error) {
+      this.log('Stream error', { error: String(error) });
     }
-    return result;
+
+    this.config.onStreamEnd?.();
+    this.config.onResponse?.(fullText);
   }
 
   private log(message: string, data?: Record<string, unknown>): void {
@@ -342,6 +375,14 @@ export class SoulOrchestrator {
       } else {
         this.workingMemory = result;
       }
+
+      // Notify UI of whispers update (for FloatingDialogue hints)
+      const soulMemory = getSoulMemory();
+      const whispers = soulMemory.getVisitorWhispers();
+      if (whispers && this.config.onWhispersUpdate) {
+        this.config.onWhispersUpdate(whispers);
+        this.log('Visitor whispers updated', { whispers: whispers.slice(0, 100) + '...' });
+      }
     } catch (error) {
       this.log('Visitor modeling subprocess error', { error: String(error) });
     }
@@ -364,6 +405,13 @@ export class SoulOrchestrator {
       }
     }
 
+    // API Mode: Delegate LLM calls to server-side endpoints
+    if (this.config.apiMode) {
+      await this.handleMessageViaAPI(message);
+      return;
+    }
+
+    // Local Mode: Run mental processes directly (requires LLM providers)
     const perception: Perception = {
       type: 'message',
       content: message,
@@ -374,11 +422,20 @@ export class SoulOrchestrator {
     const rawModel = soulMemory.get();
     const hydratedModel = hydrateUserModel(rawModel, soulMemory);
 
+    // Extract visitor data for pure function (DI pattern)
+    const visitorData = {
+      userName: soulMemory.getUserName() || 'visitor',
+      visitorModel: soulMemory.getVisitorModel(),
+      visitorWhispers: soulMemory.getVisitorWhispers(),
+      lastTopics: soulMemory.getLastTopics(),
+    };
+
     this.workingMemory = memoryIntegrate(
       perception,
       this.workingMemory,
       hydratedModel,
-      this.soulPersonality
+      this.soulPersonality,
+      visitorData
     );
 
     await this.runProcess(perception, hydratedModel);
@@ -387,6 +444,177 @@ export class SoulOrchestrator {
     this.runVisitorModeling(hydratedModel).catch((err) => {
       this.log('Background visitor modeling failed', { error: String(err) });
     });
+  }
+
+  /**
+   * Handle message via API endpoints (for client-side use)
+   * Delegates LLM calls to server while maintaining client-side state
+   */
+  private async handleMessageViaAPI(message: string): Promise<void> {
+    const soulMemory = getSoulMemory();
+    const rawModel = soulMemory.get();
+    const hydratedModel = hydrateUserModel(rawModel, soulMemory);
+
+    this.config.onStreamStart?.();
+
+    // AbortController with timeout for request cleanup
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
+    // Declare reader outside try for cleanup in finally
+    let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
+
+    try {
+      // Call chat API with streaming
+      const response = await fetch('/api/soul/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: message,
+          stream: true,
+          visitorContext: {
+            currentPage: hydratedModel.currentPage,
+            pagesViewed: hydratedModel.pagesViewed,
+            timeOnSite: hydratedModel.timeOnSite,
+            scrollDepth: hydratedModel.scrollDepth,
+            visitCount: hydratedModel.visitCount,
+            behavioralType: hydratedModel.behavioralType,
+            inferredInterests: hydratedModel.inferredInterests,
+          },
+          conversationHistory: this.getConversationHistory(),
+        }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Chat API error: ${response.status}`);
+      }
+
+      // Process SSE stream
+      reader = response.body?.getReader();
+      if (!reader) throw new Error('No response body');
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let fullResponse = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.chunk) {
+                fullResponse += parsed.chunk;
+                this.config.onStreamChunk?.(parsed.chunk);
+              } else if (parsed.done) {
+                fullResponse = parsed.fullResponse || fullResponse;
+              }
+            } catch {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+      this.config.onStreamEnd?.();
+      this.config.onResponse?.(fullResponse);
+
+      // Update working memory with the exchange
+      this.workingMemory = this.workingMemory
+        .withMemory({ role: ChatMessageRoleEnum.User, content: message })
+        .withMemory({ role: ChatMessageRoleEnum.Assistant, content: fullResponse, name: 'Minoan' });
+
+      // Fire-and-forget: Run subprocess in background via API
+      this.runSubprocessViaAPI(hydratedModel).catch((err) => {
+        this.log('Background subprocess failed', { error: String(err) });
+      });
+
+    } catch (error) {
+      this.config.onStreamEnd?.();
+      if (error instanceof Error && error.name === 'AbortError') {
+        this.log('API request timed out');
+      } else {
+        this.log('API message handling failed', { error: String(error) });
+      }
+      throw error;
+    } finally {
+      // Always clean up resources
+      clearTimeout(timeoutId);
+      reader?.releaseLock();
+    }
+  }
+
+  /**
+   * Run visitor modeling subprocess via API
+   */
+  private async runSubprocessViaAPI(hydratedModel: HydratedUserModel): Promise<void> {
+    const soulMemory = getSoulMemory();
+
+    try {
+      const response = await fetch('/api/soul/subprocess', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: hydratedModel.sessionId,
+          conversationHistory: this.getConversationHistory(),
+          userModel: {
+            visitCount: hydratedModel.visitCount,
+            pagesViewed: hydratedModel.pagesViewed,
+            currentPage: hydratedModel.currentPage,
+            timeOnSite: hydratedModel.timeOnSite,
+            scrollDepth: hydratedModel.scrollDepth,
+            behavioralType: hydratedModel.behavioralType,
+            isReturning: hydratedModel.isReturning,
+          },
+          visitorModel: soulMemory.getVisitorModel(),
+          visitorWhispers: soulMemory.getVisitorWhispers(),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        this.log('Subprocess API error', { status: response.status, error: errorData });
+        return;
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Update local storage with subprocess results
+        if (result.visitorModel) {
+          soulMemory.setVisitorModel(result.visitorModel);
+        }
+        if (result.visitorWhispers) {
+          soulMemory.setVisitorWhispers(result.visitorWhispers);
+          this.config.onWhispersUpdate?.(result.visitorWhispers);
+        }
+
+        this.log('Subprocess completed', { duration: result.duration });
+      }
+    } catch (error) {
+      this.log('Subprocess API call failed', { error: String(error) });
+    }
+  }
+
+  /**
+   * Get conversation history from working memory for API calls
+   */
+  private getConversationHistory(): Array<{ role: 'user' | 'assistant'; content: string }> {
+    return this.workingMemory.memories
+      .filter((m) => m.role === 'user' || m.role === 'assistant')
+      .slice(-10)
+      .map((m) => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+      }));
   }
 
   async handleCommand(command: string): Promise<void> {
@@ -404,11 +632,20 @@ export class SoulOrchestrator {
     const rawModel = soulMemory.get();
     const hydratedModel = hydrateUserModel(rawModel, soulMemory);
 
+    // Extract visitor data for pure function (DI pattern)
+    const visitorData = {
+      userName: soulMemory.getUserName() || 'visitor',
+      visitorModel: soulMemory.getVisitorModel(),
+      visitorWhispers: soulMemory.getVisitorWhispers(),
+      lastTopics: soulMemory.getLastTopics(),
+    };
+
     this.workingMemory = memoryIntegrate(
       perception,
       this.workingMemory,
       hydratedModel,
-      this.soulPersonality
+      this.soulPersonality,
+      visitorData
     );
 
     await this.runProcess(perception, hydratedModel);

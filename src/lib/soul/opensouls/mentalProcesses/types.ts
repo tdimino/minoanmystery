@@ -7,6 +7,7 @@
 import type { WorkingMemory } from '../core/WorkingMemory';
 import type { Perception as CorePerception, SoulState, SoulActions } from '../core/types';
 import type { UserModel } from '../../types';
+import type { SoulMemoryInterface } from '../../memory';
 
 // Re-export types used by mental processes
 export type { SoulState, SoulActions };
@@ -41,6 +42,8 @@ export interface ProcessContext {
   perception?: Perception;
   userModel: HydratedUserModel;
   actions: SoulActions;
+  /** Optional DI for server-side memory (avoids module patching) */
+  soulMemory?: SoulMemoryInterface;
 }
 
 /**

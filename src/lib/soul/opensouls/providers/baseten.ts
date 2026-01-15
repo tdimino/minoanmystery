@@ -35,6 +35,7 @@ function normalizeBasetenModel(model: string): string {
 }
 
 export class BasetenProvider implements LLMProvider {
+  readonly name = 'baseten';
   private apiKey: string;
   private defaultModel: string;
 
@@ -50,6 +51,7 @@ export class BasetenProvider implements LLMProvider {
       temperature?: number;
       maxTokens?: number;
       stream?: boolean;
+      onUsage?: (usage: { prompt_tokens: number; completion_tokens: number; total_tokens: number }) => void;
     } = {}
   ): Promise<string | AsyncIterable<string>> {
     const model = normalizeBasetenModel(options.model ?? this.defaultModel);
@@ -81,14 +83,25 @@ export class BasetenProvider implements LLMProvider {
     }
 
     if (stream) {
-      return this.streamResponse(response);
+      return this.streamResponse(response, options.onUsage);
     } else {
       const data = await response.json();
+      // Report token usage if callback provided
+      if (options.onUsage && data.usage) {
+        options.onUsage({
+          prompt_tokens: data.usage.prompt_tokens ?? 0,
+          completion_tokens: data.usage.completion_tokens ?? 0,
+          total_tokens: data.usage.total_tokens ?? 0,
+        });
+      }
       return data.choices[0]?.message?.content ?? '';
     }
   }
 
-  private async *streamResponse(response: Response): AsyncIterable<string> {
+  private async *streamResponse(
+    response: Response,
+    onUsage?: (usage: { prompt_tokens: number; completion_tokens: number; total_tokens: number }) => void
+  ): AsyncIterable<string> {
     const reader = response.body?.getReader();
     if (!reader) {
       throw new Error('No response body');
@@ -116,6 +129,14 @@ export class BasetenProvider implements LLMProvider {
               const content = parsed.choices?.[0]?.delta?.content;
               if (content) {
                 yield content;
+              }
+              // Capture usage from final chunk if available
+              if (parsed.usage && onUsage) {
+                onUsage({
+                  prompt_tokens: parsed.usage.prompt_tokens ?? 0,
+                  completion_tokens: parsed.usage.completion_tokens ?? 0,
+                  total_tokens: parsed.usage.total_tokens ?? 0,
+                });
               }
             } catch {
               // Skip invalid JSON

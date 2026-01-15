@@ -9,7 +9,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 ---
 
-<BaseLayout title="The Labyrinth - Soul Chat">
+<BaseLayout
+  title="The Labyrinth - Consult with Kothar"
+  description="Enter the labyrinth and converse with Kothar, the divine craftsman. An AI soul awakened from ancient Minoan mystery."
+  image="/images/og/labyrinth.png"
+>
   <Header />
   <main class="labyrinth-page">
     <header class="labyrinth-header">
@@ -309,6 +313,15 @@ import Header from '../components/Header.astro';
     border-bottom-right-radius: 4px;
   }
 
+  /* Richer Tyrian purple for dark mode bubbles */
+  :global([data-theme="dark"] .message-user .message-content) {
+    background: #6d4463;
+  }
+
+  :global([data-theme="dark"] .message-user .message-avatar) {
+    background: #6d4463;
+  }
+
   :global(.message-assistant .message-content) {
     background: var(--color-background-alt);
     color: var(--color-text);
@@ -421,6 +434,11 @@ import Header from '../components/Header.astro';
     transform: none;
   }
 
+  /* Richer Tyrian purple for dark mode send button */
+  :global([data-theme="dark"]) .labyrinth-submit {
+    background: #6d4463;
+  }
+
   .form-hints {
     display: flex;
     align-items: center;
@@ -517,7 +535,8 @@ import Header from '../components/Header.astro';
 </style>
 
 <script>
-  import { getSSEStreamClient } from '../lib/soul/sseClient';
+  import { getSoulOrchestrator, type OrchestratorConfig } from '../lib/soul/opensouls/perception/SoulOrchestrator';
+  import type { SoulOrchestrator } from '../lib/soul/opensouls/perception/SoulOrchestrator';
   import { StreamRenderer, injectStreamingStyles } from '../lib/soul/streamRenderer';
 
   interface ChatMessage {
@@ -603,13 +622,10 @@ import Header from '../components/Header.astro';
     private emptyState: HTMLElement;
     private isLoading = false;
 
-    // Menu elements
-    private menuTrigger: HTMLButtonElement;
-    private menu: HTMLElement;
-    private clearBtn: HTMLButtonElement;
-    private toggleVoiceBtn: HTMLButtonElement;
-    private copyTranscriptBtn: HTMLButtonElement;
-    private voiceLabel: HTMLElement;
+    // Orchestrator integration (Open Souls paradigm)
+    private orchestrator: SoulOrchestrator | null = null;
+    private currentRenderer: StreamRenderer | null = null;
+    private pendingResolve: ((response: string) => void) | null = null;
 
     constructor() {
       this.history = document.getElementById('conversation-history')!;
@@ -618,20 +634,15 @@ import Header from '../components/Header.astro';
       this.submitBtn = this.form.querySelector('.labyrinth-submit') as HTMLButtonElement;
       this.emptyState = document.getElementById('conversation-empty')!;
 
-      // Menu elements
-      this.menuTrigger = document.getElementById('menu-trigger') as HTMLButtonElement;
-      this.menu = document.getElementById('options-menu') as HTMLElement;
-      this.clearBtn = document.getElementById('clear-conversation') as HTMLButtonElement;
-      this.toggleVoiceBtn = document.getElementById('toggle-voice') as HTMLButtonElement;
-      this.copyTranscriptBtn = document.getElementById('copy-transcript') as HTMLButtonElement;
-      this.voiceLabel = document.getElementById('voice-label') as HTMLElement;
-
       this.init();
     }
 
     private init() {
       // Inject streaming styles
       injectStreamingStyles();
+
+      // Initialize orchestrator (async, non-blocking)
+      this.initOrchestrator();
 
       // Personalize input placeholder with userName
       const userName = getUserName();
@@ -647,49 +658,6 @@ import Header from '../components/Header.astro';
         e.preventDefault();
         this.sendMessage();
       });
-
-      // Menu toggle
-      this.menuTrigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.toggleMenu();
-      });
-
-      // Close menu on outside click
-      document.addEventListener('click', (e) => {
-        if (!this.menu.contains(e.target as Node) && !this.menuTrigger.contains(e.target as Node)) {
-          this.closeMenu();
-        }
-      });
-
-      // Close menu on escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          this.closeMenu();
-        }
-      });
-
-      // Clear conversation
-      this.clearBtn.addEventListener('click', () => {
-        if (confirm('Clear all conversation history?')) {
-          this.clearConversation();
-          this.closeMenu();
-        }
-      });
-
-      // Toggle voice
-      this.toggleVoiceBtn.addEventListener('click', () => {
-        this.toggleVoice();
-        this.closeMenu();
-      });
-
-      // Copy transcript
-      this.copyTranscriptBtn.addEventListener('click', () => {
-        this.copyTranscript();
-        this.closeMenu();
-      });
-
-      // Update voice label on init
-      this.updateVoiceLabel();
 
       // Voice input (from VoiceButton in chat mode)
       document.addEventListener('voice:transcript', ((e: CustomEvent<{ transcript: string }>) => {
@@ -709,6 +677,67 @@ import Header from '../components/Header.astro';
 
       // Focus input
       this.input.focus();
+    }
+
+    private async initOrchestrator() {
+      try {
+        // Fetch soul personality from API
+        const response = await fetch('/api/soul/personality');
+        const { personality } = await response.json();
+
+        // Configure orchestrator with API mode and streaming callbacks
+        const config: OrchestratorConfig = {
+          debug: true,
+          apiMode: true,  // Delegate LLM calls to server-side endpoints
+          onStreamStart: () => {
+            console.log('[Labyrinth] Stream started');
+            // StreamRenderer.start() is already called in sendMessage
+          },
+          onStreamChunk: (chunk: string) => {
+            // Append chunk to current renderer
+            if (this.currentRenderer) {
+              this.currentRenderer.appendChunk(chunk);
+              this.scrollToBottom();
+            }
+          },
+          onStreamEnd: () => {
+            console.log('[Labyrinth] Stream ended');
+          },
+          onResponse: (response: string) => {
+            // Finalize streaming and resolve promise
+            if (this.currentRenderer) {
+              this.currentRenderer.finalize(response, this.formatContent.bind(this));
+            }
+            if (this.pendingResolve) {
+              this.pendingResolve(response);
+              this.pendingResolve = null;
+            }
+          },
+          onToast: (message: string, duration: number) => {
+            // Dispatch to FloatingDialogue
+            document.dispatchEvent(new CustomEvent('soul:toast', {
+              detail: { message, duration, type: 'info' }
+            }));
+          },
+          onWhispersUpdate: (whispers: string) => {
+            // Show whispers as hint toast (optional, for debugging)
+            console.log('[Labyrinth] Visitor whispers updated:', whispers.slice(0, 100) + '...');
+            // Could dispatch a hint toast:
+            // document.dispatchEvent(new CustomEvent('soul:toast', {
+            //   detail: { message: whispers, duration: 5000, type: 'hint' }
+            // }));
+          },
+        };
+
+        // Get singleton orchestrator and initialize
+        this.orchestrator = getSoulOrchestrator(config);
+        await this.orchestrator.init(personality);
+
+        console.log('[Labyrinth] SoulOrchestrator initialized');
+      } catch (error) {
+        console.error('[Labyrinth] Failed to initialize orchestrator:', error);
+        // Orchestrator will be null, sendMessage will show error
+      }
     }
 
     private loadConversation(): ConversationThread {
@@ -829,32 +858,30 @@ import Header from '../components/Header.astro';
       this.scrollToBottom();
 
       try {
-        // Initialize stream renderer
-        const renderer = new StreamRenderer(loadingEl);
-        renderer.start();
-
-        // Get SSE stream client
-        const sseClient = getSSEStreamClient();
-        const { stream } = sseClient.sendMessage(query, this.getConversationHistory());
-
-        let finalResponse = '';
-
-        // Consume the stream
-        for await (const chunk of stream) {
-          if (chunk.type === 'chunk' && chunk.text) {
-            renderer.appendChunk(chunk.text);
-            this.scrollToBottom();
-          } else if (chunk.type === 'done') {
-            finalResponse = chunk.fullResponse || renderer.getText();
-            renderer.finalize(finalResponse, this.formatContent.bind(this));
-          } else if (chunk.type === 'error') {
-            renderer.showError(chunk.error || "The Oracle's connection wavers.");
-            this.isLoading = false;
-            this.submitBtn.disabled = false;
-            this.input.focus();
-            return;
-          }
+        // Check if orchestrator is initialized
+        if (!this.orchestrator) {
+          throw new Error('SoulOrchestrator not initialized');
         }
+
+        // Initialize stream renderer and store reference for callbacks
+        this.currentRenderer = new StreamRenderer(loadingEl);
+        this.currentRenderer.start();
+
+        // Create promise to wait for response completion
+        const responsePromise = new Promise<string>((resolve) => {
+          this.pendingResolve = resolve;
+        });
+
+        // Send message to orchestrator (Open Souls paradigm)
+        // The orchestrator will call onStreamChunk for each chunk,
+        // and onResponse when complete (which resolves our promise)
+        await this.orchestrator.handleMessage(query);
+
+        // Wait for the response to complete (via onResponse callback)
+        const finalResponse = await responsePromise;
+
+        // Clear renderer reference
+        this.currentRenderer = null;
 
         // Update element ID for final message
         loadingEl.id = `msg-${Date.now()}_assistant`;
@@ -883,6 +910,7 @@ import Header from '../components/Header.astro';
       } catch (error) {
         console.error('Chat error:', error);
         loadingEl.remove();
+        this.currentRenderer = null;
 
         // Show error message
         const errorMsg: ChatMessage = {
@@ -927,54 +955,6 @@ import Header from '../components/Header.astro';
       this.history.querySelectorAll('.message').forEach(el => el.remove());
       this.emptyState.style.display = 'flex';
       this.input.focus();
-    }
-
-    // Menu methods
-    private toggleMenu() {
-      const isOpen = this.menu.classList.toggle('is-open');
-      this.menuTrigger.setAttribute('aria-expanded', String(isOpen));
-    }
-
-    private closeMenu() {
-      this.menu.classList.remove('is-open');
-      this.menuTrigger.setAttribute('aria-expanded', 'false');
-    }
-
-    private toggleVoice() {
-      const current = localStorage.getItem('ttsEnabled') === 'true';
-      const next = !current;
-      localStorage.setItem('ttsEnabled', String(next));
-      this.updateVoiceLabel();
-
-      // Show feedback toast
-      const message = next ? 'Voice enabled' : 'Voice disabled';
-      this.showToast(message);
-    }
-
-    private updateVoiceLabel() {
-      const isEnabled = localStorage.getItem('ttsEnabled') === 'true';
-      this.voiceLabel.textContent = isEnabled ? 'Disable Voice' : 'Enable Voice';
-    }
-
-    private async copyTranscript() {
-      const thread = this.loadConversation();
-      if (thread.messages.length === 0) {
-        this.showToast('No conversation to copy');
-        return;
-      }
-
-      const transcript = thread.messages.map(msg => {
-        const role = msg.role === 'user' ? 'You' : 'Oracle';
-        return `${role}: ${msg.content}`;
-      }).join('\n\n');
-
-      try {
-        await navigator.clipboard.writeText(transcript);
-        this.showToast('Transcript copied');
-      } catch (err) {
-        console.error('Failed to copy:', err);
-        this.showToast('Failed to copy');
-      }
     }
 
     private showToast(message: string) {

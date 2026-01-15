@@ -19,7 +19,8 @@
 import type { ProcessContext, ProcessReturn } from '../mentalProcesses/types';
 import { ChatMessageRoleEnum } from '../core/types';
 import { indentNicely } from '../core/utils';
-import { getSoulMemory } from '../../memory';
+import { getSoulMemory, type SoulMemoryInterface } from '../../memory';
+import { getSoulLogger } from '../core/SoulLogger';
 
 import { mentalQuery } from '../cognitiveSteps/mentalQuery';
 import { internalMonologue } from '../cognitiveSteps/internalMonologue';
@@ -57,7 +58,9 @@ export async function modelsTheVisitor(
   const { log } = actions;
   const cfg = { ...DEFAULT_CONFIG, ...config };
 
-  const soulMemory = getSoulMemory();
+  // DI Pattern: Use injected soulMemory when running server-side (API endpoint),
+  // fallback to localStorage-backed singleton when running client-side (SoulOrchestrator)
+  const soulMemory: SoulMemoryInterface = context.soulMemory ?? getSoulMemory();
   const currentNotes = soulMemory.getVisitorModel();
   const userName = soulMemory.getUserName() || 'visitor';
 
@@ -111,6 +114,9 @@ export async function modelsTheVisitor(
     `What have I learned specifically about ${userName} from the last few messages or their behavior? Consider what they seem interested in, how they communicate, and what they might need. If they mentioned a specific topic, note it.`
   );
   log('Learnings:', learnings);
+
+  // Debug: log full internalMonologue content
+  getSoulLogger().logInternalMonologue(learnings, 'modelsTheVisitor learnings');
 
   // Extract topics from learnings (simple heuristic, no LLM call)
   const topicPatterns = [

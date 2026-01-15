@@ -10,17 +10,24 @@ import { WorkingMemory } from '../core/WorkingMemory';
 import { ChatMessageRoleEnum } from '../core/types';
 import { indentNicely, safeName } from '../core/utils';
 import type { Perception, HydratedUserModel } from '../mentalProcesses/types';
-import { getSoulMemory } from '../../memory';
+
+/**
+ * Visitor context data for pure function injection
+ * Separates data retrieval from integration logic
+ */
+export interface VisitorContextData {
+  userName: string;
+  visitorModel?: string;
+  visitorWhispers?: string;
+  lastTopics: string[];
+}
 
 /**
  * Format visitor context for working memory
+ * Pure function: no side effects, takes all data as parameters
  */
-function formatVisitorContext(visitor: HydratedUserModel): string {
-  const soulMemory = getSoulMemory();
-  const userName = soulMemory.getUserName() || 'visitor';
-  const visitorModel = soulMemory.getVisitorModel();
-  const visitorWhispers = soulMemory.getVisitorWhispers();
-  const lastTopics = soulMemory.getLastTopics();
+function formatVisitorContext(visitor: HydratedUserModel, contextData: VisitorContextData): string {
+  const { userName, visitorModel, visitorWhispers, lastTopics } = contextData;
 
   let context = indentNicely`
     Current visitor context:
@@ -76,12 +83,16 @@ function formatPerception(perception: Perception): string {
 /**
  * Pure function that integrates perception into working memory.
  * NO side effects, NO state, NO dispatch.
+ *
+ * All data needed from soul memory is passed via visitorData parameter,
+ * making this function truly pure (no getSoulMemory() calls).
  */
 export function memoryIntegrate(
   perception: Perception,
   workingMemory: WorkingMemory,
   visitorContext: HydratedUserModel,
-  soulPersonality: string
+  soulPersonality: string,
+  visitorData: VisitorContextData
 ): WorkingMemory {
   let memory = workingMemory;
 
@@ -99,7 +110,7 @@ export function memoryIntegrate(
   // Update visitor context (always refresh)
   memory = memory.withRegion('visitor-context', {
     role: ChatMessageRoleEnum.System,
-    content: formatVisitorContext(visitorContext),
+    content: formatVisitorContext(visitorContext, visitorData),
   });
 
   // Add perception as user message
