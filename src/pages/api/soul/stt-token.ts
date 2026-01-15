@@ -36,7 +36,8 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
-  const deepgramApiKey = import.meta.env.DEEPGRAM_API_KEY;
+  // Use process.env for Vercel runtime, import.meta.env for local dev
+  const deepgramApiKey = process.env.DEEPGRAM_API_KEY || import.meta.env.DEEPGRAM_API_KEY;
 
   if (!deepgramApiKey) {
     return new Response(
@@ -62,7 +63,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     // This is enough time to establish a WebSocket connection
     const { result } = await deepgram.manage.createProjectKey(
       // Project ID is extracted from the API key automatically
-      import.meta.env.DEEPGRAM_PROJECT_ID || '',
+      process.env.DEEPGRAM_PROJECT_ID || import.meta.env.DEEPGRAM_PROJECT_ID || '',
       {
         comment: 'Temporary browser STT key',
         scopes: ['usage:write'], // Minimal scope for STT

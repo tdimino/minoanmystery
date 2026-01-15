@@ -51,7 +51,8 @@ const voiceConfig = {
 };
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
-  const cartesiaApiKey = import.meta.env.CARTESIA_API_KEY;
+  // Use process.env for Vercel runtime, import.meta.env for local dev
+  const cartesiaApiKey = process.env.CARTESIA_API_KEY || import.meta.env.CARTESIA_API_KEY;
 
   if (!cartesiaApiKey) {
     return new Response(

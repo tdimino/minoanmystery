@@ -3,7 +3,8 @@ import { Resend } from 'resend';
 
 export const prerender = false;
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+// Use process.env for Vercel runtime, import.meta.env for local dev
+const resend = new Resend(process.env.RESEND_API_KEY || import.meta.env.RESEND_API_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -28,7 +29,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Check if Resend API key is configured
-    if (!import.meta.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY && !import.meta.env.RESEND_API_KEY) {
       console.error('RESEND_API_KEY not configured');
       return new Response(
         JSON.stringify({ error: 'Email service not configured' }),

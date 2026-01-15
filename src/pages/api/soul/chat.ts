@@ -88,7 +88,8 @@ function ensureProviders(): void {
   if (providersInitialized) return;
 
   // OpenRouter - default provider for persona/external dialog
-  const openrouterKey = import.meta.env.OPENROUTER_API_KEY;
+  // Use process.env for Vercel runtime, import.meta.env for local dev
+  const openrouterKey = process.env.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY;
   if (!openrouterKey) {
     throw new Error('OPENROUTER_API_KEY environment variable is required');
   }
@@ -102,7 +103,7 @@ function ensureProviders(): void {
   setLLMProvider(openRouterProvider);
 
   // Groq - ultra-low latency for thinking/internal steps (Kimi K2, Qwen3)
-  const groqKey = import.meta.env.GROQ_API_KEY;
+  const groqKey = process.env.GROQ_API_KEY || import.meta.env.GROQ_API_KEY;
   if (groqKey) {
     const groqProvider = new GroqProvider({
       apiKey: groqKey,
@@ -113,7 +114,7 @@ function ensureProviders(): void {
   }
 
   // Baseten - fallback provider
-  const basetenKey = import.meta.env.BASETEN_API_KEY;
+  const basetenKey = process.env.BASETEN_API_KEY || import.meta.env.BASETEN_API_KEY;
   if (basetenKey) {
     const basetenProvider = new BasetenProvider({
       apiKey: basetenKey,
