@@ -664,10 +664,15 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
       grid-column: 1;
     }
 
-    /* CTA Section - Mobile: centered text, circle at bottom-left */
+    /* CTA Section - Mobile */
+    .interested {
+      padding: var(--space-xl) 0 var(--space-2xl);
+    }
+
     .interested-grid {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      gap: var(--space-md);
     }
 
     .interested-content {
@@ -675,11 +680,15 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
       text-align: center;
     }
 
+    .interested .paragraph-large {
+      text-align: left;
+    }
+
     .arrow-circle {
       width: 100px;
       height: 100px;
-      align-self: flex-start;
-      margin-top: var(--space-lg);
+      align-self: center;
+      margin-top: var(--space-xl);
     }
   }
 </style>
