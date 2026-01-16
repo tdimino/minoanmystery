@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Soul State Indicator**: Visual indicator in the Labyrinth showing Kothar's mental state
+  - Displays below "Consult with Kothar" header with a pulsing colored dot
+  - State-specific text: "Kothar is pondering...", "Kothar is curious...", "Kothar is remembering...", etc.
+  - Color-coded dots per state: purple (greeting), gold (curious), deep purple (engaged), sage green (ready), blue (returning), gray (dormant), lavender (exiting)
+  - Partially faded (50% opacity) for subtle presence
 - **Portfolio Index Page**: New `/portfolio` page displaying all case studies in a filterable card grid
   - Unified single-row filter with category and discipline pills (modern 2025 pattern)
   - Multi-discipline support per portfolio item (array-based `disciplines` field)
@@ -25,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - **API Endpoints**: `/api/soul/subprocess` for background visitor modeling, `/api/soul/personality` for soul personality
 
 ### Changed
+- **Labyrinth Chat UI**: Removed page origin tags from messages (data still stored for Kothar's context)
 - **Header Navigation**: Added "View All Case Studies" link to portfolio dropdown menu
 - **BaseLayout**: Updated default OG image to `/images/og/default.png` with proper 1200×630 dimensions
 - **Labyrinth Page**: Custom OG image featuring Kothar avatar, updated title and description

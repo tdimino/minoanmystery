@@ -23,6 +23,12 @@ import Header from '../components/Header.astro';
       </div>
     </header>
 
+    <!-- Soul State Indicator -->
+    <div class="soul-state-indicator" id="soul-state-indicator">
+      <span class="soul-state-dot" id="soul-state-dot"></span>
+      <span class="soul-state-text" id="soul-state-text">Kothar is pondering...</span>
+    </div>
+
     <div class="labyrinth-container">
       <div id="conversation-history" class="conversation-history">
         <div class="conversation-empty" id="conversation-empty">
@@ -108,6 +114,71 @@ import Header from '../components/Header.astro';
     font-size: 13px;
     color: var(--color-text-muted);
     margin: 2px 0 0;
+  }
+
+  /* Soul State Indicator */
+  .soul-state-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .soul-state-indicator:hover {
+    opacity: 0.7;
+  }
+
+  .soul-state-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    animation: soul-pulse 2s ease-in-out infinite;
+  }
+
+  .soul-state-text {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--color-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  @keyframes soul-pulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  /* State-specific dot colors */
+  .soul-state-dot[data-state="greeting"] {
+    background-color: #966a85; /* Tyrian purple */
+  }
+  .soul-state-dot[data-state="curious"] {
+    background-color: #d4af37; /* Gold */
+  }
+  .soul-state-dot[data-state="engaged"] {
+    background-color: #7b5e99; /* Deep purple */
+  }
+  .soul-state-dot[data-state="ready"] {
+    background-color: #5a9a6e; /* Sage green */
+  }
+  .soul-state-dot[data-state="returning"] {
+    background-color: #5b8cb8; /* Mediterranean blue */
+  }
+  .soul-state-dot[data-state="dormant"] {
+    background-color: #888888; /* Gray */
+    animation: soul-pulse 4s ease-in-out infinite; /* Slower pulse */
+  }
+  .soul-state-dot[data-state="exiting"] {
+    background-color: #b89ac9; /* Soft lavender */
   }
 
   /* Options Menu */
@@ -333,17 +404,6 @@ import Header from '../components/Header.astro';
     color: var(--color-text-muted);
     margin-top: 4px;
     opacity: 0.7;
-  }
-
-  :global(.message-page) {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 8px;
-    background: var(--color-background-alt);
-    border-radius: 4px;
-    font-size: 11px;
-    color: var(--color-text-muted);
   }
 
   /* Loading state */
@@ -627,12 +687,33 @@ import Header from '../components/Header.astro';
     private currentRenderer: StreamRenderer | null = null;
     private pendingResolve: ((response: string) => void) | null = null;
 
+    // Soul state indicator
+    private stateIndicator: HTMLElement;
+    private stateDot: HTMLElement;
+    private stateText: HTMLElement;
+
+    // State display mapping
+    private readonly stateLabels: Record<string, string> = {
+      greeting: 'Kothar is pondering...',
+      curious: 'Kothar is curious...',
+      engaged: 'Kothar is contemplating...',
+      ready: 'Kothar is attending...',
+      returning: 'Kothar is remembering...',
+      dormant: 'Kothar is dreaming...',
+      exiting: 'Kothar is reflecting...',
+    };
+
     constructor() {
       this.history = document.getElementById('conversation-history')!;
       this.form = document.getElementById('labyrinth-form') as HTMLFormElement;
       this.input = document.getElementById('labyrinth-input') as HTMLInputElement;
       this.submitBtn = this.form.querySelector('.labyrinth-submit') as HTMLButtonElement;
       this.emptyState = document.getElementById('conversation-empty')!;
+
+      // Soul state indicator elements
+      this.stateIndicator = document.getElementById('soul-state-indicator')!;
+      this.stateDot = document.getElementById('soul-state-dot')!;
+      this.stateText = document.getElementById('soul-state-text')!;
 
       this.init();
     }
@@ -643,6 +724,9 @@ import Header from '../components/Header.astro';
 
       // Initialize orchestrator (async, non-blocking)
       this.initOrchestrator();
+
+      // Initialize soul state indicator
+      this.updateSoulState();
 
       // Personalize input placeholder with userName
       const userName = getUserName();
@@ -792,20 +876,44 @@ import Header from '../components/Header.astro';
         : this.formatContent(msg.content);
 
       const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const pageTag = msg.page && msg.page !== '/labyrinth'
-        ? `<span class="message-page">${msg.page}</span>`
-        : '';
 
       messageEl.innerHTML = `
         <div class="message-avatar">${avatarIcon}</div>
         <div class="message-bubble">
           <div class="message-content">${content}</div>
-          <div class="message-meta">${time} ${pageTag}</div>
+          <div class="message-meta">${time}</div>
         </div>
       `;
 
       this.history.appendChild(messageEl);
       return messageEl;
+    }
+
+    /**
+     * Update soul state indicator from localStorage
+     */
+    private updateSoulState() {
+      try {
+        const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+        const state = memory.currentState || 'greeting';
+        const isReturning = (memory.visitCount || 1) > 1;
+
+        // Use 'returning' state if this is a returning visitor and in greeting
+        const displayState = (isReturning && state === 'greeting') ? 'returning' : state;
+
+        // Update the dot's data attribute for CSS styling
+        this.stateDot.setAttribute('data-state', displayState);
+
+        // Update the text
+        const label = this.stateLabels[displayState] || this.stateLabels.greeting;
+        this.stateText.textContent = label;
+
+        console.log('[Labyrinth] Soul state updated:', displayState);
+      } catch (e) {
+        // Default to greeting state
+        this.stateDot.setAttribute('data-state', 'greeting');
+        this.stateText.textContent = this.stateLabels.greeting;
+      }
     }
 
     private formatContent(content: string): string {
@@ -926,6 +1034,9 @@ import Header from '../components/Header.astro';
       this.submitBtn.disabled = false;
       this.input.focus();
       this.scrollToBottom();
+
+      // Update soul state indicator after response
+      this.updateSoulState();
     }
 
     private getVisitorContext() {
