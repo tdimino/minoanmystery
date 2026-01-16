@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Kothar RAG Dossiers**: Comprehensive biography and portfolio dossiers for visitor Q&A
+  - **Biography** (5 files): INDEX.md, origin-story.md, agency-years.md, big-tech-era.md, ai-ml-chapter.md, personal-interests.md
+  - **Portfolio** (10 files): INDEX.md + case studies for ACS, CZI, Dolby, Google, JPMC, cognitive design MVPs
+  - **Subquadratic/Aldea** (4 files): INDEX.md + soul engine, LLM evaluation, model deployment dossiers
+  - **Oracle Concepts** (1 file): daimonic-wisdom.md - Tom's "Waltz of the Soul and the Daimon" essay
+  - Structured with Source metadata, RAG tags, cross-references, and scholarly annotations
 - **Soul State Indicator**: Visual indicator in the Labyrinth showing Kothar's mental state
   - Displays below "Consult with Kothar" header with a pulsing colored dot
   - State-specific text: "Kothar is pondering...", "Kothar is curious...", "Kothar is remembering...", etc.
