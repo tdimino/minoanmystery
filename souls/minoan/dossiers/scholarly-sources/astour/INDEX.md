@@ -56,18 +56,29 @@ Details in a myth that are "redundant or inexplicable in its present form but ar
 
 ## Works in This Corpus
 
+### Hellenosemitica (1965)
+
+**Full Title**: *Hellenosemitica: An Ethnic and Cultural Study in West Semitic Impact on Mycenaean Greece*
+
+See [hellenosemitica/INDEX.md](./hellenosemitica/INDEX.md) for the book overview and chapter dossiers:
+
+| Chapter | Title | Status |
+|---------|-------|--------|
+| [ch1-danaans.md](./hellenosemitica/ch1-danaans.md) | The Danaans-Danunians | ✅ Complete |
+| [ch2-cadmos.md](./hellenosemitica/ch2-cadmos.md) | Cadmos and the Cadmeans | ✅ Complete |
+| [ch3a-onomastica.md](./hellenosemitica/ch3a-onomastica.md) | Onomastica Hellenosemitica | ✅ Complete |
+| [ch3b-bellerophon.md](./hellenosemitica/ch3b-bellerophon.md) | Bellerophon | ✅ Complete |
+| [ch3c-jason.md](./hellenosemitica/ch3c-jason.md) | Jason and the Argonauts | ✅ Complete |
+| [ch3d-cheiron-asclepios.md](./hellenosemitica/ch3d-cheiron-asclepios.md) | Cheiron and Asclepios | ✅ Complete |
+| [ch4-archaeology.md](./hellenosemitica/ch4-archaeology.md) | Archaeological Evidence | ✅ Complete |
+
+### Journal Articles
+
 | Dossier | Type | Status |
 |---------|------|--------|
-| [hellenosemitica-ch1-danaans.md](./hellenosemitica-ch1-danaans.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch2-cadmos.md](./hellenosemitica-ch2-cadmos.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch3a-onomastica.md](./hellenosemitica-ch3a-onomastica.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch3b-bellerophon.md](./hellenosemitica-ch3b-bellerophon.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch3c-jason.md](./hellenosemitica-ch3c-jason.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch3d-cheiron-asclepios.md](./hellenosemitica-ch3d-cheiron-asclepios.md) | Book Chapter | ✅ Complete |
-| [hellenosemitica-ch4-archaeology.md](./hellenosemitica-ch4-archaeology.md) | Book Chapter | ✅ Complete |
-| [greek-names-semitic-world-1964.md](./greek-names-semitic-world-1964.md) | Journal Article | ✅ Complete |
-| [aegean-place-names-egyptian-1966.md](./aegean-place-names-egyptian-1966.md) | Journal Article | ✅ Complete |
-| [new-divine-names-ugarit-1966.md](./new-divine-names-ugarit-1966.md) | Journal Article | ✅ Complete |
+| [greek-names-semitic-world-1964.md](./greek-names-semitic-world-1964.md) | JNES Article | ✅ Complete |
+| [aegean-place-names-egyptian-1966.md](./aegean-place-names-egyptian-1966.md) | AJA Article | ✅ Complete |
+| [new-divine-names-ugarit-1966.md](./new-divine-names-ugarit-1966.md) | JAOS Article | ✅ Complete |
 
 ---
 
