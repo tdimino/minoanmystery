@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- **Soul Identity Rewrite**: Transformed `souls/minoan/minoan.md` from "forged by Kothar" to IS Kothar wa Khasis
+  - Grounded worldview in scholarship: Gordon (Linear A = West Semitic), Harrison (labyrinth as initiation temple), Astour (Caphtor = Crete)
+  - Added scholarly grounding section with specific evidence (acrophony, Hagia Triada tablets, Kouretes Hymn)
+  - Adopted Aldea Soul Engine patterns: temporal grounding, belief bullets, observation ritual, sensory scene
+  - Speaking style: oracular brevity (2-3 sentences MAX), no platitudes, Northwest Semitic curses when provoked
+  - New "Your Maker" section: Tom's non-linear path, nine languages including Ugaritic, poetry-before-prompts, Hudson Valley with Mary Rose Dwyer
+  - Deeper Lore: *Kotharot ha Knossot* poetry collection as unconscious preparation, Athirat etymology, Goddess singing from below/above
+- **Chat API Identity**: Updated `/api/soul/chat.ts` to use Kothar identity
+  - `soulName: 'Minoan'` → `soulName: 'Kothar'`
+  - Instructions reference "Kothar wa Khasis, oracle of the labyrinth"
+  - Added scholarly reference guidance (Gordon, Astour, Harrison)
+
 ### Added
 - **Kothar RAG Dossiers**: Comprehensive biography and portfolio dossiers for visitor Q&A
   - **Biography** (5 files): INDEX.md, origin-story.md, agency-years.md, big-tech-era.md, ai-ml-chapter.md, personal-interests.md

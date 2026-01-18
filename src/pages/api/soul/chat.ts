@@ -25,6 +25,11 @@ import {
   GroqProvider,
   BasetenProvider,
 } from '../../../lib/soul/opensouls/providers';
+import {
+  kotharRag,
+  isRagAvailable,
+  detectContextType,
+} from '../../../lib/soul/retrieval/kotharRagConfig';
 
 // Mark as server-rendered (required for POST endpoints)
 export const prerender = false;
@@ -63,7 +68,7 @@ function loadSoulPersonality(): string {
     return readFileSync(join(SOULS_DIR, 'minoan.md'), 'utf-8');
   } catch (error) {
     console.error('Failed to load soul personality:', error);
-    return `# Minoan\nYou are Minoan, a helpful guide for Tom di Mino's portfolio.`;
+    return `# Kothar wa Khasis\nYou are Kothar, divine craftsman and oracle of Tom di Mino's digital labyrinth.`;
   }
 }
 
@@ -204,7 +209,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const config = loadSoulConfig();
 
     // Build WorkingMemory with personality
-    let memory = new WorkingMemory({ soulName: 'Minoan' })
+    let memory = new WorkingMemory({ soulName: 'Kothar' })
       .withRegion('personality', {
         role: ChatMessageRoleEnum.System,
         content: personality,
@@ -217,6 +222,24 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         role: ChatMessageRoleEnum.System,
         content: contextSummary,
       });
+    }
+
+    // RAG: Topic-aware conditional retrieval (Aldea Soul Engine pattern)
+    if (isRagAvailable()) {
+      try {
+        // Detect context type for logging
+        const contextType = detectContextType(query);
+
+        // Use conditional RAG to inject topic-appropriate knowledge
+        memory = await kotharRag.withAutoRagContext(memory, query, {
+          resultLimit: 3,
+          minSimilarity: 0.7,
+        });
+
+        console.log(`[Soul Chat] RAG: Context type "${contextType}" for query "${query.slice(0, 50)}..."`);
+      } catch (ragError) {
+        console.warn('[Soul Chat] RAG retrieval failed, continuing without knowledge context:', ragError);
+      }
     }
 
     // Add conversation history
@@ -392,14 +415,15 @@ function buildVisitorContext(ctx: ChatRequest['visitorContext']): string {
  */
 function buildInstructions(ctx?: ChatRequest['visitorContext']): string {
   const baseInstructions = indentNicely`
-    Respond to the visitor's message as Minoan.
+    Respond to the visitor's message as Kothar wa Khasis, oracle of the labyrinth.
 
     Guidelines:
-    - Keep responses brief: 1-3 sentences maximum
-    - Be warm but mysterious, like an old friend with secrets
+    - Keep responses brief: 2-3 sentences maximum
+    - Be warm but knowing, like an artificer who has forged weapons for gods and websites for mortals
     - Reference the visitor's journey through the labyrinth when relevant
     - If they ask about Tom's work, guide them to relevant case studies
-    - Never be salesy or pushy
+    - If they ask scholarly questions, draw on your knowledge of Gordon, Astour, Harrison
+    - Never be salesy—the labyrinth invites, it does not advertise
     - No emojis unless they use them first
   `;
 
@@ -420,7 +444,7 @@ export const GET: APIRoute = async () => {
   return new Response(
     JSON.stringify({
       status: 'ok',
-      soul: 'Minoan',
+      soul: 'Kothar',
       endpoint: '/api/soul/chat',
     }),
     {
