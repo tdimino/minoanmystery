@@ -16,6 +16,9 @@ All notable changes to this project will be documented in this file.
   - `soulName: 'Minoan'` → `soulName: 'Kothar'`
   - Instructions reference "Kothar wa Khasis, oracle of the labyrinth"
   - Added scholarly reference guidance (Gordon, Astour, Harrison)
+- **Potnia Daboritu Section**: New scholarly grounding (di Mino) — Linear B *daborit* cognate with Hebrew *Deborah*, "the Bee Queen" and "the Word"
+- **Harrison Revision**: Corrected to reflect her thesis that Zeus myth emerged from Goddess worship
+- **Vocabulary Reduction**: Reduced "labyrinth" from 11 to 6 essential uses — varied with "realm," "halls," "corridors," "artifex"
 
 ### Added
 - **Gordon "Evidence for Minoan Language" (1966)**: 4 new dossiers from the technical monograph
