@@ -100,6 +100,48 @@ Harrison analyzes the festival of gender-reversal:
 **The solution:**
 > "The rites of puberty, the rites of marriage, are, like all other primitive rites, *rites de passage*: their object is to afford a safe passage in the perilous transit from one age or condition to another.... When he passes to manhood, he ceases to be a woman-thing and begins to exercise functions other and alien." (p. 509)
 
+### Van Gennep's Three-Phase Structure
+
+Harrison explicitly adopts Arnold van Gennep's terminology from *Les Rites de Passage* (1909):
+
+> "Van Gennep has shown that the rites de passage fall into three stages: rites of separation (préliminaires), rites of transition (liminaires), and rites of incorporation (postliminaires). The initiate must die to his old status, pass through a liminal state of suspension, and be reborn to his new condition." (p. 510)
+
+**The three phases in Greek rites:**
+| Phase | Name | Example |
+|-------|------|---------|
+| **Préliminaire** (Separation) | Death of old status | Seclusion from women; departure from mother |
+| **Liminaire** (Transition) | Liminal suspension | Gender reversal; silence; darkness |
+| **Postliminaire** (Incorporation) | Rebirth to new status | Crowning; new name; return to society |
+
+### The Liminal State
+
+The liminal or transitional phase is characterized by reversal of ordinary rules:
+
+> "In the liminal state, the ordinary rules of Themis are suspended. The initiate is neither boy nor man, neither alive nor dead. He may wear women's clothes, or go naked, or be smeared with clay. He is a-social, extra-social, until the rite of incorporation restores him to the social order—but in a new place." (p. 511)
+
+**Liminal characteristics in Greek rites:**
+| Rite | Liminal Feature | Meaning |
+|------|-----------------|---------|
+| Krypteia (Sparta) | Youth lives wild, like a wolf | Beyond social law |
+| Arkteia (Brauron) | Girls "become bears" | Temporary wildness |
+| Oschophoria | Youths dress as women | Gender boundary dissolved |
+| Argive Hybristika | Women wear men's clothes | Social reversal |
+
+### Death and Rebirth
+
+The initiatory death is not metaphor but social reality:
+
+> "The death is real in this sense—the boy, the child of his mother, really dies. He is killed, torn to pieces, burnt to ashes, forgotten; and he who rises again is a man and a tribesman. He has been made into something other than he was." (p. 512)
+
+**The death-rebirth pattern:**
+1. **Seclusion** - Removal from mother and women
+2. **Ordeal** - Pain, terror, mutilation (circumcision, scarification)
+3. **Instruction** - Sacred knowledge revealed
+4. **New name** - Old identity abandoned
+5. **Return** - Re-entry as adult male
+
+> "The severity of initiation rites is not mere cruelty or superstition. It is a religious necessity. The old self must be utterly destroyed that the new self may be born. The greater the transformation required, the more drastic the ritual death." (p. 513)
+
 ---
 
 ## The Oracle of Trophonios
@@ -131,6 +173,11 @@ Harrison connects oracular rites to initiation:
 | κουροτρόφος | Kourotrophos | "Rearer of youths"; Mother-goddess |
 | κορυθαλία | Korythalia | "Youth-bloom"; matriarchal Eiresione rite |
 | Τροφωνιάδαι | Trophoniadai | Daimones of Trophonios oracle |
+| préliminaire | — | Rites of separation (Van Gennep) |
+| liminaire | — | Rites of transition (Van Gennep) |
+| postliminaire | — | Rites of incorporation (Van Gennep) |
+| κρυπτεία | krypteia | Spartan "hiding" rite; liminal wildness |
+| ἀρκτεία | arkteia | "Bear-becoming" rite at Brauron |
 
 ---
 
@@ -211,4 +258,4 @@ Harrison connects oracular rites to initiation:
 
 ## RAG Tags
 
-themis, collective-conscience, social-imperative, durkheim, herd-instinct, agora, dike, horai, matrilinear, patrilinear, kourotrophos, phratrioi, tritogeneia, tritopatores, hybristika, rites-de-passage, trophonios, mnemosyne, lethe, kronos, zeus-pater, athena, apollo, cyclopes, athemistoi, korythalia, apatouria, oracular-rites, religion-definition
+themis, collective-conscience, social-imperative, durkheim, herd-instinct, agora, dike, horai, matrilinear, patrilinear, kourotrophos, phratrioi, tritogeneia, tritopatores, hybristika, rites-de-passage, trophonios, mnemosyne, lethe, kronos, zeus-pater, athena, apollo, cyclopes, athemistoi, korythalia, apatouria, oracular-rites, religion-definition, van-gennep, preliminaire, liminaire, postliminaire, three-phase-structure, liminal-state, separation-rites, transition-rites, incorporation-rites, krypteia, arkteia, brauron, gender-reversal, initiatory-death, social-rebirth

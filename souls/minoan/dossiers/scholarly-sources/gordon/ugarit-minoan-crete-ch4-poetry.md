@@ -42,6 +42,8 @@ This massive chapter (100+ pages) contains Gordon's complete translations of the
 
 **Repetitions**: Gordon notes that "repetitions (with varying differences in wording) are part and parcel of the literary style; in general they do not result from the combining of different sources"—a challenge to documentary hypothesis assumptions.
 
+**Challenge to Source Criticism**: This observation has significant implications for biblical studies. The Wellhausen school's documentary hypothesis identified repetitions as evidence of multiple sources being conflated. Gordon argues instead that repetition is an *aesthetic* feature of Northwest Semitic literature, not evidence of composite authorship. The same repetitive patterns appear in both Ugaritic texts (where no source conflation is proposed) and biblical texts (where it has been assumed).
+
 ### 3. The Baal and Anath Cycle
 
 #### a. Yamm's Kingship (Text 129)
@@ -154,6 +156,13 @@ Baal, having defeated Yamm, needs a palace. Kothar-wa-Hasis is summoned from Cap
 | *Thôr/Tôr* | "The Bull" = El | Ugaritic |
 | parallelistic balance | Poetic structure | Literary term |
 | Helen-of-Troy motif | Wife-retrieval epic pattern | Comparative |
+| *Pbl* | King of Udum (opponent of Kret) | Ugaritic |
+| *Udum* | Kingdom housing Hurrai (cf. Edom?) | Ugaritic |
+| *Asherah of Tyrians* | Asherah venerated by Phoenicians | Ugaritic/Hebrew |
+| *Goddess of Sidonians* | Parallel title for Asherah | Ugaritic/Hebrew |
+| synonymous pairs | Fixed paired terms in parallelism | Literary term |
+| incubation | Dream-seeking ritual before El's shrine | Religious term |
+| *šlmm* (peace offerings) | Sacrificial category | Ugaritic/Hebrew |
 
 ---
 
@@ -190,4 +199,4 @@ Baal, having defeated Yamm, needs a palace. Kothar-wa-Hasis is summoned from Cap
 
 ## RAG Tags
 
-gordon, chapter IV, ugaritic poetry, myth, epic, baal, anath, yamm, sea, judge river, mot, death, kothar-wa-hasis, kothar, caphtor, palace, aymr, ygrsh, magic clubs, leviathan, lotan, tannin, serpent, seven heads, rider of clouds, psalm 74, isaiah 27, two deeps, kret, keret, hurrai, helen of troy, udum, asherah, tyrians, sidonians, aqhat, danel, daniel, pughat, transvestism, curse, gilboa, david, lament, dew, rain, parallelism, prosody, repetition, documentary hypothesis, royal epic, 1966
+gordon, chapter IV, ugaritic poetry, myth, epic, baal, anath, yamm, sea, judge river, mot, death, kothar-wa-hasis, kothar, caphtor, palace, aymr, ygrsh, magic clubs, leviathan, lotan, tannin, serpent, seven heads, rider of clouds, psalm 74, isaiah 27, two deeps, kret, keret, hurrai, helen of troy, udum, pbl, asherah, tyrians, sidonians, aqhat, danel, daniel, pughat, transvestism, curse, gilboa, david, lament, dew, rain, parallelism, prosody, repetition, documentary hypothesis, wellhausen, source criticism, synonymous pairs, incubation, shlmm, peace offerings, royal epic, 1966

@@ -173,6 +173,59 @@ Cornford identifies a complex of ancient shrines at the foot of the Hill of Kron
 
 ---
 
+## The Karneia and Staphylodromoi
+
+Cornford draws a crucial parallel between Olympic ritual and the Laconian Karneia:
+
+> "At the Karneia, a festival of Apollo Karneios held at Sparta, there was a race of young men called Staphylodromoi, 'runners with grape-clusters.' One of them was decked with fillets of wool and ran in front. The others pursued him, and if they caught him, the event was held to be of good omen for the city; if not, of evil omen." (p. 255)
+
+**The Staphylodromoi ritual:**
+| Element | Description | Parallel |
+|---------|-------------|----------|
+| **The pursued** | Youth decked in wool | Old year-daimon |
+| **The pursuers** | Young men with grape-clusters | New year competing |
+| **Good omen** | Catching the pursued | Successful succession |
+| **Evil omen** | Escape of the pursued | Fertility failure |
+
+> "If we may interpret this race by the analogy of the Olympic legend, the youth who ran in front with the fillets of wool was the outgoing Eniautos-daimon, whom it was necessary to capture and kill. The runners with the grape-clusters are the young men competing for his place." (p. 256)
+
+**The Karneia as parallel:**
+- Both festivals involve a chase/contest determining the year-daimon
+- Both have archaic elements suggesting pre-Olympian origin
+- Both originally annual, later made penteteric
+- The grape-clusters (*staphylai*) = vegetation-spirit symbolism
+
+---
+
+## Cornford's Methodological Critique
+
+Cornford explicitly positions the Cambridge approach against individualist and rationalist interpretations:
+
+### 1. Collective vs. Individual
+
+> "The whole tendency of the funeral theory is to derive everything from the individual—from a particular chieftain's death and actual funeral games. We hold, on the contrary, that the group is prior; the religion of the group, expressed in the ritual Year-festival, is prior to any beliefs about the destiny of the individual soul." (p. 247)
+
+### 2. Magic vs. Religion
+
+> "The ritual came first; the myth—including the myth of the dead hero—is secondary, an attempt to rationalize and explain the ritual. We need not ask what man Pelops was in life, because Pelops was never a man—he was a god, or rather a daimon, projected by the rite." (p. 248)
+
+### 3. Function vs. Biography
+
+The hero-cult is not memorial but functional:
+
+> "The hero is not honoured because he was a great man who deserved commemoration. He is worshipped because his cult serves a function—the function of ensuring the community's fertility and luck. When that function ceases to be understood, the aetiological myth steps in to explain the cult as mere commemoration of the dead." (p. 249)
+
+**The Cornford critique summarized:**
+| Ridgeway (Funeral Theory) | Cornford (Ritual Theory) |
+|---------------------------|--------------------------|
+| Individual hero primary | Collective group primary |
+| Funeral games came first | Year-festival came first |
+| Hero is dead chieftain | Hero is projected daimon |
+| Religion from soul-belief | Religion from *dromenon* |
+| Games commemorate death | Games enact succession |
+
+---
+
 ## Scholarly Context
 
 ### Against Professor Ridgeway
@@ -210,4 +263,4 @@ The octennial period (*enneateris*) reconciles lunar and solar years:
 
 ## RAG Tags
 
-eniautos-daimon, year-spirit, olympic-games, cornford, kouretes, pelops, oinomaos, heraea, sacred-marriage, sun-moon, penteteris, saturnalia, kronia, weather-king, foot-race, rex-nemorensis, sosipolis, vegetation-spirit, fertility-daimon, new-year-festival, ritual-combat, seasonal-renewal, mother-child-kouretes
+eniautos-daimon, year-spirit, olympic-games, cornford, kouretes, pelops, oinomaos, heraea, sacred-marriage, sun-moon, penteteris, saturnalia, kronia, weather-king, foot-race, rex-nemorensis, sosipolis, vegetation-spirit, fertility-daimon, new-year-festival, ritual-combat, seasonal-renewal, mother-child-kouretes, karneia, staphylodromoi, grape-cluster-runners, apollo-karneios, sparta, laconian, methodological-critique, ridgeway, funeral-theory, collective-vs-individual, magic-vs-religion, function-vs-biography, ritual-theory

@@ -72,6 +72,44 @@ This figure is **not** a particular dead man but the **collective ancestor**, th
 | **B2** | Standing figure before building | The Eniautos-Daimon at his heroon |
 | **B3** | Tree, bird, boat | Sacred tree, spring-bird, new-moon vessel |
 
+### 5. The Moon-Cult and Pasiphae
+
+Harrison connects the Cretan spring festival to lunar worship:
+
+> "Pasiphae, 'She who shines for all,' is a Moon-goddess, and Europa her doublet. The bull who weds them is not the sun but the Moon-bull. Crete preserved this lunar reckoning longer than mainland Greece." (p. 186)
+
+**Evidence for Minoan moon-cult:**
+- Lentoid gems depicting crescent and horns
+- Triple pillars at shrines = waxing, full, waning moon
+- Horns of consecration = lunar crescents
+- Pasiphae's name (πᾶσι-φάεια, "all-shining")
+
+**The three Charites as moon-phases:**
+| Phase | Charis | Function |
+|-------|--------|----------|
+| Waxing | Auxo ("Increaser") | Growth, increase |
+| Full | Thallo ("Bloomer") | Flowering, fruition |
+| Waning | Karpo ("Fruit-bearer") | Harvest, completion |
+
+> "The Charites are not mere abstractions of grace and beauty; they are the three phases of the moon who gives increase to flocks and fields." (p. 188)
+
+### 6. Cretan Coin Evidence for Cult Survivals
+
+Harrison cites Cretan coins as evidence that archaic religious forms survived on Crete long after they disappeared elsewhere:
+
+> "The coins of Gortyna show Europa on the tree, the coins of Phaistos the bull and the Europa myth. These are not mere mythological decoration—they are evidence of living cults." (p. 191)
+
+**Key numismatic evidence:**
+| Mint | Image | Significance |
+|------|-------|--------------|
+| Gortyna | Europa in tree | Tree-cult survival |
+| Phaistos | Bull carrying Europa | Sacred marriage myth |
+| Knossos | Labyrinth pattern | Labrys-cult continuity |
+| Praesos | Double axe and bee | Melissa-cult |
+| Lyttos | Eagle and serpent | Sky-earth polarity |
+
+> "Crete, remote from the great currents of Hellenic religious development, preserved like a living fossil the rites and symbols of an earlier stratum. What mainland Greece forgot, Crete remembered." (p. 193)
+
 ---
 
 ## The Double Axe Complex
@@ -101,6 +139,12 @@ Harrison links the Minoan *labrys* to the Cretan Labyrinth:
 | ἐνιαυτός | eniautos | Year-cycle; season |
 | δρώμενον | dromenon | "Thing done"—ritual enactment |
 | Ἀγαθὸς Δαίμων | Agathos Daimon | Good Spirit; fertility daimon |
+| Πασιφάη | Pasiphae | "All-shining"; moon-goddess |
+| Χάριτες | Charites | Three Graces; moon-phases |
+| Αὐξώ | Auxo | "Increaser"; waxing moon |
+| Θαλλώ | Thallo | "Bloomer"; full moon |
+| Καρπώ | Karpo | "Fruit-bearer"; waning moon |
+| μέλισσα | melissa | Bee; priestess title on Crete |
 
 ---
 
@@ -163,4 +207,4 @@ Harrison links the Minoan *labrys* to the Cretan Labyrinth:
 
 ## RAG Tags
 
-hagia-triada, sarcophagos, minoan-religion, spring-festival, dithyramb, double-axe, labrys, hieros-gamos, sacred-marriage, cuckoo, bull-sacrifice, eniautos-daimon, heroon, crete, knossos, agathos-daimon, year-spirit, seasonal-ritual, dromenon, labyrinth
+hagia-triada, sarcophagos, minoan-religion, spring-festival, dithyramb, double-axe, labrys, hieros-gamos, sacred-marriage, cuckoo, bull-sacrifice, eniautos-daimon, heroon, crete, knossos, agathos-daimon, year-spirit, seasonal-ritual, dromenon, labyrinth, pasiphae, moon-goddess, europa, moon-cult, charites, auxo, thallo, karpo, moon-phases, triple-pillar, horns-of-consecration, cretan-coins, gortyna, phaistos, praesos, lyttos, melissa, bee-priestess, numismatic-evidence

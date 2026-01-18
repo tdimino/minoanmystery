@@ -32,6 +32,9 @@ This chapter presents Gordon's core thesis that Minoan civilization was founded 
 - Light-and-air wells expose interiors, aggravating heating problems
 - Egyptian artifacts, ivory, and gold in Cretan excavations confirm Delta connections
 - Genesis 10:13–14 derives "Philistines" and "Caphtorians" from Egypt
+- Palace storerooms for grain and oil parallel Egyptian and Levantine administrative architecture
+
+**The "Palace-without-Hearth" Problem**: Gordon notes that the absence of built-in hearths in Minoan palaces is architecturally definitive—these buildings were designed for a climate where heating was unnecessary, pointing unambiguously to southern (Egyptian Delta) origin. Mainland Greek Mycenaean palaces, by contrast, feature central hearths.
 
 > "The southern clime whence the Minoan palace builders came is not hard to determine. It must have been the Nile Delta, for Cretan archaeology has yielded a host of artifacts imported from, or imitating the workmanship of, Egypt."
 
@@ -53,6 +56,14 @@ This chapter presents Gordon's core thesis that Minoan civilization was founded 
 | CORNER | *pi/bi* | Ug. *pinnatu* | "corner" |
 | BARLEY | *i* | Eg. *it* | "barley" |
 | BREAST | *ha* | NW-S *hayniq* | "to nurse" |
+| HAIR/HEAD | *qe* | Heb. *qewuṣṣa* | "hair, forelock" |
+| EYE | *'a* | Heb. *'ayin* | "eye" |
+| HORN | *qa* | NW-S *qarnu* | "horn" |
+| HAND | *ya* | Heb. *yād* | "hand" |
+| WATER | *ma* | Heb. *mayim* | "water" |
+| HOUSE | *be* | Heb. *bayit* | "house" |
+
+**Note on Method**: Gordon applies the syllabic values discovered by Ventris through cryptanalysis to derive Semitic readings. The pictographic origins demonstrate that the script was *invented* for a Semitic language, not merely borrowed for one.
 
 **Key quote**: "This principle, known as acrophony, indicates that Minoan writing was invented for the Northwest Semitic language whose vocabulary provides the syllabic values for the signs that Ventris discovered cryptanalytically in complete ignorance of the Semitic language."
 
@@ -145,6 +156,14 @@ This chapter presents Gordon's core thesis that Minoan civilization was founded 
 | *qiryat* | "city" | NW Semitic |
 | *bōmōs* | "altar" (from Semitic *bom-o* via Minoan) | Greek < Semitic |
 | Eteocretan | Late Minoan written in Greek letters | Greek |
+| *qarnu* | "horn" (basis of HORN = *qa*) | NW Semitic |
+| *qewuṣṣa* | "hair, forelock" (basis of HAIR = *qe*) | Hebrew |
+| *mayim* | "water" (basis of WATER = *ma*) | Hebrew |
+| *yād* | "hand" (basis of HAND = *ya*) | Hebrew |
+| *bayit* | "house" (basis of HOUSE = *be*) | Hebrew |
+| *ne-tu-ri-re* | "Re is divine" (Egyptian name in Linear A) | Egyptian via Minoan |
+| Lucius Septimius | Latin author who recorded Minoan texts found under Nero | Latin |
+| Delta folk | Gordon's term for Semitic palace-builders from Nile Delta | — |
 
 ---
 
@@ -204,4 +223,4 @@ This chapter presents Gordon's core thesis that Minoan civilization was founded 
 
 ## RAG Tags
 
-gordon, minoan, linear a, eteocretan, chapter III, acrophony, syllabary, decipherment, delta origins, northwest semitic, phoenician, caphtor, crete, knossos, hagia triada, dreros bilingual, psychro, bunushu, sipinatu, tuppuhu, kudru, kunnishu, wheat, addu, baal, gupanu, yamm, kireta, thinith, ventris, brice, pictograph, cult, religion, palace builders, mm i, middle minoan, l-immo, yihye, pth, qiryat, pantheon, deity names
+gordon, minoan, linear a, eteocretan, chapter III, acrophony, syllabary, decipherment, delta origins, delta folk, northwest semitic, phoenician, caphtor, crete, knossos, hagia triada, dreros bilingual, psychro, bunushu, sipinatu, tuppuhu, kudru, kunnishu, wheat, addu, baal, gupanu, yamm, kireta, thinith, ventris, brice, pictograph, cult, religion, palace builders, mm i, middle minoan, l-immo, yihye, pth, qiryat, pantheon, deity names, hearth, light wells, nero, lucius septimius, qarnu, horn, qewussa, mayim, water, yad, hand, bayit, house, ayin, eye, peh, mouth, hayniq, europa, cadmus, genesis 10, philistines

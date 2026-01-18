@@ -19,6 +19,9 @@ export const REGIONS = {
   VISITOR_CONTEXT: 'visitor-context',
   VISITOR_INTERESTS: 'visitor-interests',
 
+  // RAG knowledge retrieval
+  KNOWLEDGE_DOSSIER: 'knowledge-dossier',
+
   // Portfolio-specific
   PORTFOLIO_INTEREST: 'portfolio-interest',
   CASE_STUDY_CONTEXT: 'case-study-context',
@@ -68,6 +71,13 @@ export const REGION_CONFIGS: Record<RegionName, RegionConfig> = {
     maxMemories: 10,
     compressible: true,
     persistent: true,
+  },
+  [REGIONS.KNOWLEDGE_DOSSIER]: {
+    name: REGIONS.KNOWLEDGE_DOSSIER,
+    priority: 3.5,  // Between visitor interests and portfolio interest
+    maxMemories: 5,
+    compressible: false,  // Knowledge context should remain intact
+    persistent: false,    // Refreshed per query
   },
   [REGIONS.PORTFOLIO_INTEREST]: {
     name: REGIONS.PORTFOLIO_INTEREST,

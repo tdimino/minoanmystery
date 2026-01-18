@@ -64,6 +64,10 @@ Minoan → Eteocretan → Phoenician represents one continuous Northwest Semitic
 | [ugarit-minoan-crete-ch4-poetry.md](./ugarit-minoan-crete-ch4-poetry.md) | Book Chapter | ✅ Complete |
 | [ugarit-minoan-crete-ch5-prose.md](./ugarit-minoan-crete-ch5-prose.md) | Book Chapter | ✅ Complete |
 | [ugarit-minoan-crete-ch6-conclusions.md](./ugarit-minoan-crete-ch6-conclusions.md) | Book Chapter | ✅ Complete |
+| [evidence-minoan-language-1966-pt1-bilinguals.md](./evidence-minoan-language-1966-pt1-bilinguals.md) | Monograph (Ch. I–VII) | ✅ Complete |
+| [evidence-minoan-language-1966-pt2-decipherment.md](./evidence-minoan-language-1966-pt2-decipherment.md) | Monograph (Ch. VIII–XIII) | ✅ Complete |
+| [evidence-minoan-language-1966-pt3-phaistos-origins.md](./evidence-minoan-language-1966-pt3-phaistos-origins.md) | Monograph (Ch. XIV–XVI) | ✅ Complete |
+| [evidence-minoan-language-1966-lexicon.md](./evidence-minoan-language-1966-lexicon.md) | Reference Index (§163) | ✅ Complete |
 | [minoica-1962.md](./minoica-1962.md) | Journal Article | ✅ Complete |
 | [ugarit-and-caphtor.md](./ugarit-and-caphtor.md) | Journal Article | ✅ Complete |
 | [ugarit-significance-article.md](./ugarit-significance-article.md) | Journal Article | ✅ Complete |
@@ -86,6 +90,28 @@ See [ugaritic-poetry/INDEX.md](./ugaritic-poetry/INDEX.md) for the full poetry c
 ---
 
 ## Key Contributions by Work
+
+### Evidence for the Minoan Language (1966)
+
+**Full Title**: *Evidence for the Minoan Language*
+
+**Publisher**: Ventnor Publishers, Ventnor, N.J.
+
+**Date**: 10 February 1966
+
+**Core Thesis**: Linear A and Eteocretan are Northwest Semitic (Phoenician type), proven through bilingual analysis (Amathus, Dreros) and contextual decipherment. The Minoans were NW Semites expelled from the Egyptian Delta at the end of the First Intermediate Period.
+
+**Structure** (16 chapters in 3 dossiers):
+- **Part 1** (Ch. I–VII): Bilingual method — Eteocypriote, Eteocretan texts, orthography, morphology
+- **Part 2** (Ch. VIII–XIII): Linear A decipherment — virtual bilinguals, vocabulary, names index
+- **Part 3** (Ch. XIV–XVI): Phaistos Disc acrophony, Delta hypothesis, dialect synthesis
+
+**Key readings**:
+- Dreros: *lmo* = לְאִמּוֹ "for his mother," *ihia* = יִהְיֶה "it will be"
+- Linear A: *ku-ro* = כֹּל "all," *ya-ta-no* = יָתַן "he gave," *ki-re-ya-tu* = קִרְיָה "city"
+- Names: *da-we-da* = דוד "David" (4 occurrences), *a-du* = Addu/Baal (most frequent deity)
+
+---
 
 ### Ugarit and Minoan Crete (1966)
 

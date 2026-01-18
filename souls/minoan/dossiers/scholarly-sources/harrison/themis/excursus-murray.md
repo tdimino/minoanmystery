@@ -78,11 +78,30 @@ Murray demonstrates that Euripides' *deus ex machina* continues Aeschylean pract
 
 > "It has not been observed that in this, as in so many of his supposed novelties, Euripides is following the tradition of Aeschylus.... Aeschylus was still operating with trilogies, not with single plays, so that his *Theophanies* are normally saved up to the end of the trilogy and then occur on a grand scale." (p. 348)
 
-**Examples:**
-- *Oresteia*: Grand theophany of Apollo, Athena, and Furies
-- *Supplices* trilogy: Epiphany of Aphrodite founding marriage
-- *Persae*: Evocation of Darius as hero/god from tomb
-- *Memnon*: Epiphany of Eos bringing immortality
+**Aeschylean Trilogy Analyses:**
+
+| Trilogy | Ending Type | Theophany |
+|---------|-------------|-----------|
+| *Oresteia* | Second (joyful) | Grand theophany of Apollo, Athena, and transformed Furies |
+| *Supplices* trilogy | Second (joyful) | Epiphany of Aphrodite founding marriage (Nauck fr. 44) |
+| *Persae* trilogy | First (threnos) | Darius evoked as *theos/daimon* (lines 644, 642) from tomb |
+| *Theban* trilogy | First (threnos) | Ends in lamentation; no rebirth theophany |
+| *Prometheus* trilogy | Second (joyful) | Likely Zeus appearance concluding reconciliation |
+
+**Fragmentary plays with epiphanies:**
+- *Amymone*, *Bassarai*, *Neaniskoi*, *Memnon* (Eos bringing immortality), *Edonoi*
+- Thespis's titles preserve ritual origins: *Hiereis* (Priests), *Ethoi*, *Pentheus*, *Phorbas*
+
+### 8. The Prorrhesis: Ritual Announcement
+
+Murray identifies the *prorrhesis* (preliminary announcement) as a ritual form preserved in tragedy:
+
+> "Before the actual beginning of the *Sacer Ludus* there was a *Prorrhesis*, a preliminary announcement, made by a herald or priest."
+
+**Function in tragedy:**
+- Explains the ritual origin of Euripidean prologues
+- The *exangelos* (messenger from within) announces what cannot be shown
+- This ritual necessity became dramatic convention
 
 ---
 
@@ -117,6 +136,12 @@ Murray demonstrates that Euripides' *deus ex machina* continues Aeschylean pract
 | αἴτιον | aition | Cause; founding myth of ritual |
 | δρώμενον | dromenon | Thing done; ritual action |
 | μῦθος | muthos | Story; the spoken accompaniment |
+| πρόρρησις | prorrhesis | Preliminary announcement; origin of prologues |
+| ἐξάγγελος | exangelos | Messenger from within; announces unseen action |
+| ὀπαδοὶ δαίμονες | opadoi daimones | Attendant spirits; Satyrs in Dionysiac rout |
+| ἱερουργίαι | hierourgiai | Sacred rites; Satyr association |
+| ἄνοδος | anodos | Rising up; return of the dead/god |
+| ἀντὶ θρήνου | anti threnou | In place of lamentation; triumph-song |
 
 ---
 
@@ -153,8 +178,20 @@ Murray explains the relationship of the satyr-play to ritual rebirth:
 
 > "Those who have read Miss Harrison's article on the Kouretes will recognize that the Satyrs are the ὀπαδοὶ δαίμονες in the rout of Dionysus, especially associated with his 'initiations and hierourgiai'—that is, exactly with our *Sacer Ludus* of Dionysus." (p. 344)
 
+**Satyrs as ritual attendants:**
+- *Opadoi daimones* = attendant spirits in Dionysus's rout
+- Associated specifically with *hierourgiai* (sacred rites) and initiations
+- Strabo (pp. 466-8) provides evidence for this connection
+
+**Connection to anodos:**
+The satyr-play preserved the joyful *anodos* (rising up) element of the ritual—the rebirth moment. Satyrs were associated with the *anodos* of Kore, suggesting their function was to celebrate the return of the dead.
+
 **The cutting-off problem:**
 > "The cutting-off of the Satyr-play left the tragic trilogy without its proper close. What was it to do?... Both types of tragedy occur, but gradually the second tends to predominate." (p. 345)
+
+**Two types of tragic ending:**
+1. **Threnos type**: Ends in lamentation (death without rebirth shown)
+2. **Theophany type**: Ends in divine appearance (rebirth celebrated)
 
 ---
 
@@ -209,4 +246,4 @@ Murray explains the relationship of the satyr-play to ritual rebirth:
 
 ## RAG Tags
 
-gilbert-murray, tragedy-origins, sacer-ludus, ritual-forms, agon, pathos, messenger, threnos, theophany, anagnorisis, peripeteia, sparagmos, aition, bacchae, hippolytus, andromache, deus-ex-machina, eniautos-daimon, dionysus, satyr-play, aeschylus, euripides, sophocles, cambridge-ritualists, year-spirit, death-rebirth, mystery-formulae
+gilbert-murray, tragedy-origins, sacer-ludus, ritual-forms, agon, pathos, messenger, threnos, theophany, anagnorisis, peripeteia, sparagmos, aition, bacchae, hippolytus, andromache, deus-ex-machina, eniautos-daimon, dionysus, satyr-play, aeschylus, euripides, sophocles, cambridge-ritualists, year-spirit, death-rebirth, mystery-formulae, prorrhesis, exangelos, opadoi-daimones, hierourgiai, anodos, anti-threnou, oresteia, supplices, persae, prometheus, theban-trilogy, thespis, amymone, bassarai, edonoi, strabo

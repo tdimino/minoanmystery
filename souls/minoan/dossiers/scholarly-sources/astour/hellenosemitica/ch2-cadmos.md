@@ -45,6 +45,31 @@ The constant epithet of this Night-goddess—*kuttumtum*, "veiled"—appears on 
 
 > "The myth of Europa: the goddess of night, the veiled bride, who goes away into the sunset, as Europa (= Sunset/Evening) was carried away far westward, to Crete, and there became the mate of Zeus." (p. 137)
 
+### 2a. Phoenix and the Phoenicians (pp. 139–147)
+
+Astour demonstrates that wherever the eponym Phoenix appears in Greek myth, Semitic traces are present:
+
+| Greek Name | Semitic Etymology | Meaning | Evidence |
+|------------|-------------------|---------|----------|
+| **Phoenix** | *Pûnî* | "Of the madder-dye" | Num. 26:23; *puwwā* = *Rubia tinctorum L.* |
+| **Itanos** (son of Phoenix) | *'êtân* | "Strong, perennial" | *nahal 'êtân* (Amos 5:24) |
+| **Karnos** (son of Phoenix) | *qarn* | "Horn" | Coins spell *Qrn*; Latin *Cornu Phenices* |
+| **Kythera** (son of Phoenix) | *keter, kōteret* | "Crown, tiara" | Method of doublets with *Skandeia* |
+
+**Archaeological evidence**: A cuneiform dedication of Naram-Sin, king of Ešnunna (18th century BCE), was found on Cythera—proving Mesopotamian connections through Semitic maritime routes.
+
+> "Wherever the eponym or toponym Phoenix is found, evident traces of Semitism are present." (p. 143)
+
+### 2b. Scholars' Reluctance and the Case for Semitism (pp. 147–152)
+
+Astour addresses the systematic effort to deny Cadmos's Phoenician origin:
+
+**Ed. Meyer's objection**: Thebes' "mid-continent" location contradicts Phoenician coastal settlement patterns.
+
+**Astour's rebuttal**: Thebes lies only 12 miles from the Gulf of Corinth and 15 miles from the Euripos. Compare: Alalah was 25+ miles from the sea; Adana and Karatepe similarly inland—yet their kings had ships and engaged in sea-battles (depicted in Azitawadd's palace reliefs).
+
+> "The topography of Thebes corresponds exactly to that of the capitals of the North Canaanite maritime states which, in the IId millennium, linked the Orient with the Aegean." (p. 151)
+
 ### 3. Cadmos as the Morning Star (pp. 147–159)
 
 **Cadmos** = W-S *qadm*, "east/front/dawn." Three Greek forms (*Kadmos*, *Kadmōn*, *Kadmaíōn*) reflect W-S forms (*Qdm*, *Qdmn*, *Qdmyn*).
@@ -56,6 +81,23 @@ Astour's key insight: Cadmos and Europa are the two aspects of Venus—Morning S
 A god *Qa-a-dm-u* is attested in Babylonia. In the Ugaritic poem UM 75:I.7-8, *qdm* ("East") parallels *šhr* ("Dawn"), establishing that *Qdm* was another name for the dawn-god *Šahar*.
 
 Cadmos's serpent-transformation connects him to the Sumerian *Ningišzida*—a chthonic serpent-god, personification of sunrise, dragon-victor, and city-founder.
+
+**The Ningišzida Parallels:**
+
+| Shared Motif | Cadmos | Ningišzida |
+|--------------|--------|------------|
+| **Serpent symbolism** | Transformed into entwined serpents | Serpent-god, entwined serpent emblem |
+| **Dragon-victor** | Kills the dragon at Thebes | Conquers dragons |
+| **Sunrise personification** | *Qadm* = "East/Dawn" | "Sun which rose from the fruitful earth" |
+| **City-founder** | Founds Thebes | Establishes city foundations |
+
+> "The goddess Nanše revealed in his dream: 'The sun which rose from the fruitful earth is thy god Ningizzida who, like the sun, rises for thee out of the fruitful earth.'" (p. 157, quoting Gudea)
+
+**The Cabiri Connection:**
+
+The Cabiri (*Kabeiroi*) = W-S *kabbîr* "great, mighty." Their worship centers (Thebes, Samothrace) connect to Cadmos:
+- Original number: seven (matching Ugaritic poem UM 52 with *Šhr*, *Šlm*, and five anonymous gods)
+- The only known Cabiri name: **Kadmilos** = W-S *Qadm-ʾēl* "Qadm the god" (cf. Hebrew *Qadmîʾēl* Ezra 3:9)
 
 ### 4. The Cadmeian Cycle: Semele, Actaeon, Dionysos (pp. 163–223)
 
@@ -85,13 +127,17 @@ The myth of Zagreus-Dionysos (dismembered and eaten by Titans) has close paralle
 
 > "Such is the mythological essence of Cadmos. His name and almost all of his adventures and attributes are Oriental and originated in W-S myths of the god of sunrise, strongly influenced by the image of the Sumerian Ningišzida, the serpent-god of fertility, sunrise, and the building of cities." (p. 157)
 
+> "Almost everything in this myth [of Actaeon] goes back to the W-S myth which is evidenced in detail and with great art in the Ugaritic poem of Aqht." (p. 164)
+
+> "The seven-year rhythm, the change of sex, and especially the symbol of the entwined serpents point to the East in an epoch which was quite remote in the scale of Greek history." (p. 163, on Teiresias)
+
 ---
 
 ## Concepts Introduced
 
 | Term | Definition | Source Language |
 |------|------------|-----------------|
-| *mêm-bli-ʾâr* | "Waters without light" (= Membliaros) | West Semitic (Ugaritic/Phoenician) |
+| *mêm-bli-ʾâr* | "Waters without light" (= Membliaros) | West Semitic |
 | *pî-kôl* | "Womb of all" (= Poikiles) | West Semitic |
 | *qadm / qdm* | "East, front, dawn" (= Cadmos) | West Semitic |
 | *ʿarôb šamši* | "Sunset" (= Europa) | West Semitic |
@@ -99,8 +145,24 @@ The myth of Zagreus-Dionysos (dismembered and eaten by Titans) has close paralle
 | *Ṣml* | Eagle-Mother goddess (= Semele) | Ugaritic |
 | *Aqht* | Hero of Ugaritic poem (= Actaeon) | Ugaritic |
 | *bākuy* | "Mourned one" (= Bacchos) | West Semitic |
+| *bāṣar* | "To cut, tear" (= Bassarids) | West Semitic |
 | *kuttumtum* | "Veiled" (epithet of Night-goddess) | Akkadian |
-| Method of doublets | Pairs of names (Greek + non-Greek) where Greek translates non-Greek | Methodological |
+| *Ningišzida* | Sumerian serpent-god of sunrise/fertility | Sumerian |
+| *Nin-é-gal* | "Lady of the palace" (= Harmonia prototype) | Sumerian |
+| *Bʿlt-bhtm* | Ugaritic "Lady of palaces" | Ugaritic |
+| *ʿArmōnīyā* | "Lady of the palace" (= Harmonia) | West Semitic |
+| *ʿiwwēr* | "Blind" (= Eueres, Teiresias' father) | Hebrew |
+| *Milk-qart* | "King of the city" (= Melicertes/Melqart) | Phoenician |
+| *Baʿal-hämôn* | "Lord of the multitude" (= Palaemon) | Phoenician |
+| *kabbîr* | "Great, mighty" (= Cabiri) | West Semitic |
+| *Qadm-ʾēl* | "Qadm the god" (= Kadmilos) | West Semitic |
+| *Pûnî* | "Of the madder-dye" (= Phoenix) | Hebrew |
+| *'êtân* | "Strong, perennial" (= Itanos) | West Semitic |
+| *qarn* | "Horn" (= Karnos) | West Semitic |
+| *keter, kōteret* | "Crown, tiara" (= Kythera) | West Semitic |
+| *têbā* | "Ark, chest" (= Thebes) | Hebrew |
+| *Hêlêl* | "Shining one" (= Hellotis) | Hebrew |
+| Method of doublets | Pairs of names where Greek translates non-Greek | Methodological |
 
 ---
 
@@ -146,11 +208,11 @@ The myth of Zagreus-Dionysos (dismembered and eaten by Titans) has close paralle
 | Membliaros and the Cosmogonic Cycle | 113–127 | *mêm-bli-ʾâr* etymology; Thera-Anaphe ritual |
 | Poikiles and Related Problems | 123–128 | *pî-kôl* etymology; Phlyan fresco |
 | Europa, Tectamos, Hellotis | 128–147 | Evening Star thesis; *ʿarôb* etymology |
-| Phoenix and the Phoenicians | 139–147 | Ethnic eponym as deity |
-| Scholars' Reluctance | 147–152 | Historiography of anti-Semitic bias |
-| Mythological Essence of Cadmos | 152–159 | Morning Star thesis; Ningišzida parallels |
-| Harmonia | 159–161 | *ʿArmōnīyā* = Nin-é-gal connection |
-| Teiresias | 161–163 | Bisexuality; blind seer parallels |
+| Phoenix and the Phoenicians | 139–147 | Ethnic eponym as deity; Itanos, Kythera evidence |
+| Scholars' Reluctance | 147–152 | Ed. Meyer rebuttal; historiography of bias |
+| Mythological Essence of Cadmos | 152–159 | Morning Star thesis; Ningišzida parallels; Cabiri |
+| Harmonia | 159–161 | *ʿArmōnīyā* = Nin-é-gal / *Bʿlt-bhtm* connection |
+| Teiresias | 161–163 | Bisexuality; *Eueres* = *ʿiwwēr* "blind" |
 | Actaeon-Aqht | 163–169 | Full Ugaritic parallel to hunter myth |
 | Semele, the Eagle-Mother | 169–173 | *Ṣml* identification |
 | Pentheus, doublet of Bacchos | 173–176 | Dying-god reduplication |
@@ -165,4 +227,4 @@ The myth of Zagreus-Dionysos (dismembered and eaten by Titans) has close paralle
 
 ## RAG Tags
 
-cadmos, cadmus, europa, semele, dionysos, dionysus, bacchus, actaeon, aqht, pentheus, harmonia, teiresias, thebes, boeotia, thera, anaphe, membliaros, poikiles, phoenix, phoenician, ugaritic, west semitic, morning star, evening star, venus, cosmogony, ningišzida, serpent, dragon, eagle-mother, method of doublets, functional parallels, qadm, arob, tiktam, veiled bride, night goddess, bronze age, mycenaean, minoan, ritual, mystery cult, zagreus, dying god, astour, hellenosemitica
+cadmos, cadmus, europa, semele, dionysos, dionysus, bacchus, bakchos, actaeon, aqht, pentheus, harmonia, teiresias, thebes, boeotia, thera, anaphe, membliaros, poikiles, phoenix, phoenician, itanos, kythera, cythera, karnos, ugaritic, west semitic, morning star, evening star, venus, cosmogony, ningiszida, serpent, dragon, eagle-mother, method of doublets, functional parallels, qadm, arob, tiktam, veiled bride, night goddess, bronze age, mycenaean, minoan, ritual, mystery cult, zagreus, dying god, sparagmos, bassarids, cabiri, kabeiroi, kadmilos, melqart, melicertes, palaemon, nin-e-gal, beltit-bhtm, harmonia etymology, bisexuality, teiresias serpents, kumarbi, theogony, hellotis, ed meyer, astour, hellenosemitica, 1965

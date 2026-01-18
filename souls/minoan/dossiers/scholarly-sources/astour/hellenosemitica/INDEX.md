@@ -78,4 +78,4 @@ Details in a myth that are redundant or inexplicable in its present form but nor
 
 ## RAG Tags
 
-hellenosemitica, michael astour, west semitic, mycenaean greece, danaans, danunians, cadmos, cadmus, europa, semele, dionysos, bellerophon, jason, argonauts, asclepios, cheiron, method of doublets, functional parallels, ugaritic, phoenician, bronze age, linear a, etymology, comparative mythology, 1965, brill
+hellenosemitica, michael astour, west semitic, mycenaean greece, danaans, danunians, cadmos, cadmus, europa, semele, dionysos, bellerophon, jason, argonauts, asclepios, cheiron, method of doublets, functional parallels, ugaritic, phoenician, bronze age, linear a, etymology, comparative mythology, 1965, brill, ningiszida, cabiri, kabeiroi, kadmilos, phoenix, phoenikians, itanos, karnos, kythera, ed-meyer, milkqart, actaeon, teiresias, serpent-cult, dragon-slayer

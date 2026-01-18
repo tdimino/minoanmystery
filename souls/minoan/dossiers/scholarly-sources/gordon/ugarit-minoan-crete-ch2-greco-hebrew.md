@@ -141,6 +141,8 @@ Gordon's footnote 4 provides a crucial insight into how the Hebrews selectively 
 **Danel's Curse:**
 > "Seven years may Baal afflict thee / Eight, the Rider of Clouds! / Let there be no dew / Let there be no rain / Let there be no surging of the Two Deeps / Let there be no goodness of Baal's voice!"
 
+**The Seven/Eight Formula**: The "seven years / eight" pattern is not merely poetic parallelism but reflects the sabbatical agricultural cycle—seven years of cultivation followed by the eighth year of fallow. This formula appears throughout Ugaritic literature (see also Text 52) and demonstrates the pre-Hebrew, Canaanite origin of the biblical sabbatical institution. (cf. p. 93n)
+
 **David's Lament (II Samuel 1:21):**
 > "O mountains of Gilboa / Let there be no rain / Let there be no dew upon you!"
 
@@ -205,6 +207,11 @@ Gordon's footnote 4 provides a crucial insight into how the Hebrews selectively 
 | *Kret* / *Krtn* | Cretan hero-king | Ugaritic |
 | *Hurrai* | Wife of Kret (cf. Helen) | Ugaritic |
 | Helen-of-Troy motif | Wife-retrieval epic pattern | Comparative |
+| *mkrm* | Traders (= Hebrew *môkērîm*) | Ugaritic |
+| seven/eight formula | Sabbatical curse pattern (seven years + eighth year fallow) | Ugaritic/Hebrew |
+| *dāg* | Fish (root of Dagon) | West Semitic |
+| Two Deeps (*thmt*) | Primordial waters (cf. *Tehom*, Gen 1:2) | Ugaritic |
+| Rider of Clouds | Epithet of Baal (cf. Psalm 68:5 *rōkēb bā-'arābôt*) | Ugaritic/Hebrew |
 
 ---
 
@@ -254,4 +261,4 @@ Gordon's footnote 4 provides a crucial insight into how the Hebrews selectively 
 
 ## RAG Tags
 
-gordon, chapter II, ugarit, greco-hebrew, guild mobility, craftsmen, potters, maryannu, kohenim, qedeshim, sapyselaton, sun goddess, spš, elat, saphon, olympos, el, thor, bull, taur, baal, anath, leviathan, tannin, mot, yamm, kothar-wa-hasis, kothar, caphtor, crete, palace, solomon, dagon, fish, philistines, text 52, sabbatical, seven years, text 77, yarih, nikkal, virgin birth, yw-il, yahweh, joel, aqhat, danel, qehat, kohath, kosharot, pughat, transvestism, gilboa, curse, kret, hurrai, helen of troy, iliad, genesis, abraham, sarah, epic, myth, 1966
+gordon, chapter II, ugarit, greco-hebrew, guild mobility, craftsmen, potters, maryannu, kohenim, qedeshim, sapyselaton, sun goddess, spš, elat, saphon, olympos, el, thor, bull, taur, baal, anath, leviathan, tannin, mot, yamm, kothar-wa-hasis, kothar, caphtor, crete, palace, solomon, dagon, fish, philistines, text 52, sabbatical, seven years, eight years, seven-eight formula, text 77, yarih, nikkal, virgin birth, yw-il, yahweh, joel, aqhat, danel, qehat, kohath, kosharot, pughat, transvestism, gilboa, curse, kret, hurrai, helen of troy, iliad, genesis, abraham, sarah, epic, myth, 1966, mkrm, traders, two deeps, thmt, tehom, rider of clouds, rokeb, josiah, asherah

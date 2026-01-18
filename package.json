@@ -25,6 +25,7 @@
     "@iconify-json/simple-icons": "^1.2.65",
     "@iconify-json/skill-icons": "^1.2.3",
     "@iconify-json/tabler": "^1.2.26",
+    "@supabase/supabase-js": "^2.90.1",
     "astro": "^5.16.6",
     "astro-icon": "^1.1.5",
     "gsap": "^3.14.2",

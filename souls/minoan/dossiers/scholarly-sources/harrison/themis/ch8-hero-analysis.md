@@ -119,6 +119,9 @@ Attic drama inherits ritual *form* but Homeric *content*:
 | κῶμος | kōmos | Triumphal procession |
 | παλιγγενεσία | palingenesia | Rebirth, reincarnation |
 | οἰκουρὸς ὄφις | oikouros ophis | Household snake (of the Acropolis) |
+| σπαραγμός | sparagmos | Tearing to pieces; ritual dismemberment |
+| Ἱππόλυτος | Hippolytos | "Loosed by horses"; Year-daimon at Troezen |
+| κουρεῖον | koureion | Hair-offering; initiation gift |
 
 ---
 
@@ -150,6 +153,55 @@ Harrison shows that "eponymous heroes" are projections of groups, not founders:
 > "The monotony of these folk-plays is almost intolerable, and if we were asked to see in them the germ of all the life and splendour and variety of Attic drama we might rightly rebel; but we are not. What the δρώμενα of the *Eniautos-daimon* gave to Attic drama was, not its content, but its ritual form." (p. 352)
 
 — Context: How ritual form and saga content combine to make tragedy.
+
+---
+
+## The Hippolytus Cult at Troezen
+
+Harrison analyzes Hippolytus as a paradigmatic Eniautos-Daimon:
+
+> "Hippolytus was, ritually, just another form of the same Year-daimon, who is torn to pieces and born again. He was worshipped at Troezen with a hero-cult that shows all the marks of the Eniautos pattern." (p. 343)
+
+**The ritual at Troezen:**
+| Element | Practice | Significance |
+|---------|----------|--------------|
+| **Hair-offering** | Maidens cut hair before marriage | Dedication to the dying god |
+| **Mourning** | Annual lamentation for Hippolytus | Threnos of the Eniautos-muthos |
+| **Refusal to name** | His name not spoken | Typical of tabu surrounding the slain god |
+| **Artemis connection** | Shared temple precinct | Year-daimon and his divine partner |
+
+> "At Troezen there was a temple of Hippolytus of greatest renown. Within the precinct was also a temple of Apollo Epibaterios. Before the temple was a stadium named after Hippolytus, and above it a temple of Aphrodite Kataskopia, 'Aphrodite who looks down,' for from here Phaedra used to watch Hippolytus at his exercises." (Pausanias 2.32.1)
+
+### The Hair-Offering Ritual
+
+The practice of maidens cutting their hair for Hippolytus parallels other year-daimon cults:
+
+> "This rite of the hair-offering is intimately bound up with initiation and with marriage, for initiation is but a social birth, a new beginning. At Delos the maidens before marriage cut off their hair and wound it about a spindle, laying it on the tomb of the Hyperborean maidens." (p. 344)
+
+**Parallel hair-offerings:**
+| Site | Recipient | Offerers |
+|------|-----------|----------|
+| Troezen | Hippolytus | Maidens before marriage |
+| Delos | Hyperborean Maidens | Maidens before marriage |
+| Megara | Iphinoe | Maidens before marriage |
+| Achaia | Rivers | Youths at coming-of-age |
+
+### The Sparagmos Pattern
+
+Hippolytus's death by being torn apart by his horses follows the σπαραγμός (sparagmos) pattern:
+
+> "The manner of his death is significant. He is torn to pieces—dragged by his horses just as Pentheus is torn by the Maenads, Orpheus by the Thracian women, Actaeon by his own hounds. This is the typical fate of the Year-daimon: to be rent asunder that his life-force may be scattered abroad." (p. 345)
+
+**The sparagmos parallels:**
+| Victim | Agents | Context |
+|--------|--------|---------|
+| Hippolytus | Horses | Euripides' tragedy |
+| Pentheus | Maenads | Euripides' *Bacchae* |
+| Orpheus | Thracian women | Apollodorus |
+| Actaeon | Hounds | Ovid/Apollodorus |
+| Zagreus | Titans | Orphic tradition |
+
+> "The heroes who suffer sparagmos are not merely dying men—they are Eniautos-daimones whose death scatters the fertility they embody. The dismemberment is not punishment but sacrament." (p. 346)
 
 ---
 
@@ -188,4 +240,4 @@ Harrison returns to the Hagia Triada sarcophagus:
 
 ## RAG Tags
 
-hero, daimon, agathos-daimon, snake-cult, fertility-spirit, cecrops, erechtheus, theseus, oschophoria, eiresione, cornucopia, eponymous-hero, hero-feast, reincarnation, palingenesia, eniautos-muthos, agon, pathos, messenger, threnos, theophany, attic-drama, tragedy-origins, kreittōn, functionary
+hero, daimon, agathos-daimon, snake-cult, fertility-spirit, cecrops, erechtheus, theseus, oschophoria, eiresione, cornucopia, eponymous-hero, hero-feast, reincarnation, palingenesia, eniautos-muthos, agon, pathos, messenger, threnos, theophany, attic-drama, tragedy-origins, kreittōn, functionary, hippolytus, troezen, hair-offering, koureion, sparagmos, dismemberment, pentheus, orpheus, actaeon, zagreus, hyperborean-maidens, artemis, aphrodite-kataskopia, year-daimon-death

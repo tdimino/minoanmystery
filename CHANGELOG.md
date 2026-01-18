@@ -18,6 +18,21 @@ All notable changes to this project will be documented in this file.
   - Added scholarly reference guidance (Gordon, Astour, Harrison)
 
 ### Added
+- **Gordon "Evidence for Minoan Language" (1966)**: 4 new dossiers from the technical monograph
+  - `evidence-minoan-language-1966-pt1-bilinguals.md` — Dreros bilinguals, Eteocretan continuity
+  - `evidence-minoan-language-1966-pt2-decipherment.md` — Acrophony methodology, syllabic values
+  - `evidence-minoan-language-1966-pt3-phaistos-origins.md` — Phaistos Disk, Delta origins
+  - `evidence-minoan-language-1966-lexicon.md` — 60+ Linear A terms with Semitic cognates
+- **Harrison Themis Chapter**: `ch2a-eniautos-daimon.md` — Year-spirit analysis, Dionysus-Zagreus
+- **Rendsburg Dossiers**: Defense of Gordon's Semitic hypothesis
+  - `rendsburg-eblaite-minoan-1989.md` — Eblaite parallel vindicates "mixed" features
+  - `rendsburg-semitic-evidence-review-1996.md` — Comprehensive defense in scholarly literature
+- **RAG Infrastructure**: Conditional retrieval system following Aldea Soul Engine patterns
+  - `src/lib/voyage.ts` — VoyageAI Voyage 4 client wrapper
+  - `src/lib/soul/retrieval/` — `kotharRagConfig.ts`, `conditionalRag.ts`, `dossierRetrieval.ts`
+  - `src/lib/soul/cognitiveSteps/generateBackgroundQuestions.ts` — Question-based RAG (Raggy pattern)
+  - Topic-aware routing: scholarly, mythology, portfolio, background, oracle contexts
+- **KNOWLEDGE_DOSSIER Region**: New memory region in `regions.ts` for RAG injection
 - **Kothar RAG Dossiers**: Comprehensive biography and portfolio dossiers for visitor Q&A
   - **Biography** (5 files): INDEX.md, origin-story.md, agency-years.md, big-tech-era.md, ai-ml-chapter.md, personal-interests.md
   - **Portfolio** (10 files): INDEX.md + case studies for ACS, CZI, Dolby, Google, JPMC, cognitive design MVPs

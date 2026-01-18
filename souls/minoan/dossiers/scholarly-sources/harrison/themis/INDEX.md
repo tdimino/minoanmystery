@@ -32,6 +32,7 @@ The book traces the evolution from primitive ritual through *daimones* to Olympi
 | VI | The Spring Festival and Hagia Triada | 158-211 | [ch6-spring-dromenon.md](./ch6-spring-dromenon.md) |
 | VII | The Origin of the Olympic Games (Cornford) | 212-259 | [ch7-olympic-games.md](./ch7-olympic-games.md) |
 | VIII | Daimon and Hero | 260-340 | [ch8-hero-analysis.md](./ch8-hero-analysis.md) |
+| *Supp.* | The Eniautos-Daimon (Year-Spirit) Concept | Intro, VI-VIII | [ch2a-eniautos-daimon.md](./ch2a-eniautos-daimon.md) |
 | Excursus | Ritual Forms in Greek Tragedy (Murray) | 341-363 | [excursus-murray.md](./excursus-murray.md) |
 | IX-X | From Daimon to Olympian / The Olympians | 364-479 | [ch9-10-herakles-apollo.md](./ch9-10-herakles-apollo.md) |
 | XI | Themis | 480-535 | [ch11-themis.md](./ch11-themis.md) |

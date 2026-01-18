@@ -125,6 +125,56 @@ Harrison's conclusion:
 
 > "With the Cretan ritual in our minds it is clear that the Wiradthuri rites present more than an analogy; mutato nomine the account might have been written of Zagreus." (p. 22)
 
+### 7. The Dithyramb: Zeus-Leap-Song
+
+Harrison etymologizes the Dithyramb—the choral hymn from which tragedy arose—as a "leap-song" connected to the Kouretes' ritual:
+
+> "The word Dithyramb, Διθύραμβος, is, I believe, simply Δί-θύρ-αμβος, 'Zeus-leap-song.' The u in θύρ- for the more usual o of θόρ-, θρῴσκω, is due to northern Greek dialects which regularly show u for o." (p. 204)
+
+**Etymology breakdown:**
+| Component | Greek | Meaning |
+|-----------|-------|---------|
+| Δί- | Δι- | Zeus (genitive stem) |
+| -θύρ- | θόρ-/θρῴσκω | leap, spring |
+| -αμβος | ἀμβός | song, hymn |
+
+The Kouretes "leap" (*θρῴσκουσι*) in their armed dance, just as the hymn commands the Kouros to "leap for full jars... leap for fleecy flocks." The Dithyramb was thus originally the magical song accompanying the spring-leap ritual that brought fertility.
+
+### 8. The Korybantes and Conical Caps
+
+Harrison connects the Kouretes to the Korybantes through their distinctive headgear:
+
+> "The Korybantes are not really distinguishable from the Kouretes save in one particular—they wear the korybasia, the conical cap... This cap is at once the sign of the initiated and the means of initiation. The neophyte puts on the cap and becomes a Korybas." (p. 27)
+
+**The korybasia (κορυβασία):**
+- Conical felt cap worn by initiates
+- Etymologically related to κορυβάντες (Korybantes)
+- Symbol of transformation from boy to initiated man
+- Depicted on Phrygian coins and Samothracian reliefs
+
+The putting-on of the cap is a ritual death—the boy "disappears" under the cap and emerges as a new being, a Korybas.
+
+### 9. The Women of Elis Hymn
+
+Harrison provides a crucial parallel from mainland Greece—a hymn sung by the women of Elis invoking Dionysus in spring:
+
+> "In Springtime, O Dionysos,
+> To thy holy temple come,
+> To Elis with thy Graces,
+> Rushing with thy bull-foot, come,
+> Noble Bull, Noble Bull."
+
+**Structural parallels to the Palaikastro Hymn:**
+| Element | Kouretes Hymn | Women of Elis Hymn |
+|---------|---------------|---------------------|
+| **Invocation** | "Io, Kouros most Great, come!" | "To thy holy temple come" |
+| **Season** | "For the Year" (ἐνιαυτῷ) | "In Springtime" |
+| **Animal form** | (Bull implicit in leaping) | "Bull-foot... Noble Bull" |
+| **Attendants** | "At the head of thy Daimones" | "With thy Graces" |
+| **Magical intent** | Fertility, increase | (Spring renewal) |
+
+> "The Elis hymn shows that the invocation of an incoming god is not peculiar to Crete; it belongs to the Spring ritual of the Eniautos-Daimon wherever found. The god is bidden to come because he is not yet there—he is born anew each year." (p. 32)
+
 ---
 
 ## Notable Passages
@@ -157,6 +207,10 @@ Harrison's conclusion:
 | παλιγγενεσία | Rebirth, new birth | Greek |
 | δρώμενον | "Thing done"—ritual enactment | Greek |
 | λεγόμενον | "Thing said"—myth as verbal accompaniment | Greek |
+| Διθύραμβος | "Zeus-leap-song" (Δί-θύρ-αμβος); choral hymn | Greek |
+| θρῴσκω | to leap, spring; root of dithyramb | Greek |
+| Κορύβαντες | Initiators wearing conical caps; = Kouretes | Greek |
+| κορυβασία | Conical felt cap of the initiate | Greek |
 
 ---
 
@@ -191,4 +245,4 @@ Harrison's conclusion:
 
 ## RAG Tags
 
-kouretes, hymn, palaikastro, zeus-kouros, diktaean-zeus, initiation, tribal-initiation, dromenon, thiasos, daimon, megistos-kouros, zagreus, titans, palingenesia, rebirth, death-and-resurrection, wiradthuri, ritual-theory, matrilinear, crete, minoan-religion, mystery-cults
+kouretes, hymn, palaikastro, zeus-kouros, diktaean-zeus, initiation, tribal-initiation, dromenon, thiasos, daimon, megistos-kouros, zagreus, titans, palingenesia, rebirth, death-and-resurrection, wiradthuri, ritual-theory, matrilinear, crete, minoan-religion, mystery-cults, dithyramb, dithyrambos, zeus-leap-song, korybantes, korybasia, conical-cap, women-of-elis, dionysus-bull, spring-invocation, bull-foot, elis, phrygian, samothrace

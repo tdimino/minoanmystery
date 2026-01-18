@@ -52,7 +52,11 @@ This chapter surveys the administrative and historical documents from Ugarit, es
 
 **Parallel to Genesis**: In Genesis 34:10, 21, the Shechemites offer Jacob's family precisely these three normally forbidden privileges—trading rights, permanent residence, and purchasing real estate.
 
+**The Significance for Abraham's Status**: Gordon notes that Abraham's narrative makes sense within this framework—he is precisely the kind of foreign merchant (from Ur) whose status required special regulations. The offer of these privileges represents a formal elevation of status, not merely hospitality.
+
 **Key quote**: "It is interesting to note that these merchants came from Ur(a), a city bearing the same name as the city where Abraham was born."
+
+**Additional Note**: The seasonal restriction (leaving after harvest) explains the transhumant patterns in the Patriarchal narratives—the constant movement between regions reflects the legal status of foreign merchants who could not establish permanent residence without special privilege.
 
 ### 3. Royal Power: To Give and Take Back
 
@@ -192,4 +196,4 @@ This chapter surveys the administrative and historical documents from Ugarit, es
 
 ## RAG Tags
 
-gordon, chapter V, prose texts, administrative documents, dynastic history, niqmad, ammistamru, niqmepa, arhalba, ibiranu, ammurapi, sea people, 1195, hittites, shuppiluliuma, mursil, hattusilis, tudhaliya, ramses II, kadesh, carchemish, initeshub, ur, urra, merchants, abraham, land grants, guild, hereditary guild, personal names, mn, minos, ddl, daedalus, yšril, israel, abrm, abram, mt, moses, eshbaal, levirate marriage, pru, nougayrol, job, achilles, agamemnon, solomon, 1966
+gordon, chapter V, prose texts, administrative documents, dynastic history, niqmad, ammistamru, niqmepa, arhalba, ibiranu, ammurapi, sea people, 1195, hittites, shuppiluliuma, mursil, hattusilis, tudhaliya, ramses II, kadesh, carchemish, initeshub, ur, urra, merchants, abraham, land grants, guild, hereditary guild, personal names, mn, minos, ddl, daedalus, yšril, israel, abrm, abram, mt, moses, eshbaal, levirate marriage, pru, nougayrol, job, achilles, agamemnon, solomon, genesis 34, shechem, jacob, trading rights, permanent residence, real estate, transhumant, seasonal restriction, 1966

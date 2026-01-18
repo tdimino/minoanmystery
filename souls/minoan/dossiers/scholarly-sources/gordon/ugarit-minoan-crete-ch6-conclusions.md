@@ -63,6 +63,10 @@ This concluding chapter synthesizes Gordon's central thesis: Ugaritic literature
 
 **The channel of transmission**: "The Minoan texts from Hagia Triada, Crete, contain two unmistakable Hurrian names, so that now we have the channel of transmission."
 
+**The Hurrian Names in Linear A**: Gordon identifies two Hurrian personal names in the Hagia Triada tablets, demonstrating that a Hurrian-speaking minority lived on Minoan Crete. This Hurrian presence explains how the Kumarbi theogonic myth reached Greece—not through post-Bronze-Age contact, but through the Northwest Semitic cultural matrix in which Hurrians participated.
+
+**Hesiod's Cretan Localization**: Hesiod (lines 477 and 480 of *Theogony*) specifically places the Zeus-Cronus myth *on Crete*. This is not poetic invention but cultural memory of the actual transmission route.
+
 **Key quote**: "Hesiod (lines 477 and 480) locates the story on Crete. The Minoan texts from Hagia Triada, Crete, contain two unmistakable Hurrian names, so that now we have the channel of transmission. It now appears that the Hurrian minority on Minoan Crete introduced the myth to the Aegean."
 
 ### 4. The Mediterranean Synthesis
@@ -155,4 +159,4 @@ This concluding chapter synthesizes Gordon's central thesis: Ugaritic literature
 
 ## RAG Tags
 
-gordon, chapter VI, conclusions, synthesis, helen of troy, kret, hurrai, menelaus, helen, abraham, sarah, patriarchal narratives, genesis, iliad, homer, coveting, hmd, tenth commandment, baal, anti-canaanite polemic, kumarbi, teshub, cronus, zeus, hesiod, theogony, hurrian, hagia triada, channel of transmission, mediterranean synthesis, phoenician, northwest semitic, minoan, bronze age, heroic age, east mediterranean, sumero-akkadian, egyptian, canaanite, 1966
+gordon, chapter VI, conclusions, synthesis, helen of troy, kret, hurrai, menelaus, helen, abraham, sarah, patriarchal narratives, genesis, iliad, homer, coveting, hmd, tenth commandment, baal, anti-canaanite polemic, kumarbi, teshub, cronus, zeus, hesiod, theogony, hurrian, hurrian names, hagia triada, channel of transmission, mediterranean synthesis, phoenician, northwest semitic, minoan, bronze age, heroic age, east mediterranean, sumero-akkadian, egyptian, canaanite, hurrian minority, cretan localization, 1966

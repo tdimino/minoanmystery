@@ -24,7 +24,7 @@ This introductory chapter establishes the historical significance of Ugarit as t
 
 ### 1. The Discovery of Ugarit (1928–1930)
 
-**Narrative**: In 1928, a peasant accidentally plowed into an ancient Mycenaean-style tomb near the Syrian coast. French authorities sponsored excavations at Ras Shamra ("Fennel Head"), the mound marking ancient Ugarit.
+**Narrative**: In 1928, a peasant accidentally plowed into an ancient Mycenaean-style tomb near the Syrian coast. French authorities (Direction des Antiquités de Syrie) sponsored excavations at Ras Shamra ("Fennel Head"), the mound marking ancient Ugarit. The port was Minet al-Bayda ("White Harbor").
 
 **Rapid decipherment:**
 - Cuneiform tablets in a new script discovered early 1929
@@ -34,7 +34,11 @@ This introductory chapter establishes the historical significance of Ugarit as t
   2. Edouard Dhorme (second)
   3. Charles Virolleaud (third)
 
+**Claude Schaeffer's role**: The French archaeologist who directed excavations at Ras Shamra from 1929, publishing findings in the journal *Syria* and the multi-volume *Palais royal d'Ugarit* (PRU) series.
+
 **Key quote**: "It is to the lasting credit of French scholarship that the tablets were published in record time before the close of 1929."
+
+**Significance of the tomb**: The Mycenaean-style architecture of the initial discovery hinted at what the texts would confirm—Ugarit's close connections with the Aegean world.
 
 ### 2. Ugarit at the Crossroads
 
@@ -127,9 +131,14 @@ This introductory chapter establishes the historical significance of Ugarit as t
 | Minet al-Bayda | "White Harbor" (Ugarit's port) | Arabic |
 | Amarna Age | Late 15th–early 14th c. BC international order | Egyptian |
 | Amarna Order | East Mediterranean diplomatic/commercial network | Modern scholarly |
-| *maryannu* | Charioteer guild | Hurrian |
+| *maryannu* | Charioteer guild; Indo-Aryan elite warriors | Hurrian/Indo-Aryan |
 | polyglot vocabulary | Multilingual school text | — |
 | alphabetic cuneiform | Ugaritic script (30 letters) | — |
+| PRU | *Palais royal d'Ugarit* – multi-volume publication series | French |
+| *Syria* | French journal publishing Ugarit excavation findings | French |
+| Burnaburiash II | Kassite Babylonian king in Amarna correspondence | Akkadian |
+| Tushratta | Last major Mitannian king; Amarna correspondent | Hurrian |
+| Direction des Antiquités | French Syrian antiquities authority (1929) | French |
 
 ---
 
@@ -137,12 +146,15 @@ This introductory chapter establishes the historical significance of Ugarit as t
 
 ### The Amarna Age Powers
 
-| Power | Key Rulers | Dates (approx.) |
-|-------|-----------|-----------------|
-| Egypt | Amenophis III, Amenophis IV (Ikhnaton) | 1413–1358 BC |
-| Mitanni | Tushratta | until ca. 1354 BC |
-| Hittites | Shuppiluliuma I | ca. 1380–1346 BC |
-| Ugarit | Niqmad II | until ca. 1345 BC |
+| Power | Key Rulers | Dates (approx.) | Notes |
+|-------|-----------|-----------------|-------|
+| Egypt | Amenophis III, Amenophis IV (Ikhnaton) | 1413–1358 BC | "The aristocrat of the international Order" |
+| Mitanni | Tushratta (last major king) | until ca. 1354 BC | Indo-Aryan ruling class over Hurrian population |
+| Hittites | Shuppiluliuma I | ca. 1380–1346 BC | Leading power after defeating Mitannians |
+| Babylonia | Burnaburiash II | ca. 1359–1333 BC | Kassite dynasty; Amarna correspondent |
+| Ugarit | Niqmad II | until ca. 1345 BC | Northwest corner of Canaan |
+
+**Key quote on the Mitanni fate**: "The Hittites and Hurrians, who were then of prime importance, were destined to disappear with the international Order of the Amarna Age." (p. 14)
 
 ### Scripts at Ugarit
 
@@ -200,4 +212,4 @@ This introductory chapter establishes the historical significance of Ugarit as t
 
 ## RAG Tags
 
-gordon, chapter I, ugarit, ras shamra, minet al-bayda, significance, crossroads, amarna age, amarna order, international order, egypt, mesopotamia, hittites, sea people, mycenaean, alphabet, alphabetic order, abc, cuneiform, polyglot, vocabulary, virolleaud, schaeffer, bauer, dhorme, decipherment, 1928, 1929, 1930, canaan, phoenician, hebrew, greek, israel, hellas, minoan, prehistory, history, relationship, individuality, contamination, 1966
+gordon, chapter I, ugarit, ras shamra, minet al-bayda, significance, crossroads, amarna age, amarna order, international order, egypt, mesopotamia, hittites, sea people, mycenaean, alphabet, alphabetic order, abc, cuneiform, polyglot, vocabulary, virolleaud, schaeffer, bauer, dhorme, decipherment, 1928, 1929, 1930, canaan, phoenician, hebrew, greek, israel, hellas, minoan, prehistory, history, relationship, individuality, contamination, 1966, pru, syria journal, tushratta, mitanni, burnaburiash, diplomatic, lingua franca, amarna letters, ikhnaton, amenophis, kassite, indo-aryan, hurrian
