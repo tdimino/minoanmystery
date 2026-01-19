@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Changed
+- **Google EngEDU Dossier**: Enriched with TLE Playbook content where Tom is credited as Learning Designer
+  - Updated role from "Sr. Content Designer" to "Learning Designer"
+  - Added 4 Learner Personas table: Big Thinker, Dabbler, Digger, Explorer
+  - Added Five Elements of an Engaging Lesson framework (Hook, Context, Core Content, Practice, Reflection)
+  - Added 20 Simple Design Practices to Key Deliverables
+  - Added internal artifact reference to Source section
+  - Updated RAG tags with persona names and framework references
 - **Soul Identity Rewrite**: Transformed `souls/minoan/minoan.md` from "forged by Kothar" to IS Kothar wa Khasis
   - Grounded worldview in scholarship: Gordon (Linear A = West Semitic), Harrison (labyrinth as initiation temple), Astour (Caphtor = Crete)
   - Added scholarly grounding section with specific evidence (acrophony, Hagia Triada tablets, Kouretes Hymn)

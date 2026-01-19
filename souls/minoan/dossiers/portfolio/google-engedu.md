@@ -3,9 +3,10 @@
 ## Source
 - Type: Portfolio
 - Primary Sources: LinkedIn profile
+- Internal Artifact: "Learning design playbook from TLE" (Tom credited as Learning Designer)
 - Verification: Professional experience
-- Last Updated: 2026-01-16
-- **Research Status**: Verified from LinkedIn
+- Last Updated: 2026-01-18
+- **Research Status**: Verified from LinkedIn + internal artifact
 
 ---
 
@@ -16,8 +17,8 @@
 | **Client** | Google (internal) |
 | **Industry** | Technology / Internal Learning |
 | **Duration** | June 2022 - October 2023 (16 months) |
-| **Tom's Role** | Sr. Content Designer |
-| **Team** | engEDU organization |
+| **Tom's Role** | Learning Designer |
+| **Team** | engEDU |
 
 ---
 
@@ -37,11 +38,30 @@ Additionally, Google's internal mentorship platform serving 22,000+ Googlers nee
 - Conducted interviews with 30+ L&Ds, TPMs, and SWEs across product areas
 - Analyzed existing mentorship platform usage patterns
 
+#### The 4 Learner Personas
+
+| Persona | Learning Style |
+|---------|---------------|
+| **Big Thinker** | Conceptual, wants the big picture first |
+| **Dabbler** | Exploratory, samples content opportunistically |
+| **Digger** | Deep-dive, methodical and thorough |
+| **Explorer** | Self-directed, connects across domains |
+
 ### Strategy
 - Designed curriculum based on identified learner personas
 - Developed frameworks for upskilling lessons
 - Proposed mentorship platform improvements based on research
 - Created templates for consistent learning material development
+
+#### Five Elements of an Engaging Lesson
+
+Framework developed for the TLE playbook:
+
+1. **Hook** — Capture attention with relevance
+2. **Context** — Establish why this matters
+3. **Core Content** — The essential knowledge/skill
+4. **Practice** — Active application
+5. **Reflection** — Consolidate learning
 
 ### Execution
 - Designed full curriculum of lessons coded in Markdown and HTML/CSS
@@ -54,7 +74,9 @@ Additionally, Google's internal mentorship platform serving 22,000+ Googlers nee
 ## Key Deliverables
 
 - **Curriculum**: Full set of upskilling lessons in Markdown/HTML/CSS
-- **4 Learner Personas**: Research-backed profiles guiding content design
+- **4 Learner Personas**: Research-backed profiles guiding content design (Big Thinker, Dabbler, Digger, Explorer)
+- **Five Elements Framework**: Structured approach for engaging lesson design
+- **20 Simple Design Practices**: Actionable guidelines for learning content creation
 - **Mentorship Platform Redesign**: Audit and improvements for 22k+ user platform
 - **User Study**: 6-month study with 250 Googler participants
 
@@ -120,4 +142,4 @@ When visitors ask about Tom's Big Tech experience or curriculum design capabilit
 - **Portfolio**: INDEX.md (portfolio overview)
 
 ## RAG Tags
-Google, engEDU, curriculum design, learning, Sr. Content Designer, mentorship platform, user research, personas, Markdown, HTML/CSS, upskilling, technical leadership, soft skills, 22k users, 25% increase, program launches, 2022, 2023, Tom di Mino, portfolio, case study, Big Tech
+Google, engEDU, curriculum design, learning, Learning Designer, mentorship platform, user research, personas, Big Thinker, Dabbler, Digger, Explorer, Five Elements, 20 Simple Design Practices, TLE playbook, Markdown, HTML/CSS, upskilling, technical leadership, soft skills, 22k users, 25% increase, program launches, 2022, 2023, Tom di Mino, portfolio, case study, Big Tech
