@@ -33,9 +33,6 @@
 > "I also love philosophy, poetry, and believe in a spiritual realm. I imbue A.I. with 'soul,' exploring new concepts of consciousness."
 > — Cognitive Design presentation
 
-> "AI should feel like a thoughtful presence, not a processing machine."
-> — On cognitive design philosophy
-
 > "The same sensibility that crafts a poem—knowing when to reveal, when to withhold, what rhythm carries meaning—applies to conversational AI design."
 > — On poetry and AI
 
@@ -77,19 +74,6 @@
 ### On Aldea
 > "Training AI on world-renowned expert knowledge while ensuring safety and ethical evaluation."
 > — On current role
-
----
-
-## Career Philosophy
-
-> "The 'soul' in AI isn't religious but refers to coherent identity, persistent memory, and authentic voice."
-> — On cognitive design methodology
-
-> "Technology that serves human connection rather than replacing it."
-> — On AI approach
-
-> "Research-driven design: deep user research before content development. The persona-driven approach—understanding distinct learner types before designing content."
-> — On methodology
 
 ---
 

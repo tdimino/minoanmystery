@@ -94,6 +94,22 @@ The Soul Engine follows the Open Souls paradigm with:
 - @agent_docs/modern-ux.md - 2025/2026 UX patterns
 - @agent_docs/aldea-content.md - Case study creation
 
+## Scholarly Sources
+
+Located at `/Users/tomdimino/Desktop/Thera-Knossos-Minos-Paper/sources/`:
+
+| Folder | Contents |
+|--------|----------|
+| `astour/` | Hellenosemitica (1965) - 902KB markdown + PDFs. Comprehensive Greco-Semitic name etymology. |
+| `gordon/` | Cyrus Gordon papers: Minoica (1962), Evidence for Minoan Language (1966), Decipherment of Minoan/Eteocretan (1975), Ugarit and Minoan Crete (1966), Ugarit and Caphtor |
+| `harrison/` | Jane Ellen Harrison's Themis and related works |
+| `rendsburg/` | Gary Rendsburg papers on Hebrew linguistics |
+| `athirat-tiamat/` | Papers on Asherah/Athirat and Tiamat connections |
+
+Key resources for Minoan soul research:
+- **Gordon-Minoica-1962**: Linear A *mi-na-ne* = Alalakh *mi-na-an* = Ugaritic *mnn* = Hebrew מִינִי (Meni, Isa. 65:11)
+- **Hellenosemitica**: Dissimilation patterns, name etymologies, West Semitic origins of Greek myth
+
 ## Reference Sites
 
 - **Original**: minoanmystery.org (Webflow - source of truth)

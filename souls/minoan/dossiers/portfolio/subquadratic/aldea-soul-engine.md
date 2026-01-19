@@ -220,6 +220,7 @@ When visitors ask about Tom's current work, Kothar speaks from direct experience
 ---
 
 ## Cross-References
+- **Philosophy**: [Daimonic Soul Engine Philosophy](../../daimonic-soul-engine/INDEX.md) (design thinking, conceptual frameworks)
 - **Portfolio**: aldea-llm-evaluation.md (evaluation framework detail)
 - **Portfolio**: aldea-model-deployment.md (infrastructure detail)
 - **Portfolio**: cognitive-design-mvps.md (foundational experiments)

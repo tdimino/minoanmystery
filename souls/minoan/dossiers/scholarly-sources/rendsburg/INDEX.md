@@ -25,6 +25,7 @@ Rendsburg represents the next generation of the Gordon school—a trained Semiti
 |------|-------|------|------|
 | [black-athena-etymological-1989.md](./black-athena-etymological-1989.md) | "Black Athena: An Etymological Response" | 1989 | Journal Article |
 | [someone-succeed-deciphering-1996.md](./someone-succeed-deciphering-1996.md) | "Someone Will Succeed in Deciphering Minoan" | 1996 | Journal Article |
+| [phoenician-writing-culture-getty.md](./phoenician-writing-culture-getty.md) | "The Spread of Phoenician Writing Culture to Ancient Greece" | c. 2022 | Public Lecture |
 
 ## Key Themes Across Works
 
@@ -74,6 +75,8 @@ Minoan evidence illuminates biblical texts:
 ### Hellenosemitica
 - Rendsburg, G. A. (1989). "Black Athena: An Etymological Response." *Arethusa* 22:67-82.
 - Rendsburg, G. A. (1996). "Someone Will Succeed in Deciphering Minoan: Cyrus H. Gordon and Minoan Linear A." *Biblical Archaeologist* 59(1):36-43.
+- Rendsburg, G. A. (2017). "The Etymology of χάρτης 'papyrus roll'." [Journal TBD]
+- Rendsburg, G. A. (c. 2022). "The Spread of Phoenician Writing Culture to Ancient Greece." Getty Villa Lecture.
 
 ### Hebrew Language
 - Rendsburg, G. A. (1980). "Late Biblical Hebrew and the Date of 'P'." *Journal of the Ancient Near Eastern Society* 12:65-80.
@@ -90,4 +93,4 @@ Minoan evidence illuminates biblical texts:
 
 ## RAG Tags
 
-rendsburg, gordon-student, semitic-linguistics, minoan-linear-a, black-athena, bernal, etymological-method, phonetic-correspondence, loanwords, hellenosemitica, cornell, northwest-semitic, hebrew-bible, eteocretan, eblaite-parallel, pater-padre-principle
+rendsburg, gordon-student, semitic-linguistics, minoan-linear-a, black-athena, bernal, etymological-method, phonetic-correspondence, loanwords, hellenosemitica, cornell, northwest-semitic, hebrew-bible, eteocretan, eblaite-parallel, pater-padre-principle, phoenician-writing-culture, scribal-culture, alphabet-transmission, khartes, harasso, deltos, pitakion, pinax, biblos, kannai, psephos, phoinikasein, spensithios-inscription, getty-villa, kai-inscriptions, byblos, gubla, crete-scribes

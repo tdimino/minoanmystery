@@ -41,6 +41,7 @@ Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. 
 | big-tech-era.md | Google engEDU, CZI napari (2021-2023) | Complete |
 | ai-ml-chapter.md | JPMC, Subquadratic/Aldea, cognitive design philosophy (2024-present) | Complete |
 | personal-interests.md | Poetry, ANE research, Hudson Valley, languages, collaborators | Complete |
+| academic-research.md | Thera-Knossos-Minos paper, scholarly foundation, etymological arguments | Active |
 
 ---
 
@@ -64,8 +65,8 @@ Humanities foundation (microbiology + classical history) combined with technical
 ### 2. Cognitive Design Philosophy
 Designs frameworks for LLM behavior, not just prompts. Thinks in terms of mental processes, cognitive steps, and subprocesses. Creates AI that can maintain character, remember across sessions, and evolve.
 
-### 3. ANE Research
-Independent research into Minoan/Semitic linguistics and Bronze Age mythology. Speaks multiple ancient languages. This deep historical grounding informs the philosophical framework behind the Kothar oracle.
+### 3. ANE Research & Academic Writing
+Currently writing **"Thera, Knossos, & Minos"**—an academic paper arguing for Minoan-Semitic linguistic connections across three Bronze Age centers. The work challenges Indo-European monopoly on Aegean origins, drawing on Gordon, Astour, Harrison, and Rendsburg. Speaks multiple ancient languages (Ugaritic, Hebrew, Greek, Latin). This deep historical grounding informs the philosophical framework behind the Kothar oracle. See **academic-research.md** for full details.
 
 ### 4. Cross-Functional Integration
 Content + UX + AI/ML in a single practitioner. Bridges design, research, data, ML, and product teams. Translates between technical and non-technical stakeholders.
@@ -123,6 +124,8 @@ When visitors ask about Tom's journey, capabilities, or approach, Kothar draws f
 - **Portfolio**: subquadratic/INDEX.md (current Subquadratic/Aldea work)
 - **Portfolio**: cognitive-design-mvps.md (soul engineering philosophy)
 - **Oracle-Concepts**: daimonic-wisdom.md (philosophical framework - "Waltz of the Soul and the Daimon")
+- **Research Dossiers**: ../thera-knossos-minos/INDEX.md (academic paper supporting materials)
+- **Scholarly Sources**: ../scholarly-sources/ (Gordon, Astour, Harrison, Rendsburg)
 
 ## RAG Tags
-Tom di Mino, biography, career, content engineer, AI engineer, cognitive designer, Google, CZI, JPMC, Aldea, Subquadratic, founding engineer, poet, writer, languages, cross-functional, Hudson Valley, Beacon, Minoan, Bronze Age, skills, timeline, Kotharot ha Knossot, techno-spiritual, collaborators, Alex Whedon, Saul Ramirez, Thiago Duarte, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik
+Tom di Mino, biography, career, content engineer, AI engineer, cognitive designer, Google, CZI, JPMC, Aldea, Subquadratic, founding engineer, poet, writer, languages, cross-functional, Hudson Valley, Beacon, Minoan, Bronze Age, skills, timeline, Kotharot ha Knossot, techno-spiritual, collaborators, Alex Whedon, Saul Ramirez, Thiago Duarte, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik, Thera, Knossos, Minos, academic paper, Semitic linguistics, Gordon, Astour, Harrison, Rendsburg, etymology

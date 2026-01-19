@@ -3,8 +3,9 @@
 ## Source
 - Type: Portfolio
 - Primary Sources: "Cognitive-Designing-AI-LLMs" presentation deck, personal projects
+- PDF: https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf
 - Verification: Published presentation, open-source work
-- Last Updated: 2026-01-16
+- Last Updated: 2026-01-18
 - **Research Status**: Verified from portfolio content
 
 ---

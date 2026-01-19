@@ -115,6 +115,36 @@ On the Hagia Triada terracotta relief: "We have seen three dancing Kouretes or K
 
 ---
 
+## The Open Rites of Knossos (Diodorus, via Harrison)
+
+Harrison draws on Diodorus of Sicily to establish that Cretan mysteries were uniquely accessible:
+
+> "The rite of initiation, which is perhaps the most celebrated of all, is that which is performed by the Athenian at Eleusis."
+
+Yet at Knossos, the pattern was inverted:
+
+> "At Knossos the custom was the rites should be open to all. Things that among others were communicated in secrecy, the Cretans concealed from no one who wished to know."
+
+This openness distinguishes the Cretan mysteries from the exclusive Eleusinian model that later dominated Greek religion.
+
+---
+
+## The Meaning of "Mystery" (Harrison, *Prolegomena* 1903)
+
+Harrison redefines the term "mystery"—not secrecy but ceremony of purification:
+
+> "The usual derivation of the word is from μύω, I close the apertures whether of eyes or mouth."
+
+But this misses the ritual meaning:
+
+> "A Mystery is a rite, a drama, enacted with magical intent. Mystery is the doing of what relates to a μύσος—a pollution. Primarily, it is a ceremony of purification."
+
+The Greek word for initiation (*τελετή*) likewise reveals the true nature of the rite:
+
+> "The Greek word for initiation (τελετη) tells its own tale—it means not entering in, but completion, accomplishment, fulfilment."
+
+---
+
 ## Archaeological Evidence
 
 ### Thunder-Stone Cult Objects
@@ -158,4 +188,4 @@ On the Hagia Triada terracotta relief: "We have seen three dancing Kouretes or K
 
 ## RAG Tags
 
-thunder-rites, bull-roarer, rhombos, thunder-stone, keraunia-lithos, keraunos, euripides-cretans, idaean-daktyls, pythagoras-initiation, zagreus, bacchos, kouretes, mana, sacred-power, thunderbolt-throne, seleukeia-pieria, astropelekia, minoan-religion, mystery-cults, initiation
+thunder-rites, bull-roarer, rhombos, thunder-stone, keraunia-lithos, keraunos, euripides-cretans, idaean-daktyls, pythagoras-initiation, zagreus, bacchos, kouretes, mana, sacred-power, thunderbolt-throne, seleukeia-pieria, astropelekia, minoan-religion, mystery-cults, initiation, diodorus, knossos-mysteries, open-rites, prolegomena, mystery-etymology, musos, telete, purification-rite, eleusis-contrast

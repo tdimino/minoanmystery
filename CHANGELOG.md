@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Daimonic Soul Engine Philosophy Dossiers**: New folder `souls/minoan/dossiers/daimonic-soul-engine/` with 7 files exploring the design philosophy behind AI personality systems (public-facing, no implementation details)
+  - `INDEX.md` - Overview and navigation, daimon tradition context
+  - `immutable-memory.md` - Why memory should never mutate
+  - `cognitive-steps.md` - Pure functions for AI cognition
+  - `mental-processes.md` - Behavioral state machines
+  - `daimonic-intuition.md` - The "whispers" concept (rational notes vs. intuitive sensing)
+  - `memory-regions.md` - Organizing context by meaning
+  - `evaluation-philosophy.md` - Multi-dimensional assessment beyond accuracy
+  - RAG tags throughout for retrieval
+
 ### Changed
 - **Google EngEDU Dossier**: Enriched with TLE Playbook content where Tom is credited as Learning Designer
   - Updated role from "Sr. Content Designer" to "Learning Designer"
