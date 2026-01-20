@@ -45,7 +45,7 @@ interface DossierChunk {
   };
 }
 
-type SourceType = 'biography' | 'scholarly' | 'poetry' | 'oracle' | 'historical' | 'quotes';
+type SourceType = 'biography' | 'scholarly' | 'poetry' | 'oracle' | 'etymology' | 'quotes';
 
 interface ParsedDossier {
   path: string;
@@ -78,7 +78,7 @@ function findDossierFiles(dir: string): string[] {
 
       if (stat.isDirectory()) {
         walk(fullPath);
-      } else if (entry.endsWith('.md') && !entry.startsWith('INDEX') && !entry.startsWith('README')) {
+      } else if (entry.endsWith('.md') && !entry.startsWith('INDEX') && !entry.startsWith('README') && !entry.startsWith('RESEARCHER_PERSONA')) {
         files.push(fullPath);
       }
     }
@@ -97,11 +97,12 @@ function inferSourceType(filePath: string): SourceType {
   if (relativePath.includes('biography')) return 'biography';
   if (relativePath.includes('scholarly') || relativePath.includes('gordon') || relativePath.includes('astour') || relativePath.includes('harrison')) return 'scholarly';
   if (relativePath.includes('poetry')) return 'poetry';
-  if (relativePath.includes('oracle')) return 'oracle';
+  if (relativePath.includes('oracle') || relativePath.includes('daimonic')) return 'oracle';
   if (relativePath.includes('quotes')) return 'quotes';
-  if (relativePath.includes('minoan-ane') || relativePath.includes('historical')) return 'historical';
+  // thera-knossos-minos research = etymology (Semitic origins, Linear A, etc.)
+  if (relativePath.includes('thera-knossos-minos') || relativePath.includes('etymology')) return 'etymology';
 
-  return 'historical'; // Default
+  return 'scholarly'; // Default to scholarly for unmapped academic content
 }
 
 // ─────────────────────────────────────────────────────────────

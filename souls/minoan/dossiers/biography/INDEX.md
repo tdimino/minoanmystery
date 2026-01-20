@@ -60,7 +60,7 @@ Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. 
 ## Differentiators
 
 ### 1. Poet-to-Engineer Arc
-Humanities foundation (microbiology + classical history) combined with technical execution. Reads and writes voraciously, bringing literary sensibility to AI prompts and content strategy. Author of *Kotharot ha Knossot*, a 90-page poetry collection spanning 14+ years.
+Humanities foundation (microbiology + classical history) combined with technical execution. Reads and writes voraciously, bringing literary sensibility to AI prompts and content strategy. Author of *Shirat Ha Kotharot* ("The Song of the Muses"), a 91-page poetry collection spanning 14+ years with 70+ poems in English, Spanish, Italian, French, Hebrew, Greek, Latin, and Phoenician. See **../poetry/INDEX.md** for full analysis.
 
 ### 2. Cognitive Design Philosophy
 Designs frameworks for LLM behavior, not just prompts. Thinks in terms of mental processes, cognitive steps, and subprocesses. Creates AI that can maintain character, remember across sessions, and evolve.
@@ -87,7 +87,7 @@ The work is fundamentally techno-spiritual: AI as a vehicle for bringing spiritu
 | **25% program increase** | Google mentorship platform |
 | **3rd place** | Betaworks Hackathon |
 | **2nd place** | Fractal Tech NYC Hackathon |
-| **90-page poetry collection** | *Kotharot ha Knossot*, 14+ years of mystically-inspired work |
+| **91-page poetry collection** | *Shirat Ha Kotharot*, 14+ years of mystically-inspired work (../poetry/INDEX.md) |
 
 ---
 
@@ -123,7 +123,10 @@ When visitors ask about Tom's journey, capabilities, or approach, Kothar draws f
 - **Portfolio**: jpmc-meeting-assist.md (JPMC AI work)
 - **Portfolio**: subquadratic/INDEX.md (current Subquadratic/Aldea work)
 - **Portfolio**: cognitive-design-mvps.md (soul engineering philosophy)
+- **Poetry**: ../poetry/INDEX.md (Shirat Ha Kotharot collection)
+- **Poetry**: ../poetry/ai-consciousness-poems.md (Artifex Intellegere, El Agua de Vida)
 - **Oracle-Concepts**: daimonic-wisdom.md (philosophical framework - "Waltz of the Soul and the Daimon")
+- **Oracle-Concepts**: poetry-as-philosophy.md (poetry as encoded philosophy)
 - **Research Dossiers**: ../thera-knossos-minos/INDEX.md (academic paper supporting materials)
 - **Scholarly Sources**: ../scholarly-sources/ (Gordon, Astour, Harrison, Rendsburg)
 

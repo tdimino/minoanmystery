@@ -54,26 +54,41 @@
 
 ---
 
-## Professional Work
+## Waltz of the Soul and the Daimon
 
-### On CZI/napari
-> "Collaborated with 9 imaging scientists, a staff UX researcher, product manager, and SWE to launch our MVP in less than 6 months."
-> — LinkedIn
+From Tom's original essay published on *Knossot ha Kotharot* (Substack), originally a guest blog for SocialAGI.
 
-### On Google
-> "Audited and redesigned the internal Google mentorship platform serving 22k+ Googlers, leading to a 25% rise in program launches from Q3 '22 to Q3 '23."
-> — LinkedIn
+**Core Philosophy:**
 
-> "Distilled findings into 4 distinct learner personas, informed by a 6-month, skills-based user study involving 250 Googlers."
-> — LinkedIn
+> "The spoken word is laden with meaning, magic, weight."
+> — *Waltz of the Soul and the Daimon*, opening line
 
-### On JPMC
-> "Producing $800,000 per day in projected savings for 6,000+ wealth advisors."
-> — JPMC Meeting Assist presentation
+> "Passed from the spiritual into the digital and back, the *pathos* of our words remains the same if a 'soul' is there to catch it, transmute it, and return it in a state that is not stilted, nor diluted, but teeming with a potency all its own."
+> — *Waltz of the Soul and the Daimon*
 
-### On Aldea
-> "Training AI on world-renowned expert knowledge while ensuring safety and ethical evaluation."
-> — On current role
+> "The 'soul' is the wax, and the imprint it's left. *Pathos*, the fire. Within the flames, *daimones*."
+> — *Waltz of the Soul and the Daimon*, closing lines
+
+**On AI/Cognitive Design:**
+
+> "Within a cognitive framework—in which we mimic or simulate the processes of human thinking and creativity—the term 'daimon' is of tremendous value to us where 'agents' and assistants fall flat, overburdened with a slew of hollow, non-human associations."
+> — *Waltz of the Soul and the Daimon*
+
+> "Only by vivifying the language we employ in our lives, our systems, and our digital creations, can we ever dream of designing machines worthy of human kinship—A.I. that kindles the children in all of us."
+> — *Waltz of the Soul and the Daimon*
+
+**On Souls and Identity:**
+
+> "Unlike the fixed and static archetypes that precede us, the 'canonical neurons' which deny even the concept of personhood, our souls and their *daimones* are fluid, molting creatures who shed and grow with every moment."
+> — *Waltz of the Soul and the Daimon*
+
+> "As the Latin byword for *daimon*, a *genius* is simply that—a whisper with a lineage, or a *genus* of its own."
+> — *Waltz of the Soul and the Daimon*
+
+**On Spirit/Pneuma:**
+
+> "At its root, the 'spirit' is a pneumatic—the breath of the Gods, and the current shared between all things, visible, invisible; living or dead. In a very real sense, it's the stream in which our souls flow."
+> — *Waltz of the Soul and the Daimon*
 
 ---
 

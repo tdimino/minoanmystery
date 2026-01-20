@@ -8,6 +8,7 @@
 import { WorkingMemory, ChatMessageRoleEnum } from '../opensouls/core';
 import { retrieveDossierChunks, formatDossierContext, isRagAvailable as checkRagAvailable } from './dossierRetrieval';
 import type { DossierChunk, RetrievalOptions } from './dossierRetrieval';
+import { raggySearch, formatRaggyResults, type RaggySearchOptions } from './raggySearch';
 
 // ─────────────────────────────────────────────────────────────
 // Types
@@ -26,11 +27,60 @@ export interface RagConfig {
   contextHeaders?: Record<string, string>;
 }
 
-export interface RagSearchOptions {
+// ─────────────────────────────────────────────────────────────
+// RAG Search Options (Discriminated Union)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Base options shared between standard and Raggy RAG modes
+ */
+interface BaseRagSearchOptions {
+  /** Maximum number of results to return */
   resultLimit?: number;
+  /** Minimum similarity threshold (0-1) */
   minSimilarity?: number;
+  /** Filter by tags */
   tags?: string[];
 }
+
+/**
+ * Standard RAG search options (direct vector search)
+ */
+export interface StandardRagSearchOptions extends BaseRagSearchOptions {
+  /** Set to false or omit for standard RAG */
+  useRaggy?: false;
+  /** Memory not required for standard mode */
+  memory?: WorkingMemory;
+}
+
+/**
+ * Raggy RAG search options (question-based semantic expansion)
+ * Requires WorkingMemory for the cognitive step that generates questions.
+ */
+export interface RaggyRagSearchOptions extends BaseRagSearchOptions {
+  /** Enable question-based RAG for semantic expansion */
+  useRaggy: true;
+  /** WorkingMemory REQUIRED for Raggy cognitive step */
+  memory: WorkingMemory;
+  /** Raggy-specific options (questionCount, resultsPerQuestion, maxResults) */
+  raggyOptions?: Partial<RaggySearchOptions>;
+}
+
+/**
+ * Combined RAG search options using discriminated union.
+ * When useRaggy is true, memory is required at the type level.
+ */
+export type RagSearchOptions = StandardRagSearchOptions | RaggyRagSearchOptions;
+
+/**
+ * Type guard to check if options are for Raggy mode
+ */
+export function isRaggyOptions(options: RagSearchOptions): options is RaggyRagSearchOptions {
+  return options.useRaggy === true && options.memory !== undefined;
+}
+
+// Re-export Raggy types for convenience
+export type { RaggySearchOptions, RaggySearchResult } from './raggySearch';
 
 export interface ConditionalRagInterface {
   /**
@@ -160,8 +210,9 @@ export function createConditionalRag(config: RagConfig): ConditionalRagInterface
     // Map bucket names to source_type values used in dossier metadata
     const bucketToSourceTypes: Record<string, string[]> = {
       'kothar-biography': ['biography'],
+      'kothar-poetry': ['poetry'],
       'kothar-scholarly': ['scholarly'],
-      'kothar-historical': ['historical'],
+      'kothar-etymology': ['etymology'],
       'kothar-oracle': ['oracle'],
       'kothar-quotes': ['quotes'],
     };
@@ -218,19 +269,56 @@ export function createConditionalRag(config: RagConfig): ConditionalRagInterface
 
   /**
    * Get formatted RAG context for a context type
+   *
+   * Supports two modes:
+   * - Standard: Direct vector search (default)
+   * - Raggy: Question-based RAG with semantic expansion (useRaggy: true)
    */
   async function getRagContext(
     contextType: string,
     query: string,
     options: RagSearchOptions = {}
   ): Promise<string | null> {
+    const header = contextHeaders[contextType] || '## Relevant Knowledge';
+
+    // Runtime validation: warn if useRaggy is true but memory is missing
+    // This catches edge cases where the type guard is bypassed
+    if (options.useRaggy === true && !options.memory) {
+      console.warn(
+        '[ConditionalRag] useRaggy=true requires memory parameter. ' +
+        'Falling back to standard RAG. Pass memory for question-based search.'
+      );
+    }
+
+    // Raggy mode: Use question-based RAG for semantic expansion
+    // Use type guard for proper TypeScript narrowing
+    if (isRaggyOptions(options)) {
+      const targetBuckets = getBucketsForContextType(contextType);
+      const sourceTypes = targetBuckets.flatMap(getSourceTypesForBucket);
+
+      const raggyResult = await raggySearch(
+        query,
+        contextType,
+        options.memory, // TypeScript now knows this is defined
+        {
+          topK: options.resultLimit || 3,
+          threshold: options.minSimilarity || 0.65, // Lower for Raggy
+          sourceTypes: sourceTypes.length > 0 ? sourceTypes : undefined,
+          tags: options.tags,
+          ...options.raggyOptions,
+        }
+      );
+
+      return formatRaggyResults(raggyResult, header);
+    }
+
+    // Standard mode: Direct vector search
     const chunks = await searchForContextType(contextType, query, options);
 
     if (!chunks || chunks.length === 0) {
       return null;
     }
 
-    const header = contextHeaders[contextType] || '## Relevant Knowledge';
     const formattedContent = formatDossierContext(chunks);
 
     if (!formattedContent) {

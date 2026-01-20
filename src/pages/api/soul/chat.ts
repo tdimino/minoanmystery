@@ -43,6 +43,13 @@ const RATE_LIMIT = 30; // requests per minute (more generous than TTS)
 const RATE_WINDOW = 60000; // 1 minute in ms
 const MAX_QUERY_LENGTH = 2000; // characters
 
+// ─────────────────────────────────────────────────────────────
+// Raggy Thresholds (question-based RAG triggers)
+// ─────────────────────────────────────────────────────────────
+const RAGGY_QUERY_LENGTH_THRESHOLD = 120; // chars - long queries suggest complexity
+const RAGGY_CONVERSATION_DEPTH_THRESHOLD = 4; // turns - deep convos benefit from expansion
+const RAGGY_TIME_ON_SITE_THRESHOLD = 300000; // 5 min in ms - exploration mode
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const record = requestCounts.get(ip);
@@ -179,15 +186,20 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const body: ChatRequest = await request.json();
     const { query, visitorContext, conversationHistory, stream } = body;
 
-    console.log(JSON.stringify({
-      event: 'request_start',
-      correlationId,
-      endpoint: '/api/soul/chat',
-      messageLength: query?.length || 0,
-      historyLength: conversationHistory?.length || 0,
-      stream: !!stream,
-      timestamp: new Date().toISOString(),
-    }));
+    // Initial log (contextType and useRaggy added after RAG decision)
+    const logRequestStart = (ctxType?: string, raggyMode?: boolean) => {
+      console.log(JSON.stringify({
+        event: 'request_start',
+        correlationId,
+        endpoint: '/api/soul/chat',
+        messageLength: query?.length || 0,
+        historyLength: conversationHistory?.length || 0,
+        contextType: ctxType,
+        useRaggy: raggyMode,
+        stream: !!stream,
+        timestamp: new Date().toISOString(),
+      }));
+    };
 
     if (!query || typeof query !== 'string') {
       return new Response(
@@ -225,21 +237,56 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     // RAG: Topic-aware conditional retrieval (Aldea Soul Engine pattern)
+    // Detect context type once, decide Raggy vs standard, use withTypedRagContext
+    let contextType = 'general';
+    let useRaggy = false;
+
     if (isRagAvailable()) {
       try {
-        // Detect context type for logging
-        const contextType = detectContextType(query);
+        // Detect context type once (avoid duplicate regex in withAutoRagContext)
+        contextType = detectContextType(query);
+        useRaggy = shouldUseRaggy(query, contextType, visitorContext, conversationHistory);
 
-        // Use conditional RAG to inject topic-appropriate knowledge
-        memory = await kotharRag.withAutoRagContext(memory, query, {
-          resultLimit: 3,
-          minSimilarity: 0.7,
-        });
+        // Use typed RAG with conditional Raggy mode
+        if (useRaggy) {
+          memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
+            useRaggy: true,
+            memory,
+            resultLimit: 5,
+            minSimilarity: 0.65,
+          });
+        } else {
+          memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
+            resultLimit: 3,
+            minSimilarity: 0.7,
+          });
+        }
 
-        console.log(`[Soul Chat] RAG: Context type "${contextType}" for query "${query.slice(0, 50)}..."`);
+        console.log(`[Soul Chat] RAG: ${useRaggy ? 'Raggy' : 'Standard'} mode for "${contextType}" - "${query.slice(0, 50)}..."`);
+
+        // Log with RAG decision info
+        logRequestStart(contextType, useRaggy);
       } catch (ragError) {
-        console.warn('[Soul Chat] RAG retrieval failed, continuing without knowledge context:', ragError);
+        // Fallback: if Raggy failed, try standard RAG
+        if (useRaggy) {
+          console.warn('[Soul Chat] Raggy failed, falling back to standard RAG:', ragError);
+          try {
+            memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
+              resultLimit: 3,
+              minSimilarity: 0.7,
+            });
+          } catch (fallbackError) {
+            console.warn('[Soul Chat] Standard RAG fallback also failed:', fallbackError);
+          }
+        } else {
+          console.warn('[Soul Chat] RAG retrieval failed, continuing without knowledge context:', ragError);
+        }
+        // Log even on error (with whatever context we have)
+        logRequestStart(contextType, useRaggy);
       }
+    } else {
+      // RAG not available - log without RAG info
+      logRequestStart();
     }
 
     // Add conversation history
@@ -408,6 +455,59 @@ function buildVisitorContext(ctx: ChatRequest['visitorContext']): string {
   }
 
   return parts.join('\n');
+}
+
+/**
+ * Determine if query warrants Raggy (question-based RAG)
+ *
+ * Raggy adds ~1 LLM call but improves semantic coverage for complex queries.
+ * Standard RAG is sufficient for direct lookups (portfolio, voice).
+ */
+function shouldUseRaggy(
+  query: string,
+  contextType: string,
+  visitorContext?: ChatRequest['visitorContext'],
+  conversationHistory?: ChatRequest['conversationHistory']
+): boolean {
+  // Tier 1: Context type (highest priority)
+  // Scholarly, etymology, and oracle queries benefit from semantic expansion
+  if (contextType === 'scholarly' || contextType === 'etymology' || contextType === 'oracle') {
+    return true;
+  }
+
+  // Portfolio and voice are direct lookups—standard RAG sufficient
+  if (contextType === 'portfolio' || contextType === 'voice') {
+    return false;
+  }
+
+  // Tier 2: Query complexity signals (for background, mythology, general)
+
+  // Long queries suggest multi-faceted thinking
+  if (query.length > RAGGY_QUERY_LENGTH_THRESHOLD) {
+    return true;
+  }
+
+  // Multi-part indicators
+  if (/\b(and|also|how does.*relate|connect|compare|difference|relationship)\b/i.test(query)) {
+    return true;
+  }
+
+  // Tier 3: Conversation depth (refinement cycle)
+  if (conversationHistory && conversationHistory.length >= RAGGY_CONVERSATION_DEPTH_THRESHOLD) {
+    return true;
+  }
+
+  // Tier 4: Visitor engagement signals
+  if (visitorContext?.behavioralType === 'reader') {
+    return true; // Deep readers benefit from richer context
+  }
+
+  if (visitorContext?.timeOnSite && visitorContext.timeOnSite > RAGGY_TIME_ON_SITE_THRESHOLD) {
+    return true; // 5+ minutes = exploration mode
+  }
+
+  // Default: standard RAG
+  return false;
 }
 
 /**

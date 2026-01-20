@@ -8,6 +8,7 @@
 import { createClient } from '@supabase/supabase-js';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { embedQuery } from '../../voyage';
+import { formatChunks } from './formatChunk';
 
 export interface DossierChunk {
   id: string;
@@ -17,7 +18,7 @@ export interface DossierChunk {
     section: string;
     chunk_index: number;
     tags: string[];
-    source_type: 'biography' | 'scholarly' | 'poetry' | 'oracle' | 'historical';
+    source_type: 'biography' | 'poetry' | 'scholarly' | 'etymology' | 'oracle' | 'quotes';
   };
   similarity: number;
 }
@@ -27,6 +28,16 @@ export interface RetrievalOptions {
   threshold?: number;
   sourceTypes?: string[];
   tags?: string[];
+}
+
+/**
+ * Supabase RPC response row type for match_kothar_dossiers
+ */
+interface DossierRow {
+  id: string;
+  content: string;
+  metadata: DossierChunk['metadata'];
+  similarity: number;
 }
 
 const DEFAULT_OPTIONS: Required<RetrievalOptions> = {
@@ -91,7 +102,7 @@ export async function retrieveDossierChunks(
       return [];
     }
 
-    return data.map((row: any) => ({
+    return data.map((row: DossierRow) => ({
       id: row.id,
       content: row.content,
       metadata: row.metadata,
@@ -108,24 +119,11 @@ export async function retrieveDossierChunks(
  *
  * Creates a structured knowledge context string suitable for
  * insertion into the KNOWLEDGE_DOSSIER region.
+ *
+ * @deprecated Use formatChunks from ./formatChunk.ts directly for new code
  */
 export function formatDossierContext(chunks: DossierChunk[]): string | null {
-  if (!chunks || chunks.length === 0) {
-    return null;
-  }
-
-  const formattedChunks = chunks.map((chunk, index) => {
-    const source = chunk.metadata.dossier.replace(/^souls\/minoan\/dossiers\//, '');
-    const section = chunk.metadata.section || 'General';
-    const tags = chunk.metadata.tags?.join(', ') || '';
-
-    return `### Source ${index + 1}: ${source}
-**Section**: ${section}${tags ? `\n**Tags**: ${tags}` : ''}
-
-${chunk.content}`;
-  });
-
-  return formattedChunks.join('\n\n---\n\n');
+  return formatChunks(chunks);
 }
 
 /**

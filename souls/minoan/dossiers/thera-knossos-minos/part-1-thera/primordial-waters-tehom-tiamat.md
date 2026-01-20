@@ -51,6 +51,24 @@ Tiamat appears in non-combative contexts:
 
 **Athirat Rahmay**: The Ugaritic sea-goddess Athirat bears the epithet "of the Womb" (*rḥm*), connecting generative waters with maternal imagery—a parallel to Tiamat's role as "she who bore them all."
 
+### 3a. Athirat Visits El at the THMTM: The Ugaritic Deep
+
+A crucial link between Athirat and the Tehom/Tiamat tradition appears in the Baal Cycle, where **Athirat travels to El's dwelling at the THMTM**—the Ugaritic cognate of Hebrew *tehom* and Akkadian *Tiamat*:
+
+**KTU 1.4 IV 20-24**:
+> "Then she [Athirat] sets her face towards El at the source of the two rivers, at the core of the source of the abyss (*thmt*). She makes her way to El's cave and enters the dwelling of the king, the Father of Years."
+
+This formula recurs throughout the Baal Cycle (KTU 1.2 III 4-5, KTU 1.3 v 6-7, KTU 1.6 I 32-37).
+
+Per Lu (2018, UCLA dissertation *The Deification and Demonization of Tĕhôm*):
+> "The texts of The Birth of the Beautiful Gods (1.23:30), The Baal Cycle, and Aqhat (1.17 vi 12, 48; 1.19 i 45) repeat the same description of *thmt* as 'the convergence of two deeps.' Just as ancient Mesopotamia's deity Ea/Enki builds his dwelling above the *apsu* (after defeat of the deity Apsu in the Enuma Elish tradition), so we can understand **El's dwelling above the convergence of the Deeps as his enthronement or rule over the waters**."
+
+**Key evidence for THMTM as deified entity**:
+- **Deity lists** (RS 24.643 / KTU 1.148): THMTM receives ram sacrifices alongside other gods
+- **Paired with Mountains**: Multiple texts (RS 1992.2004, RS 26.142) formulaically pair "the deity of Mountains with the deity of Deep Waters"—a cosmic merism
+
+This means "Lady Athirat of the Sea" (*rbt aṯrt ym*) is **geographically and mythologically bound to the Ugaritic cognate of Tiamat/Tehom**—the primordial deep where El holds court.
+
 ### 4. Volcanic Memory and Chaos Narratives
 
 The Theran eruption produced:

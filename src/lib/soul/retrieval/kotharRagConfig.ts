@@ -3,6 +3,15 @@
  *
  * Topic-aware routing configuration following Aldea Soul Engine patterns.
  * Maps user queries to knowledge buckets via regex pattern matching.
+ *
+ * Bucket structure matches actual dossier folders:
+ * - biography/          → kothar-biography
+ * - poetry/             → kothar-poetry
+ * - scholarly-sources/  → kothar-scholarly
+ * - thera-knossos-minos/→ kothar-etymology
+ * - oracle-concepts/    → kothar-oracle
+ * - daimonic-soul-engine/ → kothar-oracle
+ * - quotes.md           → kothar-quotes
  */
 
 import { createConditionalRag, type RagConfig, type TopicPattern } from './conditionalRag';
@@ -12,11 +21,11 @@ import { createConditionalRag, type RagConfig, type TopicPattern } from './condi
 // ─────────────────────────────────────────────────────────────
 
 export type KotharContextType =
-  | 'scholarly'   // Academic questions (Gordon, Astour, Harrison)
-  | 'mythology'   // Minoan/ANE mythology, labyrinth symbolism
+  | 'scholarly'   // Academic sources (Gordon, Astour, Harrison, Rendsburg)
+  | 'etymology'   // Thera-Knossos-Minos etymological research
   | 'portfolio'   // Tom's work, case studies, skills
   | 'background'  // Who is Tom, personal journey, poetry
-  | 'oracle'      // Daimonic wisdom, labyrinth philosophy
+  | 'oracle'      // Daimonic wisdom, soul philosophy
   | 'voice'       // Voice calibration (quotes only)
   | 'general';    // Fallback for unmatched queries
 
@@ -25,10 +34,11 @@ export type KotharContextType =
 // ─────────────────────────────────────────────────────────────
 
 export const KOTHAR_BUCKETS = [
-  'kothar-biography',   // Biography dossiers (Tom's journey, work, poetry)
-  'kothar-scholarly',   // Gordon, Astour, Harrison scholarly sources
-  'kothar-historical',  // Minoan/ANE historical context
-  'kothar-oracle',      // Oracle concepts, daimonic wisdom, labyrinth philosophy
+  'kothar-biography',   // Biography dossiers (Tom's journey, career)
+  'kothar-poetry',      // Poetry collection (Shirat Ha Kotharot)
+  'kothar-scholarly',   // Gordon, Astour, Harrison, Rendsburg scholarly sources
+  'kothar-etymology',   // Thera-Knossos-Minos etymological arguments
+  'kothar-oracle',      // Oracle concepts, daimonic wisdom, soul philosophy
   'kothar-quotes',      // Voice calibration quotes (70+)
 ] as const;
 
@@ -39,9 +49,9 @@ export type KotharBucket = typeof KOTHAR_BUCKETS[number];
 // ─────────────────────────────────────────────────────────────
 
 const TOPIC_PATTERNS: TopicPattern[] = [
-  // ========== SCHOLARLY (Hellenosemitica, linguistic evidence) ==========
+  // ========== SCHOLARLY (Academic sources, linguistic evidence) ==========
   {
-    pattern: /\b(gordon|cyrus\s+gordon|astour|harrison|jane\s+harrison)\b/i,
+    pattern: /\b(gordon|cyrus\s+gordon|astour|harrison|jane\s+harrison|rendsburg)\b/i,
     contextType: 'scholarly',
   },
   {
@@ -53,38 +63,47 @@ const TOPIC_PATTERNS: TopicPattern[] = [
     contextType: 'scholarly',
   },
   {
-    pattern: /\b(etymology|linguistic|lexicon|inscription)\b/i,
+    pattern: /\b(linguistic|lexicon|inscription|cuneiform)\b/i,
     contextType: 'scholarly',
   },
   {
-    pattern: /\b(decipherment|tablet|syllabary|cuneiform)\b/i,
+    pattern: /\b(decipherment|tablet|syllabary)\b/i,
     contextType: 'scholarly',
   },
   {
-    pattern: /\b(evidence\s+for|prove|scholarly|academic|research)\b/i,
+    pattern: /\b(scholarly|academic|research\s+on|evidence\s+for)\b/i,
+    contextType: 'scholarly',
+  },
+  // Ugaritic poetry (from scholarly-sources/gordon/ugaritic-poetry/)
+  {
+    pattern: /\b(baal|anath|aqhat|kret|ugarit)\b/i,
     contextType: 'scholarly',
   },
 
-  // ========== MYTHOLOGY (Minoan culture, labyrinth symbolism) ==========
+  // ========== ETYMOLOGY (Thera-Knossos-Minos research) ==========
   {
-    pattern: /\b(labyrinth|minotaur|theseus|ariadne|minos)\b/i,
-    contextType: 'mythology',
+    pattern: /\b(thera|santorini|kalliste)\b/i,
+    contextType: 'etymology',
   },
   {
-    pattern: /\b(minoan|knossos|crete|bull\s+leap|snake\s+goddess)\b/i,
-    contextType: 'mythology',
+    pattern: /\b(knossos|minos|minoan)\b/i,
+    contextType: 'etymology',
   },
   {
-    pattern: /\b(ancient\s+near\s+east|ANE|mesopotamia|bronze\s+age)\b/i,
-    contextType: 'mythology',
+    pattern: /\b(etymology|etymolog|word\s+origin|name\s+means)\b/i,
+    contextType: 'etymology',
   },
   {
-    pattern: /\b(myth|legend|symbol|archetype)\b/i,
-    contextType: 'mythology',
+    pattern: /\b(tehom|tiamat|primordial\s+waters|potnia)\b/i,
+    contextType: 'etymology',
   },
   {
-    pattern: /\b(greek\s+myth|aegean|mediterranean)\b/i,
-    contextType: 'mythology',
+    pattern: /\b(labyrinth|minotaur|ariadne)\b/i,
+    contextType: 'etymology',
+  },
+  {
+    pattern: /\b(bronze\s+age|aegean|mediterranean|crete)\b/i,
+    contextType: 'etymology',
   },
 
   // ========== PORTFOLIO (Tom's work) ==========
@@ -105,11 +124,15 @@ const TOPIC_PATTERNS: TopicPattern[] = [
     contextType: 'portfolio',
   },
   {
+    pattern: /\b(google|jpmc|jp\s+morgan|napari|sitecore)\b/i,
+    contextType: 'portfolio',
+  },
+  {
     pattern: /\b(client|company|employer|worked\s+(at|for|with))\b/i,
     contextType: 'portfolio',
   },
 
-  // ========== BACKGROUND (Who is Tom, personal) ==========
+  // ========== BACKGROUND (Who is Tom, personal, poetry) ==========
   {
     pattern: /\b(who\s+(is|are)\s+(tom|you)|about\s+(tom|yourself)|your\s+background)\b/i,
     contextType: 'background',
@@ -119,7 +142,20 @@ const TOPIC_PATTERNS: TopicPattern[] = [
     contextType: 'background',
   },
   {
-    pattern: /\b(poet|poetry|verse|stanza)\b/i,
+    pattern: /\b(poet|poetry|verse|stanza|poem)\b/i,
+    contextType: 'background',
+  },
+  // Poetry collection titles and specific poems
+  {
+    pattern: /\b(shirat|kotharot|artifex\s+intellegere|sacramento|agua\s+de\s+vida)\b/i,
+    contextType: 'background',
+  },
+  {
+    pattern: /\b(ba'alat\s+ackbarat|themis\s+kai|marginalia|dabarim\s+kaphtorim)\b/i,
+    contextType: 'background',
+  },
+  {
+    pattern: /\b(creative\s+work|poetry\s+collection|wrote|written)\b/i,
     contextType: 'background',
   },
   {
@@ -131,9 +167,31 @@ const TOPIC_PATTERNS: TopicPattern[] = [
     contextType: 'background',
   },
 
-  // ========== ORACLE (Daimonic wisdom) ==========
+  // ========== ORACLE (Daimonic wisdom, soul philosophy) ==========
   {
     pattern: /\b(oracle|daimon|daemon|wisdom|mystery)\b/i,
+    contextType: 'oracle',
+  },
+  // Daimonic philosophy (Waltz of Soul and Daimon, triadic model)
+  {
+    pattern: /\b(pathos|menos|pneuma|daimonic)\b/i,
+    contextType: 'oracle',
+  },
+  {
+    pattern: /\b(soul\s+and\s+the\s+daimon|waltz|vivify|vivifying)\b/i,
+    contextType: 'oracle',
+  },
+  {
+    pattern: /\b(triadic\s+model|soul.*wax|pathos.*fire)\b/i,
+    contextType: 'oracle',
+  },
+  // Soul engine philosophy
+  {
+    pattern: /\b(cognitive\s+step|mental\s+process|working\s+memory)\b/i,
+    contextType: 'oracle',
+  },
+  {
+    pattern: /\b(soul\s+engine|soul\s+architecture|immutable\s+memory)\b/i,
     contextType: 'oracle',
   },
   {
@@ -159,8 +217,8 @@ const TOPIC_PATTERNS: TopicPattern[] = [
 // ─────────────────────────────────────────────────────────────
 
 const CONTEXT_HEADERS: Record<KotharContextType, string> = {
-  scholarly: '## Scholarly Knowledge (Hellenosemitica)',
-  mythology: '## Minoan Mythology & Symbolism',
+  scholarly: '## Scholarly Knowledge',
+  etymology: '## Etymological Research',
   portfolio: "## Tom di Mino's Work",
   background: '## About Tom di Mino',
   oracle: '## Daimonic Wisdom',
@@ -177,12 +235,12 @@ export const KOTHAR_RAG_CONFIG: RagConfig = {
 
   contextTypeBuckets: {
     scholarly: ['kothar-scholarly', 'kothar-quotes'],
-    mythology: ['kothar-historical', 'kothar-oracle'],
+    etymology: ['kothar-etymology', 'kothar-scholarly'],
     portfolio: ['kothar-biography', 'kothar-quotes'],
-    background: ['kothar-biography', 'kothar-quotes'],
+    background: ['kothar-biography', 'kothar-poetry', 'kothar-quotes'],
     oracle: ['kothar-oracle', 'kothar-quotes'],
     voice: ['kothar-quotes'],
-    general: ['kothar-scholarly', 'kothar-oracle'],
+    general: ['kothar-scholarly', 'kothar-oracle', 'kothar-etymology'],
   },
 
   topicPatterns: TOPIC_PATTERNS,

@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Raggy Mode (Question-Based RAG)**: Conditional semantic expansion for complex queries
+  - `raggySearch.ts` - Generates 3-5 expansion questions before vector search
+  - `shouldUseRaggy()` in chat.ts with tiered trigger logic:
+    - Tier 1: Context type (`scholarly`, `etymology`, `oracle` → always Raggy)
+    - Tier 2: Query complexity (length > 120 chars, multi-part keywords)
+    - Tier 3: Conversation depth (≥4 turns)
+    - Tier 4: Visitor signals (reader type, 5+ min on site)
+  - Structured logging with `contextType` and `useRaggy` fields
+- **Poetry Dossiers**: New `souls/minoan/dossiers/poetry/` folder with 8 files
+  - `shirat-ha-kotharot-full.md` - Complete Kotharot ha Knossot collection
+  - `minoan-semitic-poems.md`, `goddess-feminine-poems.md`, `ritual-mystery-poems.md`
+  - `ai-consciousness-poems.md`, `epigraphs.md`, `marginalia.md`
+- **Oracle Concept Dossiers**: Expanded philosophical foundation
+  - `poetry-as-philosophy.md` - Tom's poetics as epistemology
+  - `waltz-of-soul-and-daimon-full.md` - Complete essay on daimonic consciousness
+- **Format Chunk Utility**: `formatChunk.ts` for consistent RAG result formatting
+
+### Changed
+- **RAG Config Refactor**: Aligned with actual dossier structure
+  - Renamed `mythology` → `etymology` (no mythology content exists)
+  - Added `kothar-poetry` bucket for poetry dossiers
+  - Updated topic patterns: `thera`, `knossos`, `tehom`, `tiamat` → etymology
+  - Made context headers generic (removed hardcoded "Hellenosemitica")
+- **Chunking Script**: Updated `chunk-dossiers.ts`
+  - `historical` → `etymology` source type
+  - Added `daimonic` folder → `oracle` source type
+  - Excluded `RESEARCHER_PERSONA.md` from chunking
+  - Default unmapped content → `scholarly` (was `historical`)
+- **DossierChunk Type**: Added `etymology` and `quotes` to source_type union
+- **Bucket Mapping**: Updated `conditionalRag.ts` bucket-to-source-type mapping
+
+### Infrastructure
+- **Re-ingested Embeddings**: 1,762 chunks with corrected source types
+  - Cleared 1,205 old records
+  - 260,455 VoyageAI tokens (~$0.03)
+
 - **Daimonic Soul Engine Philosophy Dossiers**: New folder `souls/minoan/dossiers/daimonic-soul-engine/` with 7 files exploring the design philosophy behind AI personality systems (public-facing, no implementation details)
   - `INDEX.md` - Overview and navigation, daimon tradition context
   - `immutable-memory.md` - Why memory should never mutate

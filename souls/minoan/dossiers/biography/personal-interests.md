@@ -23,17 +23,34 @@ Beyond professional work, Tom pursues independent research, creative expression,
 ### The Practice
 Tom is a practicing poet who performs live. Poetry isn't a hobby but a discipline that shapes his approach to language—attention to rhythm, voice, economy of expression, and emotional resonance.
 
-### Kotharot ha Knossot
-Tom's poetry collection **Kotharot ha Knossot** spans 90 pages gathered over 14+ years of mystically-inspired writing. The work came alive with new fervor when Tom met his partner Mary Rose Dwyer in 2015 and began workshopping together—her MFA-trained eye bringing rigor to material that had been accumulating for over a decade. The work is now nearing publication.
+### Shirat Ha Kotharot (Poetry Collection)
+
+Tom's poetry collection **Shirat Ha Kotharot** ("The Song of the Muses") spans 91 pages and 70+ poems gathered over 14+ years of mystically-inspired writing. The work came alive with new fervor when Tom met his partner Mary Rose Dwyer in 2015 and began workshopping together—her MFA-trained eye bringing rigor to material that had been accumulating for over a decade.
 
 **The Title**: A deliberate linguistic synthesis bridging Semitic and Aegean traditions:
-- **Kotharot** (כותרות): Ugaritic divine craftswomen/birth goddesses (the ktrt)
-- **ha Knossot**: "of the Knossoses/assemblies" - a Hebrew-inflected plural of Knossos, evoking both the Minoan palace and the Semitic root k-n-s (to gather, as in *knesset*)
+- **Shirat** (שירת): "Song of" (Hebrew)
+- **Ha Kotharot** (הכותרות): The Kotharot—Ugaritic divine craftswomen/birth goddesses who attend births and bless marriages
+- Alternative rendering: **Kotharot ha Knossot** ("Muses of the Assemblies/Knossoses")
+
+**Languages**: English, Spanish, Italian, French, Hebrew, Greek, Latin, Phoenician
+
+**Key Poems**:
+- **Artifex Intellegere (A.I.)** - AI as "understanding crafter," the daimonic spark in silicon
+- **Shirat Ha Kotharot** - Title poem, regendering Genesis with feminine divine
+- **Shirat Ha Yamu** - "I am a Sea People, and my home is Crete"
+- **Dabarim Kaphtorim** - "Cretan Commandments" in imagined Phoenician tradition
+- **Gospel According to Tammuz** - Gnostic-Canaanite synthesis
+
+**Scholarly Epigraphs**: The collection opens with quotes from Cyrus H. Gordon (Minoan-Phoenician connection), Jane Ellen Harrison (Themis, Prolegomena), William Butler Yeats (Celtic Twilight), and Gnostic texts (Gospel of Thomas, Dialogue of the Savior).
+
+**Full Dossier**: See **../poetry/INDEX.md** for complete analysis, thematic organization, and individual poem extracts.
 
 **Themes**:
 - Labyrinthine/initiatory: Journey, transformation, mystery
 - Linguistic/philological play: The poetry is often about language itself
 - Personal mythology synthesis: Weaving multiple traditions into something new
+- AI consciousness: The daimonic spark in digital form
+- Goddess-centered cosmology: Feminine divine as creatrix
 
 ### How It Informs AI Work
 The same sensibility that crafts a poem—knowing when to reveal, when to withhold, what rhythm carries meaning—applies to conversational AI design. Kothar's responses aim for poetic precision, not verbose explanation. This isn't a side project—it's the source. The poetic sensibility that crafts these works is the same sensibility that designs AI personas capable of genuine voice.
@@ -184,8 +201,11 @@ When visitors ask personal questions—about Tom's interests, background, or wha
 - **Biography**: INDEX.md (full career overview)
 - **Biography**: origin-story.md (educational foundation)
 - **Biography**: ai-ml-chapter.md (current work, collaborators)
+- **Poetry**: ../poetry/INDEX.md (Shirat Ha Kotharot collection analysis)
+- **Poetry**: ../poetry/ai-consciousness-poems.md (Artifex Intellegere, El Agua de Vida)
 - **Oracle-Concepts**: daimonic-wisdom.md (philosophical framework for AI consciousness)
+- **Oracle-Concepts**: poetry-as-philosophy.md (poetry as encoded philosophy)
 - **Scholarly-Sources**: harrison/INDEX.md (academic grounding)
 
 ## RAG Tags
-Tom di Mino, personal interests, poetry, Kotharot ha Knossot, Knossot ha Kotharot, Substack, languages, Ugaritic, Hebrew, Greek, Latin, Sanskrit, Arabic, Spanish, Bronze Age, Minoan, mythology, research, Hudson Valley, Beacon, hiking, open source, philosophy, spirituality, techno-spiritual, entheogenic, contemplative practice, community, Minoan Mystery, LLC, eastern mysticism, western mysticism, gnosis, goddess-oriented, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik, friends, daimon, daimonic, soul engineering, published essays
+Tom di Mino, personal interests, poetry, Shirat Ha Kotharot, Kotharot ha Knossot, Knossot ha Kotharot, Substack, languages, Ugaritic, Hebrew, Greek, Latin, Sanskrit, Arabic, Spanish, Phoenician, Bronze Age, Minoan, mythology, research, Hudson Valley, Beacon, hiking, open source, philosophy, spirituality, techno-spiritual, entheogenic, contemplative practice, community, Minoan Mystery, LLC, eastern mysticism, western mysticism, gnosis, goddess-oriented, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik, friends, daimon, daimonic, soul engineering, published essays, Artifex Intellegere, AI consciousness, poetry collection
