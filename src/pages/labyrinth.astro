@@ -14,6 +14,11 @@ import Header from '../components/Header.astro';
   description="Enter the labyrinth and converse with Kothar, the divine craftsman. An AI soul awakened from ancient Minoan mystery."
   image="/images/og/labyrinth.png"
 >
+  <!-- Divine Feminine Background - manifests when goddess is invoked -->
+  <div id="goddess-background" class="goddess-bg" aria-hidden="true">
+    <div class="goddess-vignette"></div>
+  </div>
+
   <Header />
   <main class="labyrinth-page">
     <header class="labyrinth-header">
@@ -38,6 +43,13 @@ import Header from '../components/Header.astro';
           <p>Kothar awaits your first question.</p>
           <p class="empty-hint">Type below or use Cmd+K to begin.</p>
         </div>
+      </div>
+
+      <!-- Archive Search Indicator - shows during RAG retrieval -->
+      <div id="archive-indicator" class="archive-indicator" aria-live="polite">
+        <span class="archive-icon">◈</span>
+        <span class="archive-text">Kothar is consulting his archives</span>
+        <span class="archive-dots"><span>.</span><span>.</span><span>.</span></span>
       </div>
 
       <form id="labyrinth-form" class="labyrinth-form">
@@ -71,10 +83,185 @@ import Header from '../components/Header.astro';
 </BaseLayout>
 
 <style>
+  /* ─────────────────────────────────────────────────────────────
+     Divine Feminine Background
+     Ethereal manifestation when goddess terms are invoked
+     ───────────────────────────────────────────────────────────── */
+
+  .goddess-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .goddess-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/images/soul/potnia-theron-transparent.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.12;
+    filter: sepia(0.3) saturate(0.8);
+    animation: goddess-breathe 12s ease-in-out infinite paused;
+  }
+
+  .goddess-bg.active::before {
+    animation-play-state: running;
+  }
+
+  .goddess-bg.active {
+    opacity: 1;
+  }
+
+  /* Vignette overlay for depth */
+  .goddess-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 20%,
+      rgba(var(--color-background-rgb, 255, 255, 255), 0.7) 70%,
+      var(--color-background) 100%
+    );
+  }
+
+  :global([data-theme='dark']) .goddess-vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 20%,
+      rgba(13, 13, 13, 0.7) 70%,
+      #0d0d0d 100%
+    );
+  }
+
+  :global([data-theme='dark']) .goddess-bg::before {
+    filter: sepia(0.2) saturate(0.6) brightness(0.9);
+    opacity: 0.08;
+  }
+
+  @keyframes goddess-breathe {
+    0%, 100% {
+      transform: scale(1) translateY(0);
+      opacity: 0.10;
+    }
+    50% {
+      transform: scale(1.02) translateY(-1%);
+      opacity: 0.14;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Archive Search Indicator
+     Ancient knowledge being consulted
+     ───────────────────────────────────────────────────────────── */
+
+  .archive-indicator {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    margin: 0 0 0.75rem 0;
+    background: linear-gradient(
+      135deg,
+      rgba(150, 106, 133, 0.08) 0%,
+      rgba(150, 106, 133, 0.04) 100%
+    );
+    border-left: 2px solid var(--color-primary);
+    border-radius: 0 12px 12px 0;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--color-text-muted);
+    letter-spacing: 0.01em;
+    backdrop-filter: blur(4px);
+  }
+
+  .archive-indicator.active {
+    display: flex;
+    animation: archive-reveal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes archive-reveal {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .archive-icon {
+    color: var(--color-primary);
+    font-size: 16px;
+    animation: archive-icon-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes archive-icon-pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  .archive-text {
+    flex: 1;
+  }
+
+  .archive-dots {
+    display: flex;
+    gap: 1px;
+  }
+
+  .archive-dots span {
+    opacity: 0.3;
+    animation: archive-dot 1.4s ease-in-out infinite;
+  }
+
+  .archive-dots span:nth-child(1) { animation-delay: 0s; }
+  .archive-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .archive-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes archive-dot {
+    0%, 80%, 100% {
+      opacity: 0.3;
+      transform: translateY(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+  }
+
+  :global([data-theme='dark']) .archive-indicator {
+    background: linear-gradient(
+      135deg,
+      rgba(201, 160, 184, 0.1) 0%,
+      rgba(201, 160, 184, 0.04) 100%
+    );
+    border-left-color: var(--color-primary);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Page Layout
+     ───────────────────────────────────────────────────────────── */
+
   .labyrinth-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
   }
 
   .labyrinth-header {
@@ -598,6 +785,7 @@ import Header from '../components/Header.astro';
   import { getSoulOrchestrator, type OrchestratorConfig } from '../lib/soul/opensouls/perception/SoulOrchestrator';
   import type { SoulOrchestrator } from '../lib/soul/opensouls/perception/SoulOrchestrator';
   import { StreamRenderer, injectStreamingStyles } from '../lib/soul/streamRenderer';
+  import { getTriggerManager } from '../lib/soul/triggers';
 
   interface ChatMessage {
     id: string;
@@ -692,6 +880,15 @@ import Header from '../components/Header.astro';
     private stateDot: HTMLElement;
     private stateText: HTMLElement;
 
+    // Divine feminine background
+    private goddessBackground: HTMLElement;
+
+    // Archive indicator
+    private archiveIndicator: HTMLElement;
+
+    // Goddess background timeout (for auto-hide)
+    private goddessTimeout: ReturnType<typeof setTimeout> | null = null;
+
     // State display mapping
     private readonly stateLabels: Record<string, string> = {
       greeting: 'Kothar is pondering...',
@@ -714,6 +911,10 @@ import Header from '../components/Header.astro';
       this.stateIndicator = document.getElementById('soul-state-indicator')!;
       this.stateDot = document.getElementById('soul-state-dot')!;
       this.stateText = document.getElementById('soul-state-text')!;
+
+      // Divine feminine background and archive indicator
+      this.goddessBackground = document.getElementById('goddess-background')!;
+      this.archiveIndicator = document.getElementById('archive-indicator')!;
 
       this.init();
     }
@@ -750,6 +951,16 @@ import Header from '../components/Header.astro';
           this.input.value = transcript;
           this.sendMessage();
         }
+      }) as EventListener);
+
+      // Divine feminine background event listener
+      document.addEventListener('soul:background', ((e: CustomEvent) => {
+        this.handleGoddessBackground(e.detail);
+      }) as EventListener);
+
+      // Archive indicator event listener (from SSE stream)
+      document.addEventListener('soul:archive', ((e: CustomEvent) => {
+        this.setArchiveIndicator(e.detail.active);
       }) as EventListener);
 
       // Check for message ID in URL (deep link)
@@ -916,6 +1127,65 @@ import Header from '../components/Header.astro';
       }
     }
 
+    /**
+     * Handle divine feminine background manifestation
+     */
+    private handleGoddessBackground(payload: { image: string; opacity?: number; duration?: number }) {
+      if (!this.goddessBackground) return;
+
+      if (payload.image === 'goddess') {
+        // Clear any existing timeout
+        if (this.goddessTimeout) {
+          clearTimeout(this.goddessTimeout);
+          this.goddessTimeout = null;
+        }
+
+        // Manifest the goddess
+        this.goddessBackground.classList.add('active');
+
+        // Set custom opacity if provided
+        if (payload.opacity) {
+          const beforeEl = this.goddessBackground.querySelector('::before') as HTMLElement;
+          if (beforeEl) {
+            beforeEl.style.opacity = String(payload.opacity);
+          }
+        }
+
+        console.log('[Labyrinth] Divine feminine manifested');
+
+        // Auto-hide after duration (default 30s)
+        const duration = payload.duration || 30000;
+        if (duration > 0) {
+          this.goddessTimeout = setTimeout(() => {
+            this.goddessBackground.classList.remove('active');
+            console.log('[Labyrinth] Divine feminine faded');
+          }, duration);
+        }
+      } else {
+        // Hide the goddess
+        this.goddessBackground.classList.remove('active');
+        if (this.goddessTimeout) {
+          clearTimeout(this.goddessTimeout);
+          this.goddessTimeout = null;
+        }
+      }
+    }
+
+    /**
+     * Show/hide archive indicator during RAG retrieval
+     */
+    private setArchiveIndicator(active: boolean) {
+      if (!this.archiveIndicator) return;
+
+      if (active) {
+        this.archiveIndicator.classList.add('active');
+        console.log('[Labyrinth] Archive search started');
+      } else {
+        this.archiveIndicator.classList.remove('active');
+        console.log('[Labyrinth] Archive search complete');
+      }
+    }
+
     private formatContent(content: string): string {
       // Basic markdown-like formatting
       return content
@@ -954,6 +1224,14 @@ import Header from '../components/Header.astro';
         page: '/labyrinth'
       };
       this.renderMessage(userMsg);
+
+      // Evaluate message for goddess-invoked trigger
+      try {
+        const triggerManager = getTriggerManager();
+        triggerManager.evaluateMessage(query);
+      } catch (e) {
+        console.warn('[Labyrinth] Trigger evaluation failed:', e);
+      }
 
       // Add loading state (will be converted to streaming message)
       const loadingMsg: ChatMessage = {

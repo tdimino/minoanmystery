@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Divine Feminine Background**: Ethereal Asherah image manifests when goddess terms are invoked in Labyrinth chat
+  - Transparent PNG of Potnia Theron/Asherah relief appears behind conversation
+  - Breathing animation with subtle opacity pulsing (0.04-0.08)
+  - Triggered by comprehensive goddess vocabulary (Asherah, Athirat, Potnia, Tanit, Ba'alat, Shekhinah, Tiamat, Tehom, etc.)
+  - 30-second duration with smooth 2s fade transitions
+  - Message-based trigger system via `TriggerManager.evaluateMessage()`
+- **Kothar Archive Search Indicator**: Visual feedback during RAG retrieval
+  - "◈ Kothar is consulting his archives..." with animated pulsing dots
+  - Appears when RAG search begins, disappears when streaming starts
+  - SSE-based architecture with `event: archive` custom event type
+  - Integrates with existing soul dispatch paradigm via `soul:archive` DOM events
+
+### Changed
+- **Soul Triggers**: Added `evaluateMessage()` method for text-based trigger evaluation
+- **Chat API**: Restructured to emit archive SSE events during RAG process
+- **SoulOrchestrator**: Enhanced SSE parsing to handle custom event types
+
+### Added
 - **Raggy Mode (Question-Based RAG)**: Conditional semantic expansion for complex queries
   - `raggySearch.ts` - Generates 3-5 expansion questions before vector search
   - `shouldUseRaggy()` in chat.ts with tiered trigger logic:

@@ -236,58 +236,54 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       });
     }
 
-    // RAG: Topic-aware conditional retrieval (Aldea Soul Engine pattern)
-    // Detect context type once, decide Raggy vs standard, use withTypedRagContext
-    let contextType = 'general';
-    let useRaggy = false;
+    // RAG helper function (will be called inside stream for streaming mode)
+    const performRag = async (mem: typeof memory): Promise<{ memory: typeof memory; contextType: string; useRaggy: boolean }> => {
+      let contextType = 'general';
+      let useRaggy = false;
 
-    if (isRagAvailable()) {
-      try {
-        // Detect context type once (avoid duplicate regex in withAutoRagContext)
-        contextType = detectContextType(query);
-        useRaggy = shouldUseRaggy(query, contextType, visitorContext, conversationHistory);
+      if (isRagAvailable()) {
+        try {
+          contextType = detectContextType(query);
+          useRaggy = shouldUseRaggy(query, contextType, visitorContext, conversationHistory);
 
-        // Use typed RAG with conditional Raggy mode
-        if (useRaggy) {
-          memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
-            useRaggy: true,
-            memory,
-            resultLimit: 5,
-            minSimilarity: 0.65,
-          });
-        } else {
-          memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
-            resultLimit: 3,
-            minSimilarity: 0.7,
-          });
-        }
-
-        console.log(`[Soul Chat] RAG: ${useRaggy ? 'Raggy' : 'Standard'} mode for "${contextType}" - "${query.slice(0, 50)}..."`);
-
-        // Log with RAG decision info
-        logRequestStart(contextType, useRaggy);
-      } catch (ragError) {
-        // Fallback: if Raggy failed, try standard RAG
-        if (useRaggy) {
-          console.warn('[Soul Chat] Raggy failed, falling back to standard RAG:', ragError);
-          try {
-            memory = await kotharRag.withTypedRagContext(memory, contextType, query, {
+          if (useRaggy) {
+            mem = await kotharRag.withTypedRagContext(mem, contextType, query, {
+              useRaggy: true,
+              memory: mem,
+              resultLimit: 5,
+              minSimilarity: 0.65,
+            });
+          } else {
+            mem = await kotharRag.withTypedRagContext(mem, contextType, query, {
               resultLimit: 3,
               minSimilarity: 0.7,
             });
-          } catch (fallbackError) {
-            console.warn('[Soul Chat] Standard RAG fallback also failed:', fallbackError);
           }
-        } else {
-          console.warn('[Soul Chat] RAG retrieval failed, continuing without knowledge context:', ragError);
+
+          console.log(`[Soul Chat] RAG: ${useRaggy ? 'Raggy' : 'Standard'} mode for "${contextType}" - "${query.slice(0, 50)}..."`);
+          logRequestStart(contextType, useRaggy);
+        } catch (ragError) {
+          if (useRaggy) {
+            console.warn('[Soul Chat] Raggy failed, falling back to standard RAG:', ragError);
+            try {
+              mem = await kotharRag.withTypedRagContext(mem, contextType, query, {
+                resultLimit: 3,
+                minSimilarity: 0.7,
+              });
+            } catch (fallbackError) {
+              console.warn('[Soul Chat] Standard RAG fallback also failed:', fallbackError);
+            }
+          } else {
+            console.warn('[Soul Chat] RAG retrieval failed, continuing without knowledge context:', ragError);
+          }
+          logRequestStart(contextType, useRaggy);
         }
-        // Log even on error (with whatever context we have)
-        logRequestStart(contextType, useRaggy);
+      } else {
+        logRequestStart();
       }
-    } else {
-      // RAG not available - log without RAG info
-      logRequestStart();
-    }
+
+      return { memory: mem, contextType, useRaggy };
+    };
 
     // Add conversation history
     if (conversationHistory && conversationHistory.length > 0) {
@@ -305,26 +301,45 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       content: query,
     });
 
-    // Build instructions for the cognitive step
-    const instructions = buildInstructions(visitorContext);
-
     if (stream) {
-      // Streaming response - use PERSONA_MODEL for external dialog
-      const [newMemory, responseStream, resultPromise] = await externalDialog(
-        memory,
-        instructions,
-        {
-          stream: true,
-          model: PERSONA_MODEL,
-          temperature: config.temperature as number,
-        }
-      );
-
-      // Create a ReadableStream for the response
+      // Streaming response with archive indicator events
       const encoder = new TextEncoder();
+
+      // Capture memory in closure for stream
+      let streamMemory = memory;
+      const streamConfig = config;
+
       const readableStream = new ReadableStream({
         async start(controller) {
           try {
+            // Emit archive:active before RAG search
+            if (isRagAvailable()) {
+              controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: true })}\n\n`));
+            }
+
+            // Perform RAG retrieval
+            const ragResult = await performRag(streamMemory);
+            streamMemory = ragResult.memory;
+
+            // Emit archive:inactive after RAG completes
+            if (isRagAvailable()) {
+              controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: false })}\n\n`));
+            }
+
+            // Build instructions for the cognitive step
+            const streamInstructions = buildInstructions(visitorContext);
+
+            // Run externalDialog with streaming
+            const [newMemory, responseStream, resultPromise] = await externalDialog(
+              streamMemory,
+              streamInstructions,
+              {
+                stream: true,
+                model: PERSONA_MODEL,
+                temperature: streamConfig.temperature as number,
+              }
+            );
+
             for await (const chunk of responseStream) {
               controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
             }
@@ -343,6 +358,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, fullResponse: finalResult })}\n\n`));
             controller.close();
           } catch (error) {
+            // Ensure archive indicator is hidden on error
+            controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: false })}\n\n`));
             console.log(JSON.stringify({
               event: 'error',
               correlationId,
@@ -365,7 +382,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         },
       });
     } else {
-      // Non-streaming response - use PERSONA_MODEL for external dialog
+      // Non-streaming response - perform RAG first
+      const ragResult = await performRag(memory);
+      memory = ragResult.memory;
+
+      // Build instructions for the cognitive step
+      const instructions = buildInstructions(visitorContext);
+
+      // Use PERSONA_MODEL for external dialog
       const [newMemory, response] = await externalDialog(
         memory,
         instructions,

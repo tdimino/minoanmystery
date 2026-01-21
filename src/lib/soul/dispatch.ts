@@ -10,7 +10,8 @@ import type {
   ToastPayload,
   HighlightPayload,
   CTAPayload,
-  AnimatePayload
+  AnimatePayload,
+  BackgroundPayload
 } from './types';
 
 // ─────────────────────────────────────────────────────────────
@@ -67,6 +68,9 @@ export class SoulDispatch {
         break;
       case 'animate':
         this.animate(action.payload as AnimatePayload);
+        break;
+      case 'background':
+        this.setBackground(action.payload as BackgroundPayload);
         break;
       default:
         console.log('[Dispatch] Unknown action type:', action.type);
@@ -198,6 +202,18 @@ export class SoulDispatch {
     }
 
     console.log('[Dispatch] Animation:', payload.animation, 'on', payload.target);
+  }
+
+  // ─── Background Actions ─────────────────────────────────────
+
+  setBackground(payload: BackgroundPayload): void {
+    // Dispatch custom event for labyrinth page to handle
+    const event = new CustomEvent('soul:background', {
+      detail: payload
+    });
+    document.dispatchEvent(event);
+
+    console.log('[Dispatch] Background:', payload.image, payload.opacity ? `@ ${payload.opacity}` : '');
   }
 
   // ─── Convenience Methods ───────────────────────────────────

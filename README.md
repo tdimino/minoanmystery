@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Version-1.2.0-blue.svg" alt="Version"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Version-1.3.0-blue.svg" alt="Version"></a>
 </p>
 
 # Minoan Mystery
@@ -92,6 +92,8 @@ src/
   - Mental process state machine (greeting → curious → engaged → ready)
   - Pure cognitive steps (externalDialog, internalMonologue, mentalQuery)
   - `/labyrinth` chat interface with streaming responses
+  - Divine feminine background (Asherah image) triggered by goddess vocabulary
+  - Archive search indicator during RAG retrieval
 
 ## Brand Colors
 

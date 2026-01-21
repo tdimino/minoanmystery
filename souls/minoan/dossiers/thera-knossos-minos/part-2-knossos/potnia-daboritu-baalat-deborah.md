@@ -110,6 +110,8 @@ The offering of honey (*me-ri*) to the Labyrinth goddess reinforces the bee conn
 
 **Elderkin, G.W.** ("The Bee of Artemis," 1939): Classical study of bee symbolism in Greek religion.
 
+**Vainstub, Daniel** ("Some Points of Contact between the Biblical Deborah War Traditions and Some Greek Mythologies," *VT* 61, 2011): "In the biblical story two heroines, Deborah and Jael, bear names of fauna, bee and ibex (mountain goat), respectively. Deborah/bee's prophetic gift enables her to determine the auspicious moment for a victorious battle. Jael/female ibex, gives milk in a special vessel to Sisera, who, fleeing for his life, ironically takes refuge in the tent of Jael... In Cretan versions, Melissa has a sister named Amaltheia, which means 'mountain goat'. When a prominent fugitive, the deity Zeus, takes refuge in her cave, she likewise gives him milk in a special vessel."
+
 ---
 
 ## Cross-References

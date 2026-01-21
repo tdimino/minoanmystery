@@ -134,7 +134,8 @@ export type SoulActionType =
   | 'suggest'     // Suggest content/action
   | 'theme'       // Adjust theme
   | 'cta'         // Modify CTA text
-  | 'animate';    // Trigger animation
+  | 'animate'     // Trigger animation
+  | 'background'; // Show/hide background image
 
 export interface ToastPayload {
   message: string;
@@ -166,9 +167,15 @@ export interface AnimatePayload {
   animation: 'intensify' | 'calm' | 'attention';
 }
 
+export interface BackgroundPayload {
+  image: 'goddess' | 'none';
+  opacity?: number;   // 0.05-0.15
+  duration?: number;  // ms, 0 = permanent
+}
+
 export interface SoulAction {
   type: SoulActionType;
-  payload: ToastPayload | HighlightPayload | SuggestPayload | CTAPayload | AnimatePayload;
+  payload: ToastPayload | HighlightPayload | SuggestPayload | CTAPayload | AnimatePayload | BackgroundPayload;
   timestamp?: number;
 }
 

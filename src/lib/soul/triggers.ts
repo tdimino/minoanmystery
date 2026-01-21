@@ -129,7 +129,60 @@ const triggers: Trigger[] = [
     cooldown: 60000,  // 1 minute between fires
     maxFires: 3,
     firedCount: 0
+  },
+
+  // ─── 6. Goddess Invoked ─────────────────────────────────────
+  {
+    id: 'goddess-invoked',
+    name: 'Goddess Invoked',
+    description: 'Shows divine feminine background when goddess terms are mentioned',
+    condition: (_memory: UserModel) => {
+      // This trigger is message-driven, evaluated in evaluateMessage()
+      return false;
+    },
+    action: {
+      type: 'background',
+      payload: {
+        image: 'goddess',
+        opacity: 0.08,
+        duration: 30000  // 30 seconds
+      }
+    },
+    cooldown: 60000,  // 1 minute between fires
+    maxFires: 0,      // No limit (but cooldown applies)
+    firedCount: 0
   }
+];
+
+// ─────────────────────────────────────────────────────────────
+// Goddess Terms (for message-based trigger)
+// ─────────────────────────────────────────────────────────────
+
+const GODDESS_TERMS = [
+  'goddess',
+  'divine feminine',
+  'potnia',
+  'asherah',
+  'athirat',
+  'tanit',
+  'bee goddess',
+  'mistress of animals',
+  'queen of heaven',
+  'great mother',
+  'mother goddess',
+  'lady of the labyrinth',
+  "ba'alat",
+  'baalat',
+  'shekhinah',
+  'shekinah',
+  'eilat',
+  'rabbat',
+  'hawwat',
+  'chokhma',
+  'hokhmah',
+  'sophia',
+  'tiamat',
+  'tehom'
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -190,6 +243,23 @@ export class TriggerManager {
     // Idle Wanderer trigger - fires on idle events
     if (event.type === 'idle') {
       const trigger = this.getTrigger('idle-wanderer');
+      if (trigger && this.canFire(trigger)) {
+        this.fire(trigger, dispatch);
+      }
+    }
+  }
+
+  // ─── Evaluate Message-Based Triggers ────────────────────────
+
+  evaluateMessage(message: string): void {
+    const dispatch = getSoulDispatch();
+    const lowerMessage = message.toLowerCase();
+
+    // Goddess Invoked trigger - fires when divine feminine terms are mentioned
+    const hasGoddessTerm = GODDESS_TERMS.some(term => lowerMessage.includes(term));
+
+    if (hasGoddessTerm) {
+      const trigger = this.getTrigger('goddess-invoked');
       if (trigger && this.canFire(trigger)) {
         this.fire(trigger, dispatch);
       }

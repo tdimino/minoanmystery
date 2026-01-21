@@ -81,6 +81,34 @@ At Carthage, the chief goddess bears the title **Rabbat Hawwat Eilat** ("Great E
 
 This Carthaginian goddess-tradition demonstrates how Athirat-worship traveled westward with Phoenician colonization—the same vector that brought Membliaros to Thera.
 
+### 6. Precedent: Goddesses as Place Names
+
+The identification of Athirat with Thera gains support from established precedents where divine names became toponyms:
+
+| Toponym | Divine Name | Meaning | Source |
+|---------|-------------|---------|--------|
+| **Anot** | Anath | Battle-goddess | Judges 1:33 |
+| **Ashtaroth Qarnaim** | Astarte | "Astarte of the Two Horns" | Genesis 14:5 |
+| **Beth Anath** | Anath | "House/Temple of Anath" | Joshua 19:38 |
+| **Beth Shemesh** | Shemesh | "House of the Sun(-god)" | Joshua 15:10 |
+
+These biblical toponyms establish that Canaanite divine names regularly became place names—cities, towns, and sacred sites bore the names of the gods worshipped there. If *Anath* could name *Anot*, and *Astarte* could name *Ashtaroth*, then *Athirat* could name *Thera*.
+
+### 7. Artemis Ephesia: The Goddess Who IS the City
+
+The ultimate expression of goddess-as-toponym comes from Artemis Ephesia, whose cult reveals that the divine feminine could be identified with the city itself:
+
+> "It is well known that AE had a special status among the other city deities. She was the major goddess of the polis, the city's protective deity (she was often portrayed as bearing either corona muralis, the city walls, or a temple on her head). **A virgin Goddess with bees on her garment (bigger than lions and bulls, which shows their exclusive and high status) is both the defender of the city, and the City itself.**"
+
+**Key iconographic features**:
+- **Corona muralis** — City walls worn as a crown, signifying protection
+- **Temple on head** — The goddess bears the sacred architecture she inhabits
+- **Bees larger than lions** — Uniquely elevated status in the iconographic hierarchy
+
+**Theological significance**: Artemis Ephesia is not merely *named after* the city, nor does she merely *protect* it—she *is* the city in theological-cultic terms. The goddess and her sacred geography are ontologically identified.
+
+**Relevance to Thera**: If Artemis could BE Ephesus, Athirat could BE Thera. The volcanic island emerging from the sea would embody the "Lady Athirat of the Sea" (*rbt ʾaṯrt ym*) in the same way that Ephesus embodied its bee-goddess. The island-as-goddess pattern represents an intensification of the simpler naming pattern seen in Anot, Ashtaroth, and Beth Anath.
+
 ---
 
 ## Evidence
@@ -140,5 +168,5 @@ Bilingual Luwian-Phoenician text confirming Luwian *su-ra/i* = Phoenician *ʾšr
 
 ## RAG Tags
 
-<!-- 50 semantic keywords for retrieval -->
-athirat, asherah, thera, etymology, aphaeresis, initial vowel loss, aššur, syria, çineköy, divine feminine, goddess, toponymy, kythera, kuthira, kotharot, divine midwives, aegina, eilat, ilat, astaroth qarnaim, beth anath, tinit, tanit, carthage, rabbat hawwat eilat, sacred palm, semitic loans, rosół, masson, beekes, rollinger, frye, phoenician, west semitic, ugaritic, rbt atrt ym, qnyt ilm, creatrix, sea goddess, mother goddess, crescent moon, yashp, iaspis, jasper, garlic, gelgis, akīnákēs, kīnákēs, bronze age, mediterranean toponyms
+<!-- 60 semantic keywords for retrieval -->
+athirat, asherah, thera, etymology, aphaeresis, initial vowel loss, aššur, syria, çineköy, divine feminine, goddess, toponymy, kythera, kuthira, kotharot, divine midwives, aegina, eilat, ilat, astaroth qarnaim, beth anath, tinit, tanit, carthage, rabbat hawwat eilat, sacred palm, semitic loans, rosół, masson, beekes, rollinger, frye, phoenician, west semitic, ugaritic, rbt atrt ym, qnyt ilm, creatrix, sea goddess, mother goddess, crescent moon, yashp, iaspis, jasper, garlic, gelgis, akīnákēs, kīnákēs, bronze age, mediterranean toponyms, artemis ephesia, corona muralis, city goddess, bee goddess, ephesus, anot, beth shemesh, goddess as city, virgin goddess, city walls, polis deity

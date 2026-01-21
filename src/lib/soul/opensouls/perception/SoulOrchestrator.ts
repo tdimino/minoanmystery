@@ -497,6 +497,7 @@ export class SoulOrchestrator {
       const decoder = new TextDecoder();
       let buffer = '';
       let fullResponse = '';
+      let currentEventType = 'message'; // Default SSE event type
 
       while (true) {
         const { done, value } = await reader.read();
@@ -507,16 +508,35 @@ export class SoulOrchestrator {
         buffer = lines.pop() || '';
 
         for (const line of lines) {
+          // Handle event type lines (e.g., "event: archive")
+          if (line.startsWith('event: ')) {
+            currentEventType = line.slice(7).trim();
+            continue;
+          }
+
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
             try {
               const parsed = JSON.parse(data);
+
+              // Handle archive indicator events
+              if (currentEventType === 'archive') {
+                document.dispatchEvent(new CustomEvent('soul:archive', {
+                  detail: { active: parsed.active }
+                }));
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle regular message events
               if (parsed.chunk) {
                 fullResponse += parsed.chunk;
                 this.config.onStreamChunk?.(parsed.chunk);
               } else if (parsed.done) {
                 fullResponse = parsed.fullResponse || fullResponse;
               }
+
+              currentEventType = 'message'; // Reset for next event
             } catch {
               // Skip invalid JSON
             }
