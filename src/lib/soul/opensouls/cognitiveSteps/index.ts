@@ -9,3 +9,5 @@ export { mentalQuery } from './mentalQuery';
 export { brainstorm, type BrainstormOptions } from './brainstorm';
 export { visitorNotes, type VisitorNotesOptions } from './visitorNotes';
 export { visitorWhispers, type WhispersContext } from './visitorWhispers';
+export { visionPrompt, type VisionContext } from './visionPrompt';
+export { imageCaption, type ImageCaptionContext, type ImageCaptionResult } from './imageCaption';

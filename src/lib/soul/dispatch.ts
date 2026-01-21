@@ -11,7 +11,8 @@ import type {
   HighlightPayload,
   CTAPayload,
   AnimatePayload,
-  BackgroundPayload
+  BackgroundPayload,
+  VisionPayload
 } from './types';
 
 // ─────────────────────────────────────────────────────────────
@@ -71,6 +72,9 @@ export class SoulDispatch {
         break;
       case 'background':
         this.setBackground(action.payload as BackgroundPayload);
+        break;
+      case 'vision':
+        this.setVision(action.payload as VisionPayload);
         break;
       default:
         console.log('[Dispatch] Unknown action type:', action.type);
@@ -214,6 +218,28 @@ export class SoulDispatch {
     document.dispatchEvent(event);
 
     console.log('[Dispatch] Background:', payload.image, payload.opacity ? `@ ${payload.opacity}` : '');
+  }
+
+  // ─── Vision Actions ─────────────────────────────────────────
+
+  setVision(payload: VisionPayload): void {
+    // Dispatch custom event for labyrinth page to handle
+    const event = new CustomEvent('soul:vision', {
+      detail: payload
+    });
+    document.dispatchEvent(event);
+
+    console.log('[Dispatch] Vision:', payload.displayMode, payload.prompt?.slice(0, 50) + '...');
+  }
+
+  /**
+   * Convenience method for triggering vision display
+   */
+  vision(dataUrl: string, prompt: string, displayMode: VisionPayload['displayMode'] = 'background', duration = 30000): void {
+    this.dispatch({
+      type: 'vision',
+      payload: { dataUrl, prompt, displayMode, duration }
+    });
   }
 
   // ─── Convenience Methods ───────────────────────────────────

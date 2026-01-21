@@ -389,7 +389,7 @@ export class SoulOrchestrator {
   }
 
   // Public API for messages/commands
-  async handleMessage(message: string): Promise<void> {
+  async handleMessage(message: string, context?: { imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number } }): Promise<void> {
     if (!this.isInitialized) return;
 
     const soulMemory = getSoulMemory();
@@ -407,7 +407,7 @@ export class SoulOrchestrator {
 
     // API Mode: Delegate LLM calls to server-side endpoints
     if (this.config.apiMode) {
-      await this.handleMessageViaAPI(message);
+      await this.handleMessageViaAPI(message, context?.imageAttachment);
       return;
     }
 
@@ -450,39 +450,49 @@ export class SoulOrchestrator {
    * Handle message via API endpoints (for client-side use)
    * Delegates LLM calls to server while maintaining client-side state
    */
-  private async handleMessageViaAPI(message: string): Promise<void> {
+  private async handleMessageViaAPI(message: string, imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number }): Promise<void> {
     const soulMemory = getSoulMemory();
     const rawModel = soulMemory.get();
     const hydratedModel = hydrateUserModel(rawModel, soulMemory);
 
     this.config.onStreamStart?.();
 
-    // AbortController with timeout for request cleanup
+    // AbortController with timeout for request cleanup (longer timeout for image analysis)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+    const timeoutMs = imageAttachment ? 60000 : 30000; // 60s for images, 30s for text
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
     // Declare reader outside try for cleanup in finally
     let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
 
     try {
+      // Build request body
+      const requestBody: Record<string, unknown> = {
+        query: message,
+        stream: true,
+        visitorContext: {
+          currentPage: hydratedModel.currentPage,
+          pagesViewed: hydratedModel.pagesViewed,
+          timeOnSite: hydratedModel.timeOnSite,
+          scrollDepth: hydratedModel.scrollDepth,
+          visitCount: hydratedModel.visitCount,
+          behavioralType: hydratedModel.behavioralType,
+          inferredInterests: hydratedModel.inferredInterests,
+        },
+        conversationHistory: this.getConversationHistory(),
+      };
+
+      // Include image attachment if present
+      if (imageAttachment) {
+        requestBody.imageAttachment = imageAttachment;
+        this.log('Sending image attachment', { size: imageAttachment.sizeBytes, mimeType: imageAttachment.mimeType });
+      }
+
       // Call chat API with streaming
       const response = await fetch('/api/soul/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: message,
-          stream: true,
-          visitorContext: {
-            currentPage: hydratedModel.currentPage,
-            pagesViewed: hydratedModel.pagesViewed,
-            timeOnSite: hydratedModel.timeOnSite,
-            scrollDepth: hydratedModel.scrollDepth,
-            visitCount: hydratedModel.visitCount,
-            behavioralType: hydratedModel.behavioralType,
-            inferredInterests: hydratedModel.inferredInterests,
-          },
-          conversationHistory: this.getConversationHistory(),
-        }),
+        body: JSON.stringify(requestBody),
         signal: controller.signal,
       });
 
@@ -524,6 +534,37 @@ export class SoulOrchestrator {
                 document.dispatchEvent(new CustomEvent('soul:archive', {
                   detail: { active: parsed.active }
                 }));
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle vision image events
+              if (currentEventType === 'image') {
+                document.dispatchEvent(new CustomEvent('soul:vision', {
+                  detail: {
+                    dataUrl: parsed.dataUrl,
+                    prompt: parsed.prompt,
+                    displayMode: parsed.displayMode || 'background',
+                    duration: parsed.duration || 30000,
+                  }
+                }));
+                this.log('Vision image received', { prompt: parsed.prompt?.slice(0, 50) });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle image analysis status events
+              if (currentEventType === 'imageAnalysis') {
+                document.dispatchEvent(new CustomEvent('soul:imageAnalysis', {
+                  detail: parsed
+                }));
+                if (parsed.status === 'analyzing') {
+                  this.log('Image analysis started');
+                } else if (parsed.status === 'complete') {
+                  this.log('Image analysis complete', { type: parsed.caption?.type });
+                } else if (parsed.status === 'error') {
+                  this.log('Image analysis error', { error: parsed.error });
+                }
                 currentEventType = 'message'; // Reset for next event
                 continue;
               }

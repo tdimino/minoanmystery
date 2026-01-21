@@ -92,6 +92,7 @@ src/
   - Mental process state machine (greeting → curious → engaged → ready)
   - Pure cognitive steps (externalDialog, internalMonologue, mentalQuery)
   - `/labyrinth` chat interface with streaming responses
+  - **Image vision**: Paste images for Kothar to analyze (Gemini 3 Pro Vision)
   - Divine feminine background (Asherah image) triggered by goddess vocabulary
   - Archive search indicator during RAG retrieval
 

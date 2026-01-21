@@ -135,7 +135,8 @@ export type SoulActionType =
   | 'theme'       // Adjust theme
   | 'cta'         // Modify CTA text
   | 'animate'     // Trigger animation
-  | 'background'; // Show/hide background image
+  | 'background'  // Show/hide background image
+  | 'vision';     // Display generated vision image
 
 export interface ToastPayload {
   message: string;
@@ -173,9 +174,22 @@ export interface BackgroundPayload {
   duration?: number;  // ms, 0 = permanent
 }
 
+export interface VisionPayload {
+  /** Base64 data URL of the generated image */
+  dataUrl: string;
+  /** The prompt used to generate the image */
+  prompt: string;
+  /** How to display the vision */
+  displayMode: 'background' | 'inline' | 'both';
+  /** Duration in ms before auto-fade (0 = permanent) */
+  duration?: number;
+  /** Optional style hint */
+  style?: 'ethereal' | 'mythological' | 'labyrinthine' | 'divine' | 'ancient';
+}
+
 export interface SoulAction {
   type: SoulActionType;
-  payload: ToastPayload | HighlightPayload | SuggestPayload | CTAPayload | AnimatePayload | BackgroundPayload;
+  payload: ToastPayload | HighlightPayload | SuggestPayload | CTAPayload | AnimatePayload | BackgroundPayload | VisionPayload;
   timestamp?: number;
 }
 

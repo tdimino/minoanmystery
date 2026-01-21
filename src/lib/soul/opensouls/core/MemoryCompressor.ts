@@ -179,6 +179,17 @@ export class MemoryCompressor {
       if (content.includes('contact') || content.includes('reach out') || content.includes('work together')) {
         topics.add('contact interest');
       }
+
+      // Detect image-related content
+      if (content.includes('[image:') || (mem.metadata && 'imageCaption' in (mem.metadata as Record<string, unknown>))) {
+        topics.add('shared images');
+        // Extract image type from metadata if available
+        const metadata = mem.metadata as Record<string, unknown> | undefined;
+        const caption = metadata?.imageCaption as { type?: string } | undefined;
+        if (caption?.type) {
+          topics.add(`image: ${caption.type}`);
+        }
+      }
     }
 
     return {
@@ -200,11 +211,29 @@ export class MemoryCompressor {
     // Take the most recent ones
     const recent = exchanges.slice(-count);
 
-    // Tag them with recent-exchanges region
-    return recent.map(m => ({
+    // Tag them with recent-exchanges region and strip image data
+    return recent.map(m => this.stripImageData({
       ...m,
       region: REGIONS.RECENT_EXCHANGES,
     }));
+  }
+
+  /**
+   * Strip imageDataUrl from memory metadata while preserving imageCaption.
+   * This prevents large base64 image data from bloating compressed memory.
+   */
+  private stripImageData(memory: Memory): Memory {
+    if (!memory.metadata || !('imageDataUrl' in memory.metadata)) {
+      return memory;
+    }
+
+    // Create new metadata without imageDataUrl
+    const { imageDataUrl, ...restMetadata } = memory.metadata as Record<string, unknown>;
+
+    return {
+      ...memory,
+      metadata: restMetadata,
+    };
   }
 
   /**

@@ -6,3 +6,10 @@
  */
 
 export { modelsTheVisitor, type ModelsTheVisitorConfig } from './modelsTheVisitor';
+export {
+  embodiesTheVision,
+  resetVisionState,
+  type EmbodiesTheVisionConfig,
+  type VisionResult,
+  type VisionProcessContext,
+} from './embodiesTheVision';

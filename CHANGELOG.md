@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Kothar Image Vision**: Kothar can now "see" images pasted into the Labyrinth chat
+  - Clipboard paste support for PNG, JPEG, WebP images
+  - Gemini 3 Pro Vision API for image analysis
+  - Thumbnail preview with dismiss button before sending
+  - Images display inline in chat messages with lightbox zoom
+  - Memory stores captions only (not raw image data) to prevent bloat
+  - Contextual responses weaving visual content into Kothar's persona
+- **Vision Subprocess**: `embodiesTheVision` for automatic vision generation
+  - Gate-based triggering (interaction count, cooldowns, mythological triggers)
+  - Explicit request patterns bypass gates ("show me", "visualize", etc.)
+  - Session limits (3 visions max, 60s cooldown)
+  - `visionPrompt` cognitive step for context-aware prompt generation
+
+### Security
+- **XSS Prevention**: Image rendering uses DOM APIs instead of innerHTML/string interpolation
+- **Data URL Validation**: Strict regex validation `/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]+=*)$/`
+- **Server-Side MIME Validation**: Parse MIME type from data URL prefix, don't trust client
+- **Server-Side Size Calculation**: Calculate actual size from base64, don't trust client sizeBytes
+- **API Timeout**: 55s AbortController timeout on Gemini Vision API (fits Vercel 60s limit)
+
+### Changed
+- **localStorage Optimization**: Strip imageDataUrl before persisting messages to prevent quota issues
+- **Type Safety**: Added `VisionProcessContext` interface, removed `as any` casts in chat.ts
+- **Code Simplification**: Removed unused `analysisMode`, `confidence` fields from imageCaption.ts
+- **Provider Cleanup**: Removed unused `GeminiVisionResult` interface and `generate()` method
+
+### Added
 - **Divine Feminine Background**: Ethereal Asherah image manifests when goddess terms are invoked in Labyrinth chat
   - Transparent PNG of Potnia Theron/Asherah relief appears behind conversation
   - Breathing animation with subtle opacity pulsing (0.04-0.08)

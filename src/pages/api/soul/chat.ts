@@ -20,11 +20,14 @@ import {
   PERSONA_MODEL,
   THINKING_MODEL,
 } from '../../../lib/soul/opensouls';
+import { embodiesTheVision, type VisionResult, type VisionProcessContext } from '../../../lib/soul/opensouls/subprocesses';
 import {
   OpenRouterProvider,
   GroqProvider,
   BasetenProvider,
+  createGeminiVisionProvider,
 } from '../../../lib/soul/opensouls/providers';
+import { imageCaption, type ImageCaptionResult } from '../../../lib/soul/opensouls/cognitiveSteps';
 import {
   kotharRag,
   isRagAvailable,
@@ -42,6 +45,7 @@ const requestCounts = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 30; // requests per minute (more generous than TTS)
 const RATE_WINDOW = 60000; // 1 minute in ms
 const MAX_QUERY_LENGTH = 2000; // characters
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
 // ─────────────────────────────────────────────────────────────
 // Raggy Thresholds (question-based RAG triggers)
@@ -157,6 +161,12 @@ interface ChatRequest {
     content: string;
   }>;
   stream?: boolean;
+  /** Image attachment for vision analysis */
+  imageAttachment?: {
+    dataUrl: string;
+    sizeBytes: number;
+    mimeType: string;
+  };
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -184,7 +194,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     ensureProviders();
 
     const body: ChatRequest = await request.json();
-    const { query, visitorContext, conversationHistory, stream } = body;
+    const { query, visitorContext, conversationHistory, stream, imageAttachment } = body;
 
     // Initial log (contextType and useRaggy added after RAG decision)
     const logRequestStart = (ctxType?: string, raggyMode?: boolean) => {
@@ -201,15 +211,51 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       }));
     };
 
-    if (!query || typeof query !== 'string') {
+    // Allow query to be empty if image is attached (default query will be used)
+    if ((!query || typeof query !== 'string') && !imageAttachment) {
       return new Response(
-        JSON.stringify({ error: 'Query is required' }),
+        JSON.stringify({ error: 'Query or image attachment is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // Query length validation
-    if (query.length > MAX_QUERY_LENGTH) {
+    // Validate image attachment if present
+    if (imageAttachment) {
+      // Strict data URL validation - only allow png/jpeg/webp base64
+      const dataUrlRegex = /^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]+=*)$/;
+      const dataUrlMatch = imageAttachment.dataUrl?.match(dataUrlRegex);
+
+      if (!dataUrlMatch) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid image data URL. Only PNG, JPEG, and WebP base64 images are supported.' }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Extract MIME type from data URL (don't trust client-provided mimeType)
+      const actualMimeType = `image/${dataUrlMatch[1]}`;
+      const base64Data = dataUrlMatch[2];
+
+      // Calculate actual size from base64 (don't trust client-provided sizeBytes)
+      // Base64 encodes 3 bytes into 4 characters, minus padding
+      const paddingCount = (base64Data.match(/=+$/) || [''])[0].length;
+      const actualSize = Math.ceil((base64Data.length * 3) / 4) - paddingCount;
+
+      if (actualSize > MAX_IMAGE_SIZE) {
+        return new Response(
+          JSON.stringify({ error: 'Image exceeds 5MB limit' }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Update imageAttachment with validated values
+      imageAttachment.mimeType = actualMimeType;
+      imageAttachment.sizeBytes = actualSize;
+    }
+
+    // Query length validation (skip if image-only request)
+    const effectiveQuery = query || (imageAttachment ? 'What do you see in this image?' : '');
+    if (effectiveQuery.length > MAX_QUERY_LENGTH) {
       return new Response(
         JSON.stringify({ error: `Query exceeds ${MAX_QUERY_LENGTH} characters` }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
@@ -295,10 +341,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       }
     }
 
-    // Add the current query
+    // Add the current query (use effectiveQuery for image-only requests)
     memory = memory.withMemory({
       role: ChatMessageRoleEnum.User,
-      content: query,
+      content: effectiveQuery,
     });
 
     if (stream) {
@@ -312,6 +358,50 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       const readableStream = new ReadableStream({
         async start(controller) {
           try {
+            // ─── Image Analysis (if attached) ───────────────────────────────
+            let imageCaptionResult: ImageCaptionResult | null = null;
+            if (imageAttachment) {
+              controller.enqueue(encoder.encode(`event: imageAnalysis\ndata: ${JSON.stringify({ status: 'analyzing' })}\n\n`));
+
+              try {
+                const visionProvider = createGeminiVisionProvider();
+                if (visionProvider) {
+                  const [memoryWithImage, captionResult] = await imageCaption(
+                    streamMemory,
+                    {
+                      imageDataUrl: imageAttachment.dataUrl,
+                      userMessage: effectiveQuery,
+                    },
+                    { model: 'gemini-3-pro-preview' }
+                  );
+
+                  streamMemory = memoryWithImage;
+                  imageCaptionResult = captionResult;
+
+                  console.log(`[Soul Chat] Image analyzed: ${captionResult.type} - "${captionResult.caption.slice(0, 50)}..."`);
+                  controller.enqueue(encoder.encode(`event: imageAnalysis\ndata: ${JSON.stringify({ status: 'complete', caption: captionResult })}\n\n`));
+                } else {
+                  console.warn('[Soul Chat] Vision provider not configured');
+                  // Add fallback memory entry
+                  streamMemory = streamMemory.withMemory({
+                    role: ChatMessageRoleEnum.User,
+                    content: '[Image: shared | The visitor has shared an image, but my vision is obscured at this moment.]',
+                    metadata: { type: 'image' },
+                  });
+                  controller.enqueue(encoder.encode(`event: imageAnalysis\ndata: ${JSON.stringify({ status: 'failed', error: 'Vision provider not configured' })}\n\n`));
+                }
+              } catch (visionError) {
+                console.warn('[Soul Chat] Vision analysis failed:', visionError);
+                // Graceful degradation
+                streamMemory = streamMemory.withMemory({
+                  role: ChatMessageRoleEnum.User,
+                  content: '[Image: shared | The mists obscure my vision at this moment.]',
+                  metadata: { type: 'image' },
+                });
+                controller.enqueue(encoder.encode(`event: imageAnalysis\ndata: ${JSON.stringify({ status: 'failed' })}\n\n`));
+              }
+            }
+
             // Emit archive:active before RAG search
             if (isRagAvailable()) {
               controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: true })}\n\n`));
@@ -356,6 +446,45 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             }));
 
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, fullResponse: finalResult })}\n\n`));
+
+            // Fire-and-forget: Vision generation subprocess
+            // Runs after response completes, emits image event if vision is generated
+            const geminiKey = process.env.GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+            if (geminiKey) {
+              // Build minimal process context for subprocess (type-safe)
+              const visionContext: VisionProcessContext = {
+                workingMemory: newMemory,
+                actions: {
+                  log: (...args: unknown[]) => console.log('[Vision]', ...args),
+                  speak: () => {},
+                },
+              };
+
+              // Run vision subprocess (fire-and-forget)
+              embodiesTheVision(visionContext, {
+                minInteractionsBeforeVision: 2,
+                onVisionGenerated: (result: VisionResult) => {
+                  if (result.success && result.imageDataUrl) {
+                    // Emit SSE image event
+                    try {
+                      controller.enqueue(encoder.encode(`event: image\ndata: ${JSON.stringify({
+                        dataUrl: result.imageDataUrl,
+                        prompt: result.prompt,
+                        displayMode: result.displayMode,
+                        duration: 30000,
+                      })}\n\n`));
+                      console.log('[Vision] Image emitted via SSE');
+                    } catch (e) {
+                      // Stream may already be closed, log but don't fail
+                      console.log('[Vision] Could not emit image (stream closed):', e);
+                    }
+                  }
+                },
+              }).catch((err) => {
+                console.warn('[Vision] Subprocess error:', err);
+              });
+            }
+
             controller.close();
           } catch (error) {
             // Ensure archive indicator is hidden on error
@@ -382,7 +511,41 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         },
       });
     } else {
-      // Non-streaming response - perform RAG first
+      // Non-streaming response
+
+      // Image analysis (if attached)
+      if (imageAttachment) {
+        try {
+          const visionProvider = createGeminiVisionProvider();
+          if (visionProvider) {
+            const [memoryWithImage, captionResult] = await imageCaption(
+              memory,
+              {
+                imageDataUrl: imageAttachment.dataUrl,
+                userMessage: effectiveQuery,
+              },
+              { model: 'gemini-3-pro-preview' }
+            );
+            memory = memoryWithImage;
+            console.log(`[Soul Chat] Image analyzed: ${captionResult.type} - "${captionResult.caption.slice(0, 50)}..."`);
+          } else {
+            memory = memory.withMemory({
+              role: ChatMessageRoleEnum.User,
+              content: '[Image: shared | The mists obscure my vision at this moment.]',
+              metadata: { type: 'image' },
+            });
+          }
+        } catch (visionError) {
+          console.warn('[Soul Chat] Vision analysis failed:', visionError);
+          memory = memory.withMemory({
+            role: ChatMessageRoleEnum.User,
+            content: '[Image: shared | The mists obscure my vision at this moment.]',
+            metadata: { type: 'image' },
+          });
+        }
+      }
+
+      // Perform RAG
       const ragResult = await performRag(memory);
       memory = ragResult.memory;
 
