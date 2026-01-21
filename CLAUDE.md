@@ -56,6 +56,7 @@ The Soul Engine follows the Open Souls paradigm with:
 - Dev: `npm run dev` (localhost:4321)
 - Build: `npm run build`
 - Preview: `npm run preview`
+- Reingest dossiers: `./scripts/reingest-dossiers.sh` (chunks → VoyageAI embeddings → Supabase)
 
 ## Conventions
 

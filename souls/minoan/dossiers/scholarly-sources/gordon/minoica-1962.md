@@ -84,6 +84,29 @@ Alternative: *bi-ti za* may represent "בּיתי זה" = "this house of mine" w
 
 **Key quote**: "Since the use of *u* (instead of *wa*) was my main reason for maintaining an East Semitic identity of the Hagia Triada dialect, the whole Hagia Triada problem requires re-examination."
 
+---
+
+> ### Editorial Note: The *Yasharum* Hypothesis
+>
+> Gordon's identification of *ya-sa-sa-ra-mu* as a deity requires careful examination. He writes: "*Ya-sa-sa-ra-mu* is taken by all Minoanists to be a deity; whether that deity is female (in accordance with the consensus of opinion) is another matter that need not be investigated at this time" (p. 207). Notably, Gordon does *not* identify this form as Asherah (*ʾAṯirat*); he refers to it only as "the deity Y." The Asherah identification (*ʾaṯirat* → *asasaramu*) is a later scholarly inference based on phonetic similarity, not Gordon's explicit claim.
+>
+> An alternative reading merits consideration. The form *ya-sa-sa-ra-mu* may represent the Semitic root **י-ש-ר** (*y-š-r*) "to be straight, upright, righteous" with archaic mimation — the nominative case ending *-um* preserved in Akkadian and early West Semitic. Gordon himself argues that Minoan retains case endings (cf. *ki-re-ya-tu* with nominative *-u*, p. 208). Under this analysis, ***Yasharum*** would mean "The Upright One" — a divine epithet rather than a proper theonym.
+>
+> **Supporting evidence:**
+> - The root *y-š-r* is productive in West Semitic divine/royal epithets: Heb. *Jeshurun* (יְשֻׁרוּן) as a name for Israel, the *Book of Jashar* (סֵפֶר הַיָּשָׁר), *mesharim* (מֵישָׁרִים) "equity/uprightness"
+> - Mimation (*-um*) on Minoan forms would parallel Gordon's analysis of other case-marked nouns in the corpus
+> - An epithet explains why "all Minoanists" recognized the form as divine without identifying a specific deity — titles like *Elyon* ("Most High") or *Shaddai* ("Almighty") function similarly
+>
+> **Phonetic difficulty:** The doubled *-sa-sa-* does not straightforwardly derive from *yashar*. Possible explanations include: (1) gemination in an intensive form (*yaššar* "he who makes straight"); (2) Linear A scribal convention for representing Semitic שׁ (/ʃ/); (3) a dialectal or morphological variant not yet understood. A comparative note: Middle English scribes used "ss" to represent the /ʃ/ sound in certain texts (e.g., *Ayenbite of Inwyt*, c. 1340; see Scragg, *A History of English Spelling*), demonstrating that "ss" for /ʃ/ is not unprecedented in syllabic or alphabetic writing systems facing phonemic gaps.
+>
+> **Theological implication:** Text I,4:c pairs this deity with Nergal, the Mesopotamian god of the underworld and divine judgment. If *Yasharum* rather than *Athirat*, the pairing yields "*Yasharum u-Nergal*" — "The Upright One and Nergal" — potentially representing cosmic justice: righteousness in life, judgment in death. This would evidence Minoan religious syncretism bridging West Semitic ethical concepts with Mesopotamian eschatology.
+>
+> The hypothesis remains speculative pending further analysis of Linear A phonology and morphology. It is offered here as an alternative to the consensus *Athirat* reading, which itself lacks definitive confirmation.
+>
+> — *T. di Mino, January 2026*
+
+---
+
 ### 6. Phoenician Dedication Formulas
 
 **Thesis**: The formula *(y)a-ta-no-L88* parallels Phoenician votive inscriptions.
@@ -124,7 +147,7 @@ Alternative: *bi-ti za* may represent "בּיתי זה" = "this house of mine" w
 | *u* | "and" conjunction | West Semitic |
 | *(y)a-ta-no-* | "he donated/set up" (יתן) | Phoenician |
 | *ta-nu-a-ti* | "I have set up" (form of *tn'*) | Phoenician |
-| *ya-sa-sa-ra-mu* | Deity name (Asherah?) | Minoan |
+| *ya-sa-sa-ra-mu* | Deity name/epithet (Asherah? or *Yasharum* "The Upright One"?) | Minoan |
 | *da-we-da* | "David" (personal name) | West Semitic |
 | *da-gu-na* | "Dagon" (deity name) | West Semitic |
 | *gu-pa₃-nu* | "Gupanu" (vine god) | Ugaritic |
@@ -203,4 +226,4 @@ This affects readings: *ma-ka-we-te* = Ugaritic *mqwt* shows *k(a)=q* and *t(e)=
 
 ## RAG Tags
 
-gordon, minoica, jnes 1962, linear a, west semitic, phoenician, ki-re-ya-tu, qiryat, city, ya-ne, wine, bi-ti za, this house, bayit, le, preposition, ki, particle, u, conjunction, ya-ta-no, ytn, donation, ta-nu-a-ti, tn', ya-sa-sa-ra-mu, asherah, da-we-da, david, da-gu-na, dagon, gu-pa-nu, gupanu, mi-na-ne, minos, na-ru-ka-na, nergal, ku-ni-su, wheat, palaikastro, knossos, hagia triada, psychro, eteocretan, brice, meriggi, decipherment, dedicatory formula, morphology, syntax, 1962
+gordon, minoica, jnes 1962, linear a, west semitic, phoenician, ki-re-ya-tu, qiryat, city, ya-ne, wine, bi-ti za, this house, bayit, le, preposition, ki, particle, u, conjunction, ya-ta-no, ytn, donation, ta-nu-a-ti, tn', ya-sa-sa-ra-mu, asherah, yasharum, yashar, upright one, mimation, da-we-da, david, da-gu-na, dagon, gu-pa-nu, gupanu, mi-na-ne, minos, na-ru-ka-na, nergal, ku-ni-su, wheat, palaikastro, knossos, hagia triada, psychro, eteocretan, brice, meriggi, decipherment, dedicatory formula, morphology, syntax, 1962
