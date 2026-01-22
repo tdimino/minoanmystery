@@ -130,6 +130,57 @@ The Cherethites who recognized their god in YHWH may also have recognized their 
 
 Moses did not merely resemble Minos—Moses *emerged from* the Minoan religious matrix that the Cherethites carried into Israel.
 
+### 10. Oral Transmission Mechanism: *Polyprosopon*
+
+**Gary Rendsburg** (*How the Bible is Written*, 2019) documents the **oral-aural** nature of ancient Israelite literary culture, providing a mechanism for how Cretan traditions could have entered Hebrew religion without leaving a documentary paper trail.
+
+#### Ancient Reading as Aural Experience
+
+**Rendsburg on oral processing** (Ch. 1, pp. 26–28):
+> "For moderns, reading is largely a silent affair, a task performed by the eyes before the text is decoded and processed by the brain. **For the ancients, however, reading was an aural experience: one *heard* the text before it was processed by the brain.**"
+
+This oral-aural context explains how foreign religious traditions could be absorbed through:
+1. **Oral transmission** — Stories, hymns, and genealogies passed verbally
+2. **Performance settings** — Cultic recitations, coronation ceremonies
+3. **Deliberate literary technique** — *Polyprosopon* ("many faces") variation
+
+#### The *Polyprosopon* Technique
+
+**Rendsburg on literary variation** (Ch. 3, pp. 51–74):
+> "The authors strived to present their language with 'many faces', never (or hardly ever) repeating the same expression in verbatim fashion... **The author delighted in dazzling his listeners with the literary technique** studied here."
+
+This technique demonstrates that biblical authors were **highly literate craftsmen** who could:
+- Preserve foreign terminology with precision
+- Employ wordplay on foreign names (cf. *k-r-t* / Cherethite-Cretan)
+- Maintain cultural memories of Aegean contact through oral performance
+
+**Cross-reference**: See [ch3-plagues-narrative.md](../../scholarly-sources/rendsburg/how-bible-written/ch3-plagues-narrative.md) for full *polyprosopon* analysis.
+
+### 11. Tenth-Century Composition Context
+
+**Rendsburg** (*How the Bible is Written*, Ch. 21) argues that Genesis was composed during the reigns of **David and Solomon** (c. 1000–930 BCE)—the precise period when Cherethites served at the Israelite court.
+
+**Rendsburg's dating argument** (pp. 443–467):
+> "The issue of monarchy, as indicated above, was a public concern during the late eleventh century and the first half of the tenth century... **at no other time.** In the earlier period there still was a strong opposition to kingship; while after the time of David and Solomon monarchy was a reality from which there was no turning back."
+
+#### Temporal Framework for Cretan-Israelite Synthesis
+
+| Period | Event | Significance |
+|--------|-------|--------------|
+| **c. 1200 BCE** | Sea Peoples settlement | Cherethites/Philistines arrive from Caphtor |
+| **c. 1000 BCE** | David's reign | Cherethite bodyguard at court (2 Sam 8:18) |
+| **c. 970–930 BCE** | Solomonic era | Genesis composition; temple construction |
+| **c. 900–700 BCE** | Prophetic era | Four prophets exploit *k-r-t* wordplay |
+
+**Key insight**: The Genesis composition period (tenth century) overlaps with the **Cherethite presence at the Davidic court**. The traditions encoded in Genesis—including patriarchal narratives, divine encounters, and covenant theology—would have been shaped by authors who knew Cretans personally.
+
+**Rendsburg's literary parallel** (p. 467):
+> "And thus I envision David turning to Benaiah, the captain of his personal bodyguard, after a reading of Genesis 38... and saying, **אֲנִי יְהוּדָה הֲלֹא תֵדַע** *ʾani yəhuda haloʾ tedaʿ* 'I am Judah, know ye not that?'"
+
+**Note**: Benaiah commanded the Cherethites and Pelethites (2 Sam 8:18; 20:23; 1 Kgs 1:38). The captain of David's Cretan bodyguard would have been present at the very readings where these traditions were performed.
+
+**Cross-reference**: See [ch21-dating-biblical-texts.md](../../scholarly-sources/rendsburg/how-bible-written/ch21-dating-biblical-texts.md).
+
 ---
 
 ## Evidence
@@ -166,6 +217,11 @@ Minos as Διὸς μεγάλου ὀαριστής ("intimate companion of grea
 ### Part 1 Connections
 - [ya-wa-eil-yamu.md](../part-1-thera/ya-wa-eil-yamu.md) — YA/YW divine name element
 
+### Scholarly Sources (Rendsburg)
+- [ch1-reading-creation.md](../../scholarly-sources/rendsburg/how-bible-written/ch1-reading-creation.md) — Oral-aural reading; literary sophistication
+- [ch3-plagues-narrative.md](../../scholarly-sources/rendsburg/how-bible-written/ch3-plagues-narrative.md) — *Polyprosopon* technique; oral transmission
+- [ch21-dating-biblical-texts.md](../../scholarly-sources/rendsburg/how-bible-written/ch21-dating-biblical-texts.md) — Tenth-century composition; Davidic context
+
 ---
 
 ## Sources Cited
@@ -175,9 +231,10 @@ Minos as Διὸς μεγάλου ὀαριστής ("intimate companion of grea
 | Tyler, Thomas | "The Origin of the Tetragrammaton" | 1901 | YHW coin, Cherethite thesis |
 | Skipwith, G.H. | "Origins of the Religion of Israel" | 1904 | Minos as "Cretan Moses" |
 | Gordon, Cyrus H. | *Before the Bible* / various | 1962+ | Moses-Minos, Bezalel-Daedalus |
+| Rendsburg, Gary A. | *How the Bible is Written* | 2019 | Oral transmission; tenth-century dating; *polyprosopon* |
 
 ---
 
 ## RAG Tags
 
-yahweh, yhwh, yhw, yhw coin, gaza, cretan zeus, zeus cretagenes, minos, moses, law-giver, cretan moses, cherethites, kerethites, cretans, david, transmission, identification, sinai, dicte, cave, mountain, nine years, friend of god, bezalel, daedalus, craftsman, labyrinth, tabernacle, gordon, skipwith, tyler, adonai, marnas, conflation, elohim, ruach elohim
+yahweh, yhwh, yhw, yhw coin, gaza, cretan zeus, zeus cretagenes, minos, moses, law-giver, cretan moses, cherethites, kerethites, cretans, david, transmission, identification, sinai, dicte, cave, mountain, nine years, friend of god, bezalel, daedalus, craftsman, labyrinth, tabernacle, gordon, skipwith, tyler, adonai, marnas, conflation, elohim, ruach elohim, rendsburg, polyprosopon, oral-transmission, tenth-century, davidic-composition, benaiah, oral-aural
