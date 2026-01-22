@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Rendsburg "How the Bible is Written" Integration**: 12 new chapter dossiers with evidence integrated into primary thera-knossos-minos dossiers
+  - **New Chapter Dossiers** (`scholarly-sources/rendsburg/how-bible-written/`):
+    - `ch1-reading-creation.md` — Tehom analysis, Day Two omission, oral-aural reading
+    - `ch3-plagues-narrative.md` — *Polyprosopon* technique for literary variation
+    - `ch5-genesis-alliteration.md` — Ugaritic comparisons, etymological methodology
+    - `ch6-exodus-alliteration.md` — Egyptian loanwords, foreign names
+    - `ch8-confused-language.md` — Foreign language influence markers
+    - `ch11-legal-cultic-alliteration.md` — Levite/priestly terminology
+    - `ch18-wordplay-names.md` — *k-r-t* Cherethite-Cretan wordplay (CRITICAL)
+    - `ch21-dating-biblical-texts.md` — Tenth-century composition during Davidic era
+    - `ch22-documentary-hypothesis.md` — Challenge to source criticism
+    - `ch23-israelian-hebrew.md` — Northern dialect features, Aramaic cognates
+    - `ch24-style-switching.md` — Aramaic dialect representation
+    - `ch25-addressee-switching.md` — Prophetic oracles to foreign nations
+  - **Primary Dossier Updates**:
+    - `levite-cretan-connection.md` — Added §4 *k-r-t* wordplay, §5 Israelian Hebrew dialect markers
+    - `yahweh-cretan-zeus-convergence.md` — Added §10 oral transmission (*polyprosopon*), §11 tenth-century composition context
+  - **Key Scholarly Evidence**: Rendsburg explicitly confirms Cherethite = Cretan; four prophets exploit *k-r-t* wordplay; northern dialect geography for Levite origins; oral-aural transmission mechanism
+
+### Added
 - **World-Class Tarot Background Effect**: Elevated from 8/10 to 9.5/10 quality
   - **Cinematic 3-stage entrance**: Ethereal glow (0-1s) → card materializes (0.8-2.3s) → breathing loop
   - **Polyrhythmic dual halos**: Inner halo (18s), outer halo (23s prime number) — LCM 414s before repeat
