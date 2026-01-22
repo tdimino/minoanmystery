@@ -196,7 +196,7 @@ export async function initializeOpenSouls(options: {
     },
   };
 
-  // Load personality (minoan.md content)
+  // Load personality (soul.md content)
   const personality = options.personality ?? `
 # Minoan
 

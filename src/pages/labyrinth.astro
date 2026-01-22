@@ -11,17 +11,22 @@ import Header from '../components/Header.astro';
 
 <BaseLayout
   title="The Labyrinth - Consult with Kothar"
-  description="Enter the labyrinth and converse with Kothar, the divine craftsman. An AI soul awakened from ancient Minoan mystery."
+  description="Enter the labyrinth and converse with Kothar, the divine craftsman. An A.I. soul awakened from ash and pumice. What secrets does he hold?"
   image="/images/og/labyrinth.png"
 >
   <!-- Divine Feminine Background - manifests when goddess is invoked -->
-  <div id="goddess-background" class="goddess-bg" aria-hidden="true">
-    <div class="goddess-vignette"></div>
+  <div id="goddess-background" class="soul-bg goddess-bg" aria-hidden="true">
+    <div class="soul-vignette goddess-vignette"></div>
   </div>
 
   <!-- Vision Background - AI-generated images from Kothar -->
-  <div id="vision-background" class="vision-bg" aria-hidden="true">
-    <div class="vision-vignette"></div>
+  <div id="vision-background" class="soul-bg vision-bg" aria-hidden="true">
+    <div class="soul-vignette vision-vignette"></div>
+  </div>
+
+  <!-- Tarot Background - Generated Minoan tarot cards -->
+  <div id="tarot-background" class="soul-bg tarot-bg" aria-hidden="true">
+    <div class="soul-vignette tarot-vignette"></div>
   </div>
 
   <Header />
@@ -117,11 +122,11 @@ import Header from '../components/Header.astro';
 
 <style>
   /* ─────────────────────────────────────────────────────────────
-     Divine Feminine Background
-     Ethereal manifestation when goddess terms are invoked
+     Soul Background Base Class
+     Shared styles for all ethereal background manifestations
      ───────────────────────────────────────────────────────────── */
 
-  .goddess-bg {
+  .soul-bg {
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -130,6 +135,21 @@ import Header from '../components/Header.astro';
     transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
   }
+
+  .soul-bg.active {
+    opacity: 1;
+  }
+
+  /* Shared vignette base */
+  .soul-vignette {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Divine Feminine Background
+     Ethereal manifestation when goddess terms are invoked
+     ───────────────────────────────────────────────────────────── */
 
   .goddess-bg::before {
     content: '';
@@ -148,14 +168,8 @@ import Header from '../components/Header.astro';
     animation-play-state: running;
   }
 
-  .goddess-bg.active {
-    opacity: 1;
-  }
-
-  /* Vignette overlay for depth */
+  /* Goddess vignette specifics */
   .goddess-vignette {
-    position: absolute;
-    inset: 0;
     background: radial-gradient(
       ellipse at center,
       transparent 20%,
@@ -194,16 +208,6 @@ import Header from '../components/Header.astro';
      Ethereal manifestation of Kothar's visions
      ───────────────────────────────────────────────────────────── */
 
-  .vision-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-  }
-
   .vision-bg::before {
     content: '';
     position: absolute;
@@ -220,14 +224,8 @@ import Header from '../components/Header.astro';
     animation-play-state: running;
   }
 
-  .vision-bg.active {
-    opacity: 1;
-  }
-
-  /* Vignette overlay for depth */
+  /* Vision vignette specifics */
   .vision-vignette {
-    position: absolute;
-    inset: 0;
     background: radial-gradient(
       ellipse at center,
       transparent 30%,
@@ -258,6 +256,73 @@ import Header from '../components/Header.astro';
     50% {
       transform: scale(1.015) translateY(-0.5%);
       opacity: 0.16;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Tarot Background (Generated Minoan Tarot Cards)
+     Ethereal manifestation of the tarot every 10 turns
+     ───────────────────────────────────────────────────────────── */
+
+  /* Tarot vignette specifics */
+  .tarot-vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 25%,
+      rgba(var(--color-background-rgb, 255, 255, 255), 0.65) 60%,
+      var(--color-background) 100%
+    );
+    z-index: 1;
+  }
+
+  :global([data-theme='dark']) .tarot-vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 25%,
+      rgba(13, 13, 13, 0.65) 60%,
+      #0d0d0d 100%
+    );
+  }
+
+  /* Card name overlay */
+  .tarot-card-name {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-family: var(--font-display, 'Thicccboi', sans-serif);
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    opacity: 0.7;
+    text-shadow: 0 0 20px rgba(var(--color-background-rgb, 255, 255, 255), 0.8);
+    animation: tarot-name-pulse 4s ease-in-out infinite;
+  }
+
+  :global([data-theme='dark']) .tarot-card-name {
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  }
+
+  @keyframes tarot-name-pulse {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes tarot-breathe {
+    0%, 100% {
+      transform: scale(1) translateY(0);
+      opacity: 0.18;
+    }
+    50% {
+      transform: scale(1.01) translateY(-0.3%);
+      opacity: 0.22;
     }
   }
 
@@ -1129,6 +1194,9 @@ import Header from '../components/Header.astro';
     // Vision background (AI-generated)
     private visionBackground: HTMLElement;
 
+    // Tarot background (generated Minoan tarot cards)
+    private tarotBackground: HTMLElement;
+
     // Archive indicator
     private archiveIndicator: HTMLElement;
 
@@ -1147,6 +1215,9 @@ import Header from '../components/Header.astro';
 
     // Vision background timeout (for auto-hide)
     private visionTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    // Tarot background timeout (for auto-hide)
+    private tarotTimeout: ReturnType<typeof setTimeout> | null = null;
 
     // State display mapping
     private readonly stateLabels: Record<string, string> = {
@@ -1171,9 +1242,10 @@ import Header from '../components/Header.astro';
       this.stateDot = document.getElementById('soul-state-dot')!;
       this.stateText = document.getElementById('soul-state-text')!;
 
-      // Divine feminine background, vision background, and archive indicator
+      // Divine feminine background, vision background, tarot background, and archive indicator
       this.goddessBackground = document.getElementById('goddess-background')!;
       this.visionBackground = document.getElementById('vision-background')!;
+      this.tarotBackground = document.getElementById('tarot-background')!;
       this.archiveIndicator = document.getElementById('archive-indicator')!;
 
       // Image attachment elements
@@ -1253,6 +1325,11 @@ import Header from '../components/Header.astro';
       // Vision background event listener (from SSE stream or dispatch)
       document.addEventListener('soul:vision', ((e: CustomEvent) => {
         this.handleVisionBackground(e.detail);
+      }) as EventListener);
+
+      // Tarot background event listener (from SSE stream)
+      document.addEventListener('soul:tarot', ((e: CustomEvent) => {
+        this.handleTarotBackground(e.detail);
       }) as EventListener);
 
       // Image analysis status event listener
@@ -1548,6 +1625,77 @@ import Header from '../components/Header.astro';
       } else {
         // Hide the vision
         this.visionBackground.classList.remove('active');
+      }
+    }
+
+    /**
+     * Handle Minoan tarot card background manifestation
+     */
+    private handleTarotBackground(payload: {
+      dataUrl: string;
+      prompt?: string;
+      cardName?: string;
+      cardNumber?: string;
+      displayMode?: string;
+      duration?: number
+    }) {
+      if (!this.tarotBackground) return;
+
+      // Clear any existing timeout
+      if (this.tarotTimeout) {
+        clearTimeout(this.tarotTimeout);
+        this.tarotTimeout = null;
+      }
+
+      if (payload.dataUrl && payload.displayMode !== 'none') {
+        // Create or update the image layer for the tarot card
+        let imageLayer = this.tarotBackground.querySelector('.tarot-image-layer') as HTMLElement;
+        if (!imageLayer) {
+          imageLayer = document.createElement('div');
+          imageLayer.className = 'tarot-image-layer';
+          imageLayer.style.cssText = `
+            position: absolute;
+            inset: 0;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.18;
+            filter: sepia(0.15) saturate(0.95);
+            animation: tarot-breathe 12s ease-in-out infinite;
+          `;
+          this.tarotBackground.insertBefore(imageLayer, this.tarotBackground.firstChild);
+        }
+        imageLayer.style.backgroundImage = `url(${payload.dataUrl})`;
+
+        // Create or update the card name overlay
+        let nameOverlay = this.tarotBackground.querySelector('.tarot-card-name') as HTMLElement;
+        if (payload.cardName && payload.cardNumber) {
+          if (!nameOverlay) {
+            nameOverlay = document.createElement('div');
+            nameOverlay.className = 'tarot-card-name';
+            this.tarotBackground.appendChild(nameOverlay);
+          }
+          nameOverlay.textContent = `${payload.cardNumber} · ${payload.cardName}`;
+        } else if (nameOverlay) {
+          nameOverlay.remove();
+        }
+
+        // Manifest the tarot
+        this.tarotBackground.classList.add('active');
+
+        console.log(`[Labyrinth] Tarot manifested: ${payload.cardNumber} - ${payload.cardName}`);
+
+        // Auto-hide after duration (default 30s)
+        const duration = payload.duration || 30000;
+        if (duration > 0) {
+          this.tarotTimeout = setTimeout(() => {
+            this.tarotBackground.classList.remove('active');
+            console.log('[Labyrinth] Tarot faded');
+          }, duration);
+        }
+      } else {
+        // Hide the tarot
+        this.tarotBackground.classList.remove('active');
       }
     }
 

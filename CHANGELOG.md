@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Tarot Subprocess**: `embodiesTheTarot` for Minoan tarot card generation
+  - Gate-based triggering (every 10 turns, session limit of 3)
+  - `tarotPrompt` cognitive step with 22-card Major Arcana mapping
+  - Soul memory tracking for tarot count and last tarot turn
+- **New Part 2 Dossiers** (Knossos):
+  - `asherah-snake-goddess-knossos.md` - Levantine-Minoan snake goddess hybrid
+  - `young-god-initiation-priesthood.md` - Mycenaean displacement of priestess authority
+  - `skotino-labyrinth-britomartis.md` - Britomartis and goddess-to-king transition
+- **New Part 3 Dossiers** (Minos):
+  - `yahweh-cretan-zeus-convergence.md` - YHWH-Zeus Cretagenes synthesis
+  - `exodus-archaeological-critique.md` - Indigenous Canaanite emergence thesis
+  - `gaza-minos-marnas-complex.md` - Marnas = Dagon = Zeus Cretagenes
+  - `canaanite-baalim-yahweh-absorption.md` - Religious absorption mechanism
+  - `kouretes-diktaean-young-god.md` - Kouretes as initiatory priests
+
+### Changed
+- **Soul Personality File**: Renamed `minoan.md` → `soul.md` for clarity
+- **Meta Description**: Updated labyrinth.astro social/SEO description to "An A.I. soul awakened from ash and pumice. What secrets does he hold?"
+- **Levite-Cretan Dossier**: Added Nehushtan bronze serpent sections (Joines 1974, Münnich 2008, Lederman 2017), LXX Cherethites = Cretans identification
+- **Classical Phoenician Spelling**: Applied b not v, w not v convention across dossiers (Abshalom, we-ha-Peleti, etc.)
+- **Hebrew Term Corrections**: Literal terms preserved (ruach Elohim, hokhma, tevuna, da'at)
+
+### Added
 - **Kothar Image Vision**: Kothar can now "see" images pasted into the Labyrinth chat
   - Clipboard paste support for PNG, JPEG, WebP images
   - Gemini 3 Pro Vision API for image analysis

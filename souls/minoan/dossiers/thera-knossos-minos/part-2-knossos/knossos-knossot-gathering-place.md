@@ -35,7 +35,7 @@ This dossier traces the Knossos etymology through biblical attestations, Semitic
 
 ### 3. Later Development: Knesset
 
-**Mishnaic attestation** (Pirkei Avot 1:1):
+**Mishnaic attestation** (Pirkei Abot 1:1):
 > וּנְבִיאִים מְסָרוּהָ לְאַנְשֵׁי **כְנֶסֶת** הַגְּדוֹלָה
 > "and the prophets transmitted it to the Men of the Great **Assembly** (*Knesset HaGedolah*)"
 
@@ -78,12 +78,19 @@ Apollo addresses Cretan sailors whom he brings to Delphi as his priests:
 **Minoan palatial function**:
 The Knossos palace was not primarily a royal residence but a ceremonial-administrative complex:
 
-| Function | Archaeological Evidence |
-|----------|------------------------|
-| **Storage** | Massive *pithoi* (storage jars) in west magazines |
-| **Distribution** | Linear B tablets recording rations, allocations |
-| **Assembly** | Central court for gatherings, theatrical area |
-| **Cult** | Shrine rooms, lustral basins, pillar crypts |
+| Function | Archaeological Evidence | Marinatos (1993) |
+|----------|------------------------|------------------|
+| **Storage** | Massive *pithoi* (storage jars) in west magazines | — |
+| **Distribution** | Linear B tablets recording rations, allocations | — |
+| **Assembly** | Central court for gatherings, theatrical area | — |
+| **Cult** | Shrine rooms, lustral basins, pillar crypts | — |
+| **Priest-Administration** | Linear A tablets with priest ideograms | "sacerdotal figures... close contacts with economy" |
+| **Professional Priesthood** | Linear B *hiereus* designation | "the designation *hiereus* points to a profession" |
+
+**Marinatos on Linear A priestly records** (ch. 6):
+> "On certain Linear A tablets from Hagia Triada, there appear ideograms of priests with long robes and axes on their shoulders alongside the syllabic signs. The contents of the inscriptions are undeciphered, but it is almost certain that commodities were catalogued and listed on the tablets. The presence of the sacerdotal figures is one more piece of evidence for the close contacts of the sacerdotal class with economy."
+
+This priest-administration nexus confirms the *knesset* model: the Gathering Place was where priestly officials managed both religious rites and economic distribution.
 
 **The semantic fit**: If Knossos means "Gathering Place," the name describes the palace's essential function—a *knesset* where the community assembled for ritual and economic exchange.
 
@@ -138,6 +145,7 @@ Administrative records showing the palace's distribution function—allocating o
 - [meinos-manna-etymology.md](../part-3-minos/meinos-manna-etymology.md) — Minos/Manna connection (K-N-S + M-N-H pairing)
 - [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md) — Labyrinth sanctuary function
 - [rendsburg-cretan-etymologies.md](./rendsburg-cretan-etymologies.md) — Semitic loans in Greek
+- [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Priest-administration nexus
 
 ### Per-Article Dossiers
 - [gordon/evidence-minoan-language-1966-lexicon.md](../scholarly-sources/gordon/evidence-minoan-language-1966-lexicon.md) — Linear A vocabulary
@@ -154,10 +162,11 @@ Administrative records showing the palace's distribution function—allocating o
 | Evans, Arthur | *The Palace of Minos* | 1921–35 | Palatial archaeology |
 | Peatfield, Alan | "Palace and Peak" | 1987 | Sanctuary function |
 | Rendsburg, Gary | Black Athena etymologies | 1989 | Semitic-Greek parallels |
+| Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Priest-administration, professional priesthood |
 
 ---
 
 ## RAG Tags
 
-<!-- 55 semantic keywords for retrieval -->
-knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, holy assembly, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, name variation
+<!-- 60 semantic keywords for retrieval -->
+knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, holy assembly, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, marinatos, hiereus, sacerdotal, priest-administration

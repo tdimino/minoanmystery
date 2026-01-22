@@ -13,3 +13,10 @@ export {
   type VisionResult,
   type VisionProcessContext,
 } from './embodiesTheVision';
+export {
+  embodiesTheTarot,
+  resetTarotState,
+  type EmbodiesTheTarotConfig,
+  type TarotResult,
+  type TarotProcessContext,
+} from './embodiesTheTarot';

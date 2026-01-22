@@ -24,6 +24,14 @@ export interface SoulMemoryInterface {
   setVisitorWhispers(whispers: string): void;
   getUserName(): string | undefined;
   addTopic(topic: string): void;
+  // Turn counting (session-scoped) - source of truth for user message count
+  getUserTurnCount(): number;
+  incrementUserTurnCount(): number;
+  // Tarot state (session-scoped)
+  getTarotCount(): number;
+  setTarotCount(count: number): void;
+  getLastTarotTurn(): number;
+  setLastTarotTurn(turn: number): void;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -368,6 +376,36 @@ export class SoulMemory {
 
   setLastProject(project: string): UserModel {
     return this.update({ lastProject: project });
+  }
+
+  // ─── Turn Counting (Session-Scoped) ────────────────────────
+
+  getUserTurnCount(): number {
+    return this.memory.userTurnCount ?? 0;
+  }
+
+  incrementUserTurnCount(): number {
+    const newCount = (this.memory.userTurnCount ?? 0) + 1;
+    this.update({ userTurnCount: newCount });
+    return newCount;
+  }
+
+  // ─── Tarot Generation State ────────────────────────────────
+
+  getTarotCount(): number {
+    return this.memory.tarotCount ?? 0;
+  }
+
+  setTarotCount(count: number): UserModel {
+    return this.update({ tarotCount: count });
+  }
+
+  getLastTarotTurn(): number {
+    return this.memory.lastTarotTurn ?? 0;
+  }
+
+  setLastTarotTurn(turn: number): UserModel {
+    return this.update({ lastTarotTurn: turn });
   }
 
   // ─── Utility Methods ───────────────────────────────────────

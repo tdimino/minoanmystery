@@ -466,10 +466,18 @@ export class SoulOrchestrator {
     let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
 
     try {
+      // Increment turn count in client-side SoulMemory (source of truth)
+      // This persists to localStorage across requests
+      const currentTurnCount = soulMemory.incrementUserTurnCount();
+      this.log('User turn count (from soulMemory):', { turn: currentTurnCount });
+
       // Build request body
       const requestBody: Record<string, unknown> = {
         query: message,
         stream: true,
+        // Pass turn count from client (source of truth in localStorage)
+        // Server should use this instead of computing from limited history
+        turnCount: currentTurnCount,
         visitorContext: {
           currentPage: hydratedModel.currentPage,
           pagesViewed: hydratedModel.pagesViewed,
@@ -549,6 +557,23 @@ export class SoulOrchestrator {
                   }
                 }));
                 this.log('Vision image received', { prompt: parsed.prompt?.slice(0, 50) });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle tarot card events
+              if (currentEventType === 'tarot') {
+                document.dispatchEvent(new CustomEvent('soul:tarot', {
+                  detail: {
+                    dataUrl: parsed.dataUrl,
+                    prompt: parsed.prompt,
+                    cardName: parsed.cardName,
+                    cardNumber: parsed.cardNumber,
+                    displayMode: parsed.displayMode || 'background',
+                    duration: parsed.duration || 30000,
+                  }
+                }));
+                this.log('Tarot card received', { card: `${parsed.cardNumber} - ${parsed.cardName}` });
                 currentEventType = 'message'; // Reset for next event
                 continue;
               }

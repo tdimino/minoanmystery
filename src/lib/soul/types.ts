@@ -115,6 +115,13 @@ export interface UserModel {
   // Portfolio tracking
   lastProject?: string;                 // last portfolio project viewed
 
+  // Turn counting (session-scoped, source of truth)
+  userTurnCount?: number;               // total user messages this session
+
+  // Tarot generation state (session-scoped)
+  tarotCount?: number;                  // tarots generated this session
+  lastTarotTurn?: number;               // turn when last tarot was generated
+
   // Interaction tracking
   lastInteraction: number;      // timestamp
   idleTime: number;             // current idle duration in ms

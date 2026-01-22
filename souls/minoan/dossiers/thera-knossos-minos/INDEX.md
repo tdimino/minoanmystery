@@ -18,23 +18,32 @@ Research dossiers supporting the academic paper on Minoan-Semitic linguistic con
 
 ---
 
-## Part II: Knossos (3 dossiers)
+## Part II: Knossos (7 dossiers)
 
 | Dossier | Core Argument |
 |---------|---------------|
 | [knossos-knossot-gathering-place](part-2-knossos/knossos-knossot-gathering-place.md) | Knossos < *k-n-s* "to gather"; the Gathering Place |
-| [potnia-daboritu-baalat-deborah](part-2-knossos/potnia-daboritu-baalat-deborah.md) | Potnia Daboritu < Ba'alat Deborah; bee goddess |
+| [potnia-daboritu-baalat-deborah](part-2-knossos/potnia-daboritu-baalat-deborah.md) | Potnia Daboritu < Ba'alat Deborah; bee goddess + serpent |
+| [asherah-snake-goddess-knossos](part-2-knossos/asherah-snake-goddess-knossos.md) | Snake Goddess as Levantine-Minoan hybrid; Asherah connection |
+| [young-god-initiation-priesthood](part-2-knossos/young-god-initiation-priesthood.md) | Young god impersonation; Mycenaean displacement of goddess cult |
+| [essene-ephesian-bee-priesthood](part-2-knossos/essene-ephesian-bee-priesthood.md) | Bee-priesthood parallels across Mediterranean |
 | [rendsburg-cretan-etymologies](part-2-knossos/rendsburg-cretan-etymologies.md) | Rendsburg's Semitic etymologies for Greek terms |
+| [skotino-labyrinth-britomartis](part-2-knossos/skotino-labyrinth-britomartis.md) | Faure's Skotino-Labyrinth thesis; Britomartis as pre-Greek goddess |
 
 ---
 
-## Part III: Minos (3 dossiers)
+## Part III: Minos (8 dossiers)
 
 | Dossier | Core Argument |
 |---------|---------------|
 | [meinos-manna-etymology](part-3-minos/meinos-manna-etymology.md) | Minos/Meinos < *m-n-n* "to allot"; the Allotter |
 | [manasseh-semitic-brothers](part-3-minos/manasseh-semitic-brothers.md) | Manasseh cognate with Minos; n-to-š dissimilation |
-| [kouretes-initiation-megistos-kouros](part-3-minos/kouretes-initiation-megistos-kouros.md) | Kouretes = Megistos Kouros = Ba'al Rapu |
+| [kouretes-diktaean-young-god](part-3-minos/kouretes-diktaean-young-god.md) | Kouretes, Palaikastro Hymn, Megistos Kouros = Ba'al Rapu, dying-rising year-god |
+| [gaza-minos-marnas-complex](part-3-minos/gaza-minos-marnas-complex.md) | Gaza = Minoa, MEINΩΣ coins, Marnas = Dagon = Zeus Cretagenes chain |
+| [yahweh-cretan-zeus-convergence](part-3-minos/yahweh-cretan-zeus-convergence.md) | YHW coin; Moses-Minos law-giver pattern; Cherethite transmission |
+| [levite-cretan-connection](part-3-minos/levite-cretan-connection.md) | Cherethites as Cretans; Mycenaean *laos* hypothesis |
+| [canaanite-baalim-yahweh-absorption](part-3-minos/canaanite-baalim-yahweh-absorption.md) | How Yahweh absorbed Canaanite and Cretan traditions |
+| [exodus-archaeological-critique](part-3-minos/exodus-archaeological-critique.md) | Finkelstein/Dever: Israelites emerged from Canaanites, not Egypt
 
 ---
 

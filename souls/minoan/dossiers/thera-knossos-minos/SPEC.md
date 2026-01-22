@@ -190,7 +190,7 @@ thera, kalliste, volcanic, eruption, membliaros, ...
   - **Nehemiah 12:44**: לִכְנוֹס בָּהֶם לִשְׂדֵי הֶעָרִים **מְנָאוֹת** הַתּוֹרָה לַכֹּהֲנִים וְלַלְוִיִּם — "to **gather** into them from the fields of the towns the **portions** prescribed by the Teaching for the priests and Levites"
     - Note: מְנָאוֹת (*menaot*, "portions") from root M-N-H — connects K-N-S (gathering) with allotment/distribution
 - **Mishnah — first attestation of noun כְּנֶסֶת**:
-  - **Pirkei Avot 1:1**: "וּנְבִיאִים מְסָרוּהָ לְאַנְשֵׁי כְנֶסֶת הַגְּדוֹלָה" — "and the prophets transmitted it to the Men of the Great Assembly (Knesset HaGedolah)"
+  - **Pirkei Abot 1:1**: "וּנְבִיאִים מְסָרוּהָ לְאַנְשֵׁי כְנֶסֶת הַגְּדוֹלָה" — "and the prophets transmitted it to the Men of the Great Assembly (Knesset HaGedolah)"
 - Minyan (quorum of ten)
 - **Tyrannion of Antioch as Tyrannos** (Semitic title transmission)
 - **Kenos in Ecclesiastes 3:5**: "עֵת לְהַשְׁלִיךְ אֲבָנִים וְעֵת כְּנוֹס אֲבָנִים" (a time to cast stones, a time to gather stones)
@@ -252,20 +252,19 @@ thera, kalliste, volcanic, eruption, membliaros, ...
 - **Gaza coin: Minos with staff, sacred palm on reverse**
 - Naxos seal: female worshiper, sacred palm, altar
 
-### 13. `kouretes-initiation-megistos-kouros.md`
-**Scope**: Kouretes initiation rites, Megistos Kouros = Ba'al Rapu (Astour), Corybantes and Kabbirim as Kouretes, Harrison's daimones of the Golden Age. Sacred palm and altar iconography. Ya of Dikte appointment.
+### 13. `kouretes-diktaean-young-god.md` *(consolidated)*
+**Scope**: CONSOLIDATED dossier combining Kouretes initiation, Megistos Kouros = Ba'al Rapu, Palaikastro Hymn, and Diktaean Zeus dying-rising god pattern.
 
 **Key concepts**:
-- Kouretes as initiatory band
-- **Megistos Kouros** = Ba'al Rapu (Astour)
+- Kouretes as initiatory band; Harrison's daimones of the Golden Age
+- **Megistos Kouros** = Ba'al Rapu (Astour); divine youth as "Allotter" (cf. δαίμων < δαίομαι)
+- **Palaikastro Hymn**: "Greatest Kouros... come to Dicte for the year"
+- Dying-rising god pattern (Adonis, Osiris, Tammuz parallels)
 - Corybantes = Kouretes = Kabbirim
-- Daimones of the Golden Age (Harrison, Themis)
-- Seal from Naxos: female worshiper, sacred palm, altar
-- **"Male God" seal from Crete**
 - **Ya of Dikte was appointed** (divine appointment motif)
 - Thunder-rites and shield-clashing
 - Young god cult (Cretan Zeus)
-- Initiation mysteries
+- **Minos as Chief Daimon** — linked to dying-rising cycle
 - **Peak sanctuaries**: "Peak sites continued to be frequented on Crete until historic times."
 
 ---

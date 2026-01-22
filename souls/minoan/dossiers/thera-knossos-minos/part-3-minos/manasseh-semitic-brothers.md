@@ -105,7 +105,7 @@ A Minoan seal depicting a male deity with attributes suggesting:
 |---------|-----------|-------------------|
 | **Kaphtorim on the Menorah** | Exodus 25:31–36 | Ornamental "cups" (*kaphtorim*) decorating the lampstand |
 | **Levites as Laos** | Niesiołowski-Spanò (2020, pp. 444–452) | Levites < Mycenaean *ra-wo* (λᾶός) = "armed men, spearmen" |
-| **Kerethites (Cretans)** | 2 Samuel 8:18 | David's royal bodyguard: *ha-Kereti ve-ha-Peleti* |
+| **Kerethites (Cretans)** | 2 Samuel 8:18 | David's royal bodyguard: *ha-Kereti we-ha-Peleti* |
 | **Cherethites** | 1 Samuel 30:14 | Philistine/Caphtorite territory in the Negev |
 
 **The Levite-Laos connection**: Niesiołowski-Spanò (*Biblica* 101.3, 2020, pp. 444–452) proposes that the Levites derive from Mycenaean **\*ra-wo** (Linear B), which becomes Greek **λᾶός/λαοί** (*laos/laoi*)—originally meaning "armed men" or "spearmen" before generalizing to "people." If correct, this would make the Levites a warrior-priest caste of Aegean origin, their name preserving their Mycenaean military function.
@@ -173,8 +173,8 @@ Lists **Mi-na-si-i šar Ia-ú-di** ("Manasseh king of Judah") among tributaries.
 - [asherah-tree-exile-malignment.md](../part-1-thera/asherah-tree-exile-malignment.md) — Sacred palm/Tanit
 - [divine-feminine-toponyms.md](../part-1-thera/divine-feminine-toponyms.md) — Europa etymology
 
-### Per-Article Dossiers
-- [astour/hellenosemitica/ch3-genealogies.md](../scholarly-sources/astour/hellenosemitica/ch3-genealogies.md) — Mythological genealogies
+### Scholarly Sources
+- See `scholarly-sources/astour/hellenosemitica/` in main dossiers directory — Mythological genealogies
 
 ---
 

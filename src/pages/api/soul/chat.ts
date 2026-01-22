@@ -20,7 +20,14 @@ import {
   PERSONA_MODEL,
   THINKING_MODEL,
 } from '../../../lib/soul/opensouls';
-import { embodiesTheVision, type VisionResult, type VisionProcessContext } from '../../../lib/soul/opensouls/subprocesses';
+import {
+  embodiesTheVision,
+  type VisionResult,
+  type VisionProcessContext,
+  embodiesTheTarot,
+  type TarotResult,
+  type TarotProcessContext,
+} from '../../../lib/soul/opensouls/subprocesses';
 import {
   OpenRouterProvider,
   GroqProvider,
@@ -33,6 +40,39 @@ import {
   isRagAvailable,
   detectContextType,
 } from '../../../lib/soul/retrieval/kotharRagConfig';
+import type { SoulMemoryInterface } from '../../../lib/soul/memory';
+
+/**
+ * Server-side SoulMemory adapter for subprocess state tracking.
+ * Uses in-request state since serverless functions are stateless.
+ *
+ * For tarot: Turn-based gating (every 10 turns) works correctly because
+ * turn count is derived from conversationHistory. Session limit is best-effort.
+ */
+function createServerSideMemoryAdapter(initialTurnCount: number = 0): SoulMemoryInterface {
+  // In-request state (won't persist across requests in serverless)
+  let userTurnCount = initialTurnCount;
+  let tarotCount = 0;
+  let lastTarotTurn = 0;
+  let visitorModel: string | undefined;
+  let visitorWhispers: string | undefined;
+
+  return {
+    getVisitorModel: () => visitorModel,
+    setVisitorModel: (model: string) => { visitorModel = model; },
+    getVisitorWhispers: () => visitorWhispers,
+    setVisitorWhispers: (whispers: string) => { visitorWhispers = whispers; },
+    getUserName: () => undefined,
+    addTopic: () => {},
+    // Turn counting - source of truth for subprocess turn checks
+    getUserTurnCount: () => userTurnCount,
+    incrementUserTurnCount: () => ++userTurnCount,
+    getTarotCount: () => tarotCount,
+    setTarotCount: (count: number) => { tarotCount = count; },
+    getLastTarotTurn: () => lastTarotTurn,
+    setLastTarotTurn: (turn: number) => { lastTarotTurn = turn; },
+  };
+}
 
 // Mark as server-rendered (required for POST endpoints)
 export const prerender = false;
@@ -76,7 +116,7 @@ const SOULS_DIR = join(process.cwd(), 'souls', 'minoan');
 
 function loadSoulPersonality(): string {
   try {
-    return readFileSync(join(SOULS_DIR, 'minoan.md'), 'utf-8');
+    return readFileSync(join(SOULS_DIR, 'soul.md'), 'utf-8');
   } catch (error) {
     console.error('Failed to load soul personality:', error);
     return `# Kothar wa Khasis\nYou are Kothar, divine craftsman and oracle of Tom di Mino's digital labyrinth.`;
@@ -167,6 +207,8 @@ interface ChatRequest {
     sizeBytes: number;
     mimeType: string;
   };
+  /** Turn count from client (source of truth in localStorage) */
+  turnCount?: number;
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -194,7 +236,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     ensureProviders();
 
     const body: ChatRequest = await request.json();
-    const { query, visitorContext, conversationHistory, stream, imageAttachment } = body;
+    const { query, visitorContext, conversationHistory, stream, imageAttachment, turnCount } = body;
 
     // Initial log (contextType and useRaggy added after RAG decision)
     const logRequestStart = (ctxType?: string, raggyMode?: boolean) => {
@@ -347,6 +389,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       content: effectiveQuery,
     });
 
+    // Use client-provided turn count (source of truth in client-side SoulMemory/localStorage)
+    // Fall back to computing from history if not provided (for backwards compatibility)
+    const currentTurnCount = turnCount ?? ((conversationHistory?.filter(m => m.role === 'user').length || 0) + 1);
+
     if (stream) {
       // Streaming response with archive indicator events
       const encoder = new TextEncoder();
@@ -447,11 +493,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, fullResponse: finalResult })}\n\n`));
 
-            // Fire-and-forget: Vision generation subprocess
-            // Runs after response completes, emits image event if vision is generated
+            // Subprocesses: Vision and Tarot generation
+            // These need to complete before we close the stream so their SSE events can be emitted
             const geminiKey = process.env.GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
             if (geminiKey) {
-              // Build minimal process context for subprocess (type-safe)
+              const subprocessPromises: Promise<void>[] = [];
+
+              // Vision generation subprocess
               const visionContext: VisionProcessContext = {
                 workingMemory: newMemory,
                 actions: {
@@ -460,12 +508,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 },
               };
 
-              // Run vision subprocess (fire-and-forget)
-              embodiesTheVision(visionContext, {
+              const visionPromise = embodiesTheVision(visionContext, {
                 minInteractionsBeforeVision: 2,
                 onVisionGenerated: (result: VisionResult) => {
                   if (result.success && result.imageDataUrl) {
-                    // Emit SSE image event
                     try {
                       controller.enqueue(encoder.encode(`event: image\ndata: ${JSON.stringify({
                         dataUrl: result.imageDataUrl,
@@ -475,7 +521,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                       })}\n\n`));
                       console.log('[Vision] Image emitted via SSE');
                     } catch (e) {
-                      // Stream may already be closed, log but don't fail
                       console.log('[Vision] Could not emit image (stream closed):', e);
                     }
                   }
@@ -483,6 +528,50 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               }).catch((err) => {
                 console.warn('[Vision] Subprocess error:', err);
               });
+              subprocessPromises.push(visionPromise as Promise<void>);
+
+              // Tarot generation subprocess (every 10 turns)
+              // Pass the COMPUTED turn count to soulMemory (source of truth)
+              // This avoids issues with workingMemory transformations
+              const tarotContext: TarotProcessContext = {
+                workingMemory: newMemory,
+                soulMemory: createServerSideMemoryAdapter(currentTurnCount),
+                actions: {
+                  log: (...args: unknown[]) => console.log('[Tarot]', ...args),
+                  speak: () => {},
+                },
+              };
+
+              console.log(`[Tarot] Turn count (from soulMemory): ${currentTurnCount}`);
+
+              const tarotPromise = embodiesTheTarot(tarotContext, {
+                turnInterval: 10,
+                displayDuration: 30000,
+                maxTarotsPerSession: 3,
+                onTarotGenerated: (result: TarotResult) => {
+                  if (result.success && result.imageDataUrl) {
+                    try {
+                      controller.enqueue(encoder.encode(`event: tarot\ndata: ${JSON.stringify({
+                        dataUrl: result.imageDataUrl,
+                        prompt: result.prompt,
+                        cardName: result.cardName,
+                        cardNumber: result.cardNumber,
+                        displayMode: 'background',
+                        duration: result.duration,
+                      })}\n\n`));
+                      console.log(`[Tarot] Card emitted via SSE: ${result.cardNumber} - ${result.cardName}`);
+                    } catch (e) {
+                      console.log('[Tarot] Could not emit tarot (stream closed):', e);
+                    }
+                  }
+                },
+              }).catch((err) => {
+                console.warn('[Tarot] Subprocess error:', err);
+              });
+              subprocessPromises.push(tarotPromise as Promise<void>);
+
+              // Wait for all subprocesses to complete before closing stream
+              await Promise.all(subprocessPromises);
             }
 
             controller.close();

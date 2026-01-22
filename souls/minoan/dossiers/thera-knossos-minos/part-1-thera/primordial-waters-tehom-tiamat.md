@@ -17,7 +17,7 @@ This dossier traces the theological vocabulary of primordial chaos across Mesopo
 **Genesis 1:2** (MT):
 > וְהָאָרֶץ הָיְתָה תֹהוּ וָבֹהוּ וְחֹשֶׁךְ עַל־פְּנֵי **תְהוֹם** וְרוּחַ אֱלֹהִים מְרַחֶפֶת עַל־פְּנֵי הַמָּיִם
 
-"And the earth was formless and void, and darkness was upon the face of **the deep** (*tehôm*), and the Spirit of God hovered over the face of the waters."
+"And the earth was formless and void, and darkness was upon the face of **Tehom**, and **ruach Elohim** hovered over the face of the waters."
 
 **Linguistic analysis**:
 
@@ -103,7 +103,7 @@ The *rḥm* root connects to both "womb" and "mercy/compassion" (cf. Hebrew *ra�
 ### Primary Sources
 
 **Genesis 1:2** (Hebrew Bible):
-The *tehôm* appears as pre-creation reality, not as defeated enemy. The Spirit of God "hovers" (*meraḥepet*) over the waters—a generative, incubating image.
+The *tehôm* appears as pre-creation reality, not as defeated enemy. **Ruach Elohim** "hovers" (*meraḥepet*) over the waters—a generative, incubating image.
 
 **Enuma Elish IV.135–140** (Akkadian):
 > "The lord trod on the legs of Tiamat, with his unsparing mace he crushed her skull... He split her like a shellfish into two parts."

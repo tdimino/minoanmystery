@@ -15,7 +15,7 @@ export const prerender = false;
 export const GET: APIRoute = async () => {
   try {
     // Load soul personality from souls directory
-    const personalityPath = path.join(process.cwd(), 'souls', 'minoan', 'minoan.md');
+    const personalityPath = path.join(process.cwd(), 'souls', 'minoan', 'soul.md');
     const personality = fs.readFileSync(personalityPath, 'utf-8');
 
     return new Response(JSON.stringify({ personality }), {

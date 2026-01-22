@@ -26,6 +26,11 @@ Rendsburg's Cretan etymologies are particularly compelling because they cluster 
 
 **Semantic fit**: Demeter's cult maintained strong chthonic associations. Her temples were called *megara*—a term that elsewhere means "great hall" but in Demeter's context suggests subterranean or cave-like sacred spaces. The Semitic "cave" etymology captures this chthonic dimension.
 
+**Marinatos (1993) confirms chthonic dimension** (ch. 7):
+> "It was Evans who first spoke of a snake goddess as '**the underworld form** of the Great Minoan Goddess.'"
+
+This corroborates the *megaron* < *mʿārâ* ("cave") etymology: the innermost chamber of Minoan palaces and Demeter's temples were conceptualized as cave-like spaces connecting to chthonic powers. The goddess dwelling in the *megaron* was precisely the "underworld form" that Evans identified.
+
 ### 2. Naos < Nāweh: The Divine Abode
 
 **The etymology**:
@@ -94,10 +99,10 @@ Rendsburg's Cretan etymologies are particularly compelling because they cluster 
 
 **Semantic fit**: *Kudos* in Greek carries strong divine associations—it's the glory that gods bestow on mortals. The Semitic "holiness" etymology captures this sacred dimension.
 
-### 7. Sophia < Sb3: Wisdom as Teaching
+### 7. Sophia < Sb3: Hokhma as Teaching
 
 **The etymology**:
-- Greek: **σοφία** (*sophia*) — wisdom
+- Greek: **σοφία** (*sophia*) — hokhma (wisdom)
 - Egyptian: **sb3** (*seba*) — "teach"; **sb3yt** (*sebayit*) — "teaching, instruction"
 
 **Rendsburg's assessment**: "The very convincing etymology of *sophia* 'wisdom,' which Bernal wishes to relate to the Egyptian verb *sb3* 'teach' and the noun *sb3yt* 'teaching, instruction'" (*Black Athena: An Etymological Response*, 1989).
@@ -110,7 +115,7 @@ Rendsburg's Cretan etymologies are particularly compelling because they cluster 
 | *-3* | *-i-* | Aleph > vowel |
 | *-yt* | *-a* | Suffix adaptation |
 
-**Semantic fit**: The connection between "wisdom" and "teaching/instruction" is semantically transparent. Wisdom is what is taught; the wise person (*sophos*) is the one who has received teaching (*sebayit*).
+**Semantic fit**: The connection between *hokhma* and *sebayit* (teaching/instruction) is semantically transparent. Hokhma is what is taught; the wise person (*sophos*) is the one who has received *sebayit*.
 
 **Gnostic corroboration**: The Nag Hammadi text *On the Origin of the World* calls Sophia "**the Teacher**" (ⲧⲣⲉϥⲧⲥⲁⲃⲟ) in the Garden of Eden narrative where the serpent appears—the precise semantic field of the Egyptian etymon. The Gnostic tradition thus preserves the original teaching/instruction association that links *sophia* to Egyptian *sb3*.
 
@@ -157,7 +162,7 @@ This principle explains apparent inconsistencies: the same Semitic phoneme may c
 ### Within This Collection
 - [knossos-knossot-gathering-place.md](./knossos-knossot-gathering-place.md) — K-N-S etymology
 - [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md) — Megaron/cave connection
-- [kouretes-initiation-megistos-kouros.md](../part-3-minos/kouretes-initiation-megistos-kouros.md) — Kabeiroi parallel
+- [kouretes-diktaean-young-god.md](../part-3-minos/kouretes-diktaean-young-god.md) — Kabeiroi parallel
 
 ### Per-Article Dossiers
 - [rendsburg/INDEX.md](../scholarly-sources/rendsburg/INDEX.md) — Full Rendsburg bibliography
@@ -175,10 +180,11 @@ This principle explains apparent inconsistencies: the same Semitic phoneme may c
 | Brown, John Pairman | *Israel and Hellas* | 1995–2000 | Hebrew-Greek comparative lexicon |
 | Astour, Michael C. | *Hellenosemitica* | 1965 | Place-name etymologies |
 | Rosół, Rafał | *Frühe semitische Lehnwörter* | 2013 | 65 direct Semitic loans |
+| Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Chthonic goddess, snake goddess as underworld form |
 
 ---
 
 ## RAG Tags
 
-<!-- 55 semantic keywords for retrieval -->
-rendsburg, black athena, etymology, semitic loans, greek vocabulary, megara, megaron, cave, mʿārâ, demeter, naos, nāweh, abode, temple, bomos, bamah, high place, altar, dikte, diqqatu, akkadian, kabeiroi, kabir, great ones, kudos, qodesh, holiness, chrysos, gold, nektar, incense, gaia, valley, haima, blood, life, phonetic correspondence, pater padre, loanword, bronze age, iron age, linear a, linear b, cretan, minoan, mycenaean, ugaritic, phoenician, gordon, brown, bernal, sophia, sb3, sebayit, egyptian, teaching, instruction, wisdom, gnostic, nag hammadi, origin of the world, teacher, serpent, proverbs
+<!-- 60 semantic keywords for retrieval -->
+rendsburg, black athena, etymology, semitic loans, greek vocabulary, megara, megaron, cave, mʿārâ, demeter, naos, nāweh, abode, temple, bomos, bamah, high place, altar, dikte, diqqatu, akkadian, kabeiroi, kabir, great ones, kudos, qodesh, holiness, chrysos, gold, nektar, incense, gaia, valley, haima, blood, life, phonetic correspondence, pater padre, loanword, bronze age, iron age, linear a, linear b, cretan, minoan, mycenaean, ugaritic, phoenician, gordon, brown, bernal, sophia, sb3, sebayit, egyptian, teaching, instruction, wisdom, gnostic, nag hammadi, origin of the world, teacher, serpent, proverbs, marinatos, chthonic, underworld form, snake goddess

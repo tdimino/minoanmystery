@@ -11,3 +11,4 @@ export { visitorNotes, type VisitorNotesOptions } from './visitorNotes';
 export { visitorWhispers, type WhispersContext } from './visitorWhispers';
 export { visionPrompt, type VisionContext } from './visionPrompt';
 export { imageCaption, type ImageCaptionContext, type ImageCaptionResult } from './imageCaption';
+export { tarotPrompt, type TarotContext, type TarotPromptResult } from './tarotPrompt';

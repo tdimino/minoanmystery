@@ -108,7 +108,7 @@ The co-occurrence in a single biblical verse provides a striking attestation of 
 
 ### 10. Linear A/B Yšn / Yšr Attestations
 
-**Astour (1964)**:
+**Astour (1965)**:
 > "*Asaro*, *Atano*, *Jasano*, *Jasaro* remind us of Ugaritic *Asrn*, *Atn*, **Yšn**, **Yšr**"
 
 Mycenaean tablet personal names show direct Ugaritic parallels, demonstrating Bronze Age onomastic exchange.
@@ -149,11 +149,11 @@ This Semitic compound name would mean "Righteous Allotment" or "The Upright Appo
 ### Within This Collection
 - [knossos-knossot-gathering-place.md](../part-2-knossos/knossos-knossot-gathering-place.md) — K-N-S + M-N-H pairing
 - [manasseh-semitic-brothers.md](./manasseh-semitic-brothers.md) — Manasseh etymology
-- [kouretes-initiation-megistos-kouros.md](./kouretes-initiation-megistos-kouros.md) — Daimon allotment
+- [kouretes-diktaean-young-god.md](./kouretes-diktaean-young-god.md) — Daimon allotment; Megistos Kouros
 
-### Per-Article Dossiers
-- [gordon/minoica-1962.md](../scholarly-sources/gordon/minoica-1962.md) — Full Linear A analysis
-- [astour/hellenosemitica/ch2-divine-names.md](../scholarly-sources/astour/hellenosemitica/ch2-divine-names.md) — Meinos discussion
+### Scholarly Sources
+- See `scholarly-sources/gordon/minoica-1962.md` in main dossiers directory — Full Linear A analysis
+- See `scholarly-sources/astour/hellenosemitica/` in main dossiers directory — Meinos discussion
 
 ---
 

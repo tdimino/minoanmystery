@@ -2,15 +2,19 @@
  * Gemini Image Provider
  *
  * TypeScript wrapper for Google's Gemini 3 Pro Image API.
- * Generates images from text prompts with Minoan aesthetic optimizations.
+ * Generates images with Minoan aesthetic using forensic prompts.
  *
- * Model: gemini-2.0-flash-preview-image-generation (or later versions)
+ * Model: gemini-3-pro-image-preview
  * Supports text-to-image with responseModalities: ["TEXT", "IMAGE"]
+ *
+ * Based on gemini-claude-resonance skill's minoan_tarot.py
  */
 
 export interface GeminiImageConfig {
   apiKey: string;
   model?: string;
+  /** Temperature for style matching (default: 0.5) */
+  temperature?: number;
 }
 
 export interface GeminiImageOptions {
@@ -41,55 +45,125 @@ export interface GeminiImageResult {
 }
 
 /**
- * Style modifiers for Minoan aesthetic
- * These are prepended to the user's prompt
+ * Minoan Color Palette - forensically extracted from reference cards
+ * From gemini-claude-resonance skill's minoan_tarot.py
  */
-const STYLE_PREFIXES: Record<string, string> = {
-  ethereal: 'Ethereal, dreamlike, translucent, soft luminous glow, ancient mystery, ',
-  mythological: 'Ancient mythological scene, classical Greek art style, Minoan fresco aesthetic, ',
-  labyrinthine: 'Labyrinth motifs, spiral patterns, Knossos palace architecture, Minoan civilization, ',
-  divine: 'Divine feminine presence, goddess imagery, sacred symbols, ritual atmosphere, ',
-  ancient: 'Ancient Mediterranean, Bronze Age aesthetic, weathered textures, archaeological beauty, ',
-};
+export const MINOAN_COLORS = {
+  terracotta_red: '#C84C3C',      // Backgrounds, clothing, decorative bands
+  ochre_yellow: '#D4A542',         // Clothing, bulls, decorative elements
+  slate_blue: '#4A5D7A',           // Sky backgrounds, clothing
+  teal_turquoise: '#3D9CA8',       // Sea backgrounds, spirals, accents
+  cream: '#F5E6D0',                // Backgrounds, female skin
+  periwinkle_border: '#6B7DB3',    // Card borders (thick outer frame)
+  male_skin: '#8B4513',            // Reddish-brown male skin
+  female_skin: '#FFF8F0',          // White/pale female skin
+  deep_indigo: '#2C3E5C',          // Night backgrounds
+  violet_purple: '#6B4C8C',        // Ritual/mystical backgrounds
+  lime_green: '#7CB342',           // Nature backgrounds
+  black: '#000000',                // Bold outlines
+} as const;
 
 /**
- * Default Minoan style suffix
+ * Minoan Tarot System Prompt - comprehensive style instructions
+ * From gemini-claude-resonance skill's minoan_tarot.py
  */
-const MINOAN_SUFFIX = ' Minoan aesthetic, Mediterranean palette, warm ochres and deep blues, no text or watermarks.';
+export const MINOAN_SYSTEM_PROMPT = `The artistic style mimics ancient Minoan frescoes from Knossos and Akrotiri. It features flat two-dimensional perspective, profile faces with frontal eyes, bold outlines, and a specific color palette:
+
+COLOR PALETTE (use these exact hex values):
+- Terracotta Red (${MINOAN_COLORS.terracotta_red}) - Backgrounds, clothing, decorative bands
+- Ochre Yellow (${MINOAN_COLORS.ochre_yellow}) - Clothing, bulls, decorative elements
+- Slate Blue (${MINOAN_COLORS.slate_blue}) - Sky backgrounds, clothing
+- Teal/Turquoise (${MINOAN_COLORS.teal_turquoise}) - Sea backgrounds, spirals, accents
+- Cream (${MINOAN_COLORS.cream}) - Backgrounds, female skin
+- Periwinkle Blue (${MINOAN_COLORS.periwinkle_border}) - Card borders (thick outer frame)
+- Reddish-Brown (${MINOAN_COLORS.male_skin}) - Male skin
+- White/Pale (${MINOAN_COLORS.female_skin}) - Female skin
+- Deep Indigo (${MINOAN_COLORS.deep_indigo}) - Night/mystical backgrounds
+- Black (${MINOAN_COLORS.black}) - All bold outlines
+
+FIGURE CONVENTIONS:
+- Figures have pinched waists and stylized elongated proportions
+- Men typically have reddish-brown skin; women have white/pale skin
+- Profile faces with frontal eyes (Egyptian-style poses)
+- Bare-breasted women in tiered flounced skirts (common Minoan dress)
+- Men in loincloths or kilts
+
+CARD STRUCTURE:
+- Thick periwinkle-blue border (${MINOAN_COLORS.periwinkle_border}) around entire card
+- Decorative horizontal bands at top and bottom (rosettes, spirals, waves, wheat)
+- Card title in white sans-serif font at the bottom of the border
+- Main imagery against solid color background (slate blue, terracotta, cream, or themed)
+
+MINOAN ICONOGRAPHY:
+- Labrys (double-headed axe)
+- Horns of Consecration
+- Snake Goddess (frontal pose, arms holding serpents)
+- Bull leaping / bull heads with curved horns
+- Dolphins, octopi (Marine Style)
+- Griffins (lion body, eagle head/wings)
+- Swallows in spiral flight
+- Sacred lilies, papyrus, olive branches
+- Spiral motifs (running spirals, tetraskelion)
+
+ARTISTIC STYLE:
+- Flat colors - NO gradients, NO shading, NO 3D effects, NO photorealism
+- Colors are solid blocks like ancient frescoes or gouache on paper
+- Bold black outlines around every figure, object, and shape
+- Flat, even lighting with no cast shadows
+- Two-dimensional composition typical of fresco art`;
+
+/**
+ * Style modifiers for different card moods
+ */
+const STYLE_PREFIXES: Record<string, string> = {
+  ethereal: 'Ethereal, dreamlike atmosphere. ',
+  mythological: 'Mythological, ceremonial atmosphere. ',
+  labyrinthine: 'Labyrinthine, mysterious atmosphere with spiral motifs. ',
+  divine: 'Divine, sacred ritual atmosphere. ',
+  ancient: 'Ancient Mediterranean Bronze Age aesthetic. ',
+};
 
 export class GeminiImageProvider {
   private apiKey: string;
   private model: string;
+  private temperature: number;
 
   constructor(config: GeminiImageConfig) {
     this.apiKey = config.apiKey;
-    this.model = config.model ?? 'gemini-2.0-flash-preview-image-generation';
+    // Use Gemini 3 Pro for image generation (best for faithful style matching)
+    this.model = config.model ?? 'gemini-3-pro-image-preview';
+    // Lower temperature for more faithful style reproduction
+    this.temperature = config.temperature ?? 0.5;
   }
 
   /**
    * Generate an image from a text prompt
+   * Uses Gemini 3 Pro formula with forensic-style prompts
    */
   async generate(options: GeminiImageOptions): Promise<GeminiImageResult> {
     const startTime = Date.now();
 
     try {
-      // Build the full prompt with style modifiers
-      let fullPrompt = options.prompt;
+      // Build the full prompt with Minoan system prompt and style modifiers
+      let fullPrompt = MINOAN_SYSTEM_PROMPT + '\n\n';
 
-      // Prepend style prefix if specified
+      // Add style-specific atmosphere
       if (options.style && STYLE_PREFIXES[options.style]) {
-        fullPrompt = STYLE_PREFIXES[options.style] + fullPrompt;
+        fullPrompt += STYLE_PREFIXES[options.style];
       }
 
-      // Add Minoan aesthetic suffix
-      fullPrompt += MINOAN_SUFFIX;
+      // Add the specific image prompt
+      fullPrompt += '\nGENERATE:\n' + options.prompt;
 
       // Add negative prompt if provided
       if (options.negativePrompt) {
-        fullPrompt += ` Avoid: ${options.negativePrompt}`;
+        fullPrompt += `\n\nAVOID: ${options.negativePrompt}`;
       }
 
-      // Build request body for Gemini API
+      // Add critical instruction
+      fullPrompt += '\n\nCRITICAL: Match the Minoan fresco style exactly - flat colors, bold outlines, no 3D effects.';
+
+      // Build request body for Gemini API with proper imageConfig
       const requestBody = {
         contents: [
           {
@@ -102,8 +176,12 @@ export class GeminiImageProvider {
         ],
         generationConfig: {
           responseModalities: ['TEXT', 'IMAGE'],
-          // Note: Gemini may not support aspectRatio directly in all versions
-          // This is a placeholder for future API updates
+          temperature: this.temperature,
+          maxOutputTokens: 8192,
+          // imageConfig for aspect ratio (Gemini 3 Pro feature)
+          imageConfig: {
+            aspectRatio: options.aspectRatio ?? '3:4', // Tarot card proportions
+          },
         },
       };
 
@@ -203,9 +281,20 @@ export class GeminiImageProvider {
 
 /**
  * Create Gemini image provider from environment
+ * Supports both Node.js (process.env) and Astro/Vite (import.meta.env)
  */
 export function createGeminiImageProvider(apiKey?: string): GeminiImageProvider | null {
-  const key = apiKey ?? (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : undefined);
+  // Try multiple sources for the API key
+  let key = apiKey;
+
+  if (!key && typeof import.meta !== 'undefined' && import.meta.env) {
+    key = import.meta.env.GEMINI_API_KEY;
+  }
+
+  if (!key && typeof process !== 'undefined' && process.env) {
+    key = process.env.GEMINI_API_KEY;
+  }
+
   if (!key) {
     console.warn('[GeminiImage] GEMINI_API_KEY not configured');
     return null;
