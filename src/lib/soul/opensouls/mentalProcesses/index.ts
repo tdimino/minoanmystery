@@ -12,6 +12,7 @@ import { readyProcess } from './ready';
 import { returningProcess } from './returning';
 import { dormantProcess } from './dormant';
 import { exitingProcess } from './exiting';
+import { academicProcess } from './academic';
 import { ProcessRunner } from './runner';
 import type { SoulState, HydratedUserModel } from './types';
 
@@ -23,6 +24,7 @@ export { readyProcess } from './ready';
 export { returningProcess } from './returning';
 export { dormantProcess } from './dormant';
 export { exitingProcess } from './exiting';
+export { academicProcess, detectAcademicIntent, SCHOLAR_PERSONAS, type ScholarKey } from './academic';
 
 // Re-export types
 export type { ProcessContext, ProcessReturn, HydratedUserModel, SoulActions, Perception, SoulState } from './types';
@@ -41,6 +43,7 @@ export const processRegistry = {
   returning: returningProcess,
   dormant: dormantProcess,
   exiting: exitingProcess,
+  academic: academicProcess,
 } as const;
 
 /**
@@ -57,6 +60,7 @@ export function createProcessRunner(): ProcessRunner {
   runner.registerProcess('returning', returningProcess);
   runner.registerProcess('dormant', dormantProcess);
   runner.registerProcess('exiting', exitingProcess);
+  runner.registerProcess('academic', academicProcess);
 
   return runner;
 }
@@ -109,11 +113,12 @@ export function getInitialState(userModel: HydratedUserModel): SoulState {
  *                          └──(5min+ idle)──▶ exiting ──(return)──▶ curious
  */
 export const stateTransitions: Record<SoulState, SoulState[]> = {
-  greeting: ['curious', 'engaged', 'ready', 'returning', 'dormant'],
-  curious: ['engaged', 'ready', 'dormant'],
-  engaged: ['ready', 'curious', 'dormant'],
-  ready: ['dormant'], // Can transition to dormant if idle
-  returning: ['curious', 'engaged', 'ready', 'dormant'],
-  dormant: ['curious', 'engaged', 'exiting'],
-  exiting: ['curious'], // Can return from exit
+  greeting: ['curious', 'engaged', 'ready', 'returning', 'dormant', 'academic'],
+  curious: ['engaged', 'ready', 'dormant', 'academic'],
+  engaged: ['ready', 'curious', 'dormant', 'academic'],
+  ready: ['dormant', 'academic'],
+  returning: ['curious', 'engaged', 'ready', 'dormant', 'academic'],
+  dormant: ['curious', 'engaged', 'exiting', 'academic'],
+  exiting: ['curious', 'academic'],
+  academic: ['curious', 'engaged', 'dormant'], // Exit returns to appropriate state
 };

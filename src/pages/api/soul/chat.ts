@@ -44,6 +44,7 @@ import {
   detectContextType,
 } from '../../../lib/soul/retrieval/kotharRagConfig';
 import type { SoulMemoryInterface } from '../../../lib/soul/memory';
+import { detectAcademicIntent } from '../../../lib/soul/opensouls/mentalProcesses';
 
 /**
  * Server-side SoulMemory adapter for subprocess state tracking.
@@ -307,6 +308,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       );
     }
 
+    // ─── Academic Mode Detection ───
+    // Academic mode triggers forced RAG (Raggy) on every turn for scholarly depth
+    const isAcademicMode = detectAcademicIntent(effectiveQuery);
+    if (isAcademicMode) {
+      console.log('[Soul Chat] Academic mode triggered - forcing Raggy RAG');
+    }
+
     // Load soul personality and config
     const personality = loadSoulPersonality();
     const config = loadSoulConfig();
@@ -328,21 +336,25 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     // RAG helper function (will be called inside stream for streaming mode)
-    const performRag = async (mem: typeof memory): Promise<{ memory: typeof memory; contextType: string; useRaggy: boolean }> => {
+    const performRag = async (mem: typeof memory): Promise<{ memory: typeof memory; contextType: string; useRaggy: boolean; academicMode: boolean }> => {
       let contextType = 'general';
       let useRaggy = false;
 
       if (isRagAvailable()) {
         try {
           contextType = detectContextType(query);
-          useRaggy = shouldUseRaggy(query, contextType, visitorContext, conversationHistory);
+          useRaggy = shouldUseRaggy(query, contextType, visitorContext, conversationHistory, isAcademicMode);
 
           if (useRaggy) {
+            // Academic mode gets more results with lower threshold for broader scholarly coverage
+            const raggyLimit = isAcademicMode ? 7 : 5;
+            const raggySimilarity = isAcademicMode ? 0.60 : 0.65;
+
             mem = await kotharRag.withTypedRagContext(mem, contextType, query, {
               useRaggy: true,
               memory: mem,
-              resultLimit: 5,
-              minSimilarity: 0.65,
+              resultLimit: raggyLimit,
+              minSimilarity: raggySimilarity,
             });
           } else {
             mem = await kotharRag.withTypedRagContext(mem, contextType, query, {
@@ -351,7 +363,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             });
           }
 
-          console.log(`[Soul Chat] RAG: ${useRaggy ? 'Raggy' : 'Standard'} mode for "${contextType}" - "${query.slice(0, 50)}..."`);
+          const modeLabel = isAcademicMode ? 'Academic (forced Raggy)' : (useRaggy ? 'Raggy' : 'Standard');
+          console.log(`[Soul Chat] RAG: ${modeLabel} mode for "${contextType}" - "${query.slice(0, 50)}..."`);
           logRequestStart(contextType, useRaggy);
         } catch (ragError) {
           if (useRaggy) {
@@ -373,7 +386,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         logRequestStart();
       }
 
-      return { memory: mem, contextType, useRaggy };
+      return { memory: mem, contextType, useRaggy, academicMode: isAcademicMode };
     };
 
     // Add conversation history
@@ -467,6 +480,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             // Emit archive:inactive after RAG completes
             if (isRagAvailable()) {
               controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: false })}\n\n`));
+            }
+
+            // Emit academic mode indicator after RAG succeeds
+            // (placed here so UI only shows academic mode when we can fulfill the request)
+            if (isAcademicMode) {
+              controller.enqueue(encoder.encode(`event: mode\ndata: ${JSON.stringify({ mode: 'academic' })}\n\n`));
             }
 
             // Build instructions for the cognitive step
@@ -753,8 +772,14 @@ function shouldUseRaggy(
   query: string,
   contextType: string,
   visitorContext?: ChatRequest['visitorContext'],
-  conversationHistory?: ChatRequest['conversationHistory']
+  conversationHistory?: ChatRequest['conversationHistory'],
+  academicMode?: boolean
 ): boolean {
+  // Tier 0: Academic mode ALWAYS uses Raggy for maximum scholarly depth
+  if (academicMode) {
+    return true;
+  }
+
   // Tier 1: Context type (highest priority)
   // Scholarly, etymology, and oracle queries benefit from semantic expansion
   if (contextType === 'scholarly' || contextType === 'etymology' || contextType === 'oracle') {

@@ -62,6 +62,12 @@ import Header from '../components/Header.astro';
         <span class="archive-dots"><span>.</span><span>.</span><span>.</span></span>
       </div>
 
+      <!-- Academic Mode Indicator - shows when scholarly mode is active -->
+      <div id="academic-mode-indicator" class="academic-mode-indicator" aria-live="polite">
+        <span class="academic-icon">Σ</span>
+        <span class="academic-text">Academic Mode</span>
+      </div>
+
       <form id="labyrinth-form" class="labyrinth-form">
         <!-- Hidden file input for image selection -->
         <input
@@ -787,6 +793,64 @@ import Header from '../components/Header.astro';
       rgba(201, 160, 184, 0.04) 100%
     );
     border-left-color: var(--color-primary);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Academic Mode Indicator
+     Shows when scholarly mode is active
+     ───────────────────────────────────────────────────────────── */
+
+  .academic-mode-indicator {
+    display: none;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(
+      135deg,
+      rgba(150, 106, 133, 0.15) 0%,
+      rgba(150, 106, 133, 0.08) 100%
+    );
+    border: 1px solid rgba(150, 106, 133, 0.3);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-primary);
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(8px);
+    z-index: 100;
+  }
+
+  .academic-mode-indicator.active {
+    display: flex;
+    animation: academic-reveal 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes academic-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .academic-icon {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  :global([data-theme='dark']) .academic-mode-indicator {
+    background: linear-gradient(
+      135deg,
+      rgba(201, 160, 184, 0.15) 0%,
+      rgba(201, 160, 184, 0.08) 100%
+    );
+    border-color: rgba(201, 160, 184, 0.3);
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -1567,6 +1631,9 @@ import Header from '../components/Header.astro';
     // Archive indicator
     private archiveIndicator: HTMLElement;
 
+    // Academic mode indicator
+    private academicModeIndicator: HTMLElement;
+
     // Image attachment elements
     private imageInput: HTMLInputElement;
     private attachButton: HTMLButtonElement;
@@ -1614,6 +1681,7 @@ import Header from '../components/Header.astro';
       this.visionBackground = document.getElementById('vision-background')!;
       this.tarotBackground = document.getElementById('tarot-background')!;
       this.archiveIndicator = document.getElementById('archive-indicator')!;
+      this.academicModeIndicator = document.getElementById('academic-mode-indicator')!;
 
       // Image attachment elements
       this.imageInput = document.getElementById('image-input') as HTMLInputElement;
@@ -1702,6 +1770,11 @@ import Header from '../components/Header.astro';
       // Image analysis status event listener
       document.addEventListener('soul:imageAnalysis', ((e: CustomEvent) => {
         this.handleImageAnalysisStatus(e.detail);
+      }) as EventListener);
+
+      // Academic mode indicator event listener (from SSE stream)
+      document.addEventListener('soul:mode', ((e: CustomEvent) => {
+        this.setAcademicModeIndicator(e.detail.mode === 'academic');
       }) as EventListener);
 
       // Check for message ID in URL (deep link)
@@ -2400,6 +2473,21 @@ import Header from '../components/Header.astro';
       } else {
         this.archiveIndicator.classList.remove('active');
         console.log('[Labyrinth] Archive search complete');
+      }
+    }
+
+    /**
+     * Show/hide academic mode indicator
+     */
+    private setAcademicModeIndicator(active: boolean) {
+      if (!this.academicModeIndicator) return;
+
+      if (active) {
+        this.academicModeIndicator.classList.add('active');
+        console.log('[Labyrinth] Academic mode activated');
+      } else {
+        this.academicModeIndicator.classList.remove('active');
+        console.log('[Labyrinth] Academic mode deactivated');
       }
     }
 

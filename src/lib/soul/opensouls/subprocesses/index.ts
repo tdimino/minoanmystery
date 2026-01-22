@@ -17,6 +17,10 @@ export {
   type VisionResult,
   type VisionProcessContext,
 } from './embodiesTheVision';
+export {
+  scholarsReflection,
+  type ScholarsReflectionConfig,
+} from './scholarsReflection';
 
 // Server-only exports - import directly from the file in API routes:
 // import { embodiesTheTarot, resetTarotState } from './embodiesTheTarot';

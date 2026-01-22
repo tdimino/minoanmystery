@@ -59,7 +59,8 @@ export type SoulState =
   | 'ready'       // Heading toward contact
   | 'returning'   // Recognized visitor, personalized
   | 'dormant'     // Extended idle (45s+), soul reflects
-  | 'exiting';    // Exit intent detected, save journey
+  | 'exiting'     // Exit intent detected, save journey
+  | 'academic';   // Scholarly discussion mode - forced RAG, citations
 
 export type BehavioralType =
   | 'scanner'     // Quick browsing, low scroll depth

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Academic Mental Process**: Polymorphic persona system for deep scholarly discussion
+  - **Entry Triggers**: "scholarly mode", "academic mode", "what does Gordon say", "cite sources", etc.
+  - **Exit Triggers**: Explicit phrases ("exit scholarly mode") or LLM-detected non-scholarly queries
+  - **Scholar Personas** (`souls/minoan/academic/`):
+    - `soul.md` — Academic core: scholarly synthesis mode instructions
+    - `gordon.md` — Cyrus H. Gordon: Linear A, Semitic morphology, comparative method
+    - `harrison.md` — Jane Ellen Harrison: ritual origins, social religion, daimons, dromenon
+    - `astour.md` — Michael Astour: etymology, name analysis, functional coincidence
+  - **Voice Selection**: LLM decides which voice best addresses each query
+    - `kothar` — Speak as himself (oracle voice) drawing on all scholarly knowledge
+    - `gordon` / `harrison` / `astour` — Channel specific scholar's voice and reasoning
+    - `synthesis` — Weave all three perspectives together
+    - `exit` — Gracefully transition out for non-scholarly queries
+  - **Cognitive Steps**:
+    - `internalDialog` — Persona-injected reasoning (for channeling scholars)
+    - `internalMonologue` — Self-reflection (for Kothar's own voice)
+  - **Subprocess**: `scholarsReflection` for background scholarly topic tracking
+  - **RAG Integration**: Academic mode forces Raggy (expanded semantic search) for maximum scholarly depth
+  - **SSE Event**: `event: mode` with `{ mode: 'academic' }` emitted to client
+
 - **Rendsburg "How the Bible is Written" Integration**: 12 new chapter dossiers with evidence integrated into primary thera-knossos-minos dossiers
   - **New Chapter Dossiers** (`scholarly-sources/rendsburg/how-bible-written/`):
     - `ch1-reading-creation.md` — Tehom analysis, Day Two omission, oral-aural reading

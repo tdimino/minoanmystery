@@ -4,6 +4,7 @@
 
 export { externalDialog } from './externalDialog';
 export { internalMonologue } from './internalMonologue';
+export { internalDialog, type InternalDialogOptions } from './internalDialog';
 export { decision, type DecisionOptions } from './decision';
 export { mentalQuery } from './mentalQuery';
 export { brainstorm, type BrainstormOptions } from './brainstorm';

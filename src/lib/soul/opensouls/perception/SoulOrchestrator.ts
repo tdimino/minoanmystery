@@ -594,6 +594,16 @@ export class SoulOrchestrator {
                 continue;
               }
 
+              // Handle mode indicator events (e.g., academic mode)
+              if (currentEventType === 'mode') {
+                document.dispatchEvent(new CustomEvent('soul:mode', {
+                  detail: { mode: parsed.mode }
+                }));
+                this.log('Mode indicator received', { mode: parsed.mode });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
               // Handle regular message events
               if (parsed.chunk) {
                 fullResponse += parsed.chunk;
