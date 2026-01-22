@@ -27,6 +27,27 @@ Rendsburg represents the next generation of the Gordon school—a trained Semiti
 | [someone-succeed-deciphering-1996.md](./someone-succeed-deciphering-1996.md) | "Someone Will Succeed in Deciphering Minoan" | 1996 | Journal Article |
 | [phoenician-writing-culture-getty.md](./phoenician-writing-culture-getty.md) | "The Spread of Phoenician Writing Culture to Ancient Greece" | c. 2022 | Public Lecture |
 
+### *How the Bible is Written* (Book, 2019)
+
+A comprehensive dossier collection covering Rendsburg's magnum opus on Hebrew literary technique (12 chapters covered). Housed in [`how-bible-written/`](./how-bible-written/INDEX.md):
+
+| File | Chapter | Key Topics |
+|------|---------|------------|
+| [ch1-reading-creation.md](./how-bible-written/ch1-reading-creation.md) | 1: Reading Creation | Genesis 1 analysis; *tehom*-Tiamat connection; Masoretic tradition |
+| [ch3-plagues-narrative.md](./how-bible-written/ch3-plagues-narrative.md) | 3: Plagues Narrative | *Polyprosopon* technique; Egypt contact; oral performance |
+| [ch5-genesis-alliteration.md](./how-bible-written/ch5-genesis-alliteration.md) | 5: Genesis Alliteration | *Hapax legomena*; Ugaritic/Akkadian cognates; phonology |
+| [ch6-exodus-alliteration.md](./how-bible-written/ch6-exodus-alliteration.md) | 6: Exodus Alliteration | Egyptian loanwords; Israelian Hebrew dialect variants |
+| [ch8-confused-language.md](./how-bible-written/ch8-confused-language.md) | 8: Confused Language | Deliberate syntactic confusion as literary device |
+| [ch11-legal-cultic-alliteration.md](./how-bible-written/ch11-legal-cultic-alliteration.md) | 11: Legal-Cultic Alliteration | Priestly terminology; Levites; northern dialect |
+| [ch18-wordplay-names.md](./how-bible-written/ch18-wordplay-names.md) | 18: Wordplay on Names | **Cherethite-Cretan *k-r-t* wordplay**; Caphtor = Crete |
+| [ch21-dating-biblical-texts.md](./how-bible-written/ch21-dating-biblical-texts.md) | 21: When Was All This Written? | Tenth-century dating argument; David-Genesis connections |
+| [ch22-documentary-hypothesis.md](./how-bible-written/ch22-documentary-hypothesis.md) | 22: Challenge to Documentary Hypothesis | Against JEDP; literary unity arguments |
+| [ch23-israelian-hebrew.md](./how-bible-written/ch23-israelian-hebrew.md) | 23: Israelian Hebrew | Northern dialect features; Ginsberg's terminology |
+| [ch24-style-switching.md](./how-bible-written/ch24-style-switching.md) | 24: Style-Switching | Aramaic elements in Hebrew narrative |
+| [ch25-addressee-switching.md](./how-bible-written/ch25-addressee-switching.md) | 25: Addressee-Switching | **Explicit Cherethite-Cretan-Philistine evidence** |
+
+**Relevance to Thera-Knossos-Minos**: Chapters 18 and 25 provide **direct scholarly evidence** for the Cherethite-Cretan connection—Rendsburg documents the *k-r-t* wordplay where prophets exploit the consonantal identity between כְּרֵתִי *kəreti* 'Cretan' and the root כ-ר-ת *k-r-t* 'cut off/destroy'. Chapters 21-24 establish dating methodology and dialectal geography crucial for understanding early Israelite-Aegean contact. The *tehom*-Tiamat discussion in Chapter 1 connects directly to the primordial waters dossier.
+
 ## Key Themes Across Works
 
 ### 1. Phonetic Correspondence Methodology
@@ -78,10 +99,11 @@ Minoan evidence illuminates biblical texts:
 - Rendsburg, G. A. (2017). "The Etymology of χάρτης 'papyrus roll'." [Journal TBD]
 - Rendsburg, G. A. (c. 2022). "The Spread of Phoenician Writing Culture to Ancient Greece." Getty Villa Lecture.
 
-### Hebrew Language
+### Hebrew Language & Literary Technique
 - Rendsburg, G. A. (1980). "Late Biblical Hebrew and the Date of 'P'." *Journal of the Ancient Near Eastern Society* 12:65-80.
 - Rendsburg, G. A. (1990). *Linguistic Evidence for the Northern Origin of Selected Psalms*. Atlanta: Scholars Press.
 - Rendsburg, G. A. (1990). *Diglossia in Ancient Hebrew*. New Haven: American Oriental Society.
+- Rendsburg, G. A. (2019). *How the Bible is Written*. Peabody, MA: Hendrickson Publishers. 657 pp.
 
 ## Cross-References
 
@@ -93,4 +115,4 @@ Minoan evidence illuminates biblical texts:
 
 ## RAG Tags
 
-rendsburg, gordon-student, semitic-linguistics, minoan-linear-a, black-athena, bernal, etymological-method, phonetic-correspondence, loanwords, hellenosemitica, cornell, northwest-semitic, hebrew-bible, eteocretan, eblaite-parallel, pater-padre-principle, phoenician-writing-culture, scribal-culture, alphabet-transmission, khartes, harasso, deltos, pitakion, pinax, biblos, kannai, psephos, phoinikasein, spensithios-inscription, getty-villa, kai-inscriptions, byblos, gubla, crete-scribes
+rendsburg, gordon-student, semitic-linguistics, minoan-linear-a, black-athena, bernal, etymological-method, phonetic-correspondence, loanwords, hellenosemitica, cornell, northwest-semitic, hebrew-bible, eteocretan, eblaite-parallel, pater-padre-principle, phoenician-writing-culture, scribal-culture, alphabet-transmission, khartes, harasso, deltos, pitakion, pinax, biblos, kannai, psephos, phoinikasein, spensithios-inscription, getty-villa, kai-inscriptions, byblos, gubla, crete-scribes, how-bible-written, tehom, tiamat, genesis, israelian-hebrew, northern-dialect, style-switching, aramaic, documentary-hypothesis, source-criticism, pentateuch, tenth-century-dating, literary-technique, masoretic, oral-tradition, confused-language, ginsberg, cherethite-cretan, k-r-t-wordplay, caphtor, philistines, prophetic-oracles, addressee-switching, alliteration, polyprosopon, plagues-narrative, exodus, hapax-legomena, ugaritic-cognates, akkadian, egyptian-loanwords, levites, priestly-terminology, legal-cultic

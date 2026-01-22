@@ -82,6 +82,44 @@ The Theran eruption produced:
 
 **Transmission hypothesis**: Witnesses to the eruption—Minoan, Phoenician, and early Greek—encoded the experience in cosmogonic vocabulary. The Membliaros tradition (primordial dark waters) localized precisely at Anaphe-Thera may preserve this volcanic memory.
 
+### 4a. Archaeological Evidence: Çeşme-Bağlararası (2021)
+
+The mythological encodings of volcanic chaos find archaeological confirmation at **Çeşme-Bağlararası**, a western Anatolian coastal settlement where the **first and only human victim** of the Theran eruption was discovered (Şahoğlu et al., *PNAS* 2021).
+
+**The Site**: A thriving coastal settlement with **Minoan cultural elements** (Late Minoan IA pottery), functioning as a regional trade hub. The site shows evidence of both land and sea commerce connecting the Anatolian coast to Crete.
+
+**Key Findings**:
+
+| Evidence | Significance |
+|----------|-------------|
+| **"Çeşme Man"** | Articulated young male skeleton within tsunami debris—the only preserved eruption victim ever found |
+| **Dog skeleton** | Died in doorway; articulated animal in non-burial context is a tsunami marker |
+| **Ash layer matching Santorini "Bo"** | Chemical fingerprint (XRF, neutron activation) confirms Theran origin |
+| **Four tsunami deposits (H1a–d)** | Multiple waves over hours to weeks; fires burning at sea between waves |
+| **Rescue pits above victim** | Survivors dug but couldn't retrieve bodies buried under heavy stones (>40cm) |
+| **Century-long abandonment** | The settlement **ceased to exist for at least a century** after the disaster |
+
+**Chronological Constraint**:
+Radiocarbon dating from nine samples constrains the eruption to **no earlier than 1612 BCE**:
+> "The sample closest to the human skeleton (OxA-38858; Cal BCE 1612 to 1573 [19.4%] and Cal BCE 1565 to 1501 [76.1%]) would be the most representative of the event's age."
+
+**Minoan Trade Network Collapse**:
+> "Sea-borne trade at the time of the event was central to the vitality and power of societies, in particular the sea-dominating Minoans. The social fallout from the destruction of the system's core infrastructure (ships, harbors, ports, and coastal settlements) cannot be understated."
+
+**Compound disaster effects**: Debris-strewn harbors rendered unusable; volcanic ash altered soil chemistry; contaminated aquifers; damaged crops; demographic shifts across the Aegean.
+
+This evidence confirms that the "chaos-event" encoded in texts like Apollonius's "Pall of Darkness" reflects **historical catastrophe**—not merely cosmogonic metaphor. The compound disaster reshaped Mediterranean civilization for generations, and may explain why cosmogonic vocabulary attached itself to the Thera region.
+
+### 4b. The "Pall of Darkness": Astour's Cosmogonic Analysis
+
+Michael Astour (*Hellenosemitica*, 1965, pp. 119–121) provides the definitive scholarly treatment of the "Pall of Darkness" passage in Apollonius Rhodius's *Argonautica* (IV.1694–98):
+
+> "But straightway as they sped over the wide Cretan sea night scared them, that night which they name the **Pall of Darkness**: the stars pierced not that fatal night nor the beams of the moon, but **black chaos descended from heaven**, or haply some other darkness came, **rising from the nethermost depths**."
+
+Astour argues this passage preserves authentic **Phoenician cosmogonic vocabulary**:
+
+> "This forceful description, so unlike the general, rather slack style of Apollonios, does not have an ordinary tempest as its subject... It sounds like a highly poetic solemn cosmogonic myth, extraordinarily resembling Gen. I:2 and Philo of Byblos... The fragment speaks for itself; it operates with such notions, sacralized by liturgic tradition, as 'black chaos' and 'darkness rising from the nethermost depths,' which reminds one of 'the dark air' and 'the obscure, Erebos-like chaos' of Philo, and '**darkness upon the face of the Deep**' of Gen. I:2."
+
 ### 5. Athirat Rahmay and the Womb Connection
 
 Ugaritic texts give Athirat (ʾaṯrt) several epithets:
@@ -147,6 +185,7 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 | Lambert, W.G. | *Babylonian Creation Myths* | 2013 | Critical Enuma Elish edition |
 | Day, John | *God's Conflict with the Dragon and the Sea* | 1985 | Chaos-combat traditions |
 | Rahmouni, Aicha | *Divine Epithets in the Ugaritic Alphabetic Texts* | 2008 | Athirat epithets |
+| Şahoğlu, V. et al. | "Volcanic ash, victims, and tsunami debris from the LBA Thera eruption" (*PNAS*) | 2021 | First eruption victim; tsunami evidence; radiocarbon dating |
 
 ---
 

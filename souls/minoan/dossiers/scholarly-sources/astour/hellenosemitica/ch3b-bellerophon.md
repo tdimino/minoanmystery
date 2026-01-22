@@ -130,9 +130,32 @@ The core myth: Anteia (Proitos's wife) falsely accuses Bellerophon of attempted 
 
 **Marpessa** = W-S *marpeʾ* "healer" + Greek feminine *-ssa*:
 - Flew in winged chariot with husband Idas
-- **Idas** = W-S *ydʿ* "to know" (cf. Amarna *Idamaras*)
-- Idas possessed divine knowledge, struck by Zeus's thunder
 - Father **Aphareus** = W-S *ʿāphār* "dust" (= Underworld)
+
+**Idas and Amorite Onomastics** (pp. 272–273):
+
+Astour derives Idas from the Semitic root **yd'** "to know, to learn, to apprehend":
+
+> "Its stem is Ida-, declinable according to the first declension. It may well derive from the Semitic root *yd'* 'to know, to learn, to apprehend', Akk. *idû*, Heb. perf. *yâda'*, but in some proper names (*ʾÂbîdâʾ* Gen. 25:4, *Šemîdâʾ* Num. 26:32) *yidâʿ*."
+
+**Key methodological point**: "Ida-" was a productive element in **early 2nd millennium Amorite names**:
+
+> "This form was, apparently, quite ancient, for in W-S (Amorite) names of early IId millennium it is found even in the beginning of a name, as **Idamaras**, a tribe and a country in Mesopotamia."
+
+Astour analyzes **Idamaras** etymologically:
+- *maraṣu* (Akkadian) / *mrs* (Ugaritic) = "to be ill, become ill"
+- *marṣu* (noun) = "disease"
+- *Ida-maras* = "he knows the disease" OR "Maraṣ (the disease-god) knows"
+
+This confirms the healer-pattern: "knowledge of the secret of causes of the sickness and of the no less secret procedures of cure belonged to the first duties of a medicine-man."
+
+**Connection to bird-god Zû**: The Akkadian *Zû* derives from Sumerian *zu* "who knows"—the same semantic field. Idas shares Zû's characteristics:
+- Name meaning "who knows"
+- Ability to fly (winged chariot)
+- Theomachy (rivaling Apollo)
+- Death by Zeus's thunderbolt
+
+> "Idas, 'the one who knows,' is an appropriate husband for Marpessa, 'the healer.'" (p. 273)
 
 **Abaris** = Hebrew *ʿābar* "to fly, soar":
 - Hyperborean priest of Apollo
@@ -169,6 +192,8 @@ The core myth: Anteia (Proitos's wife) falsely accuses Bellerophon of attempted 
 | *Eridanos* | < Eridu—river of the Nether World | Sumerian/Akkadian |
 | *ʾikkâr* | "Farmer"—etymon of Icaros | West Semitic/Akkadian |
 | *ydʿ* | "To know"—etymon of Idas | West Semitic |
+| *Idamaras* | Amorite tribal name = "he knows the disease" or "Maraṣ knows" | Amorite |
+| *marṣu / maraṣ* | "Disease"—theophoric element in Amorite names | Akkadian/Amorite |
 | *ʿābar* | "To fly"—etymon of Abaris | Hebrew |
 
 ---
@@ -223,4 +248,4 @@ The core myth: Anteia (Proitos's wife) falsely accuses Bellerophon of attempted 
 
 ## RAG Tags
 
-bellerophon, sisyphos, merope, glaucos, anteia, stheneboea, anath, proitos, chimaera, pegasos, hippolytos, phaedra, phaethon, helel, lucifer, morning star, isaiah, dying god, adonis, tammuz, ešmun, bata, joseph, potiphar, flying heroes, icaros, icarus, daedalus, idas, marpessa, abaris, ephyra, underworld, nether world, owl, glaux, sparagmos, dismemberment, horses, chthonic, healing god, exorcist, eshshepu, gilgamesh, hubur, eridanos, eridu, winged horse, sea monster, leviathan, ltn, theomachy, astour, hellenosemitica
+bellerophon, sisyphos, merope, glaucos, anteia, stheneboea, anath, proitos, chimaera, pegasos, hippolytos, phaedra, phaethon, helel, lucifer, morning star, isaiah, dying god, adonis, tammuz, ešmun, bata, joseph, potiphar, flying heroes, icaros, icarus, daedalus, idas, marpessa, abaris, ephyra, underworld, nether world, owl, glaux, sparagmos, dismemberment, horses, chthonic, healing god, exorcist, eshshepu, gilgamesh, hubur, eridanos, eridu, winged horse, sea monster, leviathan, ltn, theomachy, astour, hellenosemitica, amorite, amorite onomastics, idamaras, yd' to know, semitic names, bronze age names, ida etymology, mount ida
