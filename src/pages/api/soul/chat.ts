@@ -24,10 +24,13 @@ import {
   embodiesTheVision,
   type VisionResult,
   type VisionProcessContext,
+} from '../../../lib/soul/opensouls/subprocesses';
+// Server-only import: embodiesTheTarot uses Node.js fs/path for reference images
+import {
   embodiesTheTarot,
   type TarotResult,
   type TarotProcessContext,
-} from '../../../lib/soul/opensouls/subprocesses';
+} from '../../../lib/soul/opensouls/subprocesses/embodiesTheTarot';
 import {
   OpenRouterProvider,
   GroqProvider,
@@ -391,7 +394,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     // Use client-provided turn count (source of truth in client-side SoulMemory/localStorage)
     // Fall back to computing from history if not provided (for backwards compatibility)
-    const currentTurnCount = turnCount ?? ((conversationHistory?.filter(m => m.role === 'user').length || 0) + 1);
+    const historyUserMsgCount = conversationHistory?.filter(m => m.role === 'user').length || 0;
+    const currentTurnCount = turnCount ?? (historyUserMsgCount + 1);
+
+    // [Tarot Debug] Log adapter initialization for turn tracking diagnosis
+    console.log(`[Tarot] Adapter init: turnCount=${turnCount}, historyUserMsgs=${historyUserMsgCount}, computed=${currentTurnCount}`);
 
     if (stream) {
       // Streaming response with archive indicator events
@@ -545,10 +552,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               console.log(`[Tarot] Turn count (from soulMemory): ${currentTurnCount}`);
 
               const tarotPromise = embodiesTheTarot(tarotContext, {
-                turnInterval: 10,
+                turnInterval: 2,  // TODO: Change back to 10 after debugging
                 displayDuration: 30000,
                 maxTarotsPerSession: 3,
                 onTarotGenerated: (result: TarotResult) => {
+                  // [Tarot Debug] Pre-SSE emission logging
+                  console.log(`[Tarot] Callback fired: success=${result.success}, hasDataUrl=${!!result.imageDataUrl}, dataUrlLength=${result.imageDataUrl?.length ?? 0}, cardName=${result.cardName}, error=${result.error ?? 'none'}`);
+
                   if (result.success && result.imageDataUrl) {
                     try {
                       controller.enqueue(encoder.encode(`event: tarot\ndata: ${JSON.stringify({

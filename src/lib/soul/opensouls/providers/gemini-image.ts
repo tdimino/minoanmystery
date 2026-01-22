@@ -26,6 +26,8 @@ export interface GeminiImageOptions {
   aspectRatio?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4';
   /** Optional negative prompt */
   negativePrompt?: string;
+  /** Reference images for style matching (base64 data URLs) */
+  referenceImages?: string[];
 }
 
 export interface GeminiImageResult {
@@ -160,18 +162,41 @@ export class GeminiImageProvider {
         fullPrompt += `\n\nAVOID: ${options.negativePrompt}`;
       }
 
-      // Add critical instruction
-      fullPrompt += '\n\nCRITICAL: Match the Minoan fresco style exactly - flat colors, bold outlines, no 3D effects.';
+      // Add critical instruction - stronger when reference images are provided
+      if (options.referenceImages && options.referenceImages.length > 0) {
+        fullPrompt += '\n\nCRITICAL: Match the reference images EXACTLY - same flat color treatment, same bold black outlines, same decorative patterns. This card must look like it belongs in the same deck.';
+      } else {
+        fullPrompt += '\n\nCRITICAL: Match the Minoan fresco style exactly - flat colors, bold outlines, no 3D effects.';
+      }
+
+      // Build parts array - reference images first (visual memory), then text prompt
+      const parts: Array<{ text?: string; inlineData?: { mimeType: string; data: string } }> = [];
+
+      // Add reference images as visual memory (before the prompt)
+      if (options.referenceImages && options.referenceImages.length > 0) {
+        for (const dataUrl of options.referenceImages) {
+          // Parse data URL: "data:image/jpeg;base64,/9j/4AAQ..."
+          const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+          if (match) {
+            parts.push({
+              inlineData: {
+                mimeType: match[1],
+                data: match[2],
+              },
+            });
+          }
+        }
+        console.log(`[GeminiImage] Added ${parts.length} reference images for style matching`);
+      }
+
+      // Add the text prompt last
+      parts.push({ text: fullPrompt });
 
       // Build request body for Gemini API with proper imageConfig
       const requestBody = {
         contents: [
           {
-            parts: [
-              {
-                text: fullPrompt,
-              },
-            ],
+            parts,
           },
         ],
         generationConfig: {
@@ -212,11 +237,11 @@ export class GeminiImageProvider {
         throw new Error('No content in Gemini response');
       }
 
-      const parts = firstCandidate.content.parts || [];
+      const responseParts = firstCandidate.content.parts || [];
       let imageDataUrl: string | undefined;
       let textResponse: string | undefined;
 
-      for (const part of parts) {
+      for (const part of responseParts) {
         if (part.inlineData) {
           // Image data
           const mimeType = part.inlineData.mimeType || 'image/png';

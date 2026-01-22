@@ -24,6 +24,7 @@ import type { SoulMemoryInterface } from '../../memory';
 import { getSoulLogger } from '../core/SoulLogger';
 import { tarotPrompt, type TarotPromptResult } from '../cognitiveSteps/tarotPrompt';
 import { createGeminiImageProvider, type GeminiImageResult } from '../providers/gemini-image';
+import { loadMinoanReferenceImages } from '../providers/reference-images.server';
 
 /**
  * Minimal context for tarot subprocess
@@ -136,7 +137,11 @@ export async function embodiesTheTarot(
   // Use soulMemory as source of truth for turn count (not workingMemory)
   // WorkingMemory can be transformed by RAG, cognitive steps, etc.
   const userMessageCount = soulMemory.getUserTurnCount();
-  const shouldTrigger = userMessageCount > 0 && userMessageCount % cfg.turnInterval! === 0;
+  const moduloResult = userMessageCount % cfg.turnInterval!;
+  const shouldTrigger = userMessageCount > 0 && moduloResult === 0;
+
+  // [Tarot Debug] Detailed gate 2 diagnostics
+  log(`[Tarot] Gate 2 check: userMessageCount=${userMessageCount}, interval=${cfg.turnInterval}, modulo=${moduloResult}, lastTarotTurn=${lastTarotTurn}, shouldTrigger=${shouldTrigger}`);
 
   // Ensure we don't trigger on the same turn twice
   if (userMessageCount === lastTarotTurn) {
@@ -149,7 +154,7 @@ export async function embodiesTheTarot(
     return workingMemory;
   }
 
-  log(`[Tarot] Turn ${userMessageCount} - triggering tarot generation`);
+  log(`[Tarot] Turn ${userMessageCount} - TRIGGERING tarot generation (all gates passed)`);
 
   // ─── Gate 3: Provider availability ─────────────────────────────────
   const geminiProvider = createGeminiImageProvider();
@@ -195,7 +200,17 @@ export async function embodiesTheTarot(
     return workingMemory;
   }
 
-  // Call Gemini to generate image
+  // Load reference images for visual style matching
+  log('[Tarot] Loading reference images for style matching...');
+  let referenceImages: string[] = [];
+  try {
+    referenceImages = await loadMinoanReferenceImages();
+    log(`[Tarot] Loaded ${referenceImages.length} reference images`);
+  } catch (refError) {
+    log('[Tarot] Could not load reference images, proceeding without visual memory');
+  }
+
+  // Call Gemini to generate image with reference images
   log('[Tarot] Generating image with Gemini...');
   log('[Tarot] Prompt:', tarotResult.prompt.slice(0, 150) + '...');
 
@@ -205,7 +220,11 @@ export async function embodiesTheTarot(
       prompt: tarotResult.prompt,
       style: 'ancient', // Closest to Minoan aesthetic
       aspectRatio: '3:4', // Tarot card proportions
+      referenceImages, // Pass reference images for visual memory
     });
+
+    // [Tarot Debug] Log Gemini result before success check
+    log(`[Tarot] Gemini result: success=${imageResult.success}, hasDataUrl=${!!imageResult.imageDataUrl}, dataUrlLength=${imageResult.imageDataUrl?.length ?? 0}, error=${imageResult.error ?? 'none'}`);
   } catch (imageError) {
     const errorMessage = imageError instanceof Error ? imageError.message : String(imageError);
     log('[Tarot] Image generation failed:', errorMessage);

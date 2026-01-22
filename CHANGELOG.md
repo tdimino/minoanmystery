@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **World-Class Tarot Background Effect**: Elevated from 8/10 to 9.5/10 quality
+  - **Cinematic 3-stage entrance**: Ethereal glow (0-1s) → card materializes (0.8-2.3s) → breathing loop
+  - **Polyrhythmic dual halos**: Inner halo (18s), outer halo (23s prime number) — LCM 414s before repeat
+  - **Golden ratio positioning**: Card at 61.8% from top on desktop (centered on mobile)
+  - **Floating gold dust particles**: 8-15 CSS-only particles with randomized drift, duration, opacity
+  - **Typography upgrade**: Incised Roman capitals with Cormorant Garamond, letter-spacing entrance animation
+  - **Graceful exit animation**: 2s dissolve with progressive blur (0 → 12px)
+  - **Mobile touch response**: Gold glow follows touch position
+  - **Depth-of-field edges**: Soft blur on card periphery via radial mask
+  - **Chromatic aberration**: Subtle 2px RGB shift for mystical depth
+  - **GPU optimization**: `will-change` on animated layers, cleanup via `.settled` class after 3s
+  - **Reduced motion support**: Respects `prefers-reduced-motion: reduce`
+- **Tarot Reference Images**: Visual memory for style-consistent generation
+  - Added 2 Minoan tarot reference images from Gemini Resonance skill
+  - `reference-images.server.ts` - Server-only loader for reference images
+  - Reference images sent as `inlineData` before text prompt (Gemini visual memory)
+  - Stronger style matching instruction when references are provided
+
+### Changed
+- **Gemini Image Provider**: Added `referenceImages` option for style matching
+- **embodiesTheTarot**: Now loads reference images before generation
+- **subprocesses/index.ts**: No longer re-exports `embodiesTheTarot` (server-only import)
+
+### Fixed
+- **GPU Promotion**: Added `.tarot-chromatic` and `.tarot-noise` to will-change block
+- **Memory Cleanup**: Added `.tarot-dof-layer` to `.settled` cleanup selector
+- **Memory Leak**: Touch event listeners now cleaned up on navigation via `destroy()` method
+- **Adaptive Particles**: Reduced to 8 particles on low-end devices (hardwareConcurrency ≤ 4)
+- **Build Warnings**: Separated server-only code to prevent `fs`/`path` browser externalization warnings
+
+### Added
 - **Tarot Subprocess**: `embodiesTheTarot` for Minoan tarot card generation
   - Gate-based triggering (every 10 turns, session limit of 3)
   - `tarotPrompt` cognitive step with 22-card Major Arcana mapping

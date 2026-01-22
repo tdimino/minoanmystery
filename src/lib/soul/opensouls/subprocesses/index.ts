@@ -3,6 +3,10 @@
  *
  * Subprocesses run alongside mental processes to update
  * persistent state, model the visitor, and maintain context.
+ *
+ * NOTE: embodiesTheTarot is NOT exported here because it uses
+ * server-only Node.js modules (fs, path) for loading reference images.
+ * Import it directly from './embodiesTheTarot' in API routes only.
  */
 
 export { modelsTheVisitor, type ModelsTheVisitorConfig } from './modelsTheVisitor';
@@ -13,10 +17,6 @@ export {
   type VisionResult,
   type VisionProcessContext,
 } from './embodiesTheVision';
-export {
-  embodiesTheTarot,
-  resetTarotState,
-  type EmbodiesTheTarotConfig,
-  type TarotResult,
-  type TarotProcessContext,
-} from './embodiesTheTarot';
+
+// Server-only exports - import directly from the file in API routes:
+// import { embodiesTheTarot, resetTarotState } from './embodiesTheTarot';
