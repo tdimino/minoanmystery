@@ -39,6 +39,11 @@ import {
 } from '../../../lib/soul/opensouls/providers';
 import { imageCaption, type ImageCaptionResult } from '../../../lib/soul/opensouls/cognitiveSteps';
 import {
+  poeticComposition,
+  detectExplicitDomainDeviation,
+  type PoeticRegister,
+} from '../../../lib/soul/opensouls/cognitiveSteps/poeticComposition';
+import {
   kotharRag,
   isRagAvailable,
   detectContextType,
@@ -213,6 +218,8 @@ interface ChatRequest {
   };
   /** Turn count from client (source of truth in localStorage) */
   turnCount?: number;
+  /** User-selected poetic register (from register chips UI) */
+  register?: 'incantatory' | 'philosophical' | 'visionary' | 'political' | 'intimate';
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -496,24 +503,91 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               controller.enqueue(encoder.encode(`event: mode\ndata: ${JSON.stringify({ mode: 'poetic' })}\n\n`));
             }
 
-            // Build instructions for the cognitive step
-            const streamInstructions = buildInstructions(visitorContext);
+            // ─── Cognitive Step Selection ───────────────────────────────
+            // Use poeticComposition for poetic mode, externalDialog otherwise
+            let newMemory: typeof streamMemory;
+            let finalResult: string;
 
-            // Run externalDialog with streaming
-            const [newMemory, responseStream, resultPromise] = await externalDialog(
-              streamMemory,
-              streamInstructions,
-              {
-                stream: true,
-                model: PERSONA_MODEL,
-                temperature: streamConfig.temperature as number,
+            if (isPoeticMode) {
+              // Validate register: only accept known values, default to 'visionary'
+              const validRegisters: PoeticRegister[] = ['incantatory', 'philosophical', 'visionary', 'political', 'intimate'];
+              const register: PoeticRegister = validRegisters.includes(body.register as PoeticRegister)
+                ? (body.register as PoeticRegister)
+                : 'visionary';
+
+              // Detect if we should expand beyond core Minoan image domains
+              const expandedDomains = detectExplicitDomainDeviation(effectiveQuery);
+              if (expandedDomains) {
+                console.log('[Soul Chat] Poetic mode: using expanded image domains');
               }
-            );
 
-            for await (const chunk of responseStream) {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
+              // Run poeticComposition cognitive step with streaming, fallback to externalDialog on failure
+              try {
+                const [poeticMemory, responseStream, resultPromise] = await poeticComposition(
+                  streamMemory,
+                  {
+                    theme: effectiveQuery,
+                    register,
+                    expandedDomains,
+                    phase: 'draft',
+                  },
+                  {
+                    stream: true,
+                    model: PERSONA_MODEL,
+                    temperature: 0.85, // Higher temperature for creativity
+                  }
+                );
+
+                for await (const chunk of responseStream) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
+                }
+                finalResult = await resultPromise;
+                newMemory = poeticMemory;
+
+                console.log(`[Soul Chat] Poem generated: register=${register}, expandedDomains=${expandedDomains}`);
+              } catch (poeticError) {
+                console.error('[Soul Chat] poeticComposition failed, falling back to externalDialog:', poeticError);
+
+                // Fallback to externalDialog with poetic context
+                const fallbackInstructions = buildInstructions(visitorContext) +
+                  '\n\nNote: Respond poetically about the theme: ' + effectiveQuery;
+
+                const [fallbackMemory, fallbackStream, fallbackResult] = await externalDialog(
+                  streamMemory,
+                  fallbackInstructions,
+                  {
+                    stream: true,
+                    model: PERSONA_MODEL,
+                    temperature: 0.85,
+                  }
+                );
+
+                for await (const chunk of fallbackStream) {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
+                }
+                finalResult = await fallbackResult;
+                newMemory = fallbackMemory;
+              }
+            } else {
+              // Standard externalDialog for non-poetic responses
+              const streamInstructions = buildInstructions(visitorContext);
+
+              const [dialogMemory, responseStream, resultPromise] = await externalDialog(
+                streamMemory,
+                streamInstructions,
+                {
+                  stream: true,
+                  model: PERSONA_MODEL,
+                  temperature: streamConfig.temperature as number,
+                }
+              );
+
+              for await (const chunk of responseStream) {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
+              }
+              finalResult = await resultPromise;
+              newMemory = dialogMemory;
             }
-            const finalResult = await resultPromise;
 
             console.log(JSON.stringify({
               event: 'response_complete',
@@ -526,6 +600,21 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
             }));
 
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, fullResponse: finalResult })}\n\n`));
+
+            // ─── Poetic Register Options ─────────────────────────────────
+            // After delivering a poem, offer register selection for next verse
+            if (isPoeticMode) {
+              controller.enqueue(encoder.encode(`event: register_options\ndata: ${JSON.stringify({
+                registers: [
+                  { id: 'incantatory', label: 'Incantatory', description: 'Ritual, mantra-like' },
+                  { id: 'philosophical', label: 'Philosophical', description: 'Etymological, paradox-holding' },
+                  { id: 'visionary', label: 'Visionary', description: 'Fire-water, prophetic' },
+                  { id: 'political', label: 'Political', description: 'Critique, witness' },
+                  { id: 'intimate', label: 'Intimate', description: 'Direct address, "you"' },
+                ],
+                prompt: 'Choose a voice for your next verse:',
+              })}\n\n`));
+            }
 
             // Subprocesses: Vision and Tarot generation
             // These need to complete before we close the stream so their SSE events can be emitted
@@ -678,16 +767,49 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       // Build instructions for the cognitive step
       const instructions = buildInstructions(visitorContext);
 
-      // Use PERSONA_MODEL for external dialog
-      const [newMemory, response] = await externalDialog(
-        memory,
-        instructions,
-        {
-          stream: false,
-          model: PERSONA_MODEL,
-          temperature: config.temperature as number,
+      let newMemory: typeof memory;
+      let response: string;
+
+      // Use poeticComposition for poetic mode, externalDialog otherwise
+      if (isPoeticMode) {
+        const validRegisters: PoeticRegister[] = ['incantatory', 'philosophical', 'visionary', 'political', 'intimate'];
+        const register: PoeticRegister = validRegisters.includes(body.register as PoeticRegister)
+          ? (body.register as PoeticRegister)
+          : 'visionary';
+        const expandedDomains = detectExplicitDomainDeviation(effectiveQuery);
+
+        try {
+          const [poeticMemory, poeticResponse] = await poeticComposition(
+            memory,
+            { theme: effectiveQuery, register, expandedDomains, phase: 'draft' },
+            { stream: false, model: PERSONA_MODEL, temperature: 0.85 }
+          );
+          newMemory = poeticMemory;
+          response = poeticResponse;
+        } catch (poeticError) {
+          console.error('[Soul Chat] poeticComposition failed in non-streaming, falling back:', poeticError);
+          const [fallbackMemory, fallbackResponse] = await externalDialog(
+            memory,
+            instructions + '\n\nNote: Respond poetically about the theme: ' + effectiveQuery,
+            { stream: false, model: PERSONA_MODEL, temperature: 0.85 }
+          );
+          newMemory = fallbackMemory;
+          response = fallbackResponse;
         }
-      );
+      } else {
+        // Standard externalDialog for non-poetic responses
+        const [dialogMemory, dialogResponse] = await externalDialog(
+          memory,
+          instructions,
+          {
+            stream: false,
+            model: PERSONA_MODEL,
+            temperature: config.temperature as number,
+          }
+        );
+        newMemory = dialogMemory;
+        response = dialogResponse;
+      }
 
       console.log(JSON.stringify({
         event: 'response_complete',

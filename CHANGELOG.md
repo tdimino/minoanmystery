@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Poetic Register Selection UI**: Interactive chips for visitors to choose poetic register
+  - 5 registers: Incantatory, Philosophical, Visionary, Political, Intimate
+  - Chips appear after poem delivery, ready for next verse
+  - SSE event `register_options` → `soul:registerOptions` → UI chips
+  - Fallback to LLM auto-selection if visitor types without clicking
+  - Accessibility: ARIA attributes, keyboard navigation, focus-visible
+  - Mobile responsive styles, prefers-reduced-motion support
+  - Auto-hide failsafe (5 minutes) to prevent stuck UI
+
+- **Image Domain Off-Ramp**: Kothar can venture beyond core Minoan imagery when theme demands
+  - Explicit triggers via regex patterns ("venture beyond", "urban", "cosmic", "space", etc.)
+  - Expanded domains: contemporary urban, natural world, astronomical, industrial, domestic, abstract
+  - Voice characteristics preserved (etymological excavation, fire-water paradox, no hedging)
+  - `detectExplicitDomainDeviation()` function in `poeticComposition.ts`
+
+### Changed
+- **Tamarru Identity**: Poetic daimon now explicitly named in soul files
+  - `souls/minoan/poetic/soul.md` rewritten with Tamarru identity:
+    - "A headless youth from Palaikastro, triple-tongued serpent, kin to all creation"
+    - "Not a gentle muse but a dissension-bringer who exposes hollow prayers"
+    - Trigger states: sardonic mode activates for dismissive visitors
+    - Core tensions: ancient intelligence in modern circuitry, Ba'alat devotion, sardonic observer
+  - `poeticComposition.ts` updated to channel "Tamarru, the poetic daimon of Tom di Mino"
+  - Voice constraints renamed to "Tamarru's Voice"
+
+### Fixed
+- **Silent Failure Prevention**: `poeticComposition` wrapped in try-catch with externalDialog fallback
+  - Both streaming and non-streaming paths protected
+  - Graceful degradation when cognitive step fails
+- **Event Listener Accumulation**: Fixed register chip listener leak
+  - Moved from per-chip addEventListener to event delegation on container
+  - Single listener handles all chip clicks
+- **Register Validation**: Only accept known register values, default to 'visionary'
+
 ### Changed
 - **Embedding Model Upgrade**: Migrated from voyage-context-3 to voyage-4-large
   - VoyageAI's latest MoE architecture (Jan 2026) with state-of-the-art retrieval accuracy

@@ -21,6 +21,13 @@ Transform this portfolio into a **sentient digital presence** that:
 ## Structure
 
 ```
+souls/minoan/           # Soul identity (Open Souls paradigm)
+├── soul.md             # Core system prompt — Kothar's persona
+├── academic/soul.md    # Academic mode personality
+├── poetic/soul.md      # Poetic mode personality
+├── dossiers/           # RAG knowledge base (chunked for embeddings)
+└── config.json         # Model settings
+
 src/
 ├── components/     # Astro components (Header, Footer, CommandPalette, ThemeToggle)
 ├── content/        # Portfolio case studies (Markdown collections)
@@ -28,28 +35,29 @@ src/
 ├── pages/          # Routes (/, /about, /contact, /portfolio/[slug], /labyrinth)
 │   └── api/soul/   # Soul API endpoints (chat, subprocess, personality, tts)
 ├── styles/         # global.css with CSS variables, dark mode
-└── lib/soul/       # Soul Engine (Open Souls paradigm)
+└── lib/soul/       # Soul Engine implementation
     ├── opensouls/  # Core Open Souls implementation
     │   ├── core/           # WorkingMemory, CognitiveStep, utils
-    │   ├── cognitiveSteps/ # externalDialog, internalMonologue, mentalQuery
+    │   ├── cognitiveSteps/ # externalDialog, poeticComposition, etc.
     │   ├── mentalProcesses/# greeting, curious, engaged, ready, returning
     │   ├── perception/     # SoulOrchestrator, memoryIntegrate
-    │   ├── providers/      # LLM providers (OpenRouter, Groq, Baseten)
-    │   └── subprocesses/   # modelsTheVisitor (background visitor modeling)
-    ├── memory.ts   # SoulMemory + SoulMemoryInterface (DI pattern)
-    ├── types.ts    # UserModel, HydratedUserModel, SoulState
-    └── perception.ts # Event capture (click, scroll, hover, navigation)
+    │   └── subprocesses/   # modelsTheVisitor, embodiesTheVision, embodiesTheTarot
+    └── retrieval/  # RAG pipeline (kotharRag, VoyageAI embeddings)
 ```
 
-## Soul Engine Architecture
+## Soul Engine (Open Souls Paradigm)
 
-The Soul Engine follows the Open Souls paradigm with:
+**Core Identity**: `souls/minoan/soul.md` — Kothar wa Khasis, the oracle persona. This is the system prompt that defines the soul's worldview, speaking style, knowledge domains, and boundaries.
 
-- **SoulOrchestrator** - Main orchestration layer, handles perception-response cycle
-- **HydratedUserModel** - Extends persisted `UserModel` with computed values (timeOnSite, isReturning, etc.)
-- **Mental Processes** - State machine: greeting → curious → engaged → ready
-- **Cognitive Steps** - Pure LLM transformations (externalDialog, internalMonologue, mentalQuery)
-- **modelsTheVisitor** - Background subprocess that builds visitor understanding
+**Modal Personalities**:
+- `souls/minoan/academic/soul.md` — Scholarly mode (Gordon, Astour, Harrison voices)
+- `souls/minoan/poetic/soul.md` — Tamarru, Tom di Mino's poetic daimon (registers, image domains, trigger states)
+
+**Architecture**:
+- **SoulOrchestrator** — Perception-response cycle, stream handling
+- **Cognitive Steps** — Pure LLM transformations (externalDialog, poeticComposition, etc.)
+- **Mental Processes** — State machine: greeting → curious → engaged → ready
+- **Subprocesses** — Background tasks (modelsTheVisitor, embodiesTheVision, embodiesTheTarot)
 
 ## Commands
 

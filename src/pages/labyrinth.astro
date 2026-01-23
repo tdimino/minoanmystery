@@ -74,6 +74,16 @@ import Header from '../components/Header.astro';
         <span class="poetic-text">Poetic Mode</span>
       </div>
 
+      <!-- Register Options - oracle-like chips for poetic register selection -->
+      <div id="register-options" class="register-options" role="group" aria-label="Poetic register selection" style="display: none;">
+        <span class="register-prompt" id="register-prompt">Choose a voice for your next verse:</span>
+        <button type="button" class="register-chip" data-register="incantatory" aria-pressed="false" aria-describedby="register-prompt" title="Ritual, mantra-like verse">Incantatory</button>
+        <button type="button" class="register-chip" data-register="philosophical" aria-pressed="false" aria-describedby="register-prompt" title="Etymological, paradox-holding">Philosophical</button>
+        <button type="button" class="register-chip" data-register="visionary" aria-pressed="false" aria-describedby="register-prompt" title="Fire-water, prophetic imagery">Visionary</button>
+        <button type="button" class="register-chip" data-register="political" aria-pressed="false" aria-describedby="register-prompt" title="Critique, witness">Political</button>
+        <button type="button" class="register-chip" data-register="intimate" aria-pressed="false" aria-describedby="register-prompt" title="Direct address, second person">Intimate</button>
+      </div>
+
       <form id="labyrinth-form" class="labyrinth-form">
         <!-- Hidden file input for image selection -->
         <input
@@ -919,6 +929,178 @@ import Header from '../components/Header.astro';
   }
 
   /* ─────────────────────────────────────────────────────────────
+     Register Options - Oracle-like Chips for Poetic Register
+     ───────────────────────────────────────────────────────────── */
+
+  .register-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 20px 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-primary-rgb), 0.03) 0%,
+      transparent 50%,
+      rgba(var(--color-primary-rgb), 0.02) 100%
+    );
+    border-radius: 2px;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.12);
+    opacity: 0;
+    transform: translateY(8px);
+    animation: register-reveal 0.6s ease-out 0.3s forwards;
+  }
+
+  @keyframes register-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .register-prompt {
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .register-chip {
+    position: relative;
+    padding: 8px 18px;
+    border-radius: 1px;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.25);
+    background: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-display, 'Thicccboi', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  /* Staggered entrance for chips */
+  .register-chip:nth-child(2) { animation: chip-reveal 0.4s ease-out 0.4s forwards; }
+  .register-chip:nth-child(3) { animation: chip-reveal 0.4s ease-out 0.5s forwards; }
+  .register-chip:nth-child(4) { animation: chip-reveal 0.4s ease-out 0.6s forwards; }
+  .register-chip:nth-child(5) { animation: chip-reveal 0.4s ease-out 0.7s forwards; }
+  .register-chip:nth-child(6) { animation: chip-reveal 0.4s ease-out 0.8s forwards; }
+
+  @keyframes chip-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .register-chip:hover {
+    border-color: var(--color-primary);
+    box-shadow:
+      0 0 20px rgba(var(--color-primary-rgb), 0.15),
+      inset 0 0 20px rgba(var(--color-primary-rgb), 0.05);
+    transform: translateY(-1px);
+  }
+
+  .register-chip.selected {
+    background: rgba(var(--color-primary-rgb), 0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 30px rgba(var(--color-primary-rgb), 0.2);
+  }
+
+  /* Dark mode adjustments */
+  :global([data-theme='dark']) .register-options {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-primary-rgb), 0.04) 0%,
+      transparent 50%,
+      rgba(var(--color-primary-rgb), 0.03) 100%
+    );
+    border-color: rgba(var(--color-primary-rgb), 0.15);
+  }
+
+  :global([data-theme='dark']) .register-chip:hover {
+    box-shadow:
+      0 0 25px rgba(var(--color-primary-rgb), 0.2),
+      inset 0 0 25px rgba(var(--color-primary-rgb), 0.08);
+  }
+
+  /* Focus styles for keyboard navigation */
+  .register-chip:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .register-chip:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .register-chip:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion: disable animations */
+  @media (prefers-reduced-motion: reduce) {
+    .register-options {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .register-chip {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      transition: background-color 0.1s, border-color 0.1s;
+    }
+
+    .register-chip:hover {
+      transform: none;
+    }
+  }
+
+  /* Mobile responsive styles */
+  @media (max-width: 480px) {
+    .register-options {
+      gap: 8px;
+      padding: 16px 12px;
+    }
+
+    .register-prompt {
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+
+    .register-chip {
+      padding: 6px 12px;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  /* Tablet responsive styles */
+  @media (max-width: 768px) and (min-width: 481px) {
+    .register-options {
+      gap: 8px;
+      padding: 18px 14px;
+    }
+
+    .register-chip {
+      padding: 7px 14px;
+      font-size: 0.7rem;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
      Page Layout
      ───────────────────────────────────────────────────────────── */
 
@@ -1721,6 +1903,10 @@ import Header from '../components/Header.astro';
     // Tarot background timeout (for auto-hide)
     private tarotTimeout: ReturnType<typeof setTimeout> | null = null;
 
+    // Register options for poetic mode
+    private registerOptions: HTMLElement;
+    private pendingRegister: string | null = null;
+
     // State display mapping
     private readonly stateLabels: Record<string, string> = {
       greeting: 'Kothar is pondering...',
@@ -1751,6 +1937,7 @@ import Header from '../components/Header.astro';
       this.archiveIndicator = document.getElementById('archive-indicator')!;
       this.academicModeIndicator = document.getElementById('academic-mode-indicator')!;
       this.poeticModeIndicator = document.getElementById('poetic-mode-indicator')!;
+      this.registerOptions = document.getElementById('register-options')!;
 
       // Image attachment elements
       this.imageInput = document.getElementById('image-input') as HTMLInputElement;
@@ -1807,6 +1994,9 @@ import Header from '../components/Header.astro';
         this.clearPendingImage();
       });
 
+      // Register options click handler (event delegation, set up once)
+      this.initRegisterOptionsHandler();
+
       // Voice input (from VoiceButton in chat mode)
       document.addEventListener('voice:transcript', ((e: CustomEvent<{ transcript: string }>) => {
         const { transcript } = e.detail;
@@ -1846,6 +2036,11 @@ import Header from '../components/Header.astro';
         const mode = e.detail.mode;
         this.setAcademicModeIndicator(mode === 'academic');
         this.setPoeticModeIndicator(mode === 'poetic');
+      }) as EventListener);
+
+      // Register options event listener (poetic register selection chips)
+      document.addEventListener('soul:registerOptions', ((e: CustomEvent) => {
+        this.handleRegisterOptions(e.detail);
       }) as EventListener);
 
       // Check for message ID in URL (deep link)
@@ -2608,6 +2803,115 @@ import Header from '../components/Header.astro';
       }
     }
 
+    /** Timer for auto-hiding register options (failsafe) */
+    private registerAutoHideTimer: ReturnType<typeof setTimeout> | null = null;
+
+    /**
+     * Initialize register options click handlers (called once during setup)
+     * Uses event delegation to avoid listener accumulation
+     */
+    private initRegisterOptionsHandler() {
+      if (!this.registerOptions) return;
+
+      // Single delegated event listener on the container
+      this.registerOptions.addEventListener('click', (e) => {
+        const chip = (e.target as HTMLElement).closest('.register-chip');
+        if (!chip) return;
+
+        // Toggle selection and aria-pressed for accessibility
+        this.registerOptions.querySelectorAll('.register-chip').forEach(c => {
+          c.classList.remove('selected');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        chip.classList.add('selected');
+        chip.setAttribute('aria-pressed', 'true');
+        this.pendingRegister = (chip as HTMLElement).dataset.register || null;
+        console.log('[Labyrinth] Register selected:', this.pendingRegister);
+      });
+
+      // Keyboard navigation for accessibility
+      this.registerOptions.addEventListener('keydown', (e) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+
+        const chips = Array.from(this.registerOptions.querySelectorAll('.register-chip')) as HTMLElement[];
+        const currentIndex = chips.findIndex(c => c === document.activeElement);
+        if (currentIndex === -1) return;
+
+        e.preventDefault();
+        let newIndex = currentIndex;
+
+        if (e.key === 'ArrowRight') {
+          newIndex = (currentIndex + 1) % chips.length;
+        } else if (e.key === 'ArrowLeft') {
+          newIndex = (currentIndex - 1 + chips.length) % chips.length;
+        } else if (e.key === 'Home') {
+          newIndex = 0;
+        } else if (e.key === 'End') {
+          newIndex = chips.length - 1;
+        }
+
+        chips[newIndex].focus();
+      });
+    }
+
+    /**
+     * Handle register options for poetic mode
+     * Shows oracle-like chips for the visitor to choose a poetic register
+     */
+    private handleRegisterOptions(detail: { registers: Array<{ id: string; label: string; description: string }>; prompt: string }) {
+      if (!this.registerOptions) return;
+
+      // Clear any existing auto-hide timer
+      if (this.registerAutoHideTimer) {
+        clearTimeout(this.registerAutoHideTimer);
+        this.registerAutoHideTimer = null;
+      }
+
+      // Reset any previous selection and aria-pressed state
+      this.registerOptions.querySelectorAll('.register-chip').forEach(chip => {
+        chip.classList.remove('selected');
+        chip.setAttribute('aria-pressed', 'false');
+      });
+      this.pendingRegister = null;
+
+      // Update prompt if provided
+      const promptEl = this.registerOptions.querySelector('.register-prompt');
+      if (promptEl && detail.prompt) {
+        promptEl.textContent = detail.prompt;
+      }
+
+      // Show the register options container (CSS animation handles reveal)
+      this.registerOptions.style.display = 'flex';
+
+      // Set auto-hide failsafe (5 minutes) in case chips get stuck
+      this.registerAutoHideTimer = setTimeout(() => {
+        console.log('[Labyrinth] Register options auto-hidden (timeout)');
+        this.hideRegisterOptions();
+      }, 5 * 60 * 1000);
+
+      console.log('[Labyrinth] Register options shown:', detail.registers?.length);
+    }
+
+    /**
+     * Hide register options (called when sending a message)
+     */
+    private hideRegisterOptions() {
+      // Clear auto-hide timer
+      if (this.registerAutoHideTimer) {
+        clearTimeout(this.registerAutoHideTimer);
+        this.registerAutoHideTimer = null;
+      }
+
+      if (this.registerOptions) {
+        this.registerOptions.style.display = 'none';
+        // Reset animation state for next appearance
+        this.registerOptions.style.animation = 'none';
+        // Force reflow to restart animation
+        void this.registerOptions.offsetHeight;
+        this.registerOptions.style.animation = '';
+      }
+    }
+
     /**
      * Handle paste event for image attachment
      */
@@ -2766,6 +3070,11 @@ import Header from '../components/Header.astro';
       const imageAttachment = this.pendingImage;
       this.clearPendingImage();
 
+      // Capture and clear pending poetic register selection
+      const registerSelection = this.pendingRegister;
+      this.pendingRegister = null;
+      this.hideRegisterOptions();
+
       // Add user message
       const userMsg: ChatMessage = {
         id: `${Date.now()}_user`,
@@ -2813,10 +3122,13 @@ import Header from '../components/Header.astro';
         // Send message to orchestrator (Open Souls paradigm)
         // The orchestrator will call onStreamChunk for each chunk,
         // and onResponse when complete (which resolves our promise)
-        // Pass image attachment if present
+        // Pass image attachment and register selection if present
         await this.orchestrator.handleMessage(
           query || 'What do you see in this image?',
-          imageAttachment ? { imageAttachment } : undefined
+          {
+            ...(imageAttachment ? { imageAttachment } : {}),
+            ...(registerSelection ? { register: registerSelection } : {}),
+          }
         );
 
         // Wait for the response to complete (via onResponse callback)

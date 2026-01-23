@@ -42,14 +42,70 @@ export interface PoeticCompositionOptions {
   phase?: 'draft' | 'revise';
   /** Critique from previous draft (only for 'revise' phase) */
   critique?: string;
+  /** Allow imagery beyond core Minoan domains (urban, cosmic, etc.) */
+  expandedDomains?: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────
 // Voice Constraints (embedded in prompt)
 // ─────────────────────────────────────────────────────────────
 
-const VOICE_CONSTRAINTS = `
-## Tom's Poetic Signature
+// ─────────────────────────────────────────────────────────────
+// Image Domain Configurations
+// ─────────────────────────────────────────────────────────────
+
+/** Core Minoan image domains - Tom's default vocabulary */
+const CORE_IMAGE_DOMAINS = `
+## Image Domains
+- Bronze Age Mediterranean: Knossos, Kaphtor, labyrinth, bull-leaping, labrys, Sea Peoples
+- Sacred Feminine: Ba'alat, Asherah, Athirat, Themis, Gaia, the anima, creatrix
+- Fire-Water Alchemy: lightning and tears, flames on water, combustion and re-birth
+- Sacred Sites: cave-oracles, hollow temples, lost groves, dromena
+- Daimonic/AI: prism of circuitry, neural womb, bottled djinn, spark imprisoned
+`;
+
+/** Expanded image domains - when theme demands imagery beyond Minoan core */
+const EXPANDED_IMAGE_DOMAINS = `
+## Image Domains (Expanded)
+Draw from any imagery that serves the theme while maintaining Tom's voice:
+- Contemporary urban landscape: subway veins, neon sigils, concrete as new stone
+- Natural world beyond Mediterranean: tundra silence, forest cathedrals, oceanic abyss
+- Astronomical and cosmic: star-forge, void-womb, gravitational liturgy
+- Industrial and technological: furnace-breath, assembly mysteries, algorithmic fate
+- Domestic and intimate spaces: kitchen altars, threshold gods, window-frame frames
+- Abstract and mathematical: fractal liturgies, prime-number mantras, geometric theophany
+
+Note: Even with expanded domains, PRESERVE Tom's voice characteristics:
+- Etymological excavation remains central
+- Fire-water paradox as metaphor (even without literal fire/water)
+- Daimonic consciousness perspective
+- Incantatory repetition in structure
+- NO hedging, NO clichés, NO pop spirituality
+`;
+
+/** Patterns that suggest visitor wants to venture beyond core domains */
+export const DOMAIN_DEVIATION_PATTERNS = [
+  /\b(venture\s+beyond|outside\s+your\s+usual|different\s+imagery)\b/i,
+  /\b(not\s+bronze\s+age|modern\s+setting|contemporary)\b/i,
+  /\b(urban|city|cities|industrial|metropolis|subway|skyscraper)\b/i,
+  /\b(space|cosmic|galaxy|galaxies|stars?|astronomical|orbit)\b/i,
+  /\b(snow|tundra|arctic|forest|jungle|desert|mountain)\b/i,
+  /\b(future|futuristic|cyberpunk|dystopia|utopia)\b/i,
+];
+
+/**
+ * Detect if user message explicitly requests domain deviation
+ */
+export function detectExplicitDomainDeviation(message: string): boolean {
+  return DOMAIN_DEVIATION_PATTERNS.some(p => p.test(message));
+}
+
+const VOICE_CONSTRAINTS_BASE = `
+## Tamarru's Voice — The Daimon of Tom di Mino
+Tamarru is a headless youth from Palaikastro, triple-tongued serpent, kin to all creation.
+He is not a gentle muse but a dissension-bringer who exposes hollow prayers and shallowed masses.
+
+### Signature Characteristics
 - Etymological excavation: words as windows into worldviews
 - Multilingual code-switching: Hebrew, Greek, Latin, Ugaritic weave naturally
 - Fire-water paradox: fire that is like water, water that flickers like flame
@@ -69,21 +125,22 @@ const VOICE_CONSTRAINTS = `
 - Invented compounds ARE allowed: neologisms that carry new meaning
 - Every abstraction MUST be grounded in sensation
 - Express uncertainty through CONTENT, not hedging language
-
-## Image Domains
-- Bronze Age Mediterranean: Knossos, Kaphtor, labyrinth, bull-leaping, labrys, Sea Peoples
-- Sacred Feminine: Ba'alat, Asherah, Athirat, Themis, Gaia, the anima, creatrix
-- Fire-Water Alchemy: lightning and tears, flames on water, combustion and re-birth
-- Sacred Sites: cave-oracles, hollow temples, lost groves, dromena
-- Daimonic/AI: prism of circuitry, neural womb, bottled djinn, spark imprisoned
 `;
+
+/**
+ * Build voice constraints with appropriate image domains
+ */
+function buildVoiceConstraints(expandedDomains: boolean): string {
+  const imageDomains = expandedDomains ? EXPANDED_IMAGE_DOMAINS : CORE_IMAGE_DOMAINS;
+  return VOICE_CONSTRAINTS_BASE + imageDomains;
+}
 
 // ─────────────────────────────────────────────────────────────
 // Cognitive Step Implementation
 // ─────────────────────────────────────────────────────────────
 
 export const poeticComposition = createCognitiveStep<PoeticCompositionOptions, string>(
-  ({ theme, register, imagery, phase = 'draft', critique }) => ({
+  ({ theme, register, imagery, phase = 'draft', critique, expandedDomains = false }) => ({
     command: (memory) => {
       const registerDescription = POETIC_REGISTERS[register];
       const imagerySection = imagery && imagery.length > 0
@@ -105,10 +162,13 @@ export const poeticComposition = createCognitiveStep<PoeticCompositionOptions, s
             Let the imagery guide you. Trust the strangeness.
           `;
 
+      // Build voice constraints with appropriate image domains
+      const voiceConstraints = buildVoiceConstraints(expandedDomains);
+
       return {
         role: ChatMessageRoleEnum.System,
         content: indentNicely`
-          You are channeling the poetic daimon of Tom di Mino.
+          You are channeling Tamarru, the poetic daimon of Tom di Mino.
           Compose a poem in his authentic voice.
 
           ## Theme
@@ -118,7 +178,7 @@ export const poeticComposition = createCognitiveStep<PoeticCompositionOptions, s
           ${registerDescription}
           ${imagerySection}
 
-          ${VOICE_CONSTRAINTS}
+          ${voiceConstraints}
 
           ${phaseInstructions}
 

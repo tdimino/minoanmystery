@@ -2,6 +2,18 @@
 
 Technical reference for the Open Souls paradigm implementation.
 
+## Soul Identity Files
+
+The soul's personality is defined in markdown files following the Open Souls `{soulName}.md` pattern:
+
+| File | Purpose |
+|------|---------|
+| `souls/minoan/soul.md` | **Core identity** — Kothar wa Khasis persona, worldview, speaking style, knowledge domains, boundaries |
+| `souls/minoan/academic/soul.md` | Academic mode — Scholarly voices (Gordon, Astour, Harrison) |
+| `souls/minoan/poetic/soul.md` | Poetic mode — **Tamarru**, Tom di Mino's daimon (registers, image domains, trigger states) |
+
+These files are loaded at runtime and injected into WorkingMemory as the `personality` region. The `/api/soul/personality` endpoint serves `souls/minoan/soul.md`.
+
 ## Architecture Overview
 
 ```
@@ -135,6 +147,9 @@ const soulMemory = context.soulMemory ?? getSoulMemory();
 
 | File | Purpose |
 |------|---------|
+| `souls/minoan/soul.md` | **Core identity** — System prompt defining Kothar's persona |
+| `souls/minoan/academic/soul.md` | Academic mode personality |
+| `souls/minoan/poetic/soul.md` | Poetic mode personality (registers, constraints) |
 | `memory.ts` | SoulMemory class, SoulMemoryInterface, localStorage persistence |
 | `types.ts` | UserModel, HydratedUserModel, ProcessContext, SoulState |
 | `perception.ts` | Event capture (click, scroll, navigation) |
@@ -143,6 +158,7 @@ const soulMemory = context.soulMemory ?? getSoulMemory();
 | `ProcessRunner.ts` | State machine evaluation and execution |
 | `CognitiveStep.ts` | createCognitiveStep factory |
 | `WorkingMemory.ts` | Immutable memory container |
+| `cognitiveSteps/poeticComposition.ts` | Poetic mode cognitive step with register/domain support |
 
 ## API Endpoints
 

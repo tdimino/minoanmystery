@@ -92,6 +92,10 @@ src/
   - Mental process state machine (greeting → curious → engaged → ready)
   - Pure cognitive steps (externalDialog, internalMonologue, mentalQuery)
   - `/labyrinth` chat interface with streaming responses
+  - **Poetic Mode**: Channel Tamarru, the poetic daimon of Tom di Mino
+    - Register selection UI (incantatory, philosophical, visionary, political, intimate)
+    - Image domain off-ramp for themes beyond Minoan vocabulary
+  - **Academic Mode**: Polymorphic scholar personas (Gordon, Harrison, Astour)
   - **Image vision**: Paste images for Kothar to analyze (Gemini 3 Pro Vision)
   - Divine feminine background (Asherah image) triggered by goddess vocabulary
   - Archive search indicator during RAG retrieval

@@ -389,7 +389,10 @@ export class SoulOrchestrator {
   }
 
   // Public API for messages/commands
-  async handleMessage(message: string, context?: { imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number } }): Promise<void> {
+  async handleMessage(message: string, context?: {
+    imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number };
+    register?: string;
+  }): Promise<void> {
     if (!this.isInitialized) return;
 
     const soulMemory = getSoulMemory();
@@ -407,7 +410,7 @@ export class SoulOrchestrator {
 
     // API Mode: Delegate LLM calls to server-side endpoints
     if (this.config.apiMode) {
-      await this.handleMessageViaAPI(message, context?.imageAttachment);
+      await this.handleMessageViaAPI(message, context?.imageAttachment, context?.register);
       return;
     }
 
@@ -450,7 +453,11 @@ export class SoulOrchestrator {
    * Handle message via API endpoints (for client-side use)
    * Delegates LLM calls to server while maintaining client-side state
    */
-  private async handleMessageViaAPI(message: string, imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number }): Promise<void> {
+  private async handleMessageViaAPI(
+    message: string,
+    imageAttachment?: { dataUrl: string; mimeType: string; sizeBytes: number },
+    register?: string
+  ): Promise<void> {
     const soulMemory = getSoulMemory();
     const rawModel = soulMemory.get();
     const hydratedModel = hydrateUserModel(rawModel, soulMemory);
@@ -494,6 +501,12 @@ export class SoulOrchestrator {
       if (imageAttachment) {
         requestBody.imageAttachment = imageAttachment;
         this.log('Sending image attachment', { size: imageAttachment.sizeBytes, mimeType: imageAttachment.mimeType });
+      }
+
+      // Include poetic register selection if present
+      if (register) {
+        requestBody.register = register;
+        this.log('Sending poetic register', { register });
       }
 
       // Call chat API with streaming
@@ -600,6 +613,19 @@ export class SoulOrchestrator {
                   detail: { mode: parsed.mode }
                 }));
                 this.log('Mode indicator received', { mode: parsed.mode });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle register options events (poetic register selection chips)
+              if (currentEventType === 'register_options') {
+                document.dispatchEvent(new CustomEvent('soul:registerOptions', {
+                  detail: {
+                    registers: parsed.registers,
+                    prompt: parsed.prompt,
+                  }
+                }));
+                this.log('Register options received', { count: parsed.registers?.length });
                 currentEventType = 'message'; // Reset for next event
                 continue;
               }
