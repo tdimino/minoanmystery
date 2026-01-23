@@ -1,3 +1,18 @@
+---
+title: "Ugaritic Poetry"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [baal, anath, yamm, mot, kothar-wa-hasis, el, asherah, leviathan, tannin]
+  concepts: [myth, epic, parallelism, prosody, helen-of-troy-motif, chaos-combat, kret-epic, aqhat-epic]
+  places: [ugarit, saphon, caphtor, udum, crete]
+  scholars: [gordon, herdner]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # Ugaritic Poetry (Ugarit and Minoan Crete, Chapter IV)
 
 ## Source

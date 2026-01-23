@@ -1,3 +1,18 @@
+---
+title: "Introduction to Themis"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, dionysus, kouretes]
+  concepts: [duree, collective-representation, mystery-religion, olympian, dromenon, eniautos-daimon, matrilinear, thiasos]
+  places: [crete, palaikastro]
+  scholars: [harrison, bergson, durkheim, william-james, murray, cornford]
+  periods: [classical-antiquity]
+  languages: [greek, french]
+---
+
 # Introduction to Themis
 
 ## Source

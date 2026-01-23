@@ -1,3 +1,18 @@
+---
+title: "Jane Ellen Harrison - Scholar Profile"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Cambridge Ritualist School"
+tags:
+  deities: [zeus, dionysus, kouretes, zagreus]
+  concepts: [dromenon, ritual-theory, eniautos-daimon, collective-representation, thiasos, initiation, mystery-cults]
+  places: [cambridge, crete, palaikastro, delphi]
+  scholars: [harrison, murray, cornford, cook, tylor, frazer, durkheim, bergson]
+  periods: [bronze-age, classical-antiquity]
+  languages: [greek]
+---
+
 # Jane Ellen Harrison (1850–1928)
 
 ## Scholar Profile

@@ -1,3 +1,17 @@
+---
+title: "Style-Switching"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [style-switching, dialect-representation, linguistic-coloring, foreign-language-atmosphere]
+  places: [aram, paddan-aram, israel]
+  scholars: [rendsburg, gordon]
+  periods: [iron-age]
+  languages: [hebrew, aramaic]
+---
+
 # Chapter 24: Style-Switching
 
 ## Source

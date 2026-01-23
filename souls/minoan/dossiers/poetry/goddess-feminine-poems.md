@@ -1,3 +1,14 @@
+---
+title: "Goddess & Feminine Divine Poems"
+tags:
+  deities: [themis, gaia, asherah, athirat, al-lat, al-uzzat, al-manat, tanit, tinit, lilith]
+  concepts: [divine-feminine, anima, creatrix, sacred-feminine, ritual-covenant, goddess-worship, awakening]
+  places: [crete]
+  periods: [bronze-age, contemporary]
+  poetic_forms: [free-verse, hymn, invocation]
+  scholars: [harrison, jung]
+---
+
 # Goddess & Feminine Divine Poems
 
 ## Source

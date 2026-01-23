@@ -1,3 +1,13 @@
+---
+title: "Marginalia - Closing Aphorisms"
+tags:
+  deities: [goddess, tammuz, daimon, maat]
+  concepts: [mystery-privatization, multiplicity, death-rebirth, language-power, transmigration, mantra, shedding, wisdom-fragments]
+  places: []
+  periods: [contemporary]
+  poetic_forms: [aphorism, fragment]
+---
+
 # Marginalia - Closing Aphorisms
 
 ## Source

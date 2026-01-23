@@ -1,3 +1,18 @@
+---
+title: "Reading Creation (Genesis 1)"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  deities: [tehom, tiamat, shamash, yareach, yamm]
+  concepts: [cosmogony, primordial-waters, oral-reading, aural-processing, repetition-variation, avoidance-pagan-names]
+  places: [israel, canaan]
+  scholars: [rendsburg]
+  periods: [iron-age]
+  languages: [hebrew, akkadian, ugaritic]
+---
+
 # Chapter 1: Reading Creation (Genesis 1)
 
 ## Source

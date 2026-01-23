@@ -1,3 +1,18 @@
+---
+title: "Cadmos and the Cadmids"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [cadmos, europa, semele, dionysos, actaeon, membliaros, poikiles, harmonia, ningiszida, cabiri, melqart, anath]
+  concepts: [hellenosemitica, etymology, method-of-doublets, cosmogony, morning-star, evening-star, dying-god, sparagmos]
+  places: [thebes, thera, anaphe, boeotia, ugarit, phoenicia, kythera]
+  scholars: [astour, berard, virolleaud, gordon, beloch, meyer]
+  periods: [bronze-age, minoan, mycenaean]
+  languages: [west-semitic, ugaritic, phoenician, greek, sumerian, akkadian, hebrew]
+---
+
 # Hellenosemitica Chapter II: Cadmos and the Cadmids
 
 ## Source

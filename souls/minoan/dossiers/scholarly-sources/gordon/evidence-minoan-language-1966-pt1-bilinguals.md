@@ -1,3 +1,18 @@
+---
+title: "Evidence for the Minoan Language — Part 1: Bilinguals & Eteocretan"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Evidence for the Minoan Language (Ventnor Publishers)"
+tags:
+  deities: [kothar-wa-hasis]
+  concepts: [bilingual-method, eteocretan, eteocypriote, decipherment, northwest-semitic, retrograde-writing]
+  places: [amathus, dreros, praisos, psychro, dictaean-cave, crete, cyprus, caphtor]
+  scholars: [gordon, ventris, masson, van-effenterre]
+  periods: [bronze-age, minoan, hellenistic]
+  languages: [linear-a, eteocretan, eteocypriote, phoenician, hebrew, aramaic]
+---
+
 # Evidence for the Minoan Language (1966) — Part 1: Bilinguals & Eteocretan
 
 ## Source

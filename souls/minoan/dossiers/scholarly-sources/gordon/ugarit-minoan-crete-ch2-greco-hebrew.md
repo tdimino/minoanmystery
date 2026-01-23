@@ -1,3 +1,18 @@
+---
+title: "Ugaritic Literature and Its Greco-Hebrew Affinities"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [baal, anath, leviathan, mot, yamm, kothar-wa-hasis, dagon, el, asherah]
+  concepts: [guild-mobility, helen-of-troy-motif, sabbatical-cycle, chaos-combat, parallel-word-pairs]
+  places: [ugarit, caphtor, crete, sapyselaton, saphon]
+  scholars: [gordon, astour]
+  periods: [bronze-age, minoan]
+  languages: [ugaritic, hebrew, greek]
+---
+
 # Ugaritic Literature and Its Greco-Hebrew Affinities (Ugarit and Minoan Crete, Chapter II)
 
 ## Source

@@ -1,3 +1,17 @@
+---
+title: "An Introduction to Alliteration, and Alliteration in the Book of Genesis"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [alliteration, hapax-legomena, phonology, oral-aural, sound-play, literary-technique]
+  places: [israel]
+  scholars: [rendsburg, gevirtz, margalit]
+  periods: [iron-age]
+  languages: [hebrew, ugaritic, akkadian]
+---
+
 # Gary A. Rendsburg — "An Introduction to Alliteration, and Alliteration in the Book of Genesis" (Chapter 5)
 
 ## Source

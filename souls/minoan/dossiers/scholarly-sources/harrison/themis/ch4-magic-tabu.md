@@ -1,3 +1,18 @@
+---
+title: "Chapter IV: Magic and Tabu"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus-kataibates, picus]
+  concepts: [magic, tabu, mana, orenda, medicine-king, rain-making, hoplolatry, bird-magic, abaton]
+  places: [krannon, thessaly, tiora]
+  scholars: [harrison, durkheim, marett, bergson, plato]
+  periods: [classical-antiquity]
+  languages: [greek, latin]
+---
+
 # Chapter IV: Magic and Tabu
 
 ## Source

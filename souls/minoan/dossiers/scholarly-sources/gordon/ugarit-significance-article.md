@@ -1,3 +1,18 @@
+---
+title: "Ugarit and Its Significance"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1974
+  venue: "Lecture/Article"
+tags:
+  deities: [kothar-wa-hasis, baal, anath, asherah]
+  concepts: [caphtor, parallel-word-pairs, helen-of-troy-motif, coveting, imitatio-deorum, alphabet]
+  places: [ugarit, crete, caphtor, sapyselaton, ur, urra]
+  scholars: [gordon, astour, nougayrol, fisher]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew, linear-a, eteocretan]
+---
+
 # Ugarit and Its Significance (Article, 1974)
 
 ## Source

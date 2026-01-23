@@ -1,3 +1,17 @@
+---
+title: "Addressee-Switching"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [addressee-switching, style-switching, prophetic-oracles, foreign-language, linguistic-atmosphere]
+  places: [aram, phoenicia, moab, edom, babylon, tyre]
+  scholars: [rendsburg, rabin]
+  periods: [iron-age]
+  languages: [hebrew, aramaic, phoenician, moabite, edomite, akkadian]
+---
+
 # Gary A. Rendsburg — "Addressee-Switching" (Chapter 25)
 
 ## Source

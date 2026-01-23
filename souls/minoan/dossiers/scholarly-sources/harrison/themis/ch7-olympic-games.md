@@ -1,3 +1,18 @@
+---
+title: "Chapter VII: The Origin of the Olympic Games"
+source:
+  author: "F.M. Cornford"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, hera, pelops, sosipolis, kouretes]
+  concepts: [eniautos-daimon, year-spirit, new-year-festival, sacred-marriage, penteteris, kronia, saturnalia, vegetation-spirit, fertility-daimon, ritual-combat]
+  places: [olympia, crete, sparta]
+  scholars: [cornford, harrison, cook, frazer, murray, ridgeway]
+  periods: [bronze-age, classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter VII: The Origin of the Olympic Games
 
 ## Source

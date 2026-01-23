@@ -1,3 +1,18 @@
+---
+title: "Black Athena: An Etymological Response"
+source:
+  author: "Gary A. Rendsburg"
+  year: 1989
+  venue: "Arethusa"
+tags:
+  deities: [athena, neith, rhea, io, belos]
+  concepts: [etymology, semitic-loans, phonetic-correspondence, loanwords, nostratic, pater-padre-principle]
+  places: [greece, egypt, crete, aegean]
+  scholars: [rendsburg, bernal, gordon, frisk, chantraine]
+  periods: [bronze-age, iron-age]
+  languages: [greek, hebrew, phoenician, egyptian, akkadian, ugaritic]
+---
+
 # Black Athena: An Etymological Response
 
 ## Source

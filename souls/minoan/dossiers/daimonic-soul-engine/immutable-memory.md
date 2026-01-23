@@ -1,3 +1,10 @@
+---
+title: "Immutable Memory"
+tags:
+  concepts: [immutable-memory, functional-programming, state-management, time-travel-debugging, predictability, compositional-design]
+  frameworks: [open-souls, daimonic-soul-engine, working-memory]
+---
+
 # Immutable Memory
 
 *Every memory operation creates a new moment in time.*

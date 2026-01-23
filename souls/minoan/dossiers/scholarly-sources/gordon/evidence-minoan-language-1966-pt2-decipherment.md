@@ -1,3 +1,18 @@
+---
+title: "Evidence for the Minoan Language — Part 2: Linear A Decipherment"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Evidence for the Minoan Language (Ventnor Publishers)"
+tags:
+  deities: [addu, baal, yamm, tinit, gupanu, ugaru, dagon, kret]
+  concepts: [linear-a, decipherment, virtual-bilingual, wheat-determinative, votive-offering, morphology, orthography]
+  places: [hagia-triada, knossos, palaikastro, dictaean-cave, crete]
+  scholars: [gordon, ventris, brice]
+  periods: [bronze-age, minoan]
+  languages: [linear-a, ugaritic, hebrew, phoenician, akkadian]
+---
+
 # Evidence for the Minoan Language (1966) — Part 2: Linear A Decipherment
 
 ## Source

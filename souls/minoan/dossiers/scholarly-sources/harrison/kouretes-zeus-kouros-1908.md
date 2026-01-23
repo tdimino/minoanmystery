@@ -1,3 +1,18 @@
+---
+title: "The Kouretes and Zeus Kouros: A Study in Pre-Historic Sociology"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1908
+  venue: "Annual of the British School at Athens, Vol. XV"
+tags:
+  deities: [zeus, zagreus, dionysus, kouretes, korybantes, titans]
+  concepts: [initiation, tribal-initiation, bull-roarer, rhombos, thunder-rites, palingenesia, sparagmos, death-and-rebirth, paidotrophia, armed-dancers, omophagia]
+  places: [crete, palaikastro, dikta, ida]
+  scholars: [harrison, strabo, frazer, clement-of-alexandria]
+  periods: [bronze-age, minoan, classical-antiquity]
+  languages: [greek]
+---
+
 # The Kouretes and Zeus Kouros: A Study in Pre-Historic Sociology (1908)
 
 ## Source

@@ -1,3 +1,13 @@
+---
+title: "Tom's Origin Story"
+tags:
+  concepts: [linguistics, bronze-age-mythology, science-fiction, improv, worldbuilding, eastern-mysticism, gnosis, contemplative-practice]
+  places: [new-jersey, hudson-valley, ireland, india, italy]
+  periods: [contemporary]
+  roles: [writer, poet, independent-researcher]
+  languages: [spanish, italian, french, arabic, sanskrit, latin, greek, hebrew, ugaritic]
+---
+
 # Tom's Origin Story
 
 ## Source

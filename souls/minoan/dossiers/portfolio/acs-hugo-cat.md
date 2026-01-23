@@ -1,3 +1,12 @@
+---
+title: "American College of Surgeons - Website Redesign"
+tags:
+  concepts: [content-audit, information-architecture, taxonomy, ux-research, voice-and-tone, co-design, ab-testing]
+  clients: [acs, hugo-cat]
+  roles: [sr-content-strategist]
+  periods: [contemporary]
+---
+
 # American College of Surgeons - Website Redesign
 
 ## Source

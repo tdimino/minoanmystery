@@ -1,3 +1,14 @@
+---
+title: "Ritual & Mystery Poems"
+tags:
+  deities: [zeus, shiva, vishnu, cassandra, minos]
+  concepts: [mystery-religion, dromena, initiation, death-rebirth, ritual-transformation, dithyramb, cave-oracle]
+  places: [crete, dictaean-cave, delphi, styx]
+  periods: [bronze-age, classical]
+  poetic_forms: [hymn, incantation, liturgy, dithyramb]
+  scholars: [harrison]
+---
+
 # Ritual & Mystery Poems
 
 ## Source

@@ -1,3 +1,10 @@
+---
+title: "Mental Processes"
+tags:
+  concepts: [mental-processes, state-machine, behavioral-states, state-transitions, narrative-coherence, process-boundaries]
+  frameworks: [open-souls, daimonic-soul-engine]
+---
+
 # Mental Processes
 
 *A soul's behavior is a journey through emotional and cognitive states.*

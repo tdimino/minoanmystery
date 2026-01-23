@@ -1,3 +1,18 @@
+---
+title: "Some New Divine Names from Ugarit"
+source:
+  author: "Michael C. Astour"
+  year: 1966
+  venue: "Journal of the American Oriental Society"
+tags:
+  deities: [phlt, chemosh, lucifer, sdq-mshr, esmun, dqt, trt, ishara, el, baal, demeter, dionysus]
+  concepts: [hellenosemitica, etymology, divine-names, religious-koine, mare-goddess, morning-star]
+  places: [ugarit, ras-shamra, phigalia, crete, dikte, aegean]
+  scholars: [astour, virolleaud, albright, palmer]
+  periods: [bronze-age]
+  languages: [ugaritic, akkadian, west-semitic, greek, hebrew]
+---
+
 # Some New Divine Names from Ugarit (1966)
 
 ## Source

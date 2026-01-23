@@ -1,3 +1,12 @@
+---
+title: "Subquadratic / Aldea AI - LLM Production Deployment"
+tags:
+  concepts: [tensorrt-llm, triton-inference-server, tensor-parallelism, lora-adapters, gpu-optimization, multi-gpu-inference, model-serving]
+  clients: [aldea, subquadratic]
+  roles: [founding-engineer, principal-ai-ml-engineer]
+  periods: [contemporary]
+---
+
 # Subquadratic / Aldea AI - LLM Production Deployment
 
 ## Source

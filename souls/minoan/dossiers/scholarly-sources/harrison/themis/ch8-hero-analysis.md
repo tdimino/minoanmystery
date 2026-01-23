@@ -1,3 +1,18 @@
+---
+title: "Chapter VIII: Daimon and Hero"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [agathos-daimon, zeus, cecrops, erechtheus, theseus, hippolytus]
+  concepts: [hero-cult, functionary, snake-cult, fertility-spirit, cornucopia, eponymous-hero, palingenesia, eniautos-muthos, agon, pathos, threnos, theophany, sparagmos]
+  places: [athens, troezen, brauron]
+  scholars: [harrison, durkheim, marett, frazer, murray, cornford]
+  periods: [bronze-age, classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter VIII: Daimon and Hero
 
 ## Source

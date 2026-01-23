@@ -1,3 +1,17 @@
+---
+title: "Someone Will Succeed in Deciphering Minoan: Cyrus H. Gordon and Minoan Linear A"
+source:
+  author: "Gary A. Rendsburg"
+  year: 1996
+  venue: "Biblical Archaeologist"
+tags:
+  concepts: [linear-a, minoan-language, west-semitic, decipherment, sea-peoples, eblaite-parallel]
+  places: [crete, knossos, caphtor, hagia-triada, ugarit]
+  scholars: [rendsburg, gordon, ventris, chadwick, aartun]
+  periods: [bronze-age, minoan]
+  languages: [linear-a, eteocretan, west-semitic, ugaritic, akkadian, hebrew]
+---
+
 # "Someone Will Succeed in Deciphering Minoan": Cyrus H. Gordon and Minoan Linear A
 
 ## Source

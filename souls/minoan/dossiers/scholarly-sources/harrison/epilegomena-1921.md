@@ -1,3 +1,18 @@
+---
+title: "Epilegomena to the Study of Greek Religion"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1921
+  venue: "Cambridge University Press"
+tags:
+  deities: [zeus, dionysus, agathos-daimon, kouretes]
+  concepts: [expulsion-impulsion, gorgoneion, liknon, rite-de-passage, totemism, tabu, initiation, year-drama, ambivalenz, desire-exteriorized]
+  places: [chaeronea, viza, thrace, eleusis]
+  scholars: [harrison, freud, jung, van-gennep, durkheim, robertson-smith, frazer, murray, cornford]
+  periods: [classical-antiquity, bronze-age]
+  languages: [greek]
+---
+
 # Epilegomena to the Study of Greek Religion
 
 ## Source

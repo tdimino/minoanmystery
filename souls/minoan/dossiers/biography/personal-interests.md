@@ -1,3 +1,13 @@
+---
+title: "Tom's Personal Interests"
+tags:
+  concepts: [poetry, semitic-linguistics, bronze-age-mythology, minoan-civilization, philosophy-of-mind, spirituality, open-source, daimonic-wisdom, soul-engineering]
+  places: [beacon, hudson-valley, crete]
+  periods: [contemporary, bronze-age]
+  roles: [poet, independent-researcher, consultant]
+  languages: [spanish, italian, french, arabic, sanskrit, latin, greek, hebrew, ugaritic, phoenician]
+---
+
 # Tom's Personal Interests
 
 ## Source

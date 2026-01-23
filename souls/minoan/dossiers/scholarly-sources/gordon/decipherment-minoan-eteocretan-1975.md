@@ -1,3 +1,18 @@
+---
+title: "The Decipherment of Minoan and Eteocretan"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1975
+  venue: "Journal of the Royal Asiatic Society"
+tags:
+  deities: []
+  concepts: [decipherment, bilingual-method, eteocretan, minoan, linear-a, northwest-semitic, adjuration-formula]
+  places: [dreros, praisos, psychro, dictaean-cave, hagia-triada, knossos, palaikastro]
+  scholars: [gordon, ventris, brice, astour, stieglitz]
+  periods: [bronze-age, minoan, hellenistic]
+  languages: [linear-a, eteocretan, phoenician, hebrew, aramaic, akkadian]
+---
+
 # The Decipherment of Minoan and Eteocretan (1975)
 
 ## Source

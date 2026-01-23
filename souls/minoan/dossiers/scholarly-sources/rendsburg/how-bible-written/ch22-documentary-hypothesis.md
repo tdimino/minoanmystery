@@ -1,3 +1,17 @@
+---
+title: "A Challenge to the Documentary Hypothesis"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [documentary-hypothesis, literary-unity, source-criticism, repetition-variation, divine-names]
+  places: [israel]
+  scholars: [rendsburg, cassuto, whybray, alter]
+  periods: [iron-age]
+  languages: [hebrew]
+---
+
 # Chapter 22: A Challenge to the Documentary Hypothesis
 
 ## Source

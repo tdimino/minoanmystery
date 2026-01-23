@@ -1,3 +1,18 @@
+---
+title: "Greek Names in the Semitic World and Semitic Names in the Greek World"
+source:
+  author: "Michael C. Astour"
+  year: 1964
+  venue: "Journal of Near Eastern Studies"
+tags:
+  deities: [cadmos, europa, semele, actaeon, bakchos, membliaros, poikiles]
+  concepts: [hellenosemitica, etymology, method-of-doublets, functional-parallelism, method-of-vestiges, cosmogony, onomastics]
+  places: [thera, anaphe, thebes, ugarit, aegean]
+  scholars: [astour, berard, gordon, beloch, zielinski]
+  periods: [bronze-age]
+  languages: [greek, west-semitic, ugaritic, phoenician, hebrew, linear-a, linear-b]
+---
+
 # Greek Names in the Semitic World and Semitic Names in the Greek World (1964)
 
 ## Source

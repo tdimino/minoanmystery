@@ -1,3 +1,14 @@
+---
+title: "Knossos/Knossot: The Gathering Place"
+tags:
+  deities: [demeter, apollo, shekhinah]
+  concepts: [knesset, assembly, gathering, k-n-s-root, sanctuary, palace-function, priest-administration, cult-continuity, distribution-center]
+  places: [knossos, crete, gypsadhes, delphi, tyre]
+  scholars: [astour, coldstream, gordon, evans, peatfield, rendsburg, marinatos]
+  periods: [bronze-age, minoan, hellenistic, classical]
+  languages: [linear-a, linear-b, west-semitic, hebrew, aramaic, greek]
+---
+
 # Knossos as Knossot: The Gathering Place
 
 ## Overview

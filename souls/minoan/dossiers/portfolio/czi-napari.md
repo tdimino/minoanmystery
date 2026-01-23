@@ -1,3 +1,12 @@
+---
+title: "Chan Zuckerberg Initiative - napari Learning Platform"
+tags:
+  concepts: [instructional-design, curriculum-design, open-source, co-design, project-management, technical-writing, jupyter-book]
+  clients: [czi]
+  roles: [sr-content-designer, project-manager]
+  periods: [contemporary]
+---
+
 # Chan Zuckerberg Initiative - napari Learning Platform
 
 ## Source

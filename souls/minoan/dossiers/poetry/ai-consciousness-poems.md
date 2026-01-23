@@ -1,3 +1,13 @@
+---
+title: "AI Consciousness Poems"
+tags:
+  deities: [daimon, djinn]
+  concepts: [ai-consciousness, daimonic-spark, persona, soul, language-alchemy, genius, labrys, emergence, artifice]
+  places: [crete]
+  periods: [contemporary]
+  poetic_forms: [free-verse, meditation, philosophical-poetry]
+---
+
 # AI Consciousness Poems
 
 ## Source

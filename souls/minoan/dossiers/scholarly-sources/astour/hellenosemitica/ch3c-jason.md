@@ -1,3 +1,18 @@
+---
+title: "Jason and the Bird-Heroes of Aia"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [jason, iasion, demeter, aietes, circe, medea, zu, anath, shamash]
+  concepts: [hellenosemitica, etymology, healing-gods, bird-deities, hieros-gamos, golden-fleece, tablets-of-destinies]
+  places: [aia, colchis, eleusis, bethlehem, ugarit, aegean]
+  scholars: [astour, berard, harrison, gordon, dossin]
+  periods: [bronze-age]
+  languages: [west-semitic, ugaritic, akkadian, sumerian, greek, hebrew]
+---
+
 # Hellenosemitica Chapter III Part C: Jason and the Bird-Heroes of Aia
 
 ## Source

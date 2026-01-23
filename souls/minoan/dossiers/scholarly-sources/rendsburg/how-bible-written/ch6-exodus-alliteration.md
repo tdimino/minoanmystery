@@ -1,3 +1,17 @@
+---
+title: "Alliteration in the Exodus Narrative"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [alliteration, israelian-hebrew, leitwort, egyptian-loanwords, intertextuality, oral-performance]
+  places: [egypt, israel]
+  scholars: [rendsburg, cassuto]
+  periods: [iron-age]
+  languages: [hebrew, egyptian, israelian-hebrew]
+---
+
 # Gary A. Rendsburg — "Alliteration in the Exodus Narrative" (Chapter 6)
 
 ## Source

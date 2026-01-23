@@ -11,6 +11,11 @@ All notable changes to this project will be documented in this file.
   - Matryoshka dimension support (256, 512, 1024, 2048)
   - Updated `scripts/ingest-embeddings.ts` with new model and cost documentation
 
+- **Contextual Chunk Prefixes**: Enhanced `chunk-dossiers.ts` per arxiv:2510.24402 research
+  - Chunks now prepend `[Document: {title} | Tags: {first 10 tags}]` to content
+  - Embeds semantic context directly into vector embeddings
+  - Significantly improves retrieval for queries like "What does Gordon say about Linear A?"
+
 ### Fixed
 - **Duplicate Quote Consolidation**: Consolidated 4 redundant quote patterns across dossiers with cross-references
   - #1 Apollonius "Pall of Darkness" → canonical in `primordial-waters-tehom-tiamat.md`
@@ -21,17 +26,29 @@ All notable changes to this project will be documented in this file.
 - **Section Numbering**: Fixed duplicate section 7 in `potnia-daboritu-baalat-deborah.md` (7→8, 8→9)
 
 ### Added
-- **YAML Frontmatter**: Added structured metadata (title, tags) to 25+ dossiers for improved RAG retrieval
-  - Tags include: deities, concepts, places, scholars, periods, languages
-  - Enables faceted search and relationship mapping
+- **YAML Frontmatter (100% Coverage)**: Added structured metadata to all 114 dossiers
+  - **Before**: 24/114 dossiers (21%) had frontmatter
+  - **After**: 114/114 dossiers (100%) with consistent schema
+  - **Categories processed**:
+    - `scholarly-sources/gordon/` (19 files) — Linear A, Ugaritic, Minoan-Semitic
+    - `scholarly-sources/astour/` (10 files) — Hellenosemitica, etymologies
+    - `scholarly-sources/harrison/` (18 files) — Themis, ritual, Kouretes
+    - `scholarly-sources/rendsburg/` (15 files) — Hebrew linguistics, biblical alliteration
+    - `biography/` (6 files), `portfolio/` (9 files) — Tom di Mino career
+    - `poetry/` (7 files), `daimonic-soul-engine/` (6 files) — Creative/philosophical
+    - `oracle-concepts/` (3 files), `quotes.md` (1 file), `knossos-knossot-gathering-place.md` (1 file)
+  - **Schema includes**: title, source (author/year/venue), tags by category (deities, concepts, places, scholars, periods, languages)
+  - Tags now embedded in chunk content for improved RAG retrieval
+
 - **Dossier INDEX Files**: Navigation indexes for dossier subdirectories
   - `souls/minoan/dossiers/INDEX.md`
   - `oracle-concepts/INDEX.md`, `part-1-thera/INDEX.md`, `part-2-knossos/INDEX.md`, `part-3-minos/INDEX.md`
 
 ### Infrastructure
-- **Re-ingested Embeddings**: 2,170 chunks with voyage-4-large after consolidation
-  - 331,787 VoyageAI tokens (~$0.027)
-  - Reduced redundancy improves retrieval precision
+- **Re-ingested Embeddings**: 2,170 chunks with voyage-4-large + contextual prefixes
+  - 457,903 VoyageAI tokens (~$0.037)
+  - All chunks now include document title and first 10 tags in content
+  - Improved semantic retrieval through metadata-aware chunking
 
 ---
 

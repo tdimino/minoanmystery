@@ -1,3 +1,17 @@
+---
+title: "Repetition with Variation: The Plagues Narrative (Exodus 7-10)"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [polyprosopon, repetition-variation, documentary-hypothesis, literary-unity, oral-performance, form-follows-content]
+  places: [egypt, israel]
+  scholars: [rendsburg, noegel]
+  periods: [iron-age]
+  languages: [hebrew]
+---
+
 # Gary A. Rendsburg — "Repetition with Variation: The Plagues Narrative" (Chapter 3)
 
 ## Source

@@ -1,3 +1,18 @@
+---
+title: "Chapter I: The Hymn of the Kouretes"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, megistos-kouros, dionysus, zagreus, kouretes, korybantes, titans]
+  concepts: [initiation, tribal-initiation, dromenon, thiasos, daimon, palingenesia, death-and-resurrection, dithyramb, zeus-leap-song]
+  places: [crete, palaikastro, dikta, elis]
+  scholars: [harrison, murray, frazer, van-gennep]
+  periods: [bronze-age, minoan, classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter I: The Hymn of the Kouretes
 
 ## Source

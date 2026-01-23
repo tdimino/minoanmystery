@@ -1,3 +1,17 @@
+---
+title: "Alliteration in the Legal-Cultic Material"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [alliteration, israelian-hebrew, hapax-legomena, priestly-terminology, oral-aural, literary-technique]
+  places: [israel]
+  scholars: [rendsburg]
+  periods: [iron-age]
+  languages: [hebrew, israelian-hebrew]
+---
+
 # Gary A. Rendsburg — "Alliteration in the Legal-Cultic Material" (Chapter 11)
 
 ## Source

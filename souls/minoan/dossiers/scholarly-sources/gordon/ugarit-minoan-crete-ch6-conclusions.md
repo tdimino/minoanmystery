@@ -1,3 +1,18 @@
+---
+title: "Conclusions"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [baal, kumarbi, teshub, cronus, zeus]
+  concepts: [helen-of-troy-motif, tenth-commandment, coveting, hurrian-theogony, mediterranean-synthesis]
+  places: [ugarit, crete, hagia-triada]
+  scholars: [gordon]
+  periods: [bronze-age, minoan]
+  languages: [ugaritic, hebrew, hurrian, greek]
+---
+
 # Conclusions (Ugarit and Minoan Crete, Chapter VI)
 
 ## Source

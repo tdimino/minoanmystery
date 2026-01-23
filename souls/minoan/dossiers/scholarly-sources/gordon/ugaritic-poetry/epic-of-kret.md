@@ -1,3 +1,18 @@
+---
+title: "The Epic of Kret"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [el, baal, asherah, anath, astarte]
+  concepts: [helen-of-troy-motif, royal-epic, incubation, vow, kret-legend]
+  places: [ugarit, udum, crete]
+  scholars: [gordon]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # The Epic of Kret (Krt Texts 125-128)
 
 ## Source

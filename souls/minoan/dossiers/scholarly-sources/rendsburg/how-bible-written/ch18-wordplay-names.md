@@ -1,3 +1,18 @@
+---
+title: "Wordplay on Names"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  deities: []
+  concepts: [wordplay, cherethite, k-r-t, etymology, prophetic-oracles]
+  places: [crete, caphtor, philistia, israel]
+  scholars: [rendsburg, garsiel]
+  periods: [iron-age]
+  languages: [hebrew]
+---
+
 # Gary A. Rendsburg — "Wordplay on Names" (Chapter 18)
 
 ## Source

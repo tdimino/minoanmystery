@@ -1,3 +1,14 @@
+---
+title: "Minoan-Semitic Poems"
+tags:
+  deities: [baalat, tinit, tanit, tammuz, shekhinah, athirat]
+  concepts: [minoan-semitic, sea-peoples, genesis-rewriting, tehomet, kefitzat-ha-derech, gnostic-synthesis]
+  places: [crete, kaphtor, knossos, canaan]
+  periods: [bronze-age]
+  poetic_forms: [hymn, incantation, liturgy, commandments]
+  languages: [hebrew, phoenician, ugaritic]
+---
+
 # Minoan-Semitic Poems
 
 ## Source

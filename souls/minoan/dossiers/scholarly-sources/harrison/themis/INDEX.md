@@ -1,3 +1,18 @@
+---
+title: "Themis: A Study of the Social Origins of Greek Religion"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Cambridge University Press"
+tags:
+  deities: [zeus, dionysus, themis, kouretes, apollo]
+  concepts: [dromenon, eniautos-daimon, year-spirit, ritual-theory, collective-representation, thiasos, initiation, omophagia, mana, totemism]
+  places: [crete, palaikastro, hagia-triada, olympia, delphi]
+  scholars: [harrison, murray, cornford, bergson, durkheim]
+  periods: [bronze-age, minoan, classical-antiquity]
+  languages: [greek]
+---
+
 # Themis: A Study of the Social Origins of Greek Religion (1912)
 
 ## Source

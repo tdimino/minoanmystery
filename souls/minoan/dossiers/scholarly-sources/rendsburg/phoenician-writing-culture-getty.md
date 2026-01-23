@@ -1,3 +1,17 @@
+---
+title: "The Spread of Phoenician Writing Culture to Ancient Greece"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2022
+  venue: "Getty Villa Lecture"
+tags:
+  concepts: [etymology, alphabet-transmission, scribal-culture, phonetic-correspondence, writing-vocabulary]
+  places: [phoenicia, greece, byblos, crete, carthage]
+  scholars: [rendsburg, gordon, jeffrey, morpurgo-davies]
+  periods: [iron-age, archaic]
+  languages: [phoenician, greek, hebrew, aramaic, ugaritic]
+---
+
 # The Spread of Phoenician Writing Culture to Ancient Greece
 
 ## Source

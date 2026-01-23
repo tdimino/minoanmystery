@@ -1,3 +1,17 @@
+---
+title: "Israelian Hebrew"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [israelian-hebrew, northern-dialect, dialect-geography, aramaic-cognates, regional-variation]
+  places: [israel, judah]
+  scholars: [rendsburg, ginsberg, gordon]
+  periods: [iron-age]
+  languages: [hebrew, israelian-hebrew, aramaic]
+---
+
 # Chapter 23: Israelian Hebrew
 
 ## Source

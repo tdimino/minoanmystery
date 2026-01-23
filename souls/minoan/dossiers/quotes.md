@@ -1,3 +1,11 @@
+---
+title: "Oracle Quotes Collection"
+tags:
+  concepts: [wisdom, consciousness, poetry, ritual, soul, daimon, pneuma, genius, pathos]
+  deities: [kotharot, daimon]
+  periods: [contemporary]
+---
+
 # Tom di Mino - Notable Quotes
 
 ## Source

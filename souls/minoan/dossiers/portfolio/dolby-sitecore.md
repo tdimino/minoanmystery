@@ -1,3 +1,12 @@
+---
+title: "Dolby Laboratories - Sitecore Migration"
+tags:
+  concepts: [information-architecture, cms-migration, content-audit, page-templates, dual-audience-strategy, sitecore]
+  clients: [dolby, valtech]
+  roles: [lead-content-strategist]
+  periods: [contemporary]
+---
+
 # Dolby Laboratories - Sitecore Migration
 
 ## Source

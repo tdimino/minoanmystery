@@ -1,3 +1,12 @@
+---
+title: "JP Morgan Chase - Meeting Assist AI"
+tags:
+  concepts: [agentic-architecture, llm-prompting, evaluation-design, langgraph, deepeval, rag, hallucination-detection, compliance]
+  clients: [jpmc]
+  roles: [ai-content-engineer]
+  periods: [contemporary]
+---
+
 # JP Morgan Chase - Meeting Assist AI
 
 ## Source

@@ -1,3 +1,18 @@
+---
+title: "Evidence for the Minoan Language — Linear A Lexicon"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Evidence for the Minoan Language (Ventnor Publishers)"
+tags:
+  deities: [addu, baal, yamm, tinit, gupanu, ugaru, dagon]
+  concepts: [linear-a, lexicon, vocabulary, divine-names, personal-names, egyptian-names, hurrian-names]
+  places: [hagia-triada, knossos, phaistos, crete]
+  scholars: [gordon, brice]
+  periods: [bronze-age, minoan]
+  languages: [linear-a, ugaritic, hebrew, akkadian, egyptian, hurrian]
+---
+
 # Evidence for the Minoan Language (1966) — Linear A Lexicon
 
 ## Source

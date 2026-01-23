@@ -1,3 +1,18 @@
+---
+title: "Bellerophon, His Family, and His Adventures"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [bellerophon, sisyphos, glaucos, anath, phaethon, hippolytos, lucifer, leviathan]
+  concepts: [hellenosemitica, etymology, dying-god, sparagmos, slandered-hero, flying-heroes, chimaera]
+  places: [corinth, ephyra, lycia, aegean]
+  scholars: [astour, frazer, gruppe, grelot, berard]
+  periods: [bronze-age]
+  languages: [west-semitic, akkadian, greek, hebrew, amorite]
+---
+
 # Hellenosemitica Chapter III Part B: Bellerophon, His Family, and His Adventures
 
 ## Source

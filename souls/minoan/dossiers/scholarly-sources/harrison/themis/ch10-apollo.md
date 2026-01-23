@@ -1,3 +1,18 @@
+---
+title: "Chapter X: From Daimon to Olympian - Apollo and the Olympians"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [apollo, dionysus, gaia, themis, phoibe, phoibos, python, titans]
+  concepts: [olympian, aguieus, omphalos, stepterion, herois, charila, daphnephoria, apellaia, megistos-kouros, anthropomorphism]
+  places: [delphi, tempe, thebes]
+  scholars: [harrison, plutarch, proklos, farnell, cook, nilsson]
+  periods: [classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter X: From Daimon to Olympian — Apollo and the Olympians
 
 ## Source

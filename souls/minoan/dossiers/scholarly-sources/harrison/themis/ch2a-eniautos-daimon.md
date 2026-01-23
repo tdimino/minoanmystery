@@ -1,3 +1,18 @@
+---
+title: "The Eniautos-Daimon (Year-Spirit) Concept"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, dionysus, agathos-daimon, plouton, horai, charites]
+  concepts: [eniautos-daimon, year-spirit, year-cycle, seasonal-festivals, fertility-daimon, dying-god, death-rebirth, rites-de-passage, collective-representation]
+  places: [crete, olympia]
+  scholars: [harrison, durkheim, frazer, prellwitz, usener, pindar]
+  periods: [bronze-age, classical-antiquity]
+  languages: [greek]
+---
+
 # The Eniautos-Daimon (Year-Spirit) Concept
 
 ## Source

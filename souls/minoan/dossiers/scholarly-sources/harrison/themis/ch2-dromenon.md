@@ -1,3 +1,18 @@
+---
+title: "Chapter II: The Dithyramb, the Dromenon and the Drama"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [dionysus]
+  concepts: [dromenon, legomenon, dithyramb, drama, tragedy, mimesis, exarchos, palingenesia, magical-intent, ritual-theory]
+  places: []
+  scholars: [harrison, aristotle, nietzsche, bergson, cornford, murray]
+  periods: [classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter II: The Dithyramb, the Dromenon and the Drama
 
 ## Source

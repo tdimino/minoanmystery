@@ -1,3 +1,18 @@
+---
+title: "Minoica"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1962
+  venue: "Journal of Near Eastern Studies"
+tags:
+  deities: [asherah, nergal, dagon, gupanu, minos]
+  concepts: [linear-a, west-semitic, phoenician, dedicatory-formula, ki-particle, le-preposition]
+  places: [palaikastro, knossos, hagia-triada, psychro, crete]
+  scholars: [gordon, brice, meriggi, ventris]
+  periods: [bronze-age, minoan]
+  languages: [linear-a, phoenician, hebrew, ugaritic]
+---
+
 # Minoica (1962)
 
 ## Source

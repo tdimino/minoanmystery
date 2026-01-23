@@ -1,3 +1,18 @@
+---
+title: "The Prose Texts of Ugarit"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: []
+  concepts: [administrative-documents, dynastic-history, guild-society, merchant-regulations, personal-names]
+  places: [ugarit, ur, urra, aegean]
+  scholars: [gordon, nougayrol]
+  periods: [bronze-age, amarna-age]
+  languages: [ugaritic, akkadian]
+---
+
 # Prose Texts of Ugarit (Ugarit and Minoan Crete, Chapter V)
 
 ## Source

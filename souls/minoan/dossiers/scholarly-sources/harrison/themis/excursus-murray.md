@@ -1,3 +1,18 @@
+---
+title: "Excursus on the Ritual Forms Preserved in Greek Tragedy"
+source:
+  author: "Gilbert Murray"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [dionysus, apollo, athena]
+  concepts: [sacer-ludus, tragedy-origins, agon, pathos, messenger, threnos, theophany, anagnorisis, peripeteia, sparagmos, eniautos-daimon, death-rebirth, ritual-forms]
+  places: [athens, delphi]
+  scholars: [murray, harrison, cornford, dieterich, usener, ridgeway, aeschylus, euripides, sophocles]
+  periods: [classical-antiquity]
+  languages: [greek]
+---
+
 # Excursus on the Ritual Forms Preserved in Greek Tragedy
 
 ## Source

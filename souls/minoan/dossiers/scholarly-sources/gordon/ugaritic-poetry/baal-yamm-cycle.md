@@ -1,3 +1,18 @@
+---
+title: "Baal and Yamm: The Sea Conflict"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [baal, yamm, kothar-wa-hasis, el, astarte, anath, dagon]
+  concepts: [chaoskampf, magic-clubs, aymr, ygrsh, divine-assembly, rider-of-clouds]
+  places: [ugarit, saphon]
+  scholars: [gordon]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # Baal and Yamm: The Sea Conflict (Texts 129, 137, 68)
 
 ## Source

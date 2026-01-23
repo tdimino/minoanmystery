@@ -1,3 +1,17 @@
+---
+title: "Confused Language as Literary Device"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [confused-language, literary-device, form-follows-content, deliberate-confusion, emendation-critique]
+  places: [egypt, israel]
+  scholars: [rendsburg, hurvitz, buber]
+  periods: [iron-age]
+  languages: [hebrew, egyptian]
+---
+
 # Chapter 8: Confused Language as Literary Device
 
 ## Source

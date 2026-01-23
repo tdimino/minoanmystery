@@ -1,3 +1,18 @@
+---
+title: "Onomastica and Attributes of Healing Gods"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [bellerophon, ninazu, ningiszida, rpu-baal, mush, athena, ishara]
+  concepts: [hellenosemitica, etymology, healing-gods, serpent-symbolism, owl-symbolism, chthonic]
+  places: [kos, ugarit, aegean, corinth]
+  scholars: [astour, lewy, starcky, gordon]
+  periods: [bronze-age]
+  languages: [west-semitic, ugaritic, sumerian, akkadian, greek]
+---
+
 # Hellenosemitica Chapter III Part A: Onomastica and Attributes of Healing Gods
 
 ## Source

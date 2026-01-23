@@ -1,3 +1,14 @@
+---
+title: "Scholarly Epigraphs - Shirat Ha Kotharot"
+tags:
+  deities: [goddess, shekhinah]
+  concepts: [mystery, dromena, purification, ritual, water, fire, feminine-wisdom, prophecy]
+  places: [crete, knossos]
+  periods: [bronze-age, classical]
+  scholars: [gordon, harrison, yeats]
+  languages: [greek, hebrew, phoenician]
+---
+
 # Scholarly Epigraphs - Shirat Ha Kotharot
 
 ## Source

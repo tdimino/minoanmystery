@@ -1,3 +1,10 @@
+---
+title: "Evaluation Philosophy"
+tags:
+  concepts: [evaluation-philosophy, relationship-quality, authenticity, emotional-intelligence, therapeutic-value, boundary-integrity, multi-dimensional-evaluation]
+  frameworks: [daimonic-soul-engine]
+---
+
 # Evaluation Philosophy
 
 *Evaluation should measure the quality of the relationship, not just the accuracy of responses.*

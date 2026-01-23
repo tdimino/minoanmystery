@@ -1,3 +1,12 @@
+---
+title: "Subquadratic / Aldea AI - LLM-as-a-Judge Evaluation Framework"
+tags:
+  concepts: [llm-evaluation, llm-as-a-judge, multi-dimensional-assessment, persona-assessment, statistical-analysis, prompt-engineering, rubric-design]
+  clients: [aldea, subquadratic]
+  roles: [founding-engineer, principal-ai-ml-engineer]
+  periods: [contemporary]
+---
+
 # Subquadratic / Aldea AI - LLM-as-a-Judge Evaluation Framework
 
 ## Source

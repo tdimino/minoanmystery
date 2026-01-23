@@ -1,3 +1,18 @@
+---
+title: "The Anath Text"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [anath, baal, yamm, leviathan, tannin, mot, el]
+  concepts: [battle-boast, chaos-combat, dualism, rider-of-clouds, divine-banquet]
+  places: [ugarit, saphon]
+  scholars: [gordon]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # The Anath Text
 
 ## Source

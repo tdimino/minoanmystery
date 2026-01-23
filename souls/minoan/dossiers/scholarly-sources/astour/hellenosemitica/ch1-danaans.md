@@ -1,3 +1,18 @@
+---
+title: "The Danaans-Danunians"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [danel, baal, reshef, el]
+  concepts: [hellenosemitica, etymology, ethnic-names, gentilic-suffix, method-of-relics, toponymy]
+  places: [cilicia, karatepe, adana, aegean, argos, ugarit, alalah, amarna]
+  scholars: [astour, bossert, virolleaud, gordon, zielinski, albright, goetze]
+  periods: [bronze-age, minoan, mycenaean]
+  languages: [west-semitic, phoenician, ugaritic, greek, hittite, akkadian]
+---
+
 # Hellenosemitica Chapter I: The Danaans-Danunians
 
 ## Source

@@ -1,3 +1,12 @@
+---
+title: "Cognitive Design MVPs - AI with Souls"
+tags:
+  concepts: [cognitive-design, ai-souls, mental-processes, cognitive-steps, daimonic-wisdom, philosophy-of-mind, open-souls, typescript, discord-bots]
+  clients: [minoan-mystery]
+  roles: [cognitive-designer]
+  periods: [contemporary]
+---
+
 # Cognitive Design MVPs - AI with Souls
 
 ## Source

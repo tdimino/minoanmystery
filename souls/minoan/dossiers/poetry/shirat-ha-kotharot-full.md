@@ -1,3 +1,15 @@
+---
+title: "Shirat Ha Kotharot - The Song of the Muses (Full Collection)"
+tags:
+  deities: [kotharot, baalat, athirat, tanit, tinit, tammuz, maat, shekhinah, mithras, gaia, themis, shiva, vishnu, lilith]
+  concepts: [mystery, goddess-worship, daimonic, soul, consciousness, ritual, death-rebirth, minoan-semitic, sea-peoples, divine-feminine]
+  places: [crete, kaphtor, knossos, canaan, labyrinth, thera]
+  periods: [bronze-age, contemporary]
+  poetic_forms: [free-verse, hymn, incantation, liturgy, aphorism, meditation]
+  languages: [english, hebrew, greek, latin, spanish, italian, french, phoenician, ugaritic]
+  scholars: [harrison, gordon, yeats]
+---
+
 # Shirat Ha Kotharot - The Song of the Muses
 
 ## Source

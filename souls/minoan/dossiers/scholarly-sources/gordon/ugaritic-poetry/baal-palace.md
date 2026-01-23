@@ -1,3 +1,18 @@
+---
+title: "Baal's Palace (Text 51)"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [baal, kothar-wa-hasis, el, asherah, mot, yahweh]
+  concepts: [window-controversy, palace-building, minoan-architecture, yw-el, divine-assembly]
+  places: [ugarit, caphtor, crete, saphon, lebanon]
+  scholars: [gordon]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # Baal's Palace (Text 51)
 
 ## Source

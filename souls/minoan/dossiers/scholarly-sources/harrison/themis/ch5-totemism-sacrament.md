@@ -1,3 +1,18 @@
+---
+title: "Chapter V: Totemism, Sacrament and Sacrifice"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [dionysus]
+  concepts: [totemism, omophagia, sparagmos, sacrament, sacrifice, communal-meal, methexis, mimesis, intichiuma, mana-communion, theriomorphism]
+  places: []
+  scholars: [harrison, frazer, robertson-smith, durkheim, levy-bruhl]
+  periods: [classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter V: Totemism, Sacrament and Sacrifice
 
 ## Source

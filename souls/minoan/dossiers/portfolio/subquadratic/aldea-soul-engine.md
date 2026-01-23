@@ -1,3 +1,12 @@
+---
+title: "Subquadratic / Aldea AI - Daimonic Souls Engine"
+tags:
+  concepts: [soul-engine, daimonic-wisdom, cognitive-design, open-souls, working-memory, mental-processes, cognitive-steps, voice-pipeline, sms-platform, rag, functional-programming]
+  clients: [aldea, subquadratic]
+  roles: [founding-engineer, principal-ai-ml-engineer]
+  periods: [contemporary]
+---
+
 # Subquadratic / Aldea AI - Daimonic Souls Engine
 
 ## Source

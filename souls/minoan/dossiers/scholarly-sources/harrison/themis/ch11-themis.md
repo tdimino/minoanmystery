@@ -1,3 +1,18 @@
+---
+title: "Chapter XI: Themis"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [themis, zeus, apollo, athena, dike, horai, kronos, kourotrophos]
+  concepts: [collective-conscience, social-imperative, rites-de-passage, matrilinear, patrilinear, agora, phratrioi, hybristika, liminal-state]
+  places: [delphi, olympia, trophonios, brauron]
+  scholars: [harrison, durkheim, van-gennep, bachofen, homer, hesiod, aeschylus, pindar]
+  periods: [classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter XI: Themis
 
 ## Source

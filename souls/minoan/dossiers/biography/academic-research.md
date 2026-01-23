@@ -1,3 +1,13 @@
+---
+title: "Academic Research: Thera, Knossos, & Minos"
+tags:
+  concepts: [minoan-semitic, linguistics, etymology, bronze-age, aegean-archaeology, contact-zone, scholarly-research]
+  places: [thera, knossos, crete, levant, ugarit, aegean]
+  periods: [bronze-age, classical]
+  roles: [independent-researcher, scholar]
+  scholars: [cyrus-gordon, michael-astour, jane-harrison, gary-rendsburg]
+---
+
 # Academic Research: Thera, Knossos, & Minos
 
 ## Source

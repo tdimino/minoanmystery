@@ -1,3 +1,18 @@
+---
+title: "Cheiron and Asclepios"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [cheiron, asclepios, pabilsag, ninazu, resheph, apollo, gula, coronis]
+  concepts: [hellenosemitica, etymology, healing-gods, serpent-staff, astrology, chthonic, ritual-prostration]
+  places: [epidauros, kos, ugarit, alalah, aegean]
+  scholars: [astour, virolleaud, harrison, frazer, albright]
+  periods: [bronze-age]
+  languages: [west-semitic, ugaritic, sumerian, akkadian, greek]
+---
+
 # Hellenosemitica Chapter III Part D: Cheiron and Asclepios
 
 ## Source

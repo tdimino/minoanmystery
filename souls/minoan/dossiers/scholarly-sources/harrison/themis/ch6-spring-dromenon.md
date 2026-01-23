@@ -1,3 +1,18 @@
+---
+title: "Chapter VI: The Dithyramb, the Spring-Festival and the Hagia Triada Sarcophagos"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, dionysus, agathos-daimon, pasiphae, europa, charites]
+  concepts: [spring-festival, dithyramb, hieros-gamos, sacred-marriage, eniautos-daimon, double-axe, labrys, moon-cult, seasonal-ritual, dromenon]
+  places: [crete, hagia-triada, knossos, gortyna, phaistos]
+  scholars: [harrison, evans, reinach, nilsson, burkert]
+  periods: [bronze-age, minoan, lm-iii]
+  languages: [greek]
+---
+
 # Chapter VI: The Dithyramb, the Spring-Festival and the Hagia Triada Sarcophagos
 
 ## Source

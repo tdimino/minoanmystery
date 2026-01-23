@@ -1,3 +1,13 @@
+---
+title: "Tom's Agency Years (2016-2021)"
+tags:
+  concepts: [content-strategy, seo, information-architecture, technical-writing, ecommerce, cms-expertise]
+  places: [philadelphia, new-york]
+  periods: [contemporary]
+  roles: [content-strategist, marketing-specialist, web-content-specialist]
+  clients: [campuscruiser, 1seo, renaissance, hartz-mountain, valtech, hugo-cat, dolby, acs]
+---
+
 # Tom's Agency Years (2016-2021)
 
 ## Source

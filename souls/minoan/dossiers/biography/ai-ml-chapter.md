@@ -1,3 +1,14 @@
+---
+title: "Tom's AI/ML Chapter (2024-Present)"
+tags:
+  concepts: [ai-engineering, cognitive-design, llm-training, fine-tuning, lora, evaluation-frameworks, voice-ai, soul-engineering, tensorrt-llm, triton]
+  places: [hudson-valley, remote]
+  periods: [contemporary]
+  roles: [principal-ai-ml-engineer, founding-engineer, ai-content-engineer]
+  clients: [jpmc, aldea, subquadratic]
+  collaborators: [alex-whedon, saul-ramirez, thiago-duarte]
+---
+
 # Tom's AI/ML Chapter (2024-Present)
 
 ## Source

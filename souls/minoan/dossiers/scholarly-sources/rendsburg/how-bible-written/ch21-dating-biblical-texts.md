@@ -1,3 +1,17 @@
+---
+title: "When Was All This Written?"
+source:
+  author: "Gary A. Rendsburg"
+  year: 2019
+  venue: "How the Bible is Written"
+tags:
+  concepts: [dating, tenth-century, prose-narrative, nostos-theme, literary-technique]
+  places: [jerusalem, israel, egypt]
+  scholars: [rendsburg]
+  periods: [iron-age, united-monarchy]
+  languages: [hebrew, egyptian]
+---
+
 # Chapter 21: When Was All This Written?
 
 ## Source

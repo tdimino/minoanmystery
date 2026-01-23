@@ -1,3 +1,18 @@
+---
+title: "Aegean Place-Names in an Egyptian Inscription"
+source:
+  author: "Michael C. Astour"
+  year: 1966
+  venue: "American Journal of Archaeology"
+tags:
+  deities: [zeus, dqt]
+  concepts: [hellenosemitica, etymology, graeco-semitic-doublet, toponymy, group-writing, syllabic-orthography]
+  places: [knossos, amnisos, dikte, kythera, messenia, pylos, lyktos, crete, aegean, egypt]
+  scholars: [astour, kitchen, albright, ventris, chadwick]
+  periods: [bronze-age, minoan, mycenaean]
+  languages: [greek, egyptian, ugaritic, semitic, linear-b, linear-a]
+---
+
 # Aegean Place-Names in an Egyptian Inscription (1966)
 
 ## Source

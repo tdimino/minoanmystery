@@ -1,3 +1,13 @@
+---
+title: "Tom's Big Tech Era (2021-2023)"
+tags:
+  concepts: [curriculum-design, user-research, learning-platforms, instructional-design, cross-functional-leadership]
+  places: [manhattan, san-francisco]
+  periods: [contemporary]
+  roles: [sr-content-designer, learning-designer]
+  clients: [google, czi]
+---
+
 # Tom's Big Tech Era (2021-2023)
 
 ## Source

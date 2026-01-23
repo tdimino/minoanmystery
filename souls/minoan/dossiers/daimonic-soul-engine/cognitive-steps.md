@@ -1,3 +1,10 @@
+---
+title: "Cognitive Steps"
+tags:
+  concepts: [cognitive-steps, pure-functions, functional-programming, testable-ai, composability, predictability]
+  frameworks: [open-souls, daimonic-soul-engine]
+---
+
 # Cognitive Steps
 
 *AI thinking should be testable, predictable, and composable.*

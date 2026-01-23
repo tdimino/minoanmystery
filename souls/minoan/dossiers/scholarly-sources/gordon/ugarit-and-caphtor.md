@@ -1,3 +1,18 @@
+---
+title: "Ugarit and Caphtor"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1960
+  venue: "Minos: Revista de filología egea"
+tags:
+  deities: [kothar-wa-hasis, dagon]
+  concepts: [caphtor, helen-of-troy-motif, kret-legend, moses-minos, daedalus-bezalel, srn-tyrant]
+  places: [ugarit, crete, caphtor, mount-ida, troy]
+  scholars: [gordon, virolleaud, dussaud]
+  periods: [bronze-age, minoan]
+  languages: [ugaritic, hebrew, caphtorian]
+---
+
 # Ugarit and Caphtor
 
 ## Source

@@ -1,3 +1,18 @@
+---
+title: "Evidence for the Minoan Language — Part 3: Phaistos Disc & Origins"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Evidence for the Minoan Language (Ventnor Publishers)"
+tags:
+  deities: [baal, hadda]
+  concepts: [phaistos-disc, acrophony, spiral-writing, delta-hypothesis, minoan-origins, mutual-intelligibility]
+  places: [phaistos, crete, egypt, delta, nile]
+  scholars: [gordon, ephron, schwartz]
+  periods: [bronze-age, minoan, middle-kingdom]
+  languages: [linear-a, phoenician, eteocretan, eteocypriote]
+---
+
 # Evidence for the Minoan Language (1966) — Part 3: Phaistos Disc & Origins
 
 ## Source

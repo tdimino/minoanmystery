@@ -1,3 +1,18 @@
+---
+title: "Chapter III: The Kouretes, the Thunder-Rites and Mana"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [zeus, zagreus, kouretes, idaean-daktyls]
+  concepts: [thunder-rites, bull-roarer, rhombos, thunder-stone, mana, sacred-power, initiation, mystery-cults, purification]
+  places: [crete, knossos, dikta, ida, eleusis]
+  scholars: [harrison, porphyry, diodorus, marett, cook, burkert]
+  periods: [bronze-age, minoan, classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter III: The Kouretes, the Thunder-Rites and Mana
 
 ## Source

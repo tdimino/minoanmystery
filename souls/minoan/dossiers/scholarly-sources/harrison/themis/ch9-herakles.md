@@ -1,3 +1,18 @@
+---
+title: "Chapter IX: From Daimon to Olympian - Herakles"
+source:
+  author: "Jane Ellen Harrison"
+  year: 1912
+  venue: "Themis: A Study of the Social Origins of Greek Religion"
+tags:
+  deities: [herakles, hermes, asklepios, telesphoros, hebe, acheloos]
+  concepts: [idaean-daktyl, fertility-daimon, sun-year, eniautos-daimon, club-bough, cornucopia, alexikakos, oinisteria, megistos-kouros, olympianization]
+  places: [olympia, crete, ida, troezen]
+  scholars: [harrison, frazer, kaibel, usener, nilsson, cook]
+  periods: [bronze-age, classical-antiquity]
+  languages: [greek]
+---
+
 # Chapter IX: From Daimon to Olympian — Herakles
 
 ## Source

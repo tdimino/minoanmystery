@@ -1,3 +1,18 @@
+---
+title: "The Epic of Aqhat"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [el, baal, anath, kothar-wa-hasis]
+  concepts: [epic, model-son, curse, transvestism, kosharot, gilboa-lament, seven-years]
+  places: [ugarit, egypt]
+  scholars: [gordon]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew]
+---
+
 # The Epic of Aqhat
 
 ## Source

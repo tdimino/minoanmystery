@@ -1,3 +1,10 @@
+---
+title: "Memory Regions"
+tags:
+  concepts: [memory-regions, context-management, identity-region, visitor-region, knowledge-region, memory-compression, attention-modeling]
+  frameworks: [open-souls, daimonic-soul-engine, working-memory]
+---
+
 # Memory Regions
 
 *How memory is organized shapes what the soul can perceive and express.*

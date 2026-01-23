@@ -1,3 +1,18 @@
+---
+title: "Minoan Crete"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: [addu, baal, yamm, tinit, gupanu, kret]
+  concepts: [delta-origins, acrophony, linear-a, eteocretan, dreros-bilingual, hagia-triada-pantheon]
+  places: [crete, knossos, hagia-triada, dreros, psychro, egypt, delta]
+  scholars: [gordon, ventris, brice, evans]
+  periods: [bronze-age, minoan]
+  languages: [linear-a, eteocretan, phoenician, hebrew, ugaritic]
+---
+
 # Minoan Crete (Ugarit and Minoan Crete, Chapter III)
 
 ## Source

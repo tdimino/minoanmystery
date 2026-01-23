@@ -1,3 +1,11 @@
+---
+title: "Daimonic Intuition"
+tags:
+  concepts: [daimonic-intuition, whispers, dual-epistemology, visitor-modeling, intuitive-sensing, rational-analysis]
+  frameworks: [open-souls, daimonic-soul-engine]
+  scholars: [socrates, plato, jung]
+---
+
 # Daimonic Intuition
 
 *Sensing what cannot be said.*

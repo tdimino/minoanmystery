@@ -249,6 +249,21 @@ function splitSentences(text: string): string[] {
 }
 
 /**
+ * Generate contextual tag prefix for chunk content
+ * Research (arxiv:2510.24402) shows embedding metadata directly in chunk text
+ * ("contextual chunks") significantly improves retrieval accuracy.
+ */
+function getTagPrefix(tags: string[], title?: string): string {
+  if (tags.length === 0 && !title) return '';
+
+  const parts: string[] = [];
+  if (title) parts.push(`Document: ${title}`);
+  if (tags.length > 0) parts.push(`Tags: ${tags.slice(0, 10).join(', ')}`);
+
+  return `[${parts.join(' | ')}]\n\n`;
+}
+
+/**
  * Chunk a section's content
  */
 function chunkSection(
@@ -263,6 +278,9 @@ function chunkSection(
     return chunks;
   }
 
+  // Generate contextual prefix for this dossier
+  const tagPrefix = getTagPrefix(dossier.tags, dossier.title);
+
   let currentChunk: string[] = [];
   let currentTokens = 0;
   let chunkIndex = startIndex;
@@ -273,9 +291,9 @@ function chunkSection(
 
     // If adding this sentence would exceed max, finalize current chunk
     if (currentTokens + sentenceTokens > MAX_CHUNK_TOKENS && currentChunk.length > 0) {
-      // Create chunk
+      // Create chunk with contextual prefix
       chunks.push({
-        content: currentChunk.join(' '),
+        content: tagPrefix + currentChunk.join(' '),
         metadata: {
           dossier: `souls/minoan/dossiers/${dossier.path}`,
           section: section.heading,
@@ -300,7 +318,7 @@ function chunkSection(
   // Don't forget the last chunk
   if (currentChunk.length > 0 && currentTokens >= MIN_CHUNK_TOKENS) {
     chunks.push({
-      content: currentChunk.join(' '),
+      content: tagPrefix + currentChunk.join(' '),
       metadata: {
         dossier: `souls/minoan/dossiers/${dossier.path}`,
         section: section.heading,
@@ -317,7 +335,7 @@ function chunkSection(
   } else if (currentChunk.length > 0) {
     // Small content, still worth keeping
     chunks.push({
-      content: currentChunk.join(' '),
+      content: tagPrefix + currentChunk.join(' '),
       metadata: {
         dossier: `souls/minoan/dossiers/${dossier.path}`,
         section: section.heading,

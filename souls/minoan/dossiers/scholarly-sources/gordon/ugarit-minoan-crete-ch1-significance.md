@@ -1,3 +1,18 @@
+---
+title: "Ugarit and Its Significance"
+source:
+  author: "Cyrus H. Gordon"
+  year: 1966
+  venue: "Ugarit and Minoan Crete (W. W. Norton)"
+tags:
+  deities: []
+  concepts: [amarna-age, international-order, alphabet, cuneiform, polyglot, crossroads]
+  places: [ugarit, ras-shamra, minet-al-bayda, egypt, mesopotamia, canaan]
+  scholars: [gordon, virolleaud, schaeffer, bauer, dhorme]
+  periods: [bronze-age, amarna-age]
+  languages: [ugaritic, akkadian, sumerian, hurrian, hittite]
+---
+
 # Ugarit and Its Significance (Ugarit and Minoan Crete, Chapter I)
 
 ## Source

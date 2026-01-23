@@ -1,3 +1,18 @@
+---
+title: "Evidence of Archaeology and Epigraphy"
+source:
+  author: "Michael C. Astour"
+  year: 1965
+  venue: "Hellenosemitica"
+tags:
+  deities: [kothar]
+  concepts: [hellenosemitica, archaeology, epigraphy, torque-bearers, circumcision, cultural-transmission, linear-a, eteocretan]
+  places: [ugarit, ras-shamra, crete, kythera, alalah, mari, cape-gelidonya, aegean, cyprus]
+  scholars: [astour, schaeffer, woolley, gordon, beloch, bass, nougayrol]
+  periods: [bronze-age, minoan, mycenaean]
+  languages: [west-semitic, ugaritic, phoenician, greek, egyptian, linear-a]
+---
+
 # Hellenosemitica Chapter IV: Evidence of Archaeology and Epigraphy
 
 ## Source

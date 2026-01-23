@@ -1,3 +1,12 @@
+---
+title: "Google - engEDU Curriculum Design"
+tags:
+  concepts: [curriculum-design, user-research, learner-personas, mentorship-platform, technical-leadership, instructional-design]
+  clients: [google]
+  roles: [learning-designer, sr-content-designer]
+  periods: [contemporary]
+---
+
 # Google - engEDU Curriculum Design
 
 ## Source
