@@ -44,7 +44,7 @@ import {
   detectContextType,
 } from '../../../lib/soul/retrieval/kotharRagConfig';
 import type { SoulMemoryInterface } from '../../../lib/soul/memory';
-import { detectAcademicIntent } from '../../../lib/soul/opensouls/mentalProcesses';
+import { detectAcademicIntent, detectPoeticIntent } from '../../../lib/soul/opensouls/mentalProcesses';
 
 /**
  * Server-side SoulMemory adapter for subprocess state tracking.
@@ -308,11 +308,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       );
     }
 
-    // ─── Academic Mode Detection ───
+    // ─── Mode Detection ───
     // Academic mode triggers forced RAG (Raggy) on every turn for scholarly depth
     const isAcademicMode = detectAcademicIntent(effectiveQuery);
     if (isAcademicMode) {
       console.log('[Soul Chat] Academic mode triggered - forcing Raggy RAG');
+    }
+
+    // Poetic mode triggers when user requests poetry composition
+    const isPoeticMode = detectPoeticIntent(effectiveQuery);
+    if (isPoeticMode) {
+      console.log('[Soul Chat] Poetic mode triggered');
     }
 
     // Load soul personality and config
@@ -482,10 +488,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               controller.enqueue(encoder.encode(`event: archive\ndata: ${JSON.stringify({ active: false })}\n\n`));
             }
 
-            // Emit academic mode indicator after RAG succeeds
-            // (placed here so UI only shows academic mode when we can fulfill the request)
+            // Emit mode indicators after RAG succeeds
+            // (placed here so UI only shows mode when we can fulfill the request)
             if (isAcademicMode) {
               controller.enqueue(encoder.encode(`event: mode\ndata: ${JSON.stringify({ mode: 'academic' })}\n\n`));
+            } else if (isPoeticMode) {
+              controller.enqueue(encoder.encode(`event: mode\ndata: ${JSON.stringify({ mode: 'poetic' })}\n\n`));
             }
 
             // Build instructions for the cognitive step

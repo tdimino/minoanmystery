@@ -60,7 +60,8 @@ export type SoulState =
   | 'returning'   // Recognized visitor, personalized
   | 'dormant'     // Extended idle (45s+), soul reflects
   | 'exiting'     // Exit intent detected, save journey
-  | 'academic';   // Scholarly discussion mode - forced RAG, citations
+  | 'academic'    // Scholarly discussion mode - forced RAG, citations
+  | 'poetic';     // Poetic composition mode - Tom's voice
 
 export type BehavioralType =
   | 'scanner'     // Quick browsing, low scroll depth

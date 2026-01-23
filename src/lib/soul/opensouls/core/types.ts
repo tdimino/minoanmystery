@@ -168,7 +168,7 @@ export interface Perception {
 // Soul State Types
 // ============================================
 
-export type SoulState = 'greeting' | 'curious' | 'engaged' | 'ready' | 'returning' | 'dormant' | 'exiting' | 'academic';
+export type SoulState = 'greeting' | 'curious' | 'engaged' | 'ready' | 'returning' | 'dormant' | 'exiting' | 'academic' | 'poetic';
 
 export interface SoulMemory {
   sessionId: string;

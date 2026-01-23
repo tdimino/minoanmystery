@@ -13,3 +13,4 @@ export { visitorWhispers, type WhispersContext } from './visitorWhispers';
 export { visionPrompt, type VisionContext } from './visionPrompt';
 export { imageCaption, type ImageCaptionContext, type ImageCaptionResult } from './imageCaption';
 export { tarotPrompt, type TarotContext, type TarotPromptResult } from './tarotPrompt';
+export { poeticComposition, POETIC_REGISTERS, type PoeticRegister, type PoeticCompositionOptions } from './poeticComposition';

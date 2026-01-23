@@ -21,6 +21,10 @@ export {
   scholarsReflection,
   type ScholarsReflectionConfig,
 } from './scholarsReflection';
+export {
+  poeticReflection,
+  type PoeticReflectionConfig,
+} from './poeticReflection';
 
 // Server-only exports - import directly from the file in API routes:
 // import { embodiesTheTarot, resetTarotState } from './embodiesTheTarot';

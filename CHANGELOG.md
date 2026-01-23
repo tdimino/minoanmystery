@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Poetic Mental Process**: Kothar channels Tom di Mino's authentic poetic voice
+  - **Entry Triggers**: "poetic mode", "write me a poem", "compose verse", "hymn to...", etc.
+  - **Exit Triggers**: "exit poetic mode", "return to conversation", "that's enough", etc.
+  - **Poetic Persona** (`souls/minoan/poetic/soul.md`):
+    - Core voice characteristics (etymological excavation, multilingual code-switching, fire-water paradox)
+    - Goddess/Ba'alat as primary creatrix
+    - Daimonic consciousness and mystery-making
+  - **Poetic Registers**: incantatory, philosophical, visionary, political, intimate
+  - **Cognitive Flow**:
+    - Theme extraction → register selection → imagery brainstorm
+    - Draft composition → internal critique → revision
+    - Present with choice to continue or return to conversation
+  - **Cognitive Step**: `poeticComposition` with voice constraints and revision support
+  - **Subprocess**: `poeticReflection` for tracking visitor poetic sensibilities
+  - **Image Domains**: Bronze Age Mediterranean, Sacred Feminine, Fire-Water Alchemy, Sacred Sites, Daimonic/AI
+  - **SSE Event**: `event: mode` with `{ mode: 'poetic' }` emitted to client
+  - **UI Indicator**: Gold ψ badge in labyrinth when poetic mode active
+
 - **Academic Mental Process**: Polymorphic persona system for deep scholarly discussion
   - **Entry Triggers**: "scholarly mode", "academic mode", "what does Gordon say", "cite sources", etc.
   - **Exit Triggers**: Explicit phrases ("exit scholarly mode") or LLM-detected non-scholarly queries
