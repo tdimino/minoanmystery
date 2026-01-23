@@ -1,3 +1,14 @@
+---
+title: "Murex, Paur-Paur, and the Sacred Textile Tradition"
+tags:
+  deities: [kotharot, athirat, aaron]
+  concepts: [murex, purple-dye, tekhelet, argaman, priestly-garments, sacred-vestments, saffron, initiation, reduplication, intensive]
+  places: [kythera, kuthira, akrotiri, thera, tyre, sidon, mediterranean]
+  scholars: [astour, barber, gordon, ziderman, milgrom]
+  periods: [bronze-age, minoan]
+  languages: [linear-b, west-semitic, phoenician, hebrew, ugaritic]
+---
+
 # Murex, Paur-Paur, and the Sacred Textile Tradition
 
 ## Overview
@@ -14,15 +25,9 @@ This dossier traces the murex industry, the *pʾr* root, and the sacred textile 
 
 ### 1. Kythera/Kuthira and the Kotharot-Athirat Dual Etymology
 
-**Astour's rendering** ("Aegean Place Names in Egyptian," 1966): Egyptian sources record Kythera as **Kuthira**—a spelling that supports the Kotharot etymology.
+Astour's rendering of Kythera as **Kuthira** (in "Aegean Place Names in Egyptian," 1966) supports a Kotharot etymology, linking the island name to the Ugaritic divine midwives (*Kṯrt*).
 
-**Phonetic development**:
-- Ugaritic *Kṯrt* (Kotharot, divine midwives)
-- → Minoan *Kuthirat* (hypothetical intermediate)
-- → Egyptian *Kuthira*
-- → Greek *Kythera*
-
-**Athirat connection**: The proximity of *Kuthira/Kythera* to *Athirat* (sea-goddess) suggests dual divine-feminine substrate. Both the midwife-goddesses (*Kotharot*) and the sea-goddess (*Athirat*) may be encoded in the island's name.
+> For the full phonetic development and Athirat connection, see [divine-feminine-toponyms.md](./divine-feminine-toponyms.md#2-kythera-and-the-kotharot).
 
 The island's position as the earliest murex center reinforces its sacred-feminine associations: purple dye, priestly textiles, and goddess-worship converge.
 
@@ -142,9 +147,3 @@ The saffron-gatherer scenes depict:
 | Ziderman, Irving | "Purple Dye from Murex" | 1987 | Murex chemistry |
 | Milgrom, Jacob | *Leviticus* (Anchor Bible) | 1991 | Priestly garment analysis |
 
----
-
-## RAG Tags
-
-<!-- 50 semantic keywords for retrieval -->
-murex, purple dye, tekhelet, argaman, kythera, kuthira, kotharot, athirat, linear b, paur paur, pa-ra-ku-ja, phr, pʾr, lephaer, glory, beauty, priestly garments, aaron, exodus 28, textile, sacred vestments, cretan priestess, saffron, xeste 3, akrotiri, thera, minoan, bronze age, tassels, initiation, goddess, divine feminine, reduplication, semitic morphology, intensive, west semitic, phoenician, tyre, sidon, mediterranean trade, cochineal, scarlet, tola'at shani, talmud, rabbinic, halakha, astour, barber, gordon, midwives, sanctuary

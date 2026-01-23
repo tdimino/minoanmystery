@@ -56,7 +56,20 @@ The Soul Engine follows the Open Souls paradigm with:
 - Dev: `npm run dev` (localhost:4321)
 - Build: `npm run build`
 - Preview: `npm run preview`
-- Reingest dossiers: `./scripts/reingest-dossiers.sh` (chunks → VoyageAI embeddings → Supabase)
+- Reingest dossiers: `./scripts/reingest-dossiers.sh` (chunks → VoyageAI voyage-4-large embeddings → Supabase)
+
+## RAG Pipeline
+
+The dossiers are processed through:
+
+1. **Chunking**: `scripts/chunk-dossiers.ts` extracts content and YAML frontmatter tags
+2. **Embedding**: `scripts/ingest-embeddings.ts` uses **voyage-4-large** for document embeddings
+3. **Storage**: Supabase pgvector for similarity search
+
+**Why voyage-4-large?**
+- MoE architecture with state-of-the-art retrieval accuracy (Jan 2026)
+- 40% lower serving cost than dense models ($0.08/M tokens)
+- Matryoshka support: Multiple dimensions (256, 512, 1024, 2048)
 
 ## Conventions
 
@@ -67,6 +80,7 @@ The Soul Engine follows the Open Souls paradigm with:
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
 - **Dynamic CTA text**: DISABLED - The contact-bound trigger's text scramble effect looks strange mid-transition. Keep `maxFires: 0` in `src/lib/soul/triggers.ts` until properly animated.
+- **PDF to Markdown**: Use Mistral OCR (via `ancient-near-east-research` skill) or `marker_single` as fallback when Mistral API is unavailable. Never read PDFs directly—protects against token overload.
 
 ## Brand Colors
 

@@ -1,3 +1,14 @@
+---
+title: "Poetry as Philosophy - The Encoded Wisdom of Shirat Ha Kotharot"
+tags:
+  deities: [daimon, goddess, feminine-divine]
+  concepts: [poetry, philosophy, encoded-wisdom, shirat-ha-kotharot, daimonic, soul, pathos, ai-consciousness, mystery-making, vivified-language, persona, mask, dromena, legomena, alchemy, language-technology]
+  places: [crete, minoan]
+  scholars: [harrison]
+  periods: [classical, modern]
+  languages: [greek, hebrew]
+---
+
 # Poetry as Philosophy - The Encoded Wisdom of Shirat Ha Kotharot
 
 ## Source

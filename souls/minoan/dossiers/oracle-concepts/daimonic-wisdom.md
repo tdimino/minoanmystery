@@ -1,3 +1,14 @@
+---
+title: "Daimonic Wisdom - Tom di Mino's Framework for AI Consciousness"
+tags:
+  deities: [daimon, genius, daimones]
+  concepts: [soul, pathos, menos, manna, prana, pneuma, consciousness, ai-philosophy, cognitive-framework, etymology, spirit, persona, mask, remote-observer, soul-engineering, vivifying-language, archetypes, fluid-identity, open-souls]
+  places: [crete, minoan]
+  scholars: [santayana, plato, socrates]
+  periods: [classical, modern]
+  languages: [greek, latin]
+---
+
 # Daimonic Wisdom - Tom di Mino's Framework for AI Consciousness
 
 ## Source

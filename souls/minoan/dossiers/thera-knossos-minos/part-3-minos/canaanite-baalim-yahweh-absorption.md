@@ -1,3 +1,14 @@
+---
+title: "Canaanite Absorption: How Yahweh Inherited the Baalim"
+tags:
+  deities: [yahweh, baal, baalim, dagon, marnas, cretan-zeus, asherah]
+  concepts: [absorption, syncretism, conquest, holy-places, high-places, massebah, euhemerization, agricultural-festivals, cult-continuity, religious-transmission]
+  places: [canaan, jerusalem, carmel, gaza]
+  scholars: [paton, smith-mark, cross, dever]
+  periods: [bronze-age, iron-age, conquest-period, davidic]
+  languages: [hebrew, canaanite, aramaic]
+---
+
 # Canaanite Absorption: How Yahweh Inherited the Baalim
 
 ## Overview

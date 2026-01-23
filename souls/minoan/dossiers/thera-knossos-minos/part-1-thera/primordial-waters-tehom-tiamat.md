@@ -1,3 +1,14 @@
+---
+title: "Primordial Waters: Tehom, Tiamat, and Volcanic Memory"
+tags:
+  deities: [tehom, tiamat, athirat, marduk, yam, tannin, apsu]
+  concepts: [primordial-waters, chaos, cosmogony, chaos-combat, volcanic-memory, eruption, genesis-creation, pall-of-darkness]
+  places: [thera, santorini, cesme-baglararasi, aegean, mediterranean]
+  scholars: [gunkel, gordon, astour, lambert, day, rahmouni, sahoglu, diewert]
+  periods: [bronze-age, minoan]
+  languages: [hebrew, akkadian, ugaritic, west-semitic]
+---
+
 # Primordial Waters: Tehom, Tiamat, and Volcanic Memory
 
 ## Overview
@@ -122,17 +133,32 @@ Astour argues this passage preserves authentic **Phoenician cosmogonic vocabular
 
 ### 5. Athirat Rahmay and the Womb Connection
 
-Ugaritic texts give Athirat (ʾaṯrt) several epithets:
+Ugaritic texts give Athirat (ʾaṯrt) several epithets—*rbt ʾaṯrt ym* ("Lady Athirat of the Sea"), *ʾaṯrt rḥmy* ("Athirat of the Womb/Mercy"), and *qnyt ʾilm* ("Creatrix of the gods").
 
-| Epithet | Translation | Significance |
-|---------|-------------|--------------|
-| *rbt ʾaṯrt ym* | "Lady Athirat of the Sea" | Marine domain |
-| *ʾaṯrt rḥmy* | "Athirat of the Womb/Mercy" | Generative, maternal |
-| *qnyt ʾilm* | "Creatrix of the gods" | Theogonic role |
+> For the full epithets table with KTU references, see [divine-feminine-toponyms.md](./divine-feminine-toponyms.md#4-athirat-sea-goddess-and-mother-of-the-gods).
 
 The *rḥm* root connects to both "womb" and "mercy/compassion" (cf. Hebrew *raḥamîm*). Athirat's sea-womb generates the divine pantheon—a Canaanite parallel to Tiamat's generative role.
 
 **Athirat → Thera**: If Thera encodes Athirat via initial vowel loss (documented pattern: *Aššur* → *Syria*, *ʾilat* → *Eilat*), the island's name would mean "place of the Sea-Goddess."
+
+### 6. Job 7:12: Yam, Tannin, and Divine Surveillance
+
+Job 7:12 provides the most explicit biblical synthesis of chaos-combat imagery, uniquely combining **Yam** (Sea), **Tannin** (sea-dragon), and **mišmār** (surveillance/guard) in a single rhetorical question:
+
+> הֲיָם־אָ֭נִי אִם־תַּנִּ֑ין כִּֽי־תָשִׂ֖ים עָלַ֣י מִשְׁמָֽר
+> "Am I Yam or Tannin, that you set a **watch** (*mišmār*) over me?" (Job 7:12)
+
+**Diewert** ("Job 7:12: yām, Tannîn and the Surveillance of Job," *JBL* 106, 1987):
+
+> "It is not the combination of yam and tannîn that is peculiar to Job 7:12, since they are also linked in Ugaritic and biblical texts (PRU II.3; CTA 3.3.35–37; Ps 74:13–14), but rather **the application of mišmār to both these creatures**."
+
+> "Yam and tannîn are mythological enemies of God and potential forces of chaos who threaten the cosmos and therefore must be kept under **constant surveillance**."
+
+**Ugaritic parallel (CTA 3.3.35–37)**: Anat's victory speech listing Yam and Tannin together as defeated enemies:
+> "Did I not crush Il's Darling, Sea? Nor destroy River, the great god? Nor muzzle (*ʾištbm*) Tannin full well?"
+
+**Enuma Elish connection**: Tablet IV.139–140 describes Marduk posting guards over Tiamat's waters after her defeat—the same **surveillance** motif that Job invokes:
+> "Half of her he set up and ceiled as sky, **pulled down the bar and posted guards**. He bade them to allow not her waters to escape."
 
 ---
 
@@ -186,10 +212,5 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 | Day, John | *God's Conflict with the Dragon and the Sea* | 1985 | Chaos-combat traditions |
 | Rahmouni, Aicha | *Divine Epithets in the Ugaritic Alphabetic Texts* | 2008 | Athirat epithets |
 | Şahoğlu, V. et al. | "Volcanic ash, victims, and tsunami debris from the LBA Thera eruption" (*PNAS*) | 2021 | First eruption victim; tsunami evidence; radiocarbon dating |
+| Diewert, David A. | "Job 7:12: yām, Tannîn and the Surveillance of Job" (*JBL* 106) | 1987 | Yam + Tannin + mišmār synthesis; CTA 3.3.35–37 parallel |
 
----
-
-## RAG Tags
-
-<!-- 50 semantic keywords for retrieval -->
-tehom, tiamat, primordial waters, chaos, deep, abyss, genesis, creation, enuma elish, marduk, apsû, cosmogony, chaos combat, sea goddess, athirat, asherah, rbt atrt ym, athirat rahmay, womb, racham, rahamim, creatrix, qnyt ilm, volcanic, thera eruption, santorini, minoan, kalliste, darkness, pall of darkness, apollonius, argonautica, ugaritic, akkadian, hebrew, west semitic, cognate, thm, tiamtu, tamtu, tihama, waters divided, firmament, gunkel, cyrus gordon, bronze age, aegean, mediterranean, cosmological, theogony, mother goddess, generative waters

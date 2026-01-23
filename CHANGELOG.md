@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- **Embedding Model Upgrade**: Migrated from voyage-context-3 to voyage-4-large
+  - VoyageAI's latest MoE architecture (Jan 2026) with state-of-the-art retrieval accuracy
+  - 40% lower serving cost than dense models ($0.08/M tokens)
+  - Matryoshka dimension support (256, 512, 1024, 2048)
+  - Updated `scripts/ingest-embeddings.ts` with new model and cost documentation
+
+### Fixed
+- **Duplicate Quote Consolidation**: Consolidated 4 redundant quote patterns across dossiers with cross-references
+  - #1 Apollonius "Pall of Darkness" → canonical in `primordial-waters-tehom-tiamat.md`
+  - #2 Athirat epithets table → canonical in `divine-feminine-toponyms.md`
+  - #3 Kythera etymology → canonical in `divine-feminine-toponyms.md`
+  - #5 Herodotus IV.147 → canonical in `membliaros-cadmean-etymology.md`
+  - Files updated: `membliaros-cadmean-etymology.md`, `classical-sources-spartan-bias.md`, `murex-paur-paur-textile.md`, `divine-feminine-toponyms.md`, `asherah-tree-exile-malignment.md`, `primordial-waters-tehom-tiamat.md`
+- **Section Numbering**: Fixed duplicate section 7 in `potnia-daboritu-baalat-deborah.md` (7→8, 8→9)
+
+### Added
+- **YAML Frontmatter**: Added structured metadata (title, tags) to 25+ dossiers for improved RAG retrieval
+  - Tags include: deities, concepts, places, scholars, periods, languages
+  - Enables faceted search and relationship mapping
+- **Dossier INDEX Files**: Navigation indexes for dossier subdirectories
+  - `souls/minoan/dossiers/INDEX.md`
+  - `oracle-concepts/INDEX.md`, `part-1-thera/INDEX.md`, `part-2-knossos/INDEX.md`, `part-3-minos/INDEX.md`
+
+### Infrastructure
+- **Re-ingested Embeddings**: 2,170 chunks with voyage-4-large after consolidation
+  - 331,787 VoyageAI tokens (~$0.027)
+  - Reduced redundancy improves retrieval precision
+
+---
+
 ### Added
 - **Poetic Mental Process**: Kothar channels Tom di Mino's authentic poetic voice
   - **Entry Triggers**: "poetic mode", "write me a poem", "compose verse", "hymn to...", etc.

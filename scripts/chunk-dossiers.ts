@@ -111,6 +111,11 @@ function inferSourceType(filePath: string): SourceType {
 
 /**
  * Extract YAML frontmatter tags if present
+ * Supports both flat format: tags: [a, b, c]
+ * And semantic groupings:
+ *   tags:
+ *     deities: [a, b]
+ *     concepts: [c, d]
  */
 function extractFrontmatter(content: string): { tags: string[]; body: string } {
   const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -120,14 +125,30 @@ function extractFrontmatter(content: string): { tags: string[]; body: string } {
   }
 
   const [, yaml, body] = frontmatterMatch;
-  const tagsMatch = yaml.match(/tags:\s*\[(.*?)\]/);
+  const tags: string[] = [];
 
-  if (tagsMatch) {
-    const tags = tagsMatch[1].split(',').map(t => t.trim().replace(/['"]/g, ''));
-    return { tags, body };
+  // Try flat format first: tags: [a, b, c]
+  const flatTagsMatch = yaml.match(/^tags:\s*\[(.*?)\]/m);
+  if (flatTagsMatch) {
+    const flatTags = flatTagsMatch[1].split(',').map(t => t.trim().replace(/['"]/g, ''));
+    tags.push(...flatTags.filter(t => t.length > 0));
   }
 
-  return { tags: [], body };
+  // Try semantic groupings format:
+  //   tags:
+  //     deities: [a, b]
+  //     concepts: [c, d]
+  const semanticTagsMatch = yaml.match(/^tags:\s*\n((?:\s+\w+:\s*\[.*?\]\n?)+)/m);
+  if (semanticTagsMatch) {
+    const groupLines = semanticTagsMatch[1];
+    const arrayMatches = groupLines.matchAll(/\w+:\s*\[(.*?)\]/g);
+    for (const match of arrayMatches) {
+      const groupTags = match[1].split(',').map(t => t.trim().replace(/['"]/g, ''));
+      tags.push(...groupTags.filter(t => t.length > 0));
+    }
+  }
+
+  return { tags, body };
 }
 
 /**

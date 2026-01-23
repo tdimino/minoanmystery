@@ -1,3 +1,14 @@
+---
+title: "Ya wa Eil: Yamu and the Theophoric Ya-Prefix"
+tags:
+  deities: [yamu, yam, yahweh, yhwh, el, baal, abiyam, leviathan, tannin, nahar]
+  concepts: [theophoric, combat-myth, chaoskampf, volcanic, tetragrammaton, cultural-distancing, zebul-yam, sophet-nahar]
+  places: [thera, caphtor, sinai, horeb, negev, mediterranean]
+  scholars: [cross, smith, gordon, pardee, day, albright, dunn, amzallag]
+  periods: [bronze-age]
+  languages: [ugaritic, hebrew, west-semitic]
+---
+
 # Ya wa Eil: Yamu and the Theophoric Ya-Prefix
 
 ## Overview
@@ -42,7 +53,26 @@ The formula *yw ʾil* has been interpreted variously:
 
 **Significance**: The *Ya-* element functions as a divine vocative or theophoric marker, connecting to the Hebrew divine name.
 
-### 3. Ya- Prefix in Semitic Theophoric Names
+### 3. Epithets of Yam: Zebul Yam and Šophet Nahar
+
+Yam bears parallel epithets that establish his royal and judicial character:
+
+| Epithet | Translation | Significance |
+|---------|-------------|--------------|
+| **Zebul Yam** | "Prince Sea" | Royal title, divine sovereignty |
+| **Šophet Nahar** | "Judge River" | Judicial function, cosmic authority |
+
+Nahar ("River") functions as a secondary divine name, partaking of the cosmic sea (*mayim*, or Egyptian *Nun*) in which all creation swims. The pairing of "Prince" and "Judge" reflects the standard Ancient Near Eastern divine titulary where sovereignty (*zebul*) entails judicial authority (*šophet*).
+
+**KTU 1.2 IV.8–9**:
+> *lk rgm l-zbl ym / ltp-ṭ nhr*
+> "Go, speak to Prince Yam, to Judge River..."
+
+This dual address confirms that Zebul Yam and Šophet Nahar are alternative names for the same deity—the sea-god who demands Baal's submission and receives El's backing before his defeat.
+
+*Editorial note (Tamarru):* Nahar partakes of the cosmic sea (*mayim*, or Egyptian *Nun*) in which all creation swims. The "River" is not a mere watercourse but the primordial current that connects all waters—the same cosmic ocean that Tehom and Tiamat represent in their respective traditions.
+
+### 4. Ya- Prefix in Semitic Theophoric Names
 
 | Name | Hebrew | Meaning | Theophoric Element |
 |------|--------|---------|-------------------|
@@ -171,9 +201,3 @@ Multiple scholars have proposed YHWH's origin as a volcanic deity, based on theo
 | Amzallag, Nissim | "Yahweh, the Canaanite God of Metallurgy?" *JSOT* 33.4, pp. 387–404 | 2009 | Kenite metalworkers, volcanic imagery |
 | Amzallag, Nissim | *Yahweh and the Origins of Ancient Israel* | 2023 | YHWH's primeval volcanic identity |
 
----
-
-## RAG Tags
-
-<!-- 50+ semantic keywords for retrieval -->
-yamu, yam, sea god, yw il, ya wa eil, baal cycle, ugaritic, nahar, river god, leviathan, ltn, tnn, dragon, serpent, tehom, primordial waters, song of the sea, exodus 15, abiyam, abiyyah, theophoric, ya prefix, yahweh, yhwh, divine name, el, baal, combat myth, canaanite, israelite, judah, royal names, frank moore cross, mark smith, cyrus gordon, chaoskampf, storm god, weather god, volcanic, volcano god, sinai, horeb, fire, smoke, furnace, theophany, jacob dunn, nissim amzallag, kenite, midianite, metallurgy, copper smelting, tetragrammaton, cultural distancing, textual scrubbing, chronicler, caphtor, thera eruption, deeps, nehar, mediterranean, bronze age, mythology, west semitic, hebrew bible

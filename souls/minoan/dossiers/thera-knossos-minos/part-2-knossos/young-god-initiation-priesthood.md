@@ -1,3 +1,14 @@
+---
+title: "Young God Impersonation and Initiatory Priesthood"
+tags:
+  deities: [zeus, megistos-kouros, shekhinah, athena, themis]
+  concepts: [young-god, initiation, god-impersonator, priestly-corporation, syrian-dress, levite-laos, displacement, goddess-to-king-transition]
+  places: [hagia-triada, knossos, dicte, crete]
+  scholars: [marinatos, harrison, gordon, peatfield]
+  periods: [bronze-age, neopalatial, minoan, mycenaean, lm-iii]
+  languages: [greek, phoenician, levantine]
+---
+
 # Young God Impersonation and Initiatory Priesthood
 
 ## Overview

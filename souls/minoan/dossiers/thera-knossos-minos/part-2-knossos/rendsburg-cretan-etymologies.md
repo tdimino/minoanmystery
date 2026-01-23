@@ -1,3 +1,14 @@
+---
+title: "Rendsburg's Cretan-Semitic Etymologies"
+tags:
+  deities: [demeter, kabeiroi, sophia]
+  concepts: [etymology, semitic-loans, megaron, naos, bomos, bamah, phonetic-correspondence, chthonic, underworld-form]
+  places: [crete, dikte, knossos]
+  scholars: [rendsburg, bernal, gordon, brown, astour, rosol, marinatos]
+  periods: [bronze-age, iron-age, minoan, mycenaean, linear-a, linear-b]
+  languages: [greek, hebrew, akkadian, ugaritic, phoenician, egyptian]
+---
+
 # Rendsburg's Cretan-Semitic Etymologies
 
 ## Overview

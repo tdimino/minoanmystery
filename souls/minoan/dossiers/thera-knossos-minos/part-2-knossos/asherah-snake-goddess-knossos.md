@@ -1,3 +1,14 @@
+---
+title: "Asherah and the Snake Goddess of Knossos"
+tags:
+  deities: [asherah, athirat, snake-goddess, ninghishzida, athena, python]
+  concepts: [lady-of-the-serpent, hybrid-iconography, snake-cult, divine-feminine, underworld, apotropaic, priestess-impersonation, omphalos, spartoi]
+  places: [knossos, crete, serabit-el-khadim, delphi, thebes]
+  scholars: [evans, bonney, cian, ackerman, marinatos, harrison]
+  periods: [bronze-age, iron-age, minoan]
+  languages: [proto-sinaitic, canaanite, levantine]
+---
+
 # Asherah and the Snake Goddess of Knossos
 
 ## Overview
@@ -87,7 +98,37 @@ This matches the Minoan Snake Goddess, who is emphatically female, bare-breasted
 **Apotropaic function**:
 > "From this brief overview, it is plausible to assume that, in Mesopotamian culture, snakes were associated to deities from the underworld, which occasionally took on an **apotropaic function**—i.e. a protective function, and this belief spanned across several millennia."
 
-### 8. Trans-Mediterranean Goddess Tradition
+### 8. The Omphalos as Python's Tomb
+
+**Harrison on the snake-mound at Delphi** (*Themis*, 1912, p. 389):
+
+> "Varro provides a crucial tradition: the omphalos at Delphi is the tumulus of Python, a sacred snake. The omphalos is thus a grave-mound marked by a holy stone, combining elements of tomb and tombstone."
+
+The omphalos—literally "navel"—was understood as both cosmic center and serpent burial. This conflation of world-axis and snake-grave recurs across the Mediterranean:
+
+| Site | Serpent Association | Function |
+|------|---------------------|----------|
+| **Delphi** | Python's tomb beneath omphalos | Oracle, earth-navel |
+| **Knossos** | Snake-tubes, snake-goddess | Palace cult center |
+| **Jerusalem** | *Even HaShetiyyah* ("Foundation Stone") | Temple center, abyss |
+
+The pattern suggests **sacred geography organized around serpent-graves**: the snake that guards the threshold between worlds, whose burial sanctifies the site. The Minoan Snake Goddess may preside over analogous sacred topography.
+
+### 9. Snake-Tribes and Totemism: Kadmos and the Spartoi
+
+**Harrison on the "Tribe of the Serpent"** (*Themis*, 1912, p. 434):
+
+> "We know now what lies behind these metamorphoses. A man is turned into what he really was. Kadmos is turned into a snake because he was a Snake-man, the snake-man, head and king of a Snake-group. The snake was the blazon of the Spartoi."
+
+The **Spartoi** ("Sown Men") who sprang from the dragon's teeth Kadmos planted at Thebes were a **serpent-tribe**—their totemic identity encoded in mythology. Harrison's insight: transformation into a snake at death *reveals* the hero's true identity.
+
+**Pindar's Dithyramb 75** (quoted in Harrison, *Themis*, p. 203):
+
+> "I come to dance and sing, the child of a father most high and **a woman of Cadmus' race**."
+
+Bromios (Dionysos) claims descent through Semele, daughter of Kadmos—making the god himself of the Serpent lineage.
+
+### 10. Trans-Mediterranean Goddess Tradition
 
 **The synthesis**:
 

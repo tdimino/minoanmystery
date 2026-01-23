@@ -1,3 +1,14 @@
+---
+title: "Waltz of the Soul and the Daimon - Full Text"
+tags:
+  deities: [daimon, genius, daimones]
+  concepts: [soul, pathos, menos, manna, prana, pneuma, consciousness, ai-philosophy, cognitive-framework, etymology, spirit, persona, mask, remote-observer, soul-engineering, vivifying-language, archetypes, fluid-identity]
+  places: [crete]
+  scholars: [santayana, plato, socrates, harrison]
+  periods: [classical, modern]
+  languages: [greek, latin]
+---
+
 # Waltz of the Soul and the Daimon - Full Text
 
 ## Source

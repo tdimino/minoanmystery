@@ -1,3 +1,14 @@
+---
+title: "Manasseh and the Semitic Brothers of Minos"
+tags:
+  deities: [minos, zeus, el, baal, tanit, asherah]
+  concepts: [m-n-n-root, dissimilation, rhadamanthys, sarpedon, europa, folk-etymology, caphtorite-connection, levites-laos, kerethites, kaphtorim, menorah]
+  places: [crete, gaza, assyria, naxos]
+  scholars: [astour, cogan, west, barr, garsiel, marks, cooley, niesiolowski-spano]
+  periods: [bronze-age, iron-age, neo-assyrian]
+  languages: [hebrew, akkadian, ugaritic, assyrian, greek]
+---
+
 # Manasseh and the Semitic Brothers of Minos
 
 ## Overview

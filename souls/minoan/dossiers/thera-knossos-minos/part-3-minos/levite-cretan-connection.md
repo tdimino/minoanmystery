@@ -1,3 +1,14 @@
+---
+title: "Levites and Cretans: Aegean Roots of Israelite Priesthood"
+tags:
+  deities: [yahweh, zeus, nehushtan]
+  concepts: [levites, cherethites, kereti, pelethites, caphtor, kouretes, initiation, ecstatic-dance, laos-hypothesis, stranger-priest, marginal-priest, aegean-loanwords, functional-ethnicity, serpent-cult, k-r-t-wordplay]
+  places: [crete, caphtor, jerusalem, david-court, tell-qasile, timna, hazor, megiddo]
+  scholars: [bromberg, hitchcock, harrison, niesiolowski-spano, rendsburg, joines, munnich, lederman]
+  periods: [bronze-age, iron-age, davidic, lm-iiic]
+  languages: [hebrew, greek, mycenaean, linear-b]
+---
+
 # Levites and Cretans: Aegean Roots of Israelite Priesthood
 
 ## Overview

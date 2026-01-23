@@ -1,3 +1,14 @@
+---
+title: "Classical Sources and Spartan Colonial Bias"
+tags:
+  deities: [euphemos, triton, apollo]
+  concepts: [colonization, foundation-myth, charter-myth, legitimacy, genealogy, hegemony, political-bias, historiography]
+  places: [thera, kalliste, sparta, lacedaemon, cyrene, libya, lake-triton, aegean, mediterranean]
+  scholars: [herodotus, pindar, apollonius-rhodius, pausanias, astour, malkin, dougherty]
+  periods: [bronze-age, iron-age, archaic-period, classical-antiquity]
+  languages: [greek, phoenician]
+---
+
 # Classical Sources and Spartan Colonial Bias
 
 ## Overview
@@ -43,10 +54,9 @@ Reinforces the same charter myth, praising Arkesilas as descendant of divinely a
 
 ### 3. Apollonius Rhodius and the "Pall of Darkness"
 
-**Argonautica IV.1694–98** describes the Argonauts near Crete:
-> "Then over that vast abyss they passed all night long in the gloom of darkness... neither did the stars pierce that fatal night, nor moon-gleam; but black Chaos descended from heaven, or some other darkness..."
+The *Argonautica* IV.1694–98 describes the Argonauts encountering the "Pall of Darkness" (*νὺξ ὀλοή*) near Crete—a passage Astour interprets as preserving memory of the Theran eruption's ash cloud.
 
-**Astour's interpretation**: This "Pall of Darkness" (*νὺξ ὀλοή*) preserves memory of the Theran eruption's ash cloud. The vocabulary parallels Semitic cosmogonic texts describing primordial chaos.
+> For the full passage and Astour's cosmogonic analysis, see [primordial-waters-tehom-tiamat.md](./primordial-waters-tehom-tiamat.md#4b-the-pall-of-darkness-astours-cosmogonic-analysis).
 
 **Euphemos clod myth** (Argonautica IV.1731–64):
 Apollonius elaborates the clod prophecy that Pindar invokes. The god Triton gives Euphemos a clod of Libyan earth at Lake Triton; had Euphemos thrown it into the sea near Taenarum, his descendants would have colonized Libya within four generations. Instead, the clod washes from the ship at Thera, delaying the prophecy seventeen generations.
@@ -132,9 +142,3 @@ Pausanias transmits the Spartan version of Theran colonization, echoing Herodotu
 | Dougherty, Carol | *The Poetics of Colonization*. Oxford UP | 1993 | Charter myth analysis, ch. 4 |
 | How, W.W. & Wells, J. | *A Commentary on Herodotus* | 1912 | Standard Herodotus commentary |
 
----
-
-## RAG Tags
-
-<!-- 50 semantic keywords for retrieval -->
-herodotus, pindar, apollonius, pausanias, thera, calliste, spartan, sparta, lacedaemon, dorian, colonization, foundation myth, euphemos, clod, triton, lake triton, libya, cyrene, battiad, arkesilas, pythian odes, argonautica, pall of darkness, membliaros, cadmos, phoenician, kadmean, genealogy, charter myth, legitimacy, colonial, hegemony, perioikoi, theras, autesion, aristodemus, heraclid, silphium, greek sources, political bias, historiography, astour, malkin, dougherty, bronze age, iron age, archaic period, classical antiquity, mediterranean, aegean

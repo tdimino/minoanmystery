@@ -1,3 +1,14 @@
+---
+title: "Divine Feminine Toponyms: Goddesses Inscribed in Geography"
+tags:
+  deities: [athirat, asherah, kotharot, aegina, tinit, tanit, artemis-ephesia, anath, astarte, ilat]
+  concepts: [aphaeresis, initial-vowel-loss, divine-feminine, toponymy, goddess-as-city, corona-muralis, sacred-palm]
+  places: [thera, kythera, kuthira, eilat, carthage, ephesus, astaroth-qarnaim, beth-anath, beth-shemesh, mediterranean]
+  scholars: [astour, rosol, masson, beekes, rollinger, frye, rahmouni]
+  periods: [bronze-age]
+  languages: [ugaritic, phoenician, west-semitic, greek, luwian]
+---
+
 # Divine Feminine Toponyms: Goddesses Inscribed in Geography
 
 ## Overview
@@ -124,7 +135,7 @@ The ultimate expression of goddess-as-toponym comes from Artemis Ephesia, whose 
 > "The Kotharot, daughters of the crescent moon, the swallows"
 
 **Herodotus IV.147** (Phoenicians on Thera):
-> "Cadmos... left in this island, among other Phoenicians, his own kinsman Membliaros."
+> For the full passage and Cadmean analysis, see [membliaros-cadmean-etymology.md](./membliaros-cadmean-etymology.md#4-the-cadmean-framework).
 
 **Çineköy inscription** (8th c. BCE):
 Bilingual Luwian-Phoenician text confirming Luwian *su-ra/i* = Phoenician *ʾšr*.
@@ -164,9 +175,3 @@ Bilingual Luwian-Phoenician text confirming Luwian *su-ra/i* = Phoenician *ʾšr
 | Masson, Emilia | *Recherches sur les plus anciens emprunts sémitiques* | 1967 | Early Semitic loans |
 | Rahmouni, Aicha | *Divine Epithets in the Ugaritic Alphabetic Texts* | 2008 | Athirat epithets |
 
----
-
-## RAG Tags
-
-<!-- 60 semantic keywords for retrieval -->
-athirat, asherah, thera, etymology, aphaeresis, initial vowel loss, aššur, syria, çineköy, divine feminine, goddess, toponymy, kythera, kuthira, kotharot, divine midwives, aegina, eilat, ilat, astaroth qarnaim, beth anath, tinit, tanit, carthage, rabbat hawwat eilat, sacred palm, semitic loans, rosół, masson, beekes, rollinger, frye, phoenician, west semitic, ugaritic, rbt atrt ym, qnyt ilm, creatrix, sea goddess, mother goddess, crescent moon, yashp, iaspis, jasper, garlic, gelgis, akīnákēs, kīnákēs, bronze age, mediterranean toponyms, artemis ephesia, corona muralis, city goddess, bee goddess, ephesus, anot, beth shemesh, goddess as city, virgin goddess, city walls, polis deity

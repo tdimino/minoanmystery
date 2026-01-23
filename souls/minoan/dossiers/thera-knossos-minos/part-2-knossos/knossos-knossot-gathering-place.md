@@ -65,11 +65,27 @@ Apollo addresses Cretan sailors whom he brings to Delphi as his priests:
 
 **Significance**: The epithet "wooded" (ὑλήεντα) suggests Knossos's sanctuary character—a sacred grove or forest setting. This matches Demeter's chthonic associations and the pattern of tree-sanctuaries throughout the Eastern Mediterranean.
 
-### 6. Kenishta di Qadusha: Holy Assembly
+### 6. Kenishta di Qadusha
 
 **Aramaic terminology**:
-- **כְּנִישְׁתָּא דִּי קַדּוּשָׁא** (*Kenishta di Qadusha*) = "Holy Assembly"
+- **כְּנִישְׁתָּא דִּי קַדּוּשָׁא** (*Kenishta di Qadusha*) = "Kenishta of Qadusha"
 - Used in Targumic and later Aramaic texts for sacred gatherings
+
+**Zoharic attestations**:
+
+> **Zohar I, 33b:** "Rabbi Yehuda said: When the Qadosh Barukh Hu (קָדוֹשׁ בָּרוּךְ הוּא, 'Holy One, Blessed be He') wishes to enter the Kenishta (כְּנִישְׁתָּא, 'gathering'), He first looks at the Kenishta, and only then does He enter."
+
+> **Zohar II, 135a:** "And they are called the Kenishta Qadisha (כְּנִישְׁתָּא קַדִּישָׁא, 'holy gathering'), the Kenishta of the Shekhinah (שְׁכִינָה). When they join together, they are called the Kenishta of Qedusha (קְדוּשָׁה, 'holiness')."
+
+#### 6a. Kinnusha in Proverbs
+
+**Targum Proverbs 1:20**:
+> "Chokmeta (חָכְמְתָא, 'Wisdom') sings in the streets; in the Kinnusha (בְּכִנּוּשָׁא, 'gathering') she raises her voice."
+
+#### 6b. Shekhinah Dwells Where There Is Kenishta
+
+**Zohar III, 19a**:
+> "Therefore, wherever a Kenishta (כְּנִישְׁתָּא, 'gathering') is found, the Shekhinah (שְׁכִינָה) dwells. For this reason, a person should join the Kenishta, so that he may be found with the Shekhinah."
 
 **Proverbs and oral tradition**: The term **Kinnusha** appears in wisdom literature contexts. Proverbs, like the Zohar, participate in an oral tradition stretching to remote antiquity. The ultimate age of a single saying could conceivably go back to the dawn of human speech—preserving vocabulary that predates written attestations.
 
@@ -168,5 +184,5 @@ Administrative records showing the palace's distribution function—allocating o
 
 ## RAG Tags
 
-<!-- 60 semantic keywords for retrieval -->
-knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, holy assembly, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, marinatos, hiereus, sacerdotal, priest-administration
+<!-- 70 semantic keywords for retrieval -->
+knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, kinnusha, zohar, targum, wisdom, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, marinatos, hiereus, sacerdotal, priest-administration, divine indwelling, theophany

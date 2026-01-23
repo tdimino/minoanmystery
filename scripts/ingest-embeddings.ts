@@ -5,6 +5,11 @@
  * Reads chunked dossiers, generates embeddings with VoyageAI voyage-4-large,
  * and uploads to Supabase pgvector.
  *
+ * voyage-4-large is VoyageAI's latest embedding model (Jan 2026):
+ * - MoE architecture with state-of-the-art retrieval accuracy
+ * - 40% lower serving cost than dense models
+ * - Supports Matryoshka dimensions (256, 512, 1024, 2048)
+ *
  * Usage:
  *   npx ts-node scripts/ingest-embeddings.ts
  *   npx ts-node scripts/ingest-embeddings.ts --input chunks.json
@@ -197,7 +202,7 @@ async function main(): Promise<void> {
     const estimatedTokens = Math.ceil(totalChars / 4);
 
     console.log(`   Estimated tokens: ${estimatedTokens.toLocaleString()}`);
-    console.log(`   voyage-4-large cost: $${((estimatedTokens / 1_000_000) * 0.12).toFixed(4)}`);
+    console.log(`   voyage-4-large cost: $${((estimatedTokens / 1_000_000) * 0.08).toFixed(4)}`);
     console.log(`   (First 200M tokens are free!)`);
     console.log('\n   Run without --dry-run to proceed with ingestion');
     return;
@@ -240,7 +245,7 @@ async function main(): Promise<void> {
   console.log('\n\n✅ Ingestion complete!');
   console.log(`   Total chunks: ${processed}`);
   console.log(`   Total tokens: ${totalTokens.toLocaleString()}`);
-  console.log(`   Embedding cost: $${((totalTokens / 1_000_000) * 0.12).toFixed(4)} (free tier: 200M tokens)`);
+  console.log(`   Embedding cost: $${((totalTokens / 1_000_000) * 0.08).toFixed(4)} (free tier: 200M tokens)`);
 }
 
 main().catch(error => {

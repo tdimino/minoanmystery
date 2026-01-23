@@ -1,3 +1,14 @@
+---
+title: "Membliaros and the Cadmean Etymology"
+tags:
+  deities: [membliaros, poikiles, cadmos, europa]
+  concepts: [cosmogony, primordial-waters, dark-waters, waters-without-light, functional-parallelism, method-of-doublets, theophoric, genesis-creation]
+  places: [thera, kalliste, anaphe, aegean, mediterranean]
+  scholars: [astour, berard, herodotus, apollonius-rhodius, philo-of-byblos]
+  periods: [bronze-age, minoan]
+  languages: [west-semitic, phoenician, hebrew, greek]
+---
+
 # Membliaros and the Cadmean Etymology
 
 ## Overview
@@ -40,9 +51,9 @@ This matches Phoenician and Orphic cosmogonies precisely. Philo of Byblos (via S
 
 ### 3. Apollonius Rhodius as Confirmation
 
-*Argonautica* IV.1694–98 describes the Argonauts' approach to the Anaphe-Thera island group:
+The *Argonautica* IV.1694–98 describes the Argonauts encountering the "Pall of Darkness" precisely when approaching the Anaphe-Thera island group.
 
-> "Night scared them, that night which they name the Pall of Darkness; the stars pierced not that fatal night nor the beams of the moon, but black chaos descended from heaven, or haply some other darkness came, rising from the nethermost depths."
+> For the full passage and Astour's cosmogonic analysis, see [primordial-waters-tehom-tiamat.md](./primordial-waters-tehom-tiamat.md#4b-the-pall-of-darkness-astours-cosmogonic-analysis).
 
 **Functional parallelism**: The cosmogonic vocabulary (darkness, chaos, absence of stellar/lunar light, nethermost depths) appears precisely where Membliaros is localized—not coincidentally, but because the place-names encode the same cosmological concept the narrative dramatizes.
 
@@ -80,7 +91,7 @@ Phoenician names frequently encode theological concepts rather than simple patro
 > "Cadmos son of Agenor, in his search for Europa, had put in at the place now called Thera; and having put in, either because the land pleased him, or because for some other reason he desired so to do, he left in this island, among other Phoenicians, his own kinsman Membliaros. These dwelt in the island Kalliste for eight generations before Theras came from Lacedaemon."
 
 **Apollonius Rhodius, *Argonautica* IV.1694–98** (cosmogonic darkness):
-> "But straightway as they sped over the wide Cretan sea night scared them, that night which they name the Pall of Darkness; the stars pierced not that fatal night nor the beams of the moon, but black chaos descended from heaven, or haply some other darkness came, rising from the nethermost depths."
+> See [primordial-waters-tehom-tiamat.md](./primordial-waters-tehom-tiamat.md#4b-the-pall-of-darkness-astours-cosmogonic-analysis) for the full passage and Astour's analysis of Phoenician cosmogonic vocabulary.
 
 **Philo of Byblos (via Eusebius, *Praeparatio Evangelica* I.10)** (Phoenician cosmogony):
 The primordial state consisted of dark air (*aer*), boundless chaos (*chaos*), and turbid water (*hydōr*) from which Mot (= the watery Deep) emerged.
@@ -117,9 +128,3 @@ The primordial state consisted of dark air (*aer*), boundless chaos (*chaos*), a
 | Apollonius Rhodius | *Argonautica* IV | 3rd c. BCE | Cosmogonic darkness passage |
 | Philo of Byblos | *Phoenician History* (via Eusebius) | 1st–2nd c. CE | Sanchuniathon's Phoenician cosmogony |
 
----
-
-## RAG Tags
-
-<!-- 50 semantic keywords for retrieval -->
-membliaros, poikiles, thera, kalliste, anaphe, cadmos, cadmus, cadmean, phoenician, west semitic, cosmogony, cosmogonic, primordial waters, dark waters, waters without light, mem bli ar, pi kol, womb of all, etymology, theophoric, herodotus, apollonius rhodius, argonautica, pall of darkness, chaos, tehom, tiamat, philo of byblos, sanchuniathon, europa, qadm, dawn, sunset, functional parallelism, method of doublets, astour, berard, semitic names, greek names, bronze age, minoan, aegean, colonization, eight generations, theras, lacedaemon, spartan, foundation myth, volcanic memory, eruption, genesis creation

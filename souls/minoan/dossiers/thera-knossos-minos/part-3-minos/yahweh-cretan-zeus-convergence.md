@@ -1,3 +1,14 @@
+---
+title: "YHWH and Cretan Zeus: The Gazan Convergence"
+tags:
+  deities: [yahweh, zeus-cretagenes, minos, marnas, cretan-zeus]
+  concepts: [yhw-coin, law-giver, cretan-moses, friend-of-god, bezalel-daedalus, cherethite-transmission, polyprosopon, oral-transmission, davidic-composition]
+  places: [gaza, sinai, dicte, jerusalem, crete]
+  scholars: [tyler, skipwith, gordon, rendsburg]
+  periods: [bronze-age, iron-age, davidic, tenth-century]
+  languages: [hebrew, phoenician, greek]
+---
+
 # YHWH and Cretan Zeus: The Gazan Convergence
 
 ## Overview

@@ -1,3 +1,14 @@
+---
+title: "Essenes and the Ephesian Bee-Priesthood"
+tags:
+  deities: [artemis-ephesia, pythia]
+  concepts: [essenes, essen, melissai, bee-priest, king-bee, ritual-purity, priestly-collegium, divine-mediator]
+  places: [ephesus, qumran, delphi]
+  scholars: [kasyan, lawler, jones, kampen, oikonomos, elderkin, marinatos]
+  periods: [hellenistic, roman, iron-age]
+  languages: [greek, hittite, aramaic]
+---
+
 # Essenes and the Ephesian Bee-Priesthood
 
 ## Overview

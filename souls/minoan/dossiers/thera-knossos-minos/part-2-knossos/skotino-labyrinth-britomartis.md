@@ -1,3 +1,14 @@
+---
+title: "Skotino Cave, the Labyrinth, and Britomartis"
+tags:
+  deities: [britomartis, diktynna, potnia, artemis, ariadne, demeter, zeus, europa]
+  concepts: [labyrinth, da-pu-ri-to, cave-cult, initiation, kourotrophy, chthonic, pastoral, theogamy, sacred-marriage, artisan-magicians, priestly-corporation]
+  places: [skotino, knossos, chersonesos, olous, crete, gaza, ida]
+  scholars: [faure, evans, willetts, marinatos, buxton]
+  periods: [bronze-age, minoan, middle-minoan, linear-b]
+  languages: [greek, phoenician, aramaic]
+---
+
 # Skotino Cave, the Labyrinth, and Britomartis
 
 ## Overview

@@ -1,3 +1,14 @@
+---
+title: "Potnia Daboritu: The Bee-Goddess and Ba'alat Deborah"
+tags:
+  deities: [potnia, deborah, melissa, artemis, demeter, asherah, hannahanna, telepinu]
+  concepts: [labyrinth, da-pu-ri-to, bee-goddess, oracle, prophecy, sacred-tree, priestess-impersonation, goddess-embodiment, priestly-corporation]
+  places: [knossos, malia, ephesus, bethel, ramah]
+  scholars: [hestrin, ventris, chadwick, elderkin, gordon, rendsburg, marinatos, vainstub]
+  periods: [bronze-age, minoan, mycenaean, linear-b]
+  languages: [hebrew, ugaritic, west-semitic, hittite, akkadian]
+---
+
 # Potnia Daboritu: The Bee-Goddess and Ba'alat Deborah
 
 ## Overview
@@ -96,14 +107,14 @@ The bee-word-oracle semantic field (*d-b-r*) operates in parallel with the snake
 
 **Demeter connection**: The goddess Demeter presides over threshing and agricultural rites. Her temples were called **μέγαρα** (*megara*)—a term Rendsburg traces to Semitic *mʿārâ* ("cave"). The chthonic, agricultural goddess who oversees grain-processing connects to the underworld realm that Medusa inhabits.
 
-### 7. Megaron as Semitic Loan
+### 8. Megaron as Semitic Loan
 
 **Rendsburg's etymology**:
 Greek *megaron* (μέγαρον) < Semitic *mʿārâ* ("cave")
 
 **The semantic fit**: Demeter's temples were called *megara*, and the innermost chamber of Mycenaean palaces bore the same name. Both preserve the sense of an enclosed, womb-like sacred space—a "cave" where the goddess dwelt.
 
-### 8. Priestess Impersonation and Goddess Embodiment
+### 9. Priestess Impersonation and Goddess Embodiment
 
 **Marinatos (1993, ch. 6)**:
 > "By far the most important aspect of female priesthood was the impersonation of the goddess. We do not know how the women were chosen, whether the office was hereditary, or whether there was special education during which some girls distinguished themselves."

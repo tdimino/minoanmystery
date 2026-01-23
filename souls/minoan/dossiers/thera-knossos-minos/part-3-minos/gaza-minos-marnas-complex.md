@@ -1,3 +1,14 @@
+---
+title: "Gaza, Minos, and Marnas: The Philistine-Cretan Cult Complex"
+tags:
+  deities: [minos, marnas, zeus-cretagenes, dagon, zeus-arotrois]
+  concepts: [minoa, philistine-cretan, grain-god, rain-god, sacred-tree, founder-cult, theological-chain, maranatha]
+  places: [gaza, crete, caphtor, philistia, ashdod, minois]
+  scholars: [farhi, lipinski, hill, meshorer, baethgen, philo-of-byblos]
+  periods: [bronze-age, iron-age, hellenistic, roman, hadrian]
+  languages: [aramaic, phoenician, greek, hebrew]
+---
+
 # Gaza, Minos, and Marnas: The Philistine-Cretan Cult Complex
 
 ## Overview

@@ -1,3 +1,14 @@
+---
+title: "Meinos and Manna: The Allotter of Portions"
+tags:
+  deities: [minos, meinos, meni, manat, marnas, gad]
+  concepts: [m-n-n-root, manna, portion, allotment, daimon, judge-of-dead, yashar-mana, dissimilation, meccan-triad]
+  places: [gaza, minois, crete, ugarit, alalakh, hegra, mecca]
+  scholars: [gordon, astour, hvidberg-hansen, day, pardee, nehme]
+  periods: [bronze-age, iron-age, hellenistic, pre-islamic]
+  languages: [hebrew, ugaritic, akkadian, arabic, nabataean, linear-a]
+---
+
 # Meinos and Manna: The Allotter of Portions
 
 ## Overview
@@ -80,6 +91,19 @@ Ugaritic *mnn* ("to apportion, bestow") develops a noun form *mnš* ("present, t
 - *Manan* (the root form)
 - *Manasseh* (מְנַשֶּׁה) via n-to-š dissimilation
 
+**Ugaritic double evidence**:
+
+> - **Lexicon.** The Ugaritic dictionaries list *mnn* 'to apportion, bestow' beside noun *mnš* 'present, tribute', illustrating exactly the n-to-š shift after a nasal.
+> - **Orthography.** In several administrative tablets the same commodity appears once as *m-n-n* and elsewhere as *m-n-š*, a direct, in-corpus demonstration of the dissimilation.
+
+**Neo-Assyrian spelling "ma-na-si-i"**:
+
+> - The Esarhaddon and Ashurbanipal vassal lists give Manasseh as *ma-na-si-i* or *ma-na-a-si*.
+> - Neo-Assyrian scribes regularly flipped West-Semitic /š/ and /s/: e.g., *a-ú-se-'* = Hošea'; *yu-'a-su* = Yoaš.
+> - The orthography thus preserves the nasal cluster (-na-) but shows only a single written sibilant, exactly what we expect if the source already had *ns* (phonologically one sibilant) rather than the doubled *šš* of later Hebrew spelling.
+
+**Narrative coherence**: Linking Manasseh to "manna" coordinates Joseph's twin sons with Joseph's food-provider role: **Manasseh** → "portion," evoking God's desert ration; **Ephraim** → "double-fruitful," echoing the bumper harvest Joseph stored. The redactor's gloss "for God made me forget..." (נָשַׁנִי) then functions as a theological reinterpretation, steering the reader from a desert motif toward a personal-memory motif.
+
 ### 7. Minos as Judge of the Dead
 
 **Homeric tradition** (*Odyssey* 11.568–571):
@@ -118,6 +142,47 @@ Mycenaean tablet personal names show direct Ugaritic parallels, demonstrating Br
 - *manna* ("allotment, portion")
 
 This Semitic compound name would mean "Righteous Allotment" or "The Upright Apportioner"—an epithet befitting a divine judge.
+
+**Yashar and Tzadik in Isaiah 26:7**:
+
+| Strong's | Hebrew | English | Morphology |
+|----------|--------|---------|------------|
+| 734 | אֹרַח | The way | N-csc |
+| 6662 | צַדִּיק | of the righteous | Adj-ms |
+| 4339 | מֵישָׁרִים | is level | N-mp |
+| 3477 | יָשָׁר | Most Upright | Adj-ms |
+| 4570 | מַעְגַּל | the path | N-msc |
+| 6662 | צַדִּיק | of the just | Adj-ms |
+| 6424 | תְּפַלֵּס | You weigh | V-Piel-Imperf-2ms |
+
+The pairing of **יָשָׁר** (yashar, "upright") with **צַדִּיק** (tzadik, "righteous/just") in Isaiah provides biblical attestation for the semantic field of *yšr*—a term applied to the path of the just and the weighing of fates.
+
+The reconstruction of Linear A **YA-SA-SA-RA-MA-NA** as "Yashar Mana" thus gains support from Hebrew poetic parallelism, where "upright" and "just" function as near-synonyms in the context of divine judgment. *Editorial note (Tamarru):* **Mana** in this sense functions as the male counterpart to **Manāt**, pre-Islamic goddess of fate—the god who allots (*m-n-n*) to his feminine parallel who determines destiny.
+
+### 11. Manāt in Nabataean Inscriptions: The Meccan Triad
+
+**Nehmé** ("The Religious Landscape of North-west Arabia," 2021):
+
+The goddess Manāt (spelled **mnwtw/mnwty** in Nabataean) appears in theophoric names unique to Northwest Arabia:
+
+> **The Nabataeo-Arabic inscriptions show the (relative) popularity of ʾlt, ʾlʿzʾ and mnwtw. This is not particularly surprising since they are the three major goddesses of pre-Islamic Mecca.**
+
+**Epigraphic distribution**:
+
+| Form | Attestations | Notes |
+|------|--------------|-------|
+| mnwtw | 7x | ThMNN 197, 205, 209, 221, 224, 295, 705 |
+| mntw | 3x | ThMNN 278, 292, 549 |
+| m[n]wt | 1x | UJadhNab 391 (scribal error for mnwt) |
+
+**Theophoric names with Manāt** (all unique to NW Arabia):
+- *hnʾmnwty* — "Manāt has favored"
+- *zydmnwtw* — "Manāt has increased"
+- *ʿbdmnwtw/ʿbdmnwty* — "Servant of Manāt"
+- *ʿwdmnwty* — "Manāt has returned"
+- *tymmnwty/tymmnwtw* — "Servant of Manāt"
+
+**Significance**: The geographic clustering of mnwtw theophoric names in NW Arabia—absent from Petra and southern Nabataea—suggests a regional Manāt cult that preserves the *m-n-n* root in a specifically feminine divine form. The Meccan triad (Allat, Al-Uzza, Manāt) represents the Arabian transformation of West Semitic fate-goddesses, with Manāt carrying the "allotment" semantics that Minos/Meni bears in the masculine.
 
 ---
 
@@ -166,10 +231,11 @@ This Semitic compound name would mean "Righteous Allotment" or "The Upright Appo
 | Hvidberg-Hansen, F.O. | *La déesse TNT* | 1979 | Meni/Manat study |
 | Day, John | *Yahweh and the Gods and Goddesses of Canaan* | 2000 | Isaiah 65:11 analysis |
 | Pardee, Dennis | *Ritual and Cult at Ugarit* | 2002 | Ugaritic mnn forms |
+| Nehmé, Laïla | "The Religious Landscape of North-west Arabia" | 2021 | Manāt epigraphic evidence; Meccan triad |
 
 ---
 
 ## RAG Tags
 
-<!-- 50 semantic keywords for retrieval -->
-minos, meinos, manna, mana, m-n-n, m-n-h, portion, allotment, destiny, fate, judge, dead, underworld, gaza, marnas, marneion, minois, linear a, mi-na-ne, alalakh, mi-na-an, ugaritic, mnn, mnš, manasseh, meni, gad, fortune, isaiah, nehemiah, gordon, minoica, astour, manat, arabic, daimon, daiomai, divider, allotter, scepter, throne, odyssey, homer, yashar, yšr, upright, righteous, knossos pairing, k-n-s, bronze age, west semitic, theophoric
+<!-- 60+ semantic keywords for retrieval -->
+minos, meinos, manna, mana, m-n-n, m-n-h, portion, allotment, destiny, fate, judge, dead, underworld, gaza, marnas, marneion, minois, linear a, mi-na-ne, alalakh, mi-na-an, ugaritic, mnn, mnš, manasseh, meni, gad, fortune, isaiah, isaiah 26:7, nehemiah, gordon, minoica, astour, manat, manāt, mnwtw, mnwty, arabic, daimon, daiomai, divider, allotter, scepter, throne, odyssey, homer, yashar, yšr, tzadik, upright, righteous, knossos pairing, k-n-s, bronze age, west semitic, theophoric, neo-assyrian, esarhaddon, ashurbanipal, ma-na-si-i, ephraim, joseph, dissimilation, tamarru, pre-islamic, meccan triad, allat, al-uzza, nabataean, nehme, northwest arabia, hegra, madain salih
