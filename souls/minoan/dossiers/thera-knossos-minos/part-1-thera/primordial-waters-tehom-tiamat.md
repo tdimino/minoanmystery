@@ -121,7 +121,15 @@ Radiocarbon dating from nine samples constrains the eruption to **no earlier tha
 
 This evidence confirms that the "chaos-event" encoded in texts like Apollonius's "Pall of Darkness" reflects **historical catastrophe**—not merely cosmogonic metaphor. The compound disaster reshaped Mediterranean civilization for generations, and may explain why cosmogonic vocabulary attached itself to the Thera region.
 
-### 4b. The "Pall of Darkness": Astour's Cosmogonic Analysis
+### 4b. Eruption Volume: The Preine Revision (2023)
+
+The most comprehensive reconstruction of the Minoan eruption comes from Preine et al. (*Nature Communications*, 2023), who combined marine and land-based data:
+
+> "Our results reveal a total dense-rock equivalent eruption volume of 34.5 ± 6.8 km³, which encompasses 21.4 ± 3.6 km³ of tephra fall deposits, 6.9 ± 2 km³ of ignimbrites, and 6.1 ± 1.2 km³ of intra-caldera deposits." (Preine et al. 2023)
+
+**Scale**: This makes the Minoan eruption "one of the largest in the Holocene"—a benchmark event for understanding volcanic catastrophes worldwide. Previous estimates ranged from 19–86 km³ DRE; the new reconstruction narrows this substantially.
+
+### 4c. The "Pall of Darkness": Astour's Cosmogonic Analysis
 
 Michael Astour (*Hellenosemitica*, 1965, pp. 119–121) provides the definitive scholarly treatment of the "Pall of Darkness" passage in Apollonius Rhodius's *Argonautica* (IV.1694–98):
 
@@ -212,5 +220,5 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 | Day, John | *God's Conflict with the Dragon and the Sea* | 1985 | Chaos-combat traditions |
 | Rahmouni, Aicha | *Divine Epithets in the Ugaritic Alphabetic Texts* | 2008 | Athirat epithets |
 | Şahoğlu, V. et al. | "Volcanic ash, victims, and tsunami debris from the LBA Thera eruption" (*PNAS*) | 2021 | First eruption victim; tsunami evidence; radiocarbon dating |
+| Preine, J. et al. | "Revised Minoan eruption volume as benchmark for large volcanic eruptions" (*Nature Communications* 14.2497) | 2023 | Comprehensive eruption volume (34.5 ± 6.8 km³ DRE) |
 | Diewert, David A. | "Job 7:12: yām, Tannîn and the Surveillance of Job" (*JBL* 106) | 1987 | Yam + Tannin + mišmār synthesis; CTA 3.3.35–37 parallel |
-

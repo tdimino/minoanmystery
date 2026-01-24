@@ -13,7 +13,7 @@ tags:
 
 ## Overview
 
-Kythera—the island positioned between Crete and the Greek mainland—was the site of the Mediterranean's oldest known murex dye industry. The Linear B term **pa-ra-ku-ja** and variant **paur-paur** designate purple-dyed textiles, deriving from the West Semitic root **פאר** (*pʾr*), meaning "beauty, glory, adornment." This same root appears in biblical descriptions of priestly garments: Aaron's robes are designed *lephaʾer* (לְפָאֵר), "for glory."
+Kythera—the island positioned between Crete and the Greek mainland—was the site of the Mediterranean's oldest known murex dye industry. The Linear B term **paur-paur** designates purple-dyed textiles, deriving from the West Semitic root **פאר** (*pʾr*), meaning "beauty, glory, adornment." This same root appears in biblical descriptions of priestly garments: Aaron's robes are designed *lephaʾer* (לְפָאֵר), "for glory."
 
 The Minoan priestess tradition—visible in the Xeste 3 frescoes at Akrotiri where saffron-gatherers wear elaborate tasseled robes—represents the Mediterranean terminus of a textile-sacred complex stretching to Near Eastern temple economies. The Semitic reduplication pattern *paur-paur* (doubling for emphasis) parallels Hebrew *soqeq soqeq* and Ugaritic intensive forms, suggesting the Linear B term preserves Semitic morphology alongside Semitic etymology.
 
@@ -47,11 +47,21 @@ The island's position as the earliest murex center reinforces its sacred-feminin
 
 **Economic significance**: Purple dye required thousands of mollusks per gram; textiles dyed purple signified wealth, royalty, and sacral status throughout the ancient world.
 
-### 3. Linear B *pa-ra-ku-ja* and the *pʾr* Root
+### 3. Archaeological Evidence: Aegina Purple Workshop (LH IIA)
 
-**Linear B attestations**:
-- *pa-ra-ku-ja* (Knossos tablets): purple-dyed wool/cloth
-- *paur-paur* (variant): reduplicated form
+Recent excavations at Cape Kolonna, Aegina have uncovered the earliest documented purple-dye production workshop outside Crete, dated to the 16th century BCE:
+
+> "The striking Minoan influence, which is generally obvious in the material evidence of the Middle Bronze Age settlement at Kolonna, also suggests an adoption of purple production from Crete, where the technology had been known at least since the early 2nd millennium BC." (Berger et al. 2024)
+
+**Linear B palatial terminology**:
+> "Linear B documents attest to the high value of purple-dyed garments in the Late Bronze Age. Tablet X 976 from Knossos attributes the term 'royal' to a group of purple-dyers or purple-colored objects." (Berger et al. 2024)
+
+**Levantine connection**: Chemical analysis revealed that Aegean purple production techniques matched Near Eastern sites, with *Hexaplex trunculus* predominance "similar to or even higher than in pigments from Wadi Murabba'at or Tel Shiqmona" (Berger et al. 2024)—reinforcing the Bronze Age textile trade connecting Minoan Crete with Canaanite coastlands.
+
+### 4. Linear B *paur-paur* and the *pʾr* Root
+
+**Linear B attestation**:
+- *paur-paur*: reduplicated form designating purple-dyed textiles
 
 **West Semitic etymology**:
 
@@ -104,9 +114,6 @@ The saffron-gatherer scenes depict:
 **Exodus 28:2** (Hebrew Bible):
 > וְעָשִׂיתָ בִגְדֵי־קֹדֶשׁ לְאַהֲרֹן אָחִיךָ לְכָבוֹד וּלְתִפְאָרֶת
 
-**Linear B KN Lc 525**:
-*pa-ra-ku-ja* appears in textile inventory context at Knossos.
-
 **Isaiah 61:3**:
 > לָתֵת לָהֶם פְּאֵר תַּחַת אֵפֶר
 > "To give them a garland (*peʾer*) instead of ashes"
@@ -124,13 +131,16 @@ The saffron-gatherer scenes depict:
 ## Cross-References
 
 ### Within This Collection
+
 - [divine-feminine-toponyms.md](./divine-feminine-toponyms.md) — Kythera/Kuthira etymology
 - [asherah-tree-exile-malignment.md](./asherah-tree-exile-malignment.md) — Sacred tree/pole traditions
 
 ### Part II (Knossos)
+
 - [potnia-daboritu-baalat-deborah.md](../part-2-knossos/potnia-daboritu-baalat-deborah.md) — Priestess traditions
 
 ### Per-Article Dossiers
+
 - [astour/aegean-place-names-egyptian-1966.md](../scholarly-sources/astour/aegean-place-names-egyptian-1966.md) — Kuthira rendering
 - [gordon/evidence-minoan-language-1966-lexicon.md](../scholarly-sources/gordon/evidence-minoan-language-1966-lexicon.md) — Linear A/B Semitic vocabulary
 
@@ -139,11 +149,11 @@ The saffron-gatherer scenes depict:
 ## Sources Cited
 
 | Scholar | Work | Year | Contribution |
-|---------|------|------|--------------|
+| ------- | ---- | ---- | ------------ |
 | Astour, Michael C. | "Aegean Place-Names in an Egyptian Inscription" | 1966 | Kuthira rendering |
 | Barber, Elizabeth W. | *Prehistoric Textiles* | 1991 | Bronze Age textile production |
-| Reese, David | Archaeological reports, Kythera | 1980s | Murex deposit dating |
+| Berger, D. et al. | "Late Bronze Age purple-dye production at Cape Kolonna, Aegina" (*PLoS ONE* 19.6) | 2024 | Aegean purple workshop archaeology |
 | Gordon, Cyrus H. | "Evidence for the Minoan Language" | 1966 | Linear B Semitic vocabulary |
-| Ziderman, Irving | "Purple Dye from Murex" | 1987 | Murex chemistry |
 | Milgrom, Jacob | *Leviticus* (Anchor Bible) | 1991 | Priestly garment analysis |
-
+| Reese, David | Archaeological reports, Kythera | 1980s | Murex deposit dating |
+| Ziderman, Irving | "Purple Dye from Murex" | 1987 | Murex chemistry |
