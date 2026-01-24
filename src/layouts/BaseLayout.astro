@@ -19,7 +19,11 @@ const {
   image = "/images/og/default.png"
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Ensure canonical URL never has trailing slash (except root) for consistency
+const pathname = Astro.url.pathname === '/'
+  ? '/'
+  : Astro.url.pathname.replace(/\/$/, '');
+const canonicalURL = new URL(pathname, Astro.site);
 ---
 
 <!DOCTYPE html>

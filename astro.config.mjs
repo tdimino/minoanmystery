@@ -7,6 +7,7 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.minoanmystery.org',
+  trailingSlash: 'never',
   output: 'static',
   adapter: vercel(),
   integrations: [
