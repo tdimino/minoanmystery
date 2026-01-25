@@ -7,6 +7,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import ProfileModal from '../components/ProfileModal.astro';
 ---
 
 <BaseLayout
@@ -47,11 +48,31 @@ import Header from '../components/Header.astro';
     <div class="labyrinth-container">
       <div id="conversation-history" class="conversation-history">
         <div class="conversation-empty" id="conversation-empty">
-          <div class="empty-icon">
+          <button type="button" class="empty-icon empty-avatar-btn" id="empty-avatar-btn" aria-label="View Kothar's profile">
             <img src="/images/avatars/minoan-avatar.webp" alt="Minoan" class="empty-avatar" />
-          </div>
-          <p>Kothar awaits your first question.</p>
+          </button>
+          <h2 class="empty-title">Kothar awaits your first question.</h2>
           <p class="empty-hint">Type below or use Cmd+K to begin.</p>
+
+          <!-- Starter prompt chips -->
+          <div class="starter-prompts" id="starter-prompts">
+            <button type="button" class="starter-chip" data-prompt="Speak as a scholar: What are the Minoan-Semitic connections in Cyrus Gordon's research?">
+              <span class="starter-icon">Σ</span>
+              <span class="starter-text">Academic mode</span>
+            </button>
+            <button type="button" class="starter-chip" data-prompt="Write me a poem about the labyrinth and the goddess within">
+              <span class="starter-icon">♪</span>
+              <span class="starter-text">Poetic mode</span>
+            </button>
+            <button type="button" class="starter-chip" data-prompt="Tell me about Tom's work at Aldea AI and the Daimonic Souls Engine">
+              <span class="starter-icon">◈</span>
+              <span class="starter-text">Tom's AI work</span>
+            </button>
+            <button type="button" class="starter-chip" data-prompt="What are Tom's case studies and portfolio projects?">
+              <span class="starter-icon">⬡</span>
+              <span class="starter-text">Portfolio</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -140,6 +161,9 @@ import Header from '../components/Header.astro';
 
     <!-- Voice input button removed per user request -->
   </main>
+
+  <!-- Profile Modal for avatar interactions -->
+  <ProfileModal />
 </BaseLayout>
 
 <style>
@@ -1341,30 +1365,182 @@ import Header from '../components/Header.astro';
     justify-content: center;
     text-align: center;
     color: var(--color-text-muted);
-    padding: 24px;
+    padding: 32px 24px;
+    gap: 0;
   }
 
   .empty-icon {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .empty-avatar {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     object-fit: cover;
-    opacity: 0.5;
+    opacity: 0.7;
+    box-shadow:
+      0 0 0 3px var(--color-background),
+      0 0 0 4px rgba(150, 106, 133, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Empty avatar button wrapper */
+  .empty-avatar-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .empty-avatar-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .empty-avatar-btn:hover .empty-avatar {
+    opacity: 1;
+    box-shadow:
+      0 0 0 3px var(--color-background),
+      0 0 0 5px rgba(150, 106, 133, 0.35),
+      0 12px 32px rgba(150, 106, 133, 0.2);
+  }
+
+  .empty-avatar-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 6px;
+    border-radius: 50%;
+  }
+
+  .empty-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 6px 0;
+    letter-spacing: -0.01em;
   }
 
   .empty-hint {
-    font-size: 13px;
-    opacity: 0.7;
-    margin-top: 8px;
+    font-size: 0.875rem;
+    opacity: 0.6;
+    margin: 0 0 28px 0;
+  }
+
+  /* Starter Prompt Chips - oracle-like conversation starters */
+  .starter-prompts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-width: 440px;
+    opacity: 0;
+    animation: fade-in-up 0.5s ease-out 0.2s forwards;
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .starter-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(128, 128, 128, 0.06);
+    border: 1px solid rgba(128, 128, 128, 0.12);
+    border-radius: 100px;
+    color: var(--color-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .starter-chip:hover {
+    background: rgba(150, 106, 133, 0.08);
+    border-color: rgba(150, 106, 133, 0.2);
+    box-shadow: 0 2px 8px rgba(150, 106, 133, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .starter-chip:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .starter-chip:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .starter-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .starter-text {
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+  }
+
+  .starter-chip:hover .starter-text {
+    color: var(--color-text);
+  }
+
+  /* Dark mode adjustments for starter chips */
+  :global([data-theme='dark']) .starter-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  :global([data-theme='dark']) .starter-chip:hover {
+    background: rgba(150, 106, 133, 0.12);
+    border-color: rgba(150, 106, 133, 0.25);
+  }
+
+  /* Mobile: stack chips vertically if needed */
+  @media (max-width: 480px) {
+    .starter-prompts {
+      flex-direction: column;
+      align-items: stretch;
+      max-width: 280px;
+    }
+
+    .starter-chip {
+      justify-content: center;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .starter-prompts {
+      animation: none;
+      opacity: 1;
+    }
+
+    .starter-chip {
+      transition: none;
+    }
+
+    .starter-chip:hover {
+      transform: none;
+    }
   }
 
   /* Message bubbles */
   :global(.message) {
     display: flex;
+    align-items: flex-start;
     gap: 12px;
     max-width: 85%;
   }
@@ -1372,21 +1548,56 @@ import Header from '../components/Header.astro';
   :global(.message-user) {
     align-self: flex-end;
     flex-direction: row-reverse;
+    margin-right: 4px; /* Room for avatar hover scale */
   }
 
   :global(.message-assistant) {
     align-self: flex-start;
+    margin-left: 4px; /* Room for avatar hover scale */
   }
 
   :global(.message-avatar) {
     width: 36px;
     height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    aspect-ratio: 1;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  /* Avatar button variant - reset button styles */
+  :global(.message-avatar-btn) {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    aspect-ratio: 1;
+    align-self: flex-start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  :global(.message-avatar-btn:hover) {
+    transform: scale(1.1);
+  }
+
+  :global(.message-avatar-btn:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Assistant avatar hover glow */
+  :global(.message-assistant .message-avatar-btn:hover) {
+    box-shadow: 0 0 12px rgba(150, 106, 133, 0.4);
+  }
+
+  /* User avatar - only interactive on mobile */
+  :global(.message-user .message-avatar-btn) {
+    cursor: pointer;
   }
 
   :global(.message-user .message-avatar) {
@@ -1396,12 +1607,13 @@ import Header from '../components/Header.astro';
 
   :global(.message-assistant .message-avatar) {
     background: transparent;
-    overflow: hidden;
+    overflow: visible;
   }
 
   :global(.minoan-avatar-img) {
     width: 100%;
     height: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -1482,82 +1694,121 @@ import Header from '../components/Header.astro';
   .labyrinth-input {
     flex: 1;
     padding: 14px 20px;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(128, 128, 128, 0.15);
     border-radius: 24px;
     font-size: 16px;
     font-family: var(--font-body);
-    background: var(--color-background);
+    background: rgba(128, 128, 128, 0.04);
     color: var(--color-text);
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .labyrinth-input:hover {
+    border-color: rgba(128, 128, 128, 0.25);
+    background: rgba(128, 128, 128, 0.06);
   }
 
   .labyrinth-input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(150, 106, 133, 0.1);
+    background: var(--color-background);
+    box-shadow: 0 0 0 4px rgba(150, 106, 133, 0.12);
   }
 
   .labyrinth-input::placeholder {
     color: var(--color-text-muted);
+    opacity: 0.7;
   }
 
   .labyrinth-submit {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     border: none;
-    background: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary), #b485a6);
     color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+    box-shadow: 0 2px 8px rgba(150, 106, 133, 0.25);
   }
 
   .labyrinth-submit:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 4px 12px rgba(150, 106, 133, 0.35);
   }
 
   .labyrinth-submit:active {
     transform: scale(0.95);
+    box-shadow: 0 1px 4px rgba(150, 106, 133, 0.2);
   }
 
   .labyrinth-submit:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
 
   /* Richer Tyrian purple for dark mode send button */
   :global([data-theme="dark"]) .labyrinth-submit {
-    background: #6d4463;
+    background: linear-gradient(135deg, #8b5a7e, #a67b94);
+    box-shadow: 0 2px 8px rgba(150, 106, 133, 0.35);
+  }
+
+  :global([data-theme="dark"]) .labyrinth-submit:hover {
+    box-shadow: 0 4px 16px rgba(150, 106, 133, 0.45);
+  }
+
+  :global([data-theme="dark"]) .labyrinth-input {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  :global([data-theme="dark"]) .labyrinth-input:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  :global([data-theme="dark"]) .labyrinth-input:focus {
+    background: rgba(0, 0, 0, 0.3);
   }
 
   .form-hints {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-    font-size: 12px;
+    gap: 10px;
+    margin-top: 14px;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
+    opacity: 0.8;
   }
 
   .form-hints kbd {
     font-family: 'SF Mono', Monaco, monospace;
-    font-size: 10px;
-    padding: 2px 6px;
-    background: var(--color-background-alt);
-    border-radius: 4px;
+    font-size: 0.6875rem;
+    padding: 3px 7px;
+    background: rgba(128, 128, 128, 0.08);
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    border-radius: 5px;
+    font-weight: 500;
   }
 
   .hint-separator {
-    opacity: 0.3;
+    opacity: 0.25;
   }
 
   .hint-paste {
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   /* Hidden file input */
@@ -1755,6 +2006,58 @@ import Header from '../components/Header.astro';
   :global([data-theme='dark']) :global(.labyrinth-toast) {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   }
+
+  /* Avatar pulse animation for visitor model updates */
+  @keyframes avatar-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(150, 106, 133, 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(150, 106, 133, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(150, 106, 133, 0);
+    }
+  }
+
+  :global(.message-avatar-btn.avatar-pulse) {
+    animation: avatar-pulse 1s ease-out 2;
+  }
+
+  /* Model update toast - smaller and more subtle */
+  :global(.model-update-toast) {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(150, 106, 133, 0.95);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  :global(.model-update-toast.is-visible) {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  :global(.model-update-toast svg) {
+    width: 14px;
+    height: 14px;
+  }
+
+  :global([data-theme='dark'] .model-update-toast) {
+    background: rgba(109, 68, 99, 0.95);
+  }
 </style>
 
 <script>
@@ -1848,6 +2151,68 @@ import Header from '../components/Header.astro';
     }
   }
 
+  // ─── Title/Profession Extraction ─────────────────────────────
+  // Patterns to extract user's role/profession from conversation
+  // Uses [\w\s]+ to capture multi-word titles like "UX designer at a startup"
+  const TITLE_PATTERNS: [RegExp, number][] = [
+    // "I'm a UX designer" / "I am a software engineer" / "I'm an archaeologist"
+    // Captures everything after "I'm a/an" until punctuation or sentence end
+    [/\b(?:I'm|I am|i'm|i am) (?:a |an )?([\w\s]+?)(?:[.,!?]|$| and | but | who | that )/i, 1],
+
+    // "I work as a product manager" / "I work as an engineer"
+    [/\b(?:I work|i work) (?:as )?(?:a |an )?([\w\s]+?)(?:[.,!?]|$| and | but | who | that )/i, 1],
+
+    // "I'm studying archaeology at Oxford" → "Archaeology Student"
+    [/\b(?:I'm|I am|i'm|i am)? ?(?:currently )?stud(?:y|ying) ([\w\s]+?)(?:[.,!?]|$| and | but | at )/i, 1],
+
+    // "I research ancient languages" → "Ancient Languages Researcher"
+    [/\b(?:I'm|I am|i'm|i am)? ?(?:currently )?research(?:ing)? ([\w\s]+?)(?:[.,!?]|$| and | but | at )/i, 1],
+  ];
+
+  function extractTitleHeuristic(content: string): string | null {
+    console.log('[Title Extraction] Checking message:', content);
+    for (const [pattern, groupIndex] of TITLE_PATTERNS) {
+      const match = content.match(pattern);
+      if (match?.[groupIndex]) {
+        let rawTitle = match[groupIndex].trim();
+
+        // Clean up common filler words at the end
+        rawTitle = rawTitle.replace(/\s+(here|now|currently|these days)$/i, '');
+
+        // Normalize: capitalize first letter of each word
+        const title = rawTitle.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+
+        // Validate: 3-60 chars (increased for longer titles)
+        if (title.length >= 3 && title.length <= 60) {
+          console.log('[Title Extraction] Found title:', title);
+          return title;
+        }
+      }
+    }
+    console.log('[Title Extraction] No title found');
+    return null;
+  }
+
+  function saveUserTitle(title: string): void {
+    try {
+      const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+      memory.userTitle = title;
+      localStorage.setItem('minoan-soul-memory', JSON.stringify(memory));
+      console.log('[Labyrinth] Extracted user title:', title);
+    } catch (e) {
+      console.warn('[Labyrinth] Failed to save userTitle:', e);
+    }
+  }
+
+  function getUserTitle(): string | undefined {
+    try {
+      const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
+      return memory.userTitle;
+    } catch {
+      return undefined;
+    }
+  }
+
   class LabyrinthChat {
     private history: HTMLElement;
     private form: HTMLFormElement;
@@ -1919,6 +2284,7 @@ import Header from '../components/Header.astro';
     };
 
     constructor() {
+      console.log('[Labyrinth] LabyrinthChat constructor starting...');
       this.history = document.getElementById('conversation-history')!;
       this.form = document.getElementById('labyrinth-form') as HTMLFormElement;
       this.input = document.getElementById('labyrinth-input') as HTMLInputElement;
@@ -1950,6 +2316,7 @@ import Header from '../components/Header.astro';
     }
 
     private init() {
+      console.log('[Labyrinth] init() starting...');
       // Inject streaming styles
       injectStreamingStyles();
 
@@ -1993,6 +2360,35 @@ import Header from '../components/Header.astro';
       this.attachmentDismiss.addEventListener('click', () => {
         this.clearPendingImage();
       });
+
+      // Empty state avatar click handler (opens Kothar profile)
+      const emptyAvatarBtn = document.getElementById('empty-avatar-btn');
+      if (emptyAvatarBtn) {
+        emptyAvatarBtn.addEventListener('click', () => {
+          (window as any).profileModal?.open('kothar', emptyAvatarBtn);
+        });
+      }
+
+      // Starter prompt chips click handler (event delegation)
+      const starterPrompts = document.getElementById('starter-prompts');
+      console.log('[Labyrinth] Setting up starter prompts handler, element:', starterPrompts);
+      if (starterPrompts) {
+        starterPrompts.addEventListener('click', (e) => {
+          console.log('[Labyrinth] Starter prompts clicked, target:', e.target);
+          const chip = (e.target as HTMLElement).closest('.starter-chip');
+          console.log('[Labyrinth] Found chip:', chip);
+          if (chip) {
+            const prompt = chip.getAttribute('data-prompt');
+            console.log('[Labyrinth] Prompt:', prompt);
+            if (prompt) {
+              this.input.value = prompt;
+              this.sendMessage();
+            }
+          }
+        });
+      } else {
+        console.warn('[Labyrinth] starter-prompts element not found!');
+      }
 
       // Register options click handler (event delegation, set up once)
       this.initRegisterOptionsHandler();
@@ -2041,6 +2437,11 @@ import Header from '../components/Header.astro';
       // Register options event listener (poetic register selection chips)
       document.addEventListener('soul:registerOptions', ((e: CustomEvent) => {
         this.handleRegisterOptions(e.detail);
+      }) as EventListener);
+
+      // Visitor model updated event listener (from modelsTheVisitor subprocess)
+      window.addEventListener('visitor-model-updated', ((e: CustomEvent) => {
+        this.handleVisitorModelUpdated(e.detail);
       }) as EventListener);
 
       // Check for message ID in URL (deep link)
@@ -2169,9 +2570,29 @@ import Header from '../components/Header.astro';
       const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       // Build structure using DOM APIs to prevent XSS
-      const avatarDiv = document.createElement('div');
-      avatarDiv.className = 'message-avatar';
-      avatarDiv.innerHTML = avatarIcon; // Safe: avatarIcon is hardcoded, not user input
+      // Use button for avatar to enable profile modal interaction
+      const avatarBtn = document.createElement('button');
+      avatarBtn.type = 'button';
+      avatarBtn.className = 'message-avatar message-avatar-btn';
+      avatarBtn.innerHTML = avatarIcon; // Safe: avatarIcon is hardcoded, not user input
+
+      // Add profile modal click handlers
+      if (msg.role === 'assistant') {
+        // Kothar avatar - always clickable
+        avatarBtn.setAttribute('aria-label', 'View Kothar\'s profile');
+        avatarBtn.addEventListener('click', () => {
+          (window as any).profileModal?.open('kothar', avatarBtn);
+        });
+      } else {
+        // User avatar - always clickable
+        avatarBtn.setAttribute('aria-label', 'View your profile');
+        avatarBtn.addEventListener('click', () => {
+          (window as any).profileModal?.open('user', avatarBtn);
+        });
+      }
+
+      // Keep reference for legacy compatibility
+      const avatarDiv = avatarBtn;
 
       const bubbleDiv = document.createElement('div');
       bubbleDiv.className = 'message-bubble';
@@ -2913,6 +3334,69 @@ import Header from '../components/Header.astro';
     }
 
     /**
+     * Handle visitor model update notification
+     * Pulses the user avatar and shows a subtle toast
+     */
+    private handleVisitorModelUpdated(detail: { notes: string; userName: string; timestamp: number }) {
+      console.log('[Labyrinth] Visitor model updated:', detail.userName);
+
+      // Find the most recent user message avatar and pulse it
+      const userMessages = this.chatMessages?.querySelectorAll('.message-user .message-avatar-btn');
+      if (userMessages && userMessages.length > 0) {
+        const lastUserAvatar = userMessages[userMessages.length - 1] as HTMLElement;
+
+        // Remove any existing pulse animation
+        lastUserAvatar.classList.remove('avatar-pulse');
+        // Force reflow to restart animation
+        void lastUserAvatar.offsetHeight;
+        // Add pulse animation
+        lastUserAvatar.classList.add('avatar-pulse');
+
+        // Remove class after animation completes
+        setTimeout(() => {
+          lastUserAvatar.classList.remove('avatar-pulse');
+        }, 2000);
+      }
+
+      // Show a subtle toast notification
+      this.showModelUpdateToast();
+    }
+
+    /**
+     * Show a small toast when the visitor model updates
+     */
+    private showModelUpdateToast() {
+      // Remove any existing toast
+      const existingToast = document.querySelector('.model-update-toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'model-update-toast';
+      toast.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a10 10 0 1 0 10 10H12V2Z"/>
+          <path d="M12 12 2 12a10 10 0 0 0 10 10V12Z"/>
+        </svg>
+        Learning about you...
+      `;
+      document.body.appendChild(toast);
+
+      // Trigger animation
+      requestAnimationFrame(() => {
+        toast.classList.add('is-visible');
+      });
+
+      // Remove after delay
+      setTimeout(() => {
+        toast.classList.remove('is-visible');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    /**
      * Handle paste event for image attachment
      */
     private handlePaste(e: ClipboardEvent) {
@@ -3056,6 +3540,15 @@ import Header from '../components/Header.astro';
             saveUserName(extractedName);
             // Update placeholder immediately
             this.input.placeholder = `Ask Kothar, ${extractedName}...`;
+          }
+        }
+
+        // Title/profession extraction (instant, no LLM call)
+        const currentUserTitle = getUserTitle();
+        if (!currentUserTitle) {
+          const extractedTitle = extractTitleHeuristic(query);
+          if (extractedTitle) {
+            saveUserTitle(extractedTitle);
           }
         }
       }

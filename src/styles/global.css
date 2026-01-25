@@ -69,6 +69,8 @@
   --color-border: #dfdfdf; /* Match Webflow --neutral-300 */
   --color-accent: #d4af37;
   --color-highlight: rgb(255, 248, 201); /* Pale yellow highlight - matches Webflow */
+  --color-destructive: #dc2626;
+  --color-destructive-hover: #b91c1c;
 
   /* Typography */
   --font-heading: 'Thicccboi', sans-serif;
@@ -112,6 +114,8 @@
   --color-primary: #c9a0b8;        /* Brightened for better contrast (8.52:1) */
   --color-primary-dark: #966a85;
   --color-highlight: rgba(201, 160, 184, 0.35);  /* Brighter purple tint for visibility */
+  --color-destructive: #f87171;
+  --color-destructive-hover: #ef4444;
 
   /* Neutral scale for dark mode */
   --neutral-100: #0d0d0d;

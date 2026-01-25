@@ -50,6 +50,7 @@ import {
 } from '../../../lib/soul/retrieval/kotharRagConfig';
 import type { SoulMemoryInterface } from '../../../lib/soul/memory';
 import { detectAcademicIntent, detectPoeticIntent } from '../../../lib/soul/opensouls/mentalProcesses';
+import { localLogger } from '../../../lib/soul/localLogger';
 
 /**
  * Server-side SoulMemory adapter for subprocess state tracking.
@@ -423,8 +424,20 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const historyUserMsgCount = conversationHistory?.filter(m => m.role === 'user').length || 0;
     const currentTurnCount = turnCount ?? (historyUserMsgCount + 1);
 
-    // [Tarot Debug] Log adapter initialization for turn tracking diagnosis
-    console.log(`[Tarot] Adapter init: turnCount=${turnCount}, historyUserMsgs=${historyUserMsgCount}, computed=${currentTurnCount}`);
+    // Comprehensive session logging
+    localLogger.requestStart(correlationId, '/api/soul/chat');
+    localLogger.sessionState({
+      userTurnCount: currentTurnCount,
+      tarotCount: 0, // Fresh adapter each request
+      lastTarotTurn: 0,
+      userName: undefined,
+    });
+    localLogger.apiRequest('/api/soul/chat', {
+      method: 'POST',
+      messageLength: effectiveQuery.length,
+      hasImage: !!imageAttachment,
+      historyLength: conversationHistory?.length || 0,
+    });
 
     if (stream) {
       // Streaming response with archive indicator events
@@ -668,7 +681,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               console.log(`[Tarot] Turn count (from soulMemory): ${currentTurnCount}`);
 
               const tarotPromise = embodiesTheTarot(tarotContext, {
-                turnInterval: 2,  // TODO: Change back to 10 after debugging
+                turnInterval: 10,  // Generate tarot every 10 turns
                 displayDuration: 30000,
                 maxTarotsPerSession: 3,
                 onTarotGenerated: (result: TarotResult) => {

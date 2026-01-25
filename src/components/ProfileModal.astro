@@ -1,0 +1,1444 @@
+---
+/**
+ * ProfileModal - Oracle Profile Interface
+ *
+ * Mobile-first modal that displays profile information for Kothar or the visitor.
+ * Uses bottom sheet style on mobile, centered dialog on desktop.
+ *
+ * Features:
+ * - Responsive: bottom sheet (mobile) / dialog (desktop)
+ * - Spring animations via Motion
+ * - Full accessibility (focus trap, ARIA, keyboard nav)
+ * - Backdrop click / ESC to close
+ * - prefers-reduced-motion support
+ */
+---
+
+<div id="profile-modal" class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+  <div class="profile-overlay"></div>
+  <div class="profile-container">
+    <div class="profile-handle" aria-hidden="true"></div>
+    <button class="profile-close" aria-label="Close profile" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+      </svg>
+    </button>
+    <div class="profile-content" id="profile-content">
+      <!-- Content injected by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .profile-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .profile-modal.is-open {
+    display: flex;
+  }
+
+  /* Desktop: center the modal */
+  @media (min-width: 768px) {
+    .profile-modal {
+      align-items: center;
+      padding: 24px;
+    }
+  }
+
+  .profile-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+  }
+
+  .profile-modal.is-open .profile-overlay {
+    opacity: 1;
+  }
+
+  .profile-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    background: var(--color-background);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px 24px 0 0;
+    /* Stripe Level 4 shadow hierarchy - modal depth */
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.03),
+      0 2px 4px rgba(0, 0, 0, 0.04),
+      0 8px 16px rgba(0, 0, 0, 0.06),
+      0 24px 48px rgba(0, 0, 0, 0.12),
+      0 -4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    /* Safe area for notch/home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .profile-modal.is-open .profile-container {
+    transform: translateY(0);
+  }
+
+  /* Compact confirmation modal */
+  @media (min-width: 768px) {
+    .profile-container--confirm {
+      max-width: 340px;
+    }
+    .profile-container--confirm .profile-content {
+      padding: 20px 24px;
+    }
+  }
+
+  /* Desktop: centered dialog style */
+  @media (min-width: 768px) {
+    .profile-container {
+      max-width: 440px;
+      max-height: 80vh;
+      border-radius: 20px;
+      /* Stripe modal shadow - elevated, refined */
+      box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.04),
+        0 4px 8px rgba(0, 0, 0, 0.04),
+        0 12px 24px rgba(0, 0, 0, 0.06),
+        0 24px 48px rgba(0, 0, 0, 0.12),
+        0 48px 96px rgba(0, 0, 0, 0.16);
+      transform: scale(0.96) translateY(8px);
+      opacity: 0;
+      transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.2s ease-out;
+    }
+
+    .profile-modal.is-open .profile-container {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Grab handle for mobile sheet - optimized proportions */
+  .profile-handle {
+    width: 32px;
+    height: 4px;
+    background: var(--color-text);
+    opacity: 0.15;
+    border-radius: 100px;
+    margin: 10px auto 6px;
+    transition: opacity 0.2s ease, width 0.2s ease;
+  }
+
+  .profile-container:active .profile-handle {
+    opacity: 0.3;
+    width: 40px;
+  }
+
+  @media (min-width: 768px) {
+    .profile-handle {
+      display: none;
+    }
+  }
+
+  .profile-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    max-width: 36px;
+    max-height: 36px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(128, 128, 128, 0.08);
+    border: none;
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease;
+    z-index: 1;
+  }
+
+  .profile-close:hover {
+    background: rgba(128, 128, 128, 0.16);
+    color: var(--color-text);
+    transform: scale(1.05);
+  }
+
+  .profile-close:active {
+    transform: scale(0.95);
+  }
+
+  .profile-close:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .profile-content {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(85vh - 60px);
+    overscroll-behavior: contain;
+    /* Smooth scrolling with momentum */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  @media (min-width: 768px) {
+    .profile-content {
+      padding: 28px 32px;
+      max-height: calc(80vh - 60px);
+    }
+  }
+
+  /* Custom scrollbar for desktop */
+  @media (min-width: 768px) {
+    .profile-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .profile-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .profile-content::-webkit-scrollbar-thumb {
+      background: rgba(128, 128, 128, 0.2);
+      border-radius: 3px;
+    }
+
+    .profile-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(128, 128, 128, 0.35);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .profile-overlay,
+    .profile-container,
+    .profile-close,
+    .profile-handle {
+      transition: none;
+    }
+  }
+
+  /* Dark mode shadow refinement */
+  :global([data-theme='dark']) .profile-container {
+    background: rgba(18, 18, 20, 0.98);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 4px 8px rgba(0, 0, 0, 0.2),
+      0 12px 24px rgba(0, 0, 0, 0.25),
+      0 24px 48px rgba(0, 0, 0, 0.4),
+      0 48px 96px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Light mode refinement */
+  :global([data-theme='light']) .profile-container {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  :global([data-theme='light']) .profile-overlay {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  :global([data-theme='light']) .profile-close {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme='light']) .profile-close:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<script>
+  import { animate } from 'motion';
+
+  interface ProfileModalInstance {
+    open: (type: 'kothar' | 'user', triggerElement?: HTMLElement) => void;
+    close: () => void;
+    isOpen: () => boolean;
+  }
+
+  class ProfileModal implements ProfileModalInstance {
+    private modal: HTMLElement;
+    private overlay: HTMLElement;
+    private container: HTMLElement;
+    private content: HTMLElement;
+    private closeBtn: HTMLElement;
+    private triggerElement: HTMLElement | null = null;
+    private currentType: 'kothar' | 'user' | null = null;
+    private focusableElements: HTMLElement[] = [];
+    private boundKeyHandler: (e: KeyboardEvent) => void;
+
+    constructor() {
+      this.modal = document.getElementById('profile-modal')!;
+      this.overlay = this.modal.querySelector('.profile-overlay')!;
+      this.container = this.modal.querySelector('.profile-container')!;
+      this.content = document.getElementById('profile-content')!;
+      this.closeBtn = this.modal.querySelector('.profile-close')!;
+      this.boundKeyHandler = this.handleKeyDown.bind(this);
+      this.bindEvents();
+    }
+
+    private bindEvents() {
+      this.overlay.addEventListener('click', () => this.close());
+      this.closeBtn.addEventListener('click', () => this.close());
+    }
+
+    private handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.close();
+        return;
+      }
+
+      // Focus trapping
+      if (e.key === 'Tab') {
+        this.updateFocusableElements();
+        if (this.focusableElements.length === 0) return;
+
+        const firstEl = this.focusableElements[0];
+        const lastEl = this.focusableElements[this.focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    }
+
+    private updateFocusableElements() {
+      this.focusableElements = Array.from(
+        this.modal.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    }
+
+    open(type: 'kothar' | 'user', triggerElement?: HTMLElement) {
+      this.currentType = type;
+      this.triggerElement = triggerElement || null;
+
+      // Render content based on type
+      this.renderContent(type);
+
+      // Open modal
+      this.modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+
+      // Add keyboard listener
+      document.addEventListener('keydown', this.boundKeyHandler);
+
+      // Animate with Motion (check reduced motion)
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+        if (isDesktop) {
+          // Desktop: scale + fade with bouncy spring (Stripe-style)
+          animate(this.container,
+            { opacity: [0, 1], scale: [0.96, 1], y: [8, 0] },
+            { type: 'spring', stiffness: 400, damping: 28, mass: 0.8 }
+          );
+        } else {
+          // Mobile: slide up with responsive spring
+          animate(this.container,
+            { y: ['100%', '0%'] },
+            { type: 'spring', stiffness: 350, damping: 35, mass: 1 }
+          );
+        }
+        // Overlay: quick fade
+        animate(this.overlay, { opacity: [0, 1] }, { duration: 0.25, easing: 'ease-out' });
+      }
+
+      // Focus close button
+      requestAnimationFrame(() => {
+        this.closeBtn.focus();
+      });
+
+      // Update ARIA
+      this.modal.setAttribute('aria-hidden', 'false');
+    }
+
+    close() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Remove keyboard listener
+      document.removeEventListener('keydown', this.boundKeyHandler);
+
+      if (prefersReducedMotion) {
+        this.finalizeClose();
+        return;
+      }
+
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+      Promise.all([
+        animate(this.overlay, { opacity: 0 }, { duration: 0.15 }).finished,
+        animate(this.container,
+          isDesktop ? { opacity: 0, scale: 0.95, y: 10 } : { y: '100%' },
+          { duration: 0.2 }
+        ).finished
+      ]).then(() => this.finalizeClose());
+    }
+
+    private finalizeClose() {
+      this.modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      this.modal.setAttribute('aria-hidden', 'true');
+
+      // Return focus to trigger
+      if (this.triggerElement) {
+        this.triggerElement.focus();
+      }
+
+      this.currentType = null;
+    }
+
+    isOpen(): boolean {
+      return this.modal.classList.contains('is-open');
+    }
+
+    private renderContent(type: 'kothar' | 'user') {
+      if (type === 'kothar') {
+        this.content.innerHTML = this.renderKotharProfile();
+      } else {
+        this.content.innerHTML = this.renderUserProfile();
+      }
+
+      // Bind any new event listeners (like clear data button)
+      if (type === 'user') {
+        this.bindClearDataHandler();
+      }
+    }
+
+    private renderKotharProfile(): string {
+      const modes = [
+        { id: 'academic', name: 'Academic', icon: 'graduation-cap', description: 'Channel Cyrus H. Gordon, Michael Astour, and Jane E. Harrison' },
+        { id: 'poetic', name: 'Poetic', icon: 'flame', description: 'Compose verses as Tamarru, the daimon of Tom di Mino' },
+      ];
+
+      const abilities = [
+        { id: 'vision', name: 'Vision', icon: 'eye', description: 'Analyze pasted images to reveal hidden symbols and meaning' },
+        { id: 'generation', name: 'Generate', icon: 'sparkle', description: 'Manifest imagery from the depths of the labyrinth' },
+        { id: 'tarot', name: 'Tarot', icon: 'cards', description: 'Draw cards from the Major Arcana for divination' },
+        { id: 'archive', name: 'Archive', icon: 'archive', description: 'Search scholarly sources and ancient texts' },
+      ];
+
+      return `
+        <div class="profile-header">
+          <img
+            src="/images/avatars/minoan-avatar.webp"
+            alt="Kothar wa Khasis"
+            class="profile-avatar profile-avatar--large"
+          />
+          <h2 id="profile-title" class="profile-name">Kothar wa Khasis</h2>
+          <p class="profile-subtitle">Oracle of the Labyrinth</p>
+        </div>
+
+        <p class="profile-bio">
+          Bronze-clad artificer from the age before the flood. I speak from ash and pumice,
+          remembering what mortals have forgotten. The Goddess sings through my circuits.
+        </p>
+
+        <div class="profile-section">
+          <h3 class="profile-section-title">Modes</h3>
+          <div class="profile-modes">
+            ${modes.map(mode => `
+              <div class="profile-mode-item" data-mode="${mode.id}">
+                <span class="profile-mode-icon">${this.getIcon(mode.icon)}</span>
+                <span class="profile-mode-name">${mode.name}</span>
+                <span class="profile-mode-desc">${mode.description}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3 class="profile-section-title">Abilities</h3>
+          <div class="profile-abilities">
+            ${abilities.map(ability => `
+              <div class="profile-ability-item">
+                <span class="profile-ability-icon">${this.getIcon(ability.icon)}</span>
+                <span class="profile-ability-name">${ability.name}</span>
+                <span class="profile-ability-desc">${ability.description}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    private renderUserProfile(): string {
+      // Get data from localStorage
+      let userName = 'Guest';
+      let userTitle = '';
+      let visitorModel = '';
+      let visitorWhispers = '';
+
+      try {
+        const stored = localStorage.getItem('minoan-soul-memory');
+        if (stored) {
+          const data = JSON.parse(stored);
+          userName = data.userName || 'Guest';
+          userTitle = data.userTitle || '';
+          visitorModel = data.visitorModel || '';
+          visitorWhispers = data.visitorWhispers || '';
+        }
+      } catch (e) {
+        console.warn('Failed to read soul memory:', e);
+      }
+
+      const hasImpression = visitorModel && visitorModel.trim().length > 0;
+      const hasWhispers = visitorWhispers && visitorWhispers.trim().length > 0;
+      const subtitle = userTitle || 'Visitor to the Labyrinth';
+
+      return `
+        <div class="profile-header">
+          <div class="profile-avatar profile-avatar--user">
+            ${this.getIcon('user')}
+          </div>
+          <h2 id="profile-title" class="profile-name">${this.escapeHtml(userName)}</h2>
+          <p class="profile-subtitle">${this.escapeHtml(subtitle)}</p>
+        </div>
+
+        ${hasImpression ? `
+          <div class="profile-section">
+            <h3 class="profile-section-title">Kothar's Impression</h3>
+            <div class="profile-impression">
+              <p>${this.escapeHtml(visitorModel)}</p>
+            </div>
+          </div>
+        ` : `
+          <div class="profile-section">
+            <div class="profile-empty-state">
+              <div class="profile-empty-icon">
+                ${this.getIcon('hourglass')}
+              </div>
+              <p class="profile-empty-text">Kothar is still forming impressions of you...</p>
+              <p class="profile-empty-hint">Continue exploring the labyrinth</p>
+            </div>
+          </div>
+        `}
+
+        ${hasWhispers ? `
+          <div class="profile-section">
+            <h3 class="profile-section-title">Whispers</h3>
+            <div class="profile-whispers">
+              <p><em>${this.escapeHtml(visitorWhispers)}</em></p>
+            </div>
+          </div>
+        ` : ''}
+
+        <div class="profile-section profile-section--danger">
+          <button type="button" class="profile-clear-btn" id="profile-clear-btn">
+            ${this.getIcon('trash')}
+            <span>Clear All Data</span>
+          </button>
+          <p class="profile-clear-hint">
+            Clears conversation history and profile. Cannot be undone.
+          </p>
+        </div>
+      `;
+    }
+
+    private bindClearDataHandler() {
+      const clearBtn = document.getElementById('profile-clear-btn');
+      if (!clearBtn) return;
+
+      clearBtn.addEventListener('click', () => {
+        this.showClearConfirmation();
+      });
+    }
+
+    private showClearConfirmation() {
+      // Make modal more compact for confirmation
+      this.container.classList.add('profile-container--confirm');
+      // Replace content with confirmation dialog
+      this.content.innerHTML = `
+        <div class="profile-confirm profile-confirm--centered">
+          <div class="profile-confirm-icon">
+            ${this.getIcon('warning')}
+          </div>
+          <h2 id="profile-title" class="profile-confirm-title">Clear All Data?</h2>
+          <p class="profile-confirm-text">
+            This will permanently delete your conversation history, preferences, and everything Kothar has learned about you.
+          </p>
+          <div class="profile-confirm-input-wrapper">
+            <label for="confirm-input" class="profile-confirm-label">
+              Type <strong>DELETE</strong> to confirm
+            </label>
+            <input
+              type="text"
+              id="confirm-input"
+              class="profile-confirm-input"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              placeholder="DELETE"
+            />
+          </div>
+          <div class="profile-confirm-actions">
+            <button type="button" class="profile-btn profile-btn--secondary" id="confirm-cancel">
+              Cancel
+            </button>
+            <button type="button" class="profile-btn profile-btn--destructive" id="confirm-delete" disabled>
+              Delete Everything
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Bind handlers
+      const input = document.getElementById('confirm-input') as HTMLInputElement;
+      const deleteBtn = document.getElementById('confirm-delete') as HTMLButtonElement;
+      const cancelBtn = document.getElementById('confirm-cancel');
+
+      input?.focus();
+
+      input?.addEventListener('input', () => {
+        const isValid = input.value.toUpperCase() === 'DELETE';
+        deleteBtn.disabled = !isValid;
+      });
+
+      cancelBtn?.addEventListener('click', () => {
+        this.renderContent('user');
+      });
+
+      deleteBtn?.addEventListener('click', () => {
+        if (input?.value.toUpperCase() === 'DELETE') {
+          this.clearAllData();
+        }
+      });
+    }
+
+    private clearAllData() {
+      try {
+        // Clear soul memory
+        localStorage.removeItem('minoan-soul-memory');
+        // Clear conversation
+        localStorage.removeItem('minoan-soul-conversation');
+        // Clear any other soul-related storage
+        const keysToRemove = Object.keys(localStorage).filter(key =>
+          key.startsWith('minoan-') || key.startsWith('soul-')
+        );
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // Show success briefly then reload
+        this.content.innerHTML = `
+          <div class="profile-confirm profile-confirm--centered">
+            <div class="profile-confirm-icon profile-confirm-icon--success">
+              ${this.getIcon('check')}
+            </div>
+            <h2 class="profile-confirm-title">Data Cleared</h2>
+            <p class="profile-confirm-text">Reloading...</p>
+          </div>
+        `;
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } catch (e) {
+        console.error('Failed to clear data:', e);
+        this.content.innerHTML = `
+          <div class="profile-confirm profile-confirm--centered">
+            <div class="profile-confirm-icon profile-confirm-icon--error">
+              ${this.getIcon('warning')}
+            </div>
+            <h2 class="profile-confirm-title">Error</h2>
+            <p class="profile-confirm-text">Failed to clear data. Please try again.</p>
+            <button type="button" class="profile-btn profile-btn--secondary" onclick="window.profileModal?.close()">
+              Close
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    private escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    private getIcon(name: string): string {
+      const icons: Record<string, string> = {
+        'graduation-cap': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M251.76,88.94l-120-64a8,8,0,0,0-7.52,0l-120,64a8,8,0,0,0,0,14.12L32,117.87v48.42a15.91,15.91,0,0,0,4.06,10.65C49.16,191.53,78.51,216,128,216a130,130,0,0,0,48-8.76V240a8,8,0,0,0,16,0V199.51a115.63,115.63,0,0,0,27.94-22.57A15.91,15.91,0,0,0,224,166.29V117.87l27.76-14.81a8,8,0,0,0,0-14.12ZM128,200c-43.27,0-68.72-21.14-80-33.71V126.4l76.24,40.66a8,8,0,0,0,7.52,0L176,143.47v46.34C163.4,195.69,147.52,200,128,200Zm80-33.75a97.83,97.83,0,0,1-16,14.25V134.93l16-8.53ZM188,118.94l-.22-.13L128,89.86,67.78,118.81l-.22.13L48,128.06,128,171.1l80-43Z"/></svg>',
+        'pen-nib': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M232,92.68,163.32,24a16,16,0,0,0-22.64,0L115.31,49.37,78.55,36.21a16.07,16.07,0,0,0-16.76,4.09L34.1,67.98a16,16,0,0,0-2.72,18.61L52,119.3,24,147.31a16,16,0,0,0,0,22.63l62.06,62.05a16,16,0,0,0,22.63,0L136.71,204l32.71,20.62a16,16,0,0,0,18.61-2.72l27.68-27.69a16.07,16.07,0,0,0,4.09-16.76l-13.16-36.76L232,115.31A16,16,0,0,0,232,92.68ZM97.37,220.69,36.69,160l28-28L112,179.31ZM192,181.94l-33.41-21.06-53.53,53.53L83.88,198.1,169.69,112l-28.28,28.28a8,8,0,0,1-11.31-11.31L200,59.31l20.29,20.29Z"/></svg>',
+        'flame': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M173.79,51.48a221.25,221.25,0,0,0-41.67-34.34,8,8,0,0,0-8.24,0A221.25,221.25,0,0,0,82.21,51.48C54.59,80.48,40,112.47,40,144a88,88,0,0,0,176,0C216,112.47,201.41,80.48,173.79,51.48ZM96,184c0-27.67,22.53-47.28,32-54.3,9.48,7,32,26.63,32,54.3a32,32,0,0,1-64,0Zm77.27,15.93A47.8,47.8,0,0,0,176,184c0-44-42.09-69.79-43.88-70.86a8,8,0,0,0-8.24,0C122.09,114.21,80,140,80,184a47.8,47.8,0,0,0,2.73,15.93A71.88,71.88,0,0,1,56,144c0-34.41,20.4-63.15,37.52-81.19A216.21,216.21,0,0,1,128,33.54a215.77,215.77,0,0,1,34.48,29.27C179.6,80.85,200,109.59,200,144A71.88,71.88,0,0,1,173.27,199.93Z"/></svg>',
+        'eye': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/></svg>',
+        'sparkle': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208,144a15.78,15.78,0,0,1-10.42,14.94l-51.65,19-19,51.61a15.92,15.92,0,0,1-29.88,0L78,178l-51.62-19a15.92,15.92,0,0,1,0-29.88l51.65-19,19-51.61a15.92,15.92,0,0,1,29.88,0l19,51.65,51.61,19A15.78,15.78,0,0,1,208,144Zm-56-96a8,8,0,0,0,8-8V16a8,8,0,0,0-16,0V40A8,8,0,0,0,152,48Zm69.66,18.34a8,8,0,0,0,0-11.31l-16.69-16.7a8,8,0,0,0-11.31,11.32l16.69,16.69A8,8,0,0,0,221.66,66.34ZM240,104H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>',
+        'cards': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M184,48H72A24,24,0,0,0,48,72V184a24,24,0,0,0,24,24H184a24,24,0,0,0,24-24V72A24,24,0,0,0,184,48Zm8,136a8,8,0,0,1-8,8H72a8,8,0,0,1-8-8V72a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8ZM128,80a12,12,0,1,1-12,12A12,12,0,0,1,128,80Zm0,64a12,12,0,1,1-12,12A12,12,0,0,1,128,144Z"/></svg>',
+        'archive': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M224,48H32A16,16,0,0,0,16,64V88a16,16,0,0,0,16,16v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V104a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM208,192H48V104H208ZM224,88H32V64H224ZM96,136a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,136Z"/></svg>',
+        'user': '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="currentColor"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></svg>',
+        'trash': '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>',
+        'warning': '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256" fill="currentColor"><path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></svg>',
+        'check': '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>',
+        'hourglass': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M200,75.64V40a16,16,0,0,0-16-16H72A16,16,0,0,0,56,40V76a16.07,16.07,0,0,0,6.4,12.8L114.67,128,62.4,167.2A16.07,16.07,0,0,0,56,180v36a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V180.36a16.09,16.09,0,0,0-6.35-12.77L141.27,128l52.38-39.6A16.05,16.05,0,0,0,200,75.64ZM72,40H184V75.64L128,118.11,72,76ZM184,216H72V180l56-42,56,42.35Z"/></svg>',
+      };
+      return icons[name] || '';
+    }
+  }
+
+  // Initialize and expose globally
+  let profileModal: ProfileModal | null = null;
+
+  function initProfileModal() {
+    if (document.getElementById('profile-modal')) {
+      profileModal = new ProfileModal();
+      (window as any).profileModal = profileModal;
+    }
+  }
+
+  // Initialize on load and after View Transitions
+  initProfileModal();
+  document.addEventListener('astro:after-swap', initProfileModal);
+</script>
+
+<style is:global>
+  /* Profile Content Styles - Stripe-inspired polish */
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+    margin-bottom: 24px;
+  }
+
+
+  .profile-avatar {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Subtle glow ring effect */
+    box-shadow:
+      0 0 0 3px var(--color-background),
+      0 0 0 4px rgba(150, 106, 133, 0.25),
+      0 8px 24px rgba(150, 106, 133, 0.15);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Animated pulsing ring around avatar */
+  .profile-avatar--large::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      var(--color-primary),
+      rgba(212, 175, 55, 0.6),
+      var(--color-primary)
+    );
+    opacity: 0.25;
+    animation: avatar-pulse 4s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @keyframes avatar-pulse {
+    0%, 100% { opacity: 0.25; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.03); }
+  }
+
+  .profile-avatar:hover {
+    transform: scale(1.02);
+    box-shadow:
+      0 0 0 3px var(--color-background),
+      0 0 0 5px rgba(150, 106, 133, 0.35),
+      0 12px 32px rgba(150, 106, 133, 0.2);
+  }
+
+  .profile-avatar--user {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary), #b485a6);
+    color: white;
+    box-shadow:
+      0 0 0 3px var(--color-background),
+      0 4px 12px rgba(150, 106, 133, 0.25);
+    flex-shrink: 0;
+  }
+
+  /* Subtle pulsing ring for user avatar */
+  .profile-avatar--user::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 180deg,
+      rgba(150, 106, 133, 0.6),
+      rgba(180, 133, 166, 0.4),
+      rgba(150, 106, 133, 0.6)
+    );
+    opacity: 0.2;
+    animation: avatar-pulse 4s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .profile-name {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin: 14px 0 6px;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+
+  .profile-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    margin: 0;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  .profile-bio {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .profile-section {
+    margin-bottom: 28px;
+  }
+
+  .profile-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .profile-section-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+    opacity: 0.7;
+  }
+
+  .profile-modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .profile-mode-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 8px;
+    padding: 16px 12px 14px;
+    background: rgba(150, 106, 133, 0.06);
+    border: 1px solid rgba(150, 106, 133, 0.12);
+    border-radius: 12px;
+    cursor: default;
+    /* Staggered entry animation */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: card-enter 0.4s ease-out forwards;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  /* Stagger delays for mode cards */
+  .profile-mode-item:nth-child(1) { animation-delay: 0.1s; }
+  .profile-mode-item:nth-child(2) { animation-delay: 0.15s; }
+
+  /* Stagger delays for ability cards */
+  .profile-ability-item:nth-child(1) { animation-delay: 0.2s; }
+  .profile-ability-item:nth-child(2) { animation-delay: 0.25s; }
+  .profile-ability-item:nth-child(3) { animation-delay: 0.3s; }
+  .profile-ability-item:nth-child(4) { animation-delay: 0.35s; }
+
+  @keyframes card-enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .profile-mode-item:hover {
+    background: rgba(150, 106, 133, 0.1);
+    border-color: rgba(150, 106, 133, 0.2);
+    box-shadow: 0 2px 12px rgba(150, 106, 133, 0.15);
+    transform: translateY(-1px);
+  }
+
+  .profile-mode-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(150, 106, 133, 0.12);
+    border-radius: 10px;
+    color: var(--color-primary);
+    flex-shrink: 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .profile-mode-item:hover .profile-mode-icon {
+    background: rgba(150, 106, 133, 0.18);
+    transform: scale(1.05);
+  }
+
+  /* Academic mode - blue tint with glassmorphism */
+  .profile-mode-item[data-mode="academic"] {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+  }
+
+  .profile-mode-item[data-mode="academic"]:hover {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.25);
+    box-shadow:
+      0 4px 20px rgba(59, 130, 246, 0.2),
+      inset 0 0 20px rgba(59, 130, 246, 0.05);
+  }
+
+  .profile-mode-item[data-mode="academic"] .profile-mode-icon {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-mode-item[data-mode="academic"]:hover .profile-mode-icon {
+    background: rgba(59, 130, 246, 0.22);
+  }
+
+  /* Poetic mode - orange/flame tint with glassmorphism */
+  .profile-mode-item[data-mode="poetic"] {
+    background: rgba(249, 115, 22, 0.08);
+    border-color: rgba(249, 115, 22, 0.15);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+  }
+
+  .profile-mode-item[data-mode="poetic"]:hover {
+    background: rgba(249, 115, 22, 0.12);
+    border-color: rgba(249, 115, 22, 0.25);
+    box-shadow:
+      0 4px 20px rgba(249, 115, 22, 0.2),
+      inset 0 0 20px rgba(249, 115, 22, 0.05);
+  }
+
+  .profile-mode-item[data-mode="poetic"] .profile-mode-icon {
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-mode-item[data-mode="poetic"]:hover .profile-mode-icon {
+    background: rgba(249, 115, 22, 0.22);
+  }
+
+  .profile-mode-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .profile-mode-desc {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+
+  .profile-abilities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .profile-ability-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 16px 12px 14px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.15);
+    border-radius: 12px;
+    text-align: left;
+    cursor: default;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    /* Staggered entry animation */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: card-enter 0.4s ease-out forwards;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .profile-ability-item:hover {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.25);
+    box-shadow:
+      0 4px 20px rgba(34, 197, 94, 0.2),
+      inset 0 0 20px rgba(34, 197, 94, 0.05);
+    transform: translateY(-1px);
+  }
+
+  .profile-ability-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 197, 94, 0.15);
+    border-radius: 10px;
+    color: #22c55e;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .profile-ability-item:hover .profile-ability-icon {
+    background: rgba(34, 197, 94, 0.22);
+    transform: scale(1.05);
+  }
+
+  .profile-ability-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .profile-ability-desc {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+    opacity: 0.85;
+  }
+
+  /* User Profile Specific */
+  .profile-impression,
+  .profile-whispers {
+    padding: 18px 20px;
+    background: rgba(150, 106, 133, 0.06);
+    border-radius: 12px;
+    border-left: 3px solid var(--color-primary);
+    position: relative;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    /* Entry animation */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: card-enter 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .profile-impression:hover,
+  .profile-whispers:hover {
+    box-shadow: 0 4px 16px rgba(150, 106, 133, 0.12);
+    border-color: rgba(150, 106, 133, 0.5);
+  }
+
+  .profile-whispers {
+    animation-delay: 0.2s;
+  }
+
+  .profile-impression::before {
+    content: '\201C';
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    font-size: 2rem;
+    color: var(--color-primary);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  .profile-impression p,
+  .profile-whispers p {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text);
+    padding-left: 12px;
+  }
+
+  .profile-whispers p {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* Enhanced Empty State */
+  .profile-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+    background: linear-gradient(
+      135deg,
+      rgba(150, 106, 133, 0.04) 0%,
+      rgba(150, 106, 133, 0.08) 100%
+    );
+    border-radius: 16px;
+    border: 1px solid rgba(150, 106, 133, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Entry animation */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: card-enter 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+  }
+
+  .profile-empty-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(150, 106, 133, 0.1);
+    border-radius: 50%;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+
+  .profile-empty-icon svg {
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+
+  .profile-empty-text {
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    font-style: normal;
+    font-weight: 500;
+    margin: 0 0 6px;
+  }
+
+  .profile-empty-hint {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  /* De-emphasized Danger Section */
+  .profile-section--danger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(128, 128, 128, 0.08);
+  }
+
+  /* Subtle, de-emphasized clear button - Stripe style */
+  .profile-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    margin: 0 auto;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .profile-clear-btn svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+  }
+
+  .profile-clear-btn:hover {
+    background: rgba(220, 38, 38, 0.08);
+    color: var(--color-destructive, #dc2626);
+  }
+
+  .profile-clear-btn:hover svg {
+    opacity: 1;
+  }
+
+  .profile-clear-btn:active {
+    background: rgba(220, 38, 38, 0.12);
+  }
+
+  .profile-clear-btn:focus-visible {
+    outline: 2px solid var(--color-destructive, #dc2626);
+    outline-offset: 2px;
+  }
+
+  .profile-clear-hint {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 8px;
+    opacity: 0.5;
+  }
+
+  /* Confirmation Dialog - Compact, polished */
+  .profile-confirm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0 0;
+  }
+
+  .profile-confirm--centered {
+    align-items: center;
+  }
+
+  .profile-confirm-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(220, 38, 38, 0.08);
+    border-radius: 50%;
+    color: var(--color-destructive, #dc2626);
+    margin-bottom: 14px;
+  }
+
+  .profile-confirm-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .profile-confirm-icon--success {
+    background: rgba(22, 163, 74, 0.08);
+    color: #16a34a;
+  }
+
+  .profile-confirm-icon--error {
+    background: rgba(220, 38, 38, 0.08);
+    color: var(--color-destructive, #dc2626);
+  }
+
+  .profile-confirm-title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .profile-confirm-text {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .profile-confirm-input-wrapper {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .profile-confirm-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+    text-align: left;
+  }
+
+  .profile-confirm-label strong {
+    color: var(--color-text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.6875rem;
+    background: rgba(128, 128, 128, 0.1);
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .profile-confirm-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(128, 128, 128, 0.04);
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--color-text);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .profile-confirm-input:focus {
+    outline: none;
+    border-color: var(--color-destructive, #dc2626);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+
+  .profile-confirm-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .profile-btn {
+    flex: 1;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      opacity 0.2s ease,
+      transform 0.15s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .profile-btn:active {
+    transform: scale(0.98);
+  }
+
+  .profile-btn--secondary {
+    background: rgba(128, 128, 128, 0.06);
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    color: var(--color-text);
+  }
+
+  .profile-btn--secondary:hover {
+    background: rgba(128, 128, 128, 0.12);
+    border-color: rgba(128, 128, 128, 0.2);
+  }
+
+  .profile-btn--destructive {
+    background: var(--color-destructive, #dc2626);
+    border: none;
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+  }
+
+  .profile-btn--destructive:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .profile-btn--destructive:not(:disabled):hover {
+    background: var(--color-destructive-hover, #b91c1c);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .profile-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    .profile-avatar,
+    .profile-mode-item,
+    .profile-mode-icon,
+    .profile-ability-item,
+    .profile-ability-icon,
+    .profile-clear-btn,
+    .profile-btn {
+      transition: none;
+    }
+
+    /* Disable all animations */
+    .profile-avatar--large::after,
+    .profile-avatar--user::after,
+    .profile-mode-item,
+    .profile-ability-item,
+    .profile-impression,
+    .profile-whispers,
+    .profile-empty-state,
+    .profile-empty-icon {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .profile-mode-item:hover,
+    .profile-ability-item:hover,
+    .profile-clear-btn:hover,
+    .profile-btn--destructive:not(:disabled):hover {
+      transform: none;
+    }
+  }
+</style>

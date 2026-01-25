@@ -23,6 +23,7 @@ export interface SoulMemoryInterface {
   getVisitorWhispers(): string | undefined;
   setVisitorWhispers(whispers: string): void;
   getUserName(): string | undefined;
+  getUserTitle(): string | undefined;
   addTopic(topic: string): void;
   // Turn counting (session-scoped) - source of truth for user message count
   getUserTurnCount(): number;
@@ -312,6 +313,14 @@ export class SoulMemory {
 
   setUserName(name: string): UserModel {
     return this.update({ userName: name });
+  }
+
+  getUserTitle(): string | undefined {
+    return this.memory.userTitle;
+  }
+
+  setUserTitle(title: string): UserModel {
+    return this.update({ userTitle: title });
   }
 
   // ─── Visitor Modeling (Open Souls userModel pattern) ────────

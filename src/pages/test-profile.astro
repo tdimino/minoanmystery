@@ -1,0 +1,655 @@
+---
+/**
+ * Test page for verifying userModel, userName, and userTitle updates
+ * Access at: http://localhost:4321/test-profile
+ */
+import ProfileModal from '../components/ProfileModal.astro';
+---
+
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile Data Test</title>
+  <style>
+    :root {
+      --color-primary: #c9a0b8;
+      --color-text: #f5f5f5;
+      --color-text-muted: #b8b8b8;
+      --color-background: #0d0d0d;
+      --color-destructive: #dc2626;
+      --color-destructive-hover: #b91c1c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--color-background);
+      color: var(--color-text);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    h1 { margin-bottom: 1.5rem; color: var(--color-primary); }
+    h2 { margin: 1.5rem 0 1rem; color: #888; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #333;
+    }
+    .data-row:last-child { border-bottom: none; }
+    .data-key { color: #888; }
+    .data-value { color: var(--color-primary); font-family: monospace; max-width: 60%; text-align: right; word-break: break-word; }
+    .data-value.empty { color: #666; font-style: italic; }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      background: #333;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      color: var(--color-text);
+      font-size: 0.875rem;
+      flex: 1;
+      min-width: 200px;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    button {
+      background: var(--color-primary);
+      color: #1a1a1a;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+    button:hover { background: #d4b0c8; }
+    button.secondary {
+      background: #333;
+      color: var(--color-text);
+      border: 1px solid #444;
+    }
+    button.secondary:hover { background: #444; }
+    button.danger {
+      background: #8b3a3a;
+      color: var(--color-text);
+    }
+    button.danger:hover { background: #a04040; }
+
+    .status {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+    .status.success { background: #1a3a1a; border: 1px solid #2a5a2a; color: #6a9a6a; }
+    .status.info { background: #1a2a3a; border: 1px solid #2a4a6a; color: #6a8aaa; }
+
+    .test-results {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #151515;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.8125rem;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .test-pass { color: #6a9a6a; }
+    .test-fail { color: #aa6a6a; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .instructions {
+      background: rgba(150, 106, 133, 0.1);
+      border: 1px solid rgba(150, 106, 133, 0.2);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .instructions strong { color: var(--color-primary); }
+    .instructions code {
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Profile Data Test Page</h1>
+
+  <div class="instructions">
+    <strong>How to test:</strong><br/>
+    1. Set a userName and userTitle below<br/>
+    2. Click "Open User Profile Modal" to see them displayed<br/>
+    3. Changes persist in <code>localStorage['minoan-soul-memory']</code><br/>
+    4. Run automated tests to verify extraction patterns
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h2>Current localStorage State</h2>
+      <div class="card" id="current-state">
+        <div class="data-row">
+          <span class="data-key">userName</span>
+          <span class="data-value" id="display-userName">Loading...</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">userTitle</span>
+          <span class="data-value" id="display-userTitle">Loading...</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">visitorModel</span>
+          <span class="data-value" id="display-visitorModel">Loading...</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">visitorWhispers</span>
+          <span class="data-value" id="display-visitorWhispers">Loading...</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">visitCount</span>
+          <span class="data-value" id="display-visitCount">Loading...</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">lastTopics</span>
+          <span class="data-value" id="display-lastTopics">Loading...</span>
+        </div>
+      </div>
+
+      <h2>Open Profile Modal</h2>
+      <div class="card">
+        <div class="controls">
+          <button id="btn-open-user-profile">Open User Profile Modal</button>
+          <button id="btn-open-kothar-profile" class="secondary">Open Kothar Profile</button>
+        </div>
+        <p style="font-size: 0.75rem; color: #888; margin-top: 0.5rem;">
+          The modal reads from localStorage when opened. Set values above first.
+        </p>
+      </div>
+
+      <h2>Actions</h2>
+      <div class="card">
+        <div class="controls">
+          <button class="secondary" id="btn-refresh">Refresh Display</button>
+          <button class="danger" id="btn-clear">Clear All Data</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>Set userName</h2>
+      <div class="card">
+        <div class="controls">
+          <input type="text" id="input-userName" placeholder="Enter name (e.g., Alex)" />
+          <button id="btn-set-userName">Set</button>
+        </div>
+      </div>
+
+      <h2>Set userTitle</h2>
+      <div class="card">
+        <div class="controls">
+          <input type="text" id="input-userTitle" placeholder="Enter title (e.g., UX Designer at Startup)" />
+          <button id="btn-set-userTitle">Set</button>
+        </div>
+      </div>
+
+      <h2>Set visitorModel</h2>
+      <div class="card">
+        <div class="controls">
+          <input type="text" id="input-visitorModel" placeholder="Enter visitor model notes" />
+          <button id="btn-set-visitorModel">Set</button>
+        </div>
+      </div>
+
+      <h2>Test Extraction Patterns</h2>
+      <div class="card">
+        <div class="controls">
+          <input type="text" id="input-message" placeholder="Test message (e.g., Hi, I'm Alex and I'm a researcher)" style="flex: 2;" />
+          <button id="btn-test-extraction">Test</button>
+        </div>
+        <div id="extraction-result" class="status info" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Automated Tests</h2>
+  <div class="card">
+    <button id="btn-run-tests">Run All Tests</button>
+    <div id="test-results" class="test-results" style="display: none;"></div>
+  </div>
+
+  <!-- Include the actual ProfileModal component -->
+  <ProfileModal />
+
+  <script>
+    const STORAGE_KEY = 'minoan-soul-memory';
+
+    // ─── Data Access ────────────────────────────────────────────
+
+    function getStoredData(): Record<string, any> {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : {};
+      } catch (e) {
+        console.error('Failed to read localStorage:', e);
+        return {};
+      }
+    }
+
+    function setStoredData(data: Record<string, any>): boolean {
+      try {
+        const current = getStoredData();
+        const updated = { ...current, ...data };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        return true;
+      } catch (e) {
+        console.error('Failed to write localStorage:', e);
+        return false;
+      }
+    }
+
+    // ─── Display Update ─────────────────────────────────────────
+
+    function refreshDisplay(): void {
+      const data = getStoredData();
+
+      const fields = ['userName', 'userTitle', 'visitorModel', 'visitorWhispers', 'visitCount', 'lastTopics'];
+      fields.forEach(field => {
+        const el = document.getElementById(`display-${field}`);
+        if (el) {
+          let value = data[field];
+          if (Array.isArray(value)) {
+            value = value.join(', ');
+          }
+          if (typeof value === 'string' && value.length > 80) {
+            value = value.substring(0, 80) + '...';
+          }
+          el.textContent = value || '(not set)';
+          el.classList.toggle('empty', !value);
+        }
+      });
+    }
+
+    // ─── Set Functions ──────────────────────────────────────────
+
+    function setUserName(): void {
+      const input = document.getElementById('input-userName') as HTMLInputElement;
+      const name = input.value.trim();
+      if (name) {
+        setStoredData({ userName: name });
+        input.value = '';
+        refreshDisplay();
+      }
+    }
+
+    function setUserTitle(): void {
+      const input = document.getElementById('input-userTitle') as HTMLInputElement;
+      const title = input.value.trim();
+      if (title) {
+        setStoredData({ userTitle: title });
+        input.value = '';
+        refreshDisplay();
+      }
+    }
+
+    function setVisitorModel(): void {
+      const input = document.getElementById('input-visitorModel') as HTMLInputElement;
+      const model = input.value.trim();
+      if (model) {
+        setStoredData({ visitorModel: model });
+        input.value = '';
+        refreshDisplay();
+      }
+    }
+
+    // ─── Extraction Patterns (mirrored from labyrinth.astro) ────
+
+    const NAME_PATTERNS: [RegExp, number][] = [
+      [/(?:i'm|i am|my name is|this is|call me|name's|i go by)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i, 1],
+      [/^([A-Z][a-z]+)\s+here[.!]?$/i, 1],
+      [/^(?:hey|hi|hello),?\s*(?:i'm|i am)?\s*([A-Z][a-z]+)[.!]?$/i, 1],
+    ];
+
+    const TITLE_PATTERNS: [RegExp, number][] = [
+      [/\b(?:I'm|I am|i'm|i am) (?:a |an )?([\w\s]+?)(?:[.,!?]|$| and | but | who | that )/i, 1],
+      [/\b(?:I work|i work) (?:as )?(?:a |an )?([\w\s]+?)(?:[.,!?]|$| and | but | who | that )/i, 1],
+      [/\b(?:I'm|I am|i'm|i am)? ?(?:currently )?stud(?:y|ying) ([\w\s]+?)(?:[.,!?]|$| and | but | at )/i, 1],
+      [/\b(?:I'm|I am|i'm|i am)? ?(?:currently )?research(?:ing)? ([\w\s]+?)(?:[.,!?]|$| and | but | at )/i, 1],
+    ];
+
+    function extractName(content: string): string | null {
+      for (const [pattern, group] of NAME_PATTERNS) {
+        const match = content.match(pattern);
+        if (match && match[group]) {
+          const name = match[group].trim();
+          if (name.length >= 2 && name.length <= 30 && /^[A-Za-z\s]+$/.test(name)) {
+            return name.charAt(0).toUpperCase() + name.slice(1);
+          }
+        }
+      }
+      return null;
+    }
+
+    function normalizeTitle(title: string): string {
+      return title.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function extractTitle(content: string): string | null {
+      for (const [pattern, group] of TITLE_PATTERNS) {
+        const match = content.match(pattern);
+        if (match && match[group]) {
+          let title = match[group].trim();
+          // Remove trailing articles/prepositions
+          title = title.replace(/\s+(a|an|the|at|in|for|with)$/i, '');
+          if (title.length >= 3 && title.length <= 60) {
+            return normalizeTitle(title);
+          }
+        }
+      }
+      return null;
+    }
+
+    function testExtraction(): void {
+      const input = document.getElementById('input-message') as HTMLInputElement;
+      const resultEl = document.getElementById('extraction-result') as HTMLElement;
+      const message = input.value.trim();
+
+      if (!message) {
+        resultEl.style.display = 'none';
+        return;
+      }
+
+      const extractedName = extractName(message);
+      const extractedTitle = extractTitle(message);
+
+      let results: string[] = [];
+      if (extractedName) {
+        results.push(`Name: "${extractedName}"`);
+      } else {
+        results.push('Name: (no match)');
+      }
+      if (extractedTitle) {
+        results.push(`Title: "${extractedTitle}"`);
+      } else {
+        results.push('Title: (no match)');
+      }
+
+      resultEl.textContent = results.join(' | ');
+      resultEl.style.display = 'block';
+    }
+
+    // ─── Modal Handlers ─────────────────────────────────────────
+
+    function openUserProfile(): void {
+      const modal = (window as any).profileModal;
+      if (modal) {
+        modal.open('user');
+      } else {
+        alert('ProfileModal not initialized');
+      }
+    }
+
+    function openKotharProfile(): void {
+      const modal = (window as any).profileModal;
+      if (modal) {
+        modal.open('kothar');
+      } else {
+        alert('ProfileModal not initialized');
+      }
+    }
+
+    // ─── Clear Data ─────────────────────────────────────────────
+
+    function clearAllData(): void {
+      if (confirm('Clear all soul memory data?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('minoan-soul-conversation');
+        refreshDisplay();
+      }
+    }
+
+    // ─── Automated Tests ────────────────────────────────────────
+
+    interface TestResult {
+      name: string;
+      pass: boolean;
+      expected: string;
+      actual: string;
+    }
+
+    function runAllTests(): void {
+      const resultsEl = document.getElementById('test-results') as HTMLElement;
+      resultsEl.style.display = 'block';
+
+      // Backup current data
+      const backup = getStoredData();
+
+      const tests: TestResult[] = [];
+
+      // Test 1: localStorage read/write
+      tests.push(testLocalStorage());
+
+      // Test 2: userName persistence
+      tests.push(testUserNamePersistence());
+
+      // Test 3: userTitle persistence
+      tests.push(testUserTitlePersistence());
+
+      // Test 4: Name extraction patterns
+      tests.push(testNameExtraction());
+
+      // Test 5: Title extraction patterns
+      tests.push(testTitleExtraction());
+
+      // Test 6: Multi-word title extraction
+      tests.push(testMultiWordTitle());
+
+      // Restore backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(backup));
+
+      // Display results
+      const passed = tests.filter(t => t.pass).length;
+      const total = tests.length;
+
+      let output = `Test Results: ${passed}/${total} passed\n${'─'.repeat(40)}\n\n`;
+      tests.forEach((t, i) => {
+        const icon = t.pass ? '✓' : '✗';
+        const cls = t.pass ? 'test-pass' : 'test-fail';
+        output += `<span class="${cls}">${icon} Test ${i + 1}: ${t.name}</span>\n`;
+        if (!t.pass) {
+          output += `  Expected: ${t.expected}\n  Got: ${t.actual}\n`;
+        }
+        output += '\n';
+      });
+
+      resultsEl.innerHTML = output;
+      refreshDisplay();
+    }
+
+    function testLocalStorage(): TestResult {
+      const testKey = '__test__';
+      const testValue = { test: true, ts: Date.now() };
+
+      try {
+        localStorage.setItem(testKey, JSON.stringify(testValue));
+        const read = JSON.parse(localStorage.getItem(testKey) || '{}');
+        localStorage.removeItem(testKey);
+        return {
+          name: 'localStorage read/write',
+          pass: read.test === true,
+          expected: 'true',
+          actual: String(read.test),
+        };
+      } catch (e: any) {
+        return { name: 'localStorage read/write', pass: false, expected: 'no error', actual: e.message };
+      }
+    }
+
+    function testUserNamePersistence(): TestResult {
+      setStoredData({ userName: 'TestUser' });
+      const read = getStoredData();
+      const pass = read.userName === 'TestUser';
+
+      return {
+        name: 'userName persistence',
+        pass,
+        expected: 'TestUser',
+        actual: read.userName || '(undefined)',
+      };
+    }
+
+    function testUserTitlePersistence(): TestResult {
+      setStoredData({ userTitle: 'Senior Designer' });
+      const read = getStoredData();
+      const pass = read.userTitle === 'Senior Designer';
+
+      return {
+        name: 'userTitle persistence',
+        pass,
+        expected: 'Senior Designer',
+        actual: read.userTitle || '(undefined)',
+      };
+    }
+
+    function testNameExtraction(): TestResult {
+      const testCases: [string, string | null][] = [
+        ["Hi, I'm Alex", "Alex"],
+        ["My name is Sarah", "Sarah"],
+        ["Call me Tom", "Tom"],
+        ["Hello there", null],
+      ];
+
+      let allPass = true;
+      let failures: string[] = [];
+
+      for (const [input, expected] of testCases) {
+        const result = extractName(input);
+        if (result !== expected) {
+          allPass = false;
+          failures.push(`"${input}" → got "${result}", expected "${expected}"`);
+        }
+      }
+
+      return {
+        name: 'Name extraction patterns',
+        pass: allPass,
+        expected: 'all patterns match',
+        actual: failures.length ? failures.join('; ') : 'all matched',
+      };
+    }
+
+    function testTitleExtraction(): TestResult {
+      const testCases: [string, string | null][] = [
+        ["I'm a designer", "Designer"],
+        ["I work as a researcher", "Researcher"],
+        ["I study archaeology", "Archaeology"],
+        ["Hello there", null],
+      ];
+
+      let allPass = true;
+      let failures: string[] = [];
+
+      for (const [input, expected] of testCases) {
+        const result = extractTitle(input);
+        if (result !== expected) {
+          allPass = false;
+          failures.push(`"${input}" → got "${result}", expected "${expected}"`);
+        }
+      }
+
+      return {
+        name: 'Title extraction patterns',
+        pass: allPass,
+        expected: 'all patterns match',
+        actual: failures.length ? failures.join('; ') : 'all matched',
+      };
+    }
+
+    function testMultiWordTitle(): TestResult {
+      const testCases: [string, string | null][] = [
+        ["I'm a UX designer", "Ux Designer"],
+        ["I work as a software engineer", "Software Engineer"],
+        ["I'm a product manager at a startup", "Product Manager"],
+      ];
+
+      let allPass = true;
+      let failures: string[] = [];
+
+      for (const [input, expected] of testCases) {
+        const result = extractTitle(input);
+        if (result !== expected) {
+          allPass = false;
+          failures.push(`"${input}" → got "${result}", expected "${expected}"`);
+        }
+      }
+
+      return {
+        name: 'Multi-word title extraction',
+        pass: allPass,
+        expected: 'multi-word titles captured',
+        actual: failures.length ? failures.join('; ') : 'all matched',
+      };
+    }
+
+    // ─── Initialize ─────────────────────────────────────────────
+
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshDisplay();
+
+      // Button handlers
+      document.getElementById('btn-set-userName')?.addEventListener('click', setUserName);
+      document.getElementById('btn-set-userTitle')?.addEventListener('click', setUserTitle);
+      document.getElementById('btn-set-visitorModel')?.addEventListener('click', setVisitorModel);
+      document.getElementById('btn-test-extraction')?.addEventListener('click', testExtraction);
+      document.getElementById('btn-open-user-profile')?.addEventListener('click', openUserProfile);
+      document.getElementById('btn-open-kothar-profile')?.addEventListener('click', openKotharProfile);
+      document.getElementById('btn-refresh')?.addEventListener('click', refreshDisplay);
+      document.getElementById('btn-clear')?.addEventListener('click', clearAllData);
+      document.getElementById('btn-run-tests')?.addEventListener('click', runAllTests);
+
+      // Enter key handlers
+      document.getElementById('input-userName')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') setUserName();
+      });
+      document.getElementById('input-userTitle')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') setUserTitle();
+      });
+      document.getElementById('input-visitorModel')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') setVisitorModel();
+      });
+      document.getElementById('input-message')?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') testExtraction();
+      });
+    });
+  </script>
+</body>
+</html>

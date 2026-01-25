@@ -81,6 +81,7 @@ The dossiers are processed through:
 
 ## Conventions
 
+- **Browser testing**: Use `agent-browser` skill for UI testing and screenshots (ref-based selection: @e1, @e2)
 - **No auto-commit**: Always wait for explicit user approval before git operations
 - **Web search**: Use Exa and Firecrawl skills by default
 - **UX/Frontend**: Use `frontend-design` skill for all design and UX work

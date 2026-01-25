@@ -21,6 +21,7 @@
 import type { ProcessContext, ProcessReturn } from '../mentalProcesses/types';
 import type { WorkingMemory } from '../core/WorkingMemory';
 import { getSoulLogger } from '../core/SoulLogger';
+import { localLogger } from '../../localLogger';
 
 /**
  * Minimal context for vision subprocess
@@ -174,6 +175,7 @@ export async function embodiesTheVision(
   const cfg = { ...DEFAULT_CONFIG, ...config };
   const logger = getSoulLogger();
 
+  localLogger.subprocess('embodiesTheVision', 'start');
   log('Starting vision manifestation subprocess');
 
   // Get the most recent user message
@@ -181,7 +183,9 @@ export async function embodiesTheVision(
   const latestUserMessage = userMessages[userMessages.length - 1];
 
   if (!latestUserMessage) {
+    localLogger.gate('vision', 'userMessage', false, { reason: 'No user message found' });
     log('No user message found, skipping vision');
+    localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'no user message' });
     return workingMemory;
   }
 
@@ -189,34 +193,47 @@ export async function embodiesTheVision(
 
   // ─── Gate 1: Session limits ───────────────────────────────────────
   if (visionCount >= cfg.maxVisionsPerSession!) {
+    localLogger.gate('vision', 'sessionLimit', false, { threshold: cfg.maxVisionsPerSession, actual: visionCount });
     log(`Session limit reached (${visionCount}/${cfg.maxVisionsPerSession})`);
+    localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'session limit' });
     return workingMemory;
   }
+  localLogger.gate('vision', 'sessionLimit', true, { threshold: cfg.maxVisionsPerSession, actual: visionCount });
 
   // ─── Gate 2: Check for explicit request (bypasses other gates) ────
   const isExplicit = isExplicitRequest(messageContent);
+  localLogger.vision('explicit check', { hasImage: false, provider: 'gemini' });
 
   if (!isExplicit) {
     // ─── Gate 3: Interaction count ──────────────────────────────────
     const messageCount = userMessages.length;
     if (messageCount < cfg.minInteractionsBeforeVision!) {
+      localLogger.gate('vision', 'interactionCount', false, { threshold: cfg.minInteractionsBeforeVision, actual: messageCount });
       log(`Skipping - only ${messageCount} interactions (need ${cfg.minInteractionsBeforeVision})`);
+      localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'insufficient interactions' });
       return workingMemory;
     }
+    localLogger.gate('vision', 'interactionCount', true, { threshold: cfg.minInteractionsBeforeVision, actual: messageCount });
 
     // ─── Gate 4: Cooldown check ─────────────────────────────────────
     const now = Date.now();
     const timeSinceLastVision = now - lastVisionTime;
     if (lastVisionTime > 0 && timeSinceLastVision < cfg.cooldownMs!) {
+      localLogger.gate('vision', 'cooldown', false, { threshold: cfg.cooldownMs, actual: timeSinceLastVision, reason: `${Math.round((cfg.cooldownMs! - timeSinceLastVision) / 1000)}s remaining` });
       log(`Cooldown active - ${Math.round((cfg.cooldownMs! - timeSinceLastVision) / 1000)}s remaining`);
+      localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'cooldown active' });
       return workingMemory;
     }
+    localLogger.gate('vision', 'cooldown', true, { threshold: cfg.cooldownMs, actual: timeSinceLastVision });
 
     // ─── Gate 5: Mythological trigger check ─────────────────────────
     if (!containsMythologicalTrigger(messageContent)) {
+      localLogger.gate('vision', 'mythologicalTrigger', false, { reason: 'No triggers found in message' });
       log('No mythological triggers found, skipping');
+      localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'no mythological triggers' });
       return workingMemory;
     }
+    localLogger.gate('vision', 'mythologicalTrigger', true);
 
     // ─── Gate 6: LLM decision (mentalQuery) ─────────────────────────
     const [, shouldManifest] = await mentalQuery(
@@ -225,12 +242,15 @@ export async function embodiesTheVision(
     );
 
     log('Should manifest vision?', shouldManifest);
+    localLogger.gate('vision', 'mentalQuery', shouldManifest, { reason: shouldManifest ? 'LLM approved' : 'LLM declined' });
 
     if (!shouldManifest) {
       log('LLM gate declined vision');
+      localLogger.subprocess('embodiesTheVision', 'skip', { reason: 'LLM declined' });
       return workingMemory;
     }
   } else {
+    localLogger.gate('vision', 'explicitRequest', true, { reason: 'Explicit request bypasses gates' });
     log('Explicit vision request detected, bypassing gates');
   }
 
@@ -287,12 +307,25 @@ export async function embodiesTheVision(
 
   if (result.success) {
     log('Vision manifested successfully');
+    localLogger.imageGeneration('success', {
+      provider: 'gemini',
+      prompt: prompt.slice(0, 100),
+      style: cfg.style,
+      success: true,
+    });
+    localLogger.subprocess('embodiesTheVision', 'end', { result: 'generated', visionCount });
     logger.logInternalMonologue?.(
       `Vision manifested: ${prompt.slice(0, 100)}...`,
       'vision-generation'
     );
   } else {
     log('Vision generation failed:', result.error);
+    localLogger.imageGeneration('failed', {
+      provider: 'gemini',
+      error: result.error,
+      success: false,
+    });
+    localLogger.subprocess('embodiesTheVision', 'end', { result: 'failed', error: result.error });
   }
 
   // Invoke callback with result

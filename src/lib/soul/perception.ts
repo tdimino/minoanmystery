@@ -219,6 +219,7 @@ export class PerceptionManager {
 
     const handleMouseEnter = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      if (!target || typeof target.matches !== 'function') return;
       if (!target.matches(trackableSelectors)) return;
 
       const elementId = target.id ||
@@ -252,6 +253,7 @@ export class PerceptionManager {
 
     const handleMouseLeave = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      if (!target || typeof target.matches !== 'function') return;
       if (!target.matches(trackableSelectors)) return;
 
       const elementId = target.id ||

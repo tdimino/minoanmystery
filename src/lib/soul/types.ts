@@ -82,6 +82,7 @@ export interface UserModel {
 
   // User identity (extracted from conversation)
   userName?: string;            // User's name if known
+  userTitle?: string;           // User's role/profession if known (e.g., "Researcher", "Designer")
 
   // ─────────────────────────────────────────────────────────────
   // Visitor Modeling (Open Souls userModel pattern)

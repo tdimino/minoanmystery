@@ -25,6 +25,7 @@ import { getSoulLogger } from '../core/SoulLogger';
 import { tarotPrompt, type TarotPromptResult } from '../cognitiveSteps/tarotPrompt';
 import { createGeminiImageProvider, type GeminiImageResult } from '../providers/gemini-image';
 import { loadMinoanReferenceImages } from '../providers/reference-images.server';
+import { localLogger } from '../../localLogger';
 
 /**
  * Minimal context for tarot subprocess
@@ -115,10 +116,12 @@ export async function embodiesTheTarot(
   const cfg = { ...DEFAULT_CONFIG, ...config };
   const logger = getSoulLogger();
 
+  localLogger.subprocess('embodiesTheTarot', 'start');
   log('[Tarot] Starting tarot manifestation subprocess');
 
   // Require soulMemory for session state tracking
   if (!soulMemory) {
+    localLogger.gate('tarot', 'soulMemory', false, { reason: 'No soulMemory provided' });
     log('[Tarot] No soulMemory provided, skipping (session state required)');
     return workingMemory;
   }
@@ -126,17 +129,31 @@ export async function embodiesTheTarot(
   // Get session state from soulMemory
   const tarotCount = soulMemory.getTarotCount();
   const lastTarotTurn = soulMemory.getLastTarotTurn();
+  const userMessageCount = soulMemory.getUserTurnCount();
+
+  // Log comprehensive gate check data
+  localLogger.tarotGateCheck({
+    userTurnCount: userMessageCount,
+    turnInterval: cfg.turnInterval!,
+    moduloResult: userMessageCount % cfg.turnInterval!,
+    lastTarotTurn,
+    tarotCount,
+    maxTarots: cfg.maxTarotsPerSession!,
+    shouldTrigger: userMessageCount > 0 && userMessageCount % cfg.turnInterval! === 0 && userMessageCount !== lastTarotTurn,
+  });
 
   // ─── Gate 1: Session limit ───────────────────────────────────────
   if (tarotCount >= cfg.maxTarotsPerSession!) {
+    localLogger.gate('tarot', 'sessionLimit', false, { threshold: cfg.maxTarotsPerSession, actual: tarotCount });
     log(`[Tarot] Session limit reached (${tarotCount}/${cfg.maxTarotsPerSession})`);
+    localLogger.subprocess('embodiesTheTarot', 'skip', { reason: 'session limit' });
     return workingMemory;
   }
+  localLogger.gate('tarot', 'sessionLimit', true, { threshold: cfg.maxTarotsPerSession, actual: tarotCount });
 
   // ─── Gate 2: Turn interval check ─────────────────────────────────
   // Use soulMemory as source of truth for turn count (not workingMemory)
   // WorkingMemory can be transformed by RAG, cognitive steps, etc.
-  const userMessageCount = soulMemory.getUserTurnCount();
   const moduloResult = userMessageCount % cfg.turnInterval!;
   const shouldTrigger = userMessageCount > 0 && moduloResult === 0;
 
@@ -145,15 +162,20 @@ export async function embodiesTheTarot(
 
   // Ensure we don't trigger on the same turn twice
   if (userMessageCount === lastTarotTurn) {
+    localLogger.gate('tarot', 'duplicateTurn', false, { reason: `Already triggered on turn ${userMessageCount}` });
     log(`[Tarot] Already triggered on turn ${userMessageCount}, skipping`);
+    localLogger.subprocess('embodiesTheTarot', 'skip', { reason: 'duplicate turn' });
     return workingMemory;
   }
 
   if (!shouldTrigger) {
+    localLogger.gate('tarot', 'turnInterval', false, { threshold: cfg.turnInterval, actual: userMessageCount, reason: `${userMessageCount} % ${cfg.turnInterval} = ${moduloResult}` });
     log(`[Tarot] Turn ${userMessageCount} - not a tarot turn (interval: ${cfg.turnInterval})`);
+    localLogger.subprocess('embodiesTheTarot', 'skip', { reason: 'not a tarot turn' });
     return workingMemory;
   }
 
+  localLogger.gate('tarot', 'turnInterval', true, { threshold: cfg.turnInterval, actual: userMessageCount });
   log(`[Tarot] Turn ${userMessageCount} - TRIGGERING tarot generation (all gates passed)`);
 
   // ─── Gate 3: Provider availability ─────────────────────────────────

@@ -1,10 +1,36 @@
 # Soul Engine Logging & Observability
 
-Comprehensive logging system for monitoring LLM calls and WorkingMemory formation during development.
+Three-layer logging system for Soul Engine debugging:
 
-## Quick Start
+| Layer | File | Format | Purpose |
+|-------|------|--------|---------|
+| **LocalLogger** | `logs/soul.log` | File + console | Subprocess lifecycle, gates, tarot, vision |
+| **SoulLogger** | Terminal (ANSI) | Colored boxes | Cognitive steps, token usage, memory mutations |
+| **API Logs** | Vercel | JSON structured | Production monitoring |
 
-Enable logging via environment variables in `.env`:
+## Quick Start - Local File Logging (Recommended)
+
+The `localLogger` writes to `logs/soul.log` for real-time debugging:
+
+```bash
+# Terminal 1: Start dev server
+npm run dev
+
+# Terminal 2: Tail the log file
+tail -f logs/soul.log
+
+# Filter by category
+tail -f logs/soul.log | grep TAROT
+tail -f logs/soul.log | grep GATE
+tail -f logs/soul.log | grep SUBPROCESS
+tail -f logs/soul.log | grep MEMORY
+```
+
+**No configuration needed** - automatically enabled in development, server-side only.
+
+## Quick Start - SoulLogger (Environment Variables)
+
+Enable via `.env`:
 
 ```bash
 SOUL_DEBUG=true                    # Enable logging
@@ -198,3 +224,114 @@ vercel logs --output json --since 1h
 | **API Logs** | JSON structured | Vercel CLI filtering | Always on |
 
 The SoulLogger provides rich visual debugging locally, while JSON API logs enable production monitoring via `vercel logs`.
+
+---
+
+## LocalLogger - File-Based Logging
+
+### Overview
+
+`src/lib/soul/localLogger.ts` provides comprehensive file-based logging following the Open Souls paradigm of explicit state and observable behavior.
+
+**Features:**
+- Writes to `logs/soul.log` (auto-created)
+- Buffered writes (50ms batches) for near-realtime performance
+- Also logs to console for immediate feedback
+- Server-side only (disabled in browser/production)
+
+### Log Categories
+
+| Category | Description | Example |
+|----------|-------------|---------|
+| `API` | Request/response lifecycle | `POST /api/soul/chat` |
+| `MEMORY` | WorkingMemory mutations | `withMemory: 2 → 3 messages` |
+| `MEMORY:SNAPSHOT` | Full memory dump | All messages with truncated content |
+| `SUBPROCESS:*` | Subprocess lifecycle | `embodiesTheTarot START/END/SKIP` |
+| `GATE:*` | Gate pass/block decisions | `sessionLimit: ✓ PASS` |
+| `TAROT` | Tarot generation events | Card selection, prompt, errors |
+| `TAROT:GATES` | Tarot gate check details | Turn formula, should trigger |
+| `VISION` | Vision subprocess events | Image generation triggers |
+| `IMAGE:GEN` | Image generation results | Provider, prompt, success |
+| `VISITOR` | Visitor model updates | Notes, whispers, topics |
+| `COGNITIVE:*` | Cognitive step execution | Duration, instructions |
+| `SESSION` | Session state snapshots | Turn count, tarot count |
+| `LLM` | Provider calls | Model, tokens, duration |
+
+### API Reference
+
+```typescript
+import { localLogger } from '../lib/soul/localLogger';
+
+// Request lifecycle
+localLogger.requestStart(correlationId, endpoint);
+localLogger.requestEnd(correlationId, duration);
+
+// API calls
+localLogger.apiRequest(endpoint, { method, messageLength, hasImage, historyLength });
+localLogger.apiResponse(endpoint, { status, duration, error? });
+
+// WorkingMemory
+localLogger.workingMemory(action, { messageCount, roles?, regions?, lastMessage? });
+localLogger.memorySnapshot(memories);  // Full dump
+
+// Subprocesses
+localLogger.subprocess(name, 'start' | 'end' | 'skip', data?);
+localLogger.gate(subprocess, gateName, passed, { threshold?, actual?, reason? });
+
+// Tarot-specific
+localLogger.tarot(event, { turnCount?, tarotCount?, cardName?, error? });
+localLogger.tarotGateCheck({ userTurnCount, turnInterval, moduloResult, lastTarotTurn, tarotCount, maxTarots, shouldTrigger });
+
+// Vision-specific
+localLogger.vision(event, { hasImage?, imageSize?, provider?, error? });
+localLogger.imageGeneration(event, { provider?, prompt?, success?, duration? });
+
+// Visitor modeling
+localLogger.visitorModel(event, { userName?, notes?, whispers?, topics? });
+
+// Cognitive steps
+localLogger.cognitiveStep(stepName, 'start' | 'end', { instructions?, result?, duration? });
+
+// Session state
+localLogger.sessionState({ userTurnCount, tarotCount, lastTarotTurn, userName? });
+
+// Visual separators
+localLogger.separator(label?);  // Creates ═══ line in log
+```
+
+### Sample Output
+
+```
+═══════════════════ REQUEST soul_abc123 - /api/soul/chat ═══════════════════
+
+[2024-01-24 12:34:56.789] 📘 [API] POST /api/soul/chat | {"method":"POST","messageLength":42}
+[2024-01-24 12:34:56.790] 📘 [SUBPROCESS:embodiesTheTarot] ▶️ START
+[2024-01-24 12:34:56.791] 📘 [TAROT:GATES] Turn 10 check | {"formula":"10 % 10 = 0","willTrigger":"YES"}
+[2024-01-24 12:34:56.792] 📘 [GATE:tarot] sessionLimit: ✓ PASS | {"threshold":3,"actual":0}
+[2024-01-24 12:34:56.793] 📘 [GATE:tarot] turnInterval: ✓ PASS | {"threshold":10,"actual":10}
+[2024-01-24 12:34:57.500] 📘 [TAROT] Generated | {"cardName":"The Priestess","cardNumber":"II"}
+[2024-01-24 12:34:57.501] 📘 [SUBPROCESS:embodiesTheTarot] ✅ END | {"result":"generated"}
+
+═══════════════════════════════════════════════════════════════════════════
+```
+
+### Files Integrated
+
+| File | Logging Added |
+|------|---------------|
+| `src/pages/api/soul/chat.ts` | Request lifecycle, session state |
+| `src/lib/soul/opensouls/subprocesses/embodiesTheTarot.ts` | Gate checks, tarot events |
+| `src/lib/soul/opensouls/subprocesses/embodiesTheVision.ts` | Gate checks, image generation |
+| `src/lib/soul/opensouls/subprocesses/modelsTheVisitor.ts` | Gate checks, visitor model updates |
+
+### Utilities
+
+```typescript
+import { clearLocalLog, getLogFilePath } from '../lib/soul/localLogger';
+
+// Clear the log file
+clearLocalLog();
+
+// Get log file path
+const path = getLogFilePath();  // logs/soul.log
+```

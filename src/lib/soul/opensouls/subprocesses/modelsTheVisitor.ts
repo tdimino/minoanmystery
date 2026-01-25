@@ -26,6 +26,7 @@ import { mentalQuery } from '../cognitiveSteps/mentalQuery';
 import { internalMonologue } from '../cognitiveSteps/internalMonologue';
 import { visitorNotes } from '../cognitiveSteps/visitorNotes';
 import { visitorWhispers } from '../cognitiveSteps/visitorWhispers';
+import { localLogger } from '../../localLogger';
 
 /**
  * Configuration for visitor modeling behavior
@@ -64,14 +65,18 @@ export async function modelsTheVisitor(
   const currentNotes = soulMemory.getVisitorModel();
   const userName = soulMemory.getUserName() || 'visitor';
 
+  localLogger.subprocess('modelsTheVisitor', 'start');
   log('Starting visitor modeling subprocess');
 
   // Gate: Skip modeling until we have enough interactions
   const messageCount = workingMemory.memories.filter(m => m.role === 'user').length;
   if (messageCount < cfg.minInteractionsBeforeUpdate!) {
+    localLogger.gate('visitor', 'interactionCount', false, { threshold: cfg.minInteractionsBeforeUpdate, actual: messageCount });
     log(`Skipping - only ${messageCount} interactions (need ${cfg.minInteractionsBeforeUpdate})`);
+    localLogger.subprocess('modelsTheVisitor', 'skip', { reason: 'insufficient interactions' });
     return workingMemory;
   }
+  localLogger.gate('visitor', 'interactionCount', true, { threshold: cfg.minInteractionsBeforeUpdate, actual: messageCount });
 
   // Add current visitor model to memory context
   const mem = workingMemory.withMemory({
@@ -99,14 +104,17 @@ export async function modelsTheVisitor(
   );
 
   log('Should process?', shouldProcess);
+  localLogger.gate('visitor', 'mentalQuery', shouldProcess, { reason: shouldProcess ? 'Meaningful learnings detected' : 'No significant new learnings' });
 
   if (!shouldProcess) {
     log('Subprocess completed - no updates needed');
+    localLogger.subprocess('modelsTheVisitor', 'skip', { reason: 'mentalQuery declined' });
     return workingMemory;
   }
 
   // We passed the gate - update the model
   log('Updating visitor model based on new learnings');
+  localLogger.visitorModel('updating', { userName });
 
   // Learn what's new (keep memory for context)
   const [withLearnings, learnings] = await internalMonologue(
@@ -147,6 +155,13 @@ export async function modelsTheVisitor(
   // Persist to soulMemory
   soulMemory.setVisitorModel(notes);
 
+  // Dispatch event to notify UI of model update (client-side only)
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('visitor-model-updated', {
+      detail: { notes, userName, timestamp: Date.now() }
+    }));
+  }
+
   // Optionally generate whispers
   if (cfg.generateWhispers) {
     const [, whispers] = await visitorWhispers(mem, {
@@ -157,7 +172,10 @@ export async function modelsTheVisitor(
     log('Whispers:', whispers);
 
     soulMemory.setVisitorWhispers(whispers);
+    localLogger.visitorModel('whispers updated', { userName, whispers: whispers.slice(0, 100) });
   }
+
+  localLogger.subprocess('modelsTheVisitor', 'end', { result: 'updated', userName });
 
   // Return with updated memory region
   return workingMemory.withRegion('visitor-model', {
