@@ -88,6 +88,16 @@
     }
 
     private init(): void {
+      this.bindButton();
+
+      // Listen for Astro view transitions
+      document.addEventListener('astro:after-swap', () => {
+        this.button = document.querySelector('.soul-hint');
+        this.bindButton();
+      });
+    }
+
+    private bindButton(): void {
       if (!this.button) return;
 
       // Handle click
@@ -97,12 +107,6 @@
 
       // Update kbd text based on platform
       this.updatePlatformKey();
-
-      // Listen for Astro view transitions
-      document.addEventListener('astro:after-swap', () => {
-        this.button = document.querySelector('.soul-hint');
-        this.updatePlatformKey();
-      });
     }
 
     private openPalette(): void {

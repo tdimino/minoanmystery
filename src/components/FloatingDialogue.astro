@@ -182,11 +182,8 @@
     }
 
     private init(): void {
-      if (!this.element) return;
-
-      // Dismiss button
-      const dismissBtn = this.element.querySelector('.soul-dialogue-dismiss');
-      dismissBtn?.addEventListener('click', () => this.hide());
+      // Bind dismiss button on initial load
+      this.bindDismissButton();
 
       // Listen for toast events from dispatch
       document.addEventListener('soul:toast', ((e: CustomEvent<ToastPayload>) => {
@@ -206,7 +203,14 @@
         this.element = document.getElementById('soul-dialogue');
         this.textEl = this.element?.querySelector('.soul-dialogue-text') || null;
         this.iconEl = this.element?.querySelector('.soul-dialogue-icon') || null;
+        this.bindDismissButton();
       });
+    }
+
+    private bindDismissButton(): void {
+      if (!this.element) return;
+      const dismissBtn = this.element.querySelector('.soul-dialogue-dismiss');
+      dismissBtn?.addEventListener('click', () => this.hide());
     }
 
     show(payload: ToastPayload): void {
