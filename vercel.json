@@ -3,25 +3,14 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path(.*)",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "minoanmystery.org"
         }
       ],
-      "destination": "https://www.minoanmystery.org/:path",
-      "permanent": true
-    },
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "minoanmystery.org"
-        }
-      ],
-      "destination": "https://www.minoanmystery.org/",
+      "destination": "https://www.minoanmystery.org/:path*",
       "permanent": true
     }
   ]
