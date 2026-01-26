@@ -65,7 +65,9 @@ let providersInitialized = false;
 function ensureProviders(): void {
   if (providersInitialized) return;
 
-  const openrouterKey = import.meta.env.OPENROUTER_API_KEY;
+  // Use dual pattern for Vercel production compatibility:
+  // process.env works in Vercel serverless, import.meta.env in Vite/Astro dev
+  const openrouterKey = process.env.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY;
   if (!openrouterKey) {
     throw new Error('OPENROUTER_API_KEY environment variable is required');
   }
@@ -76,7 +78,7 @@ function ensureProviders(): void {
   });
   setLLMProvider(openRouterProvider);
 
-  const groqKey = import.meta.env.GROQ_API_KEY;
+  const groqKey = process.env.GROQ_API_KEY || import.meta.env.GROQ_API_KEY;
   if (groqKey) {
     const groqProvider = new GroqProvider({
       apiKey: groqKey,
@@ -85,7 +87,7 @@ function ensureProviders(): void {
     registerProvider('groq', groqProvider);
   }
 
-  const basetenKey = import.meta.env.BASETEN_API_KEY;
+  const basetenKey = process.env.BASETEN_API_KEY || import.meta.env.BASETEN_API_KEY;
   if (basetenKey) {
     const basetenProvider = new BasetenProvider({
       apiKey: basetenKey,

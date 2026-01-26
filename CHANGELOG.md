@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- **Comprehensive View Transition Audit**: Fixed memory leaks and listener accumulation across 7 components
+  - **Lightbox.astro**: Added `astro:before-swap` cleanup, tracked click/keydown handlers
+  - **CommandPalette.astro**: Added `astro:before-swap` cleanup, fixed broken `open-command-palette` listener removal (was creating new function reference with `.bind()`), tracked `boundOpenPalette` handler
+  - **Header.astro (Mobile Menu)**: Added `astro:before-swap` cleanup, tracked hamburger/overlay/link handlers
+  - **Header.astro (Spark Particles)**: Added `astro:before-swap` cleanup, tracked interval/observer/mouse handlers
+  - **VoiceButton.astro**: Added `destroy()` method, tracked 6 bound handlers, instance array cleanup
+  - **ThemeToggle.astro**: Added `astro:before-swap` cleanup, tracked keydown handler
+  - **FloatingDialogue.astro/SoulHint.astro**: Fixed listener patterns (prior session)
+- **Tarot State Mutation Ordering**: `setLastTarotTurn()` now conditional on successful card generation
+  - Turn slot only consumed if `successfulCards.length > 0`
+  - Prevents users losing tarot opportunities on total generation failures
+- **Subprocess Timeout Handling**: Enhanced error distinction and increased timeout
+  - Timeout increased from 30s to 45s (accommodates 3-card tarot generation)
+  - Now distinguishes timeout errors from subprocess failures
+  - Emits `subprocess-timeout` SSE event to client on timeout
+- **Rate Limit Cleanup Frequencies**: Aligned cleanup frequency with rate limit thresholds
+  - `vision.ts`: Changed from 100 to 20 requests (5 req/min limit)
+  - `contact.ts`: Changed from 50 to 10 requests (3 req/hour limit)
+  - All endpoints: Added try-catch protection around cleanup loops
+- **API Environment Variables**: Added `process.env` fallback for Vercel production
+  - `subprocess.ts`: Dual pattern for OPENROUTER_API_KEY, GROQ_API_KEY, BASETEN_API_KEY
+- **Contact Form Rate Limiting**: Added rate limiting (3 submissions/hour per IP)
+
 ### Changed
 - **Soul.md Optimization for Kimi-K2**: Documented Kothar's actual capabilities and improved perception awareness
   - **New Capabilities Section**: 6 abilities now explicitly documented

@@ -15,10 +15,22 @@ export const prerender = false;
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 20; // requests per minute
 const RATE_WINDOW = 60000; // 1 minute in ms
+let requestCounter = 0; // For periodic cleanup
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const record = requestCounts.get(ip);
+
+  // Periodic cleanup of expired entries to prevent Map growth
+  if (++requestCounter % 100 === 0) {
+    try {
+      for (const [key, rec] of requestCounts) {
+        if (now > rec.resetTime) requestCounts.delete(key);
+      }
+    } catch (cleanupError) {
+      console.error('[RateLimit] Cleanup failed:', cleanupError);
+    }
+  }
 
   if (!record || now > record.resetTime) {
     requestCounts.set(ip, { count: 1, resetTime: now + RATE_WINDOW });

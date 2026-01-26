@@ -160,142 +160,193 @@ const { galleries = [] } = Astro.props;
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('lightbox-overlay');
-    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const caption = overlay?.querySelector('.lightbox-caption');
-    const counter = overlay?.querySelector('.lightbox-counter');
-    const closeBtn = overlay?.querySelector('.lightbox-close');
-    const prevBtn = overlay?.querySelector('.lightbox-prev');
-    const nextBtn = overlay?.querySelector('.lightbox-next');
+  /**
+   * Lightbox Controller
+   *
+   * Handles image gallery lightbox with proper View Transition cleanup.
+   * Uses event delegation for click handling and tracks document-level
+   * listeners for cleanup on page navigation.
+   */
+  (function() {
+    // Track handlers for cleanup
+    let clickHandler: ((e: MouseEvent) => void) | null = null;
+    let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+    let initialized = false;
 
-    if (!overlay || !lightboxImg) return;
+    function initLightbox() {
+      // Prevent multiple initializations
+      if (initialized) return;
 
-    // Load gallery data from embedded JSON
-    interface GalleryImage {
-      src: string;
-      caption: string;
-    }
+      const overlay = document.getElementById('lightbox-overlay');
+      const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+      const caption = overlay?.querySelector('.lightbox-caption');
+      const counter = overlay?.querySelector('.lightbox-counter');
+      const closeBtn = overlay?.querySelector('.lightbox-close');
+      const prevBtn = overlay?.querySelector('.lightbox-prev');
+      const nextBtn = overlay?.querySelector('.lightbox-next');
 
-    interface Gallery {
-      id: string;
-      trigger: string;
-      images: GalleryImage[];
-    }
+      if (!overlay || !lightboxImg) return;
 
-    let galleries: Gallery[] = [];
-    const galleryDataEl = document.getElementById('gallery-data');
-    if (galleryDataEl) {
-      try {
-        galleries = JSON.parse(galleryDataEl.textContent || '[]');
-      } catch (e) {
-        console.error('Failed to parse gallery data:', e);
-      }
-    }
+      initialized = true;
 
-    let currentGalleryImages: GalleryImage[] = [];
-    let currentIndex = 0;
-
-    // Extract filename from path
-    function getFilename(path: string): string {
-      return path.split('/').pop() || '';
-    }
-
-    // Find gallery by trigger filename
-    function findGalleryByTrigger(src: string): Gallery | undefined {
-      const filename = getFilename(src).toLowerCase();
-      return galleries.find(g => filename.includes(g.trigger.toLowerCase()));
-    }
-
-    // Use event delegation for lightbox images
-    document.addEventListener('click', (e) => {
-      const target = (e.target as HTMLElement).closest('[data-lightbox]') as HTMLElement;
-      if (!target) return;
-
-      e.preventDefault();
-
-      // Get the image source
-      const imgEl = target.tagName === 'IMG' ? target as HTMLImageElement : target.querySelector('img');
-      const src = imgEl?.src || target.dataset.lightboxSrc || '';
-
-      // Check if there's a predefined gallery for this image
-      const gallery = findGalleryByTrigger(src);
-
-      if (gallery && gallery.images.length > 0) {
-        // Use predefined gallery
-        currentGalleryImages = gallery.images;
-        currentIndex = 0;
-      } else {
-        // Fallback: create single-image gallery from clicked image
-        const alt = (imgEl as HTMLImageElement)?.alt || '';
-        currentGalleryImages = [{ src, caption: alt }];
-        currentIndex = 0;
+      // Load gallery data from embedded JSON
+      interface GalleryImage {
+        src: string;
+        caption: string;
       }
 
-      showImage(currentIndex);
-      overlay.classList.add('is-active');
-      overlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    });
-
-    function showImage(index: number) {
-      const item = currentGalleryImages[index];
-      if (!item) return;
-
-      lightboxImg.src = item.src;
-      lightboxImg.alt = item.caption;
-
-      if (caption) {
-        caption.textContent = item.caption;
+      interface Gallery {
+        id: string;
+        trigger: string;
+        images: GalleryImage[];
       }
 
-      if (counter && currentGalleryImages.length > 1) {
-        counter.textContent = `${index + 1} / ${currentGalleryImages.length}`;
-      } else if (counter) {
-        counter.textContent = '';
+      let galleries: Gallery[] = [];
+      const galleryDataEl = document.getElementById('gallery-data');
+      if (galleryDataEl) {
+        try {
+          galleries = JSON.parse(galleryDataEl.textContent || '[]');
+        } catch (e) {
+          console.error('Failed to parse gallery data:', e);
+        }
       }
-    }
 
-    function closeLightbox() {
-      overlay.classList.remove('is-active');
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
+      let currentGalleryImages: GalleryImage[] = [];
+      let currentIndex = 0;
 
-    function showPrev() {
-      currentIndex = (currentIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
-      showImage(currentIndex);
-    }
-
-    function showNext() {
-      currentIndex = (currentIndex + 1) % currentGalleryImages.length;
-      showImage(currentIndex);
-    }
-
-    closeBtn?.addEventListener('click', closeLightbox);
-    prevBtn?.addEventListener('click', showPrev);
-    nextBtn?.addEventListener('click', showNext);
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        closeLightbox();
+      // Extract filename from path
+      function getFilename(path: string): string {
+        return path.split('/').pop() || '';
       }
-    });
 
-    document.addEventListener('keydown', (e) => {
-      if (!overlay.classList.contains('is-active')) return;
+      // Find gallery by trigger filename
+      function findGalleryByTrigger(src: string): Gallery | undefined {
+        const filename = getFilename(src).toLowerCase();
+        return galleries.find(g => filename.includes(g.trigger.toLowerCase()));
+      }
 
-      switch (e.key) {
-        case 'Escape':
+      function showImage(index: number) {
+        const item = currentGalleryImages[index];
+        if (!item) return;
+
+        lightboxImg.src = item.src;
+        lightboxImg.alt = item.caption;
+
+        if (caption) {
+          caption.textContent = item.caption;
+        }
+
+        if (counter && currentGalleryImages.length > 1) {
+          counter.textContent = `${index + 1} / ${currentGalleryImages.length}`;
+        } else if (counter) {
+          counter.textContent = '';
+        }
+      }
+
+      function closeLightbox() {
+        overlay.classList.remove('is-active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function showPrev() {
+        currentIndex = (currentIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+        showImage(currentIndex);
+      }
+
+      function showNext() {
+        currentIndex = (currentIndex + 1) % currentGalleryImages.length;
+        showImage(currentIndex);
+      }
+
+      // Use event delegation for lightbox images (tracked for cleanup)
+      clickHandler = (e: MouseEvent) => {
+        const target = (e.target as HTMLElement).closest('[data-lightbox]') as HTMLElement;
+        if (!target) return;
+
+        e.preventDefault();
+
+        // Get the image source
+        const imgEl = target.tagName === 'IMG' ? target as HTMLImageElement : target.querySelector('img');
+        const src = imgEl?.src || target.dataset.lightboxSrc || '';
+
+        // Check if there's a predefined gallery for this image
+        const gallery = findGalleryByTrigger(src);
+
+        if (gallery && gallery.images.length > 0) {
+          // Use predefined gallery
+          currentGalleryImages = gallery.images;
+          currentIndex = 0;
+        } else {
+          // Fallback: create single-image gallery from clicked image
+          const alt = (imgEl as HTMLImageElement)?.alt || '';
+          currentGalleryImages = [{ src, caption: alt }];
+          currentIndex = 0;
+        }
+
+        showImage(currentIndex);
+        overlay.classList.add('is-active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+
+      // Keyboard navigation (tracked for cleanup)
+      keydownHandler = (e: KeyboardEvent) => {
+        if (!overlay.classList.contains('is-active')) return;
+
+        switch (e.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowLeft':
+            showPrev();
+            break;
+          case 'ArrowRight':
+            showNext();
+            break;
+        }
+      };
+
+      // Add document-level listeners
+      document.addEventListener('click', clickHandler);
+      document.addEventListener('keydown', keydownHandler);
+
+      // Element-level listeners (don't need cleanup - elements are replaced)
+      closeBtn?.addEventListener('click', closeLightbox);
+      prevBtn?.addEventListener('click', showPrev);
+      nextBtn?.addEventListener('click', showNext);
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
           closeLightbox();
-          break;
-        case 'ArrowLeft':
-          showPrev();
-          break;
-        case 'ArrowRight':
-          showNext();
-          break;
+        }
+      });
+    }
+
+    function cleanupLightbox() {
+      // Remove document-level listeners
+      if (clickHandler) {
+        document.removeEventListener('click', clickHandler);
+        clickHandler = null;
       }
-    });
-  });
+      if (keydownHandler) {
+        document.removeEventListener('keydown', keydownHandler);
+        keydownHandler = null;
+      }
+      initialized = false;
+    }
+
+    // Initialize on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLightbox);
+    } else {
+      initLightbox();
+    }
+
+    // Cleanup before View Transition swap
+    document.addEventListener('astro:before-swap', cleanupLightbox);
+
+    // Re-initialize after View Transition
+    document.addEventListener('astro:after-swap', initLightbox);
+  })();
 </script>

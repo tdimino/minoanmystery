@@ -516,6 +516,7 @@
     private filteredCommands: Command[] = [];
     private memory: SoulMemory;
     private boundKeydown: (e: KeyboardEvent) => void;
+    private boundOpenPalette: () => void;
 
     // Chat mode state
     private mode: PaletteMode = 'command';
@@ -539,6 +540,7 @@
 
       // Bind events
       this.boundKeydown = this.handleGlobalKeydown.bind(this);
+      this.boundOpenPalette = () => this.open();
       this.bindEvents();
 
       // Load default suggestions
@@ -829,9 +831,7 @@
       });
 
       // Listen for custom event from SoulHint
-      document.addEventListener('open-command-palette', () => {
-        this.open();
-      });
+      document.addEventListener('open-command-palette', this.boundOpenPalette);
     }
 
     private handleSingleKeyShortcuts(e: KeyboardEvent) {
@@ -1390,7 +1390,20 @@
     }
 
     destroy() {
+      // Remove global keydown listener
       document.removeEventListener('keydown', this.boundKeydown);
+
+      // Remove custom event listener (using tracked bound handler)
+      document.removeEventListener('open-command-palette', this.boundOpenPalette);
+
+      // Clear any pending suggestion debounce timer
+      if (this.suggestionDebounceTimer) {
+        clearTimeout(this.suggestionDebounceTimer);
+        this.suggestionDebounceTimer = null;
+      }
+
+      // Note: Element-level listeners (input, palette keydown, overlay click, etc.)
+      // are automatically cleaned up when elements are replaced during View Transitions
     }
   }
 
@@ -1406,8 +1419,19 @@
     }
   }
 
+  // Cleanup before View Transition swap
+  function cleanupCommandPalette() {
+    if (paletteSoul) {
+      paletteSoul.destroy();
+      paletteSoul = null;
+    }
+  }
+
   // Run on load
   initCommandPalette();
+
+  // Cleanup before View Transitions (prevents listener accumulation)
+  document.addEventListener('astro:before-swap', cleanupCommandPalette);
 
   // Re-initialize after View Transitions
   document.addEventListener('astro:after-swap', initCommandPalette);

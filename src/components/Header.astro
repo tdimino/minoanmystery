@@ -960,7 +960,17 @@ function isActive(href: string): boolean {
 </style>
 
 <script>
+  /**
+   * Mobile Menu Controller
+   *
+   * Handles hamburger menu with proper View Transition cleanup.
+   * Tracks event listeners to prevent accumulation across navigations.
+   */
   (function() {
+    // Track handlers for cleanup
+    let hamburgerClickHandler: (() => void) | null = null;
+    let overlayClickHandler: (() => void) | null = null;
+    let linkClickHandlers: Array<{ el: Element; handler: () => void }> = [];
     let initialized = false;
 
     function initMobileMenu() {
@@ -991,36 +1001,83 @@ function isActive(href: string): boolean {
         document.body.style.overflow = isOpen ? 'hidden' : '';
       };
 
-      hamburger.addEventListener('click', toggleMenu);
-      mobileOverlay.addEventListener('click', closeMenu);
+      // Track handlers for cleanup
+      hamburgerClickHandler = toggleMenu;
+      overlayClickHandler = closeMenu;
 
-      // Close menu when clicking a link
+      hamburger.addEventListener('click', hamburgerClickHandler);
+      mobileOverlay.addEventListener('click', overlayClickHandler);
+
+      // Close menu when clicking a link (track each handler)
       mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
+        const handler = () => closeMenu();
+        linkClickHandlers.push({ el: link, handler });
+        link.addEventListener('click', handler);
       });
+    }
+
+    function cleanupMobileMenu() {
+      const hamburger = document.getElementById('hamburger');
+      const mobileOverlay = document.getElementById('mobile-overlay');
+
+      // Remove tracked listeners
+      if (hamburger && hamburgerClickHandler) {
+        hamburger.removeEventListener('click', hamburgerClickHandler);
+      }
+      if (mobileOverlay && overlayClickHandler) {
+        mobileOverlay.removeEventListener('click', overlayClickHandler);
+      }
+
+      // Remove link click handlers
+      linkClickHandlers.forEach(({ el, handler }) => {
+        el.removeEventListener('click', handler);
+      });
+
+      // Reset state
+      hamburgerClickHandler = null;
+      overlayClickHandler = null;
+      linkClickHandlers = [];
+      initialized = false;
     }
 
     // Run on initial load
     initMobileMenu();
 
-    // Re-run after View Transitions (reset initialized flag first)
-    document.addEventListener('astro:after-swap', () => {
-      initialized = false;
-      initMobileMenu();
-    });
+    // Cleanup before View Transition swap
+    document.addEventListener('astro:before-swap', cleanupMobileMenu);
+
+    // Re-run after View Transitions
+    document.addEventListener('astro:after-swap', initMobileMenu);
   })();
 </script>
 
 <!-- Lightning Spark Particles Generator -->
 <script>
+  /**
+   * Spark Particles Controller
+   *
+   * Generates lightning-like spark effects around the logo in dark mode.
+   * Properly cleans up intervals, observers, and listeners on View Transitions.
+   */
   (function() {
     let sparkInterval: ReturnType<typeof setInterval> | null = null;
     let isHovering = false;
+    let observer: MutationObserver | null = null;
+    let mouseEnterHandler: (() => void) | null = null;
+    let mouseLeaveHandler: (() => void) | null = null;
+    let currentNavLogo: Element | null = null;
+    let initialized = false;
 
     function initSparkParticles() {
+      // Prevent multiple initializations
+      if (initialized) return;
+
       const container = document.getElementById('spark-container');
       const navLogo = document.querySelector('.nav-logo');
       if (!container || !navLogo) return;
+
+      initialized = true;
+      currentNavLogo = navLogo;
 
       // Check if dark mode and reduced motion
       const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark';
@@ -1127,24 +1184,27 @@ function isActive(href: string): boolean {
         }
       }
 
-      // Hover handlers for intensified effect
-      navLogo.addEventListener('mouseenter', () => {
+      // Hover handlers for intensified effect (tracked for cleanup)
+      mouseEnterHandler = () => {
         isHovering = true;
         stopSparkLoop();
         startSparkLoop();
-      });
+      };
 
-      navLogo.addEventListener('mouseleave', () => {
+      mouseLeaveHandler = () => {
         isHovering = false;
         stopSparkLoop();
         startSparkLoop();
-      });
+      };
+
+      navLogo.addEventListener('mouseenter', mouseEnterHandler);
+      navLogo.addEventListener('mouseleave', mouseLeaveHandler);
 
       // Start the spark loop
       startSparkLoop();
 
       // Listen for theme changes
-      const observer = new MutationObserver((mutations) => {
+      observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (mutation.attributeName === 'data-theme') {
             if (!isDarkMode()) {
@@ -1156,20 +1216,48 @@ function isActive(href: string): boolean {
         });
       });
       observer.observe(document.documentElement, { attributes: true });
-
-      // Cleanup on page navigation
-      document.addEventListener('astro:before-swap', () => {
-        stopSparkLoop();
-        observer.disconnect();
-      });
     }
 
-    // Initialize
+    function cleanupSparkParticles() {
+      // Stop spark interval
+      if (sparkInterval) {
+        clearInterval(sparkInterval);
+        sparkInterval = null;
+      }
+
+      // Disconnect observer
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+
+      // Remove hover listeners
+      if (currentNavLogo) {
+        if (mouseEnterHandler) {
+          currentNavLogo.removeEventListener('mouseenter', mouseEnterHandler);
+        }
+        if (mouseLeaveHandler) {
+          currentNavLogo.removeEventListener('mouseleave', mouseLeaveHandler);
+        }
+      }
+
+      // Reset state
+      mouseEnterHandler = null;
+      mouseLeaveHandler = null;
+      currentNavLogo = null;
+      isHovering = false;
+      initialized = false;
+    }
+
+    // Initialize on load
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initSparkParticles);
+      document.addEventListener('DOMContentLoaded', initSparkParticles, { once: true });
     } else {
       initSparkParticles();
     }
+
+    // Cleanup before View Transition swap
+    document.addEventListener('astro:before-swap', cleanupSparkParticles);
 
     // Re-init after View Transitions
     document.addEventListener('astro:after-swap', initSparkParticles);

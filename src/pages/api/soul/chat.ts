@@ -98,6 +98,7 @@ const RATE_LIMIT = 30; // requests per minute (more generous than TTS)
 const RATE_WINDOW = 60000; // 1 minute in ms
 const MAX_QUERY_LENGTH = 2000; // characters
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+let requestCounter = 0; // For periodic cleanup
 
 // ─────────────────────────────────────────────────────────────
 // Raggy Thresholds (question-based RAG triggers)
@@ -109,6 +110,17 @@ const RAGGY_TIME_ON_SITE_THRESHOLD = 300000; // 5 min in ms - exploration mode
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const record = requestCounts.get(ip);
+
+  // Periodic cleanup of expired entries to prevent Map growth
+  if (++requestCounter % 100 === 0) {
+    try {
+      for (const [key, rec] of requestCounts) {
+        if (now > rec.resetTime) requestCounts.delete(key);
+      }
+    } catch (cleanupError) {
+      console.error('[RateLimit] Cleanup failed:', cleanupError);
+    }
+  }
 
   if (!record || now > record.resetTime) {
     requestCounts.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
@@ -745,7 +757,33 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               subprocessPromises.push(tarotPromise as Promise<void>);
 
               // Wait for all subprocesses to complete before closing stream
-              await Promise.all(subprocessPromises);
+              // Timeout set to 45s to accommodate multi-card tarot generation
+              const SUBPROCESS_TIMEOUT = 45000;
+              const timeoutError = new Error('Subprocess timeout');
+
+              await Promise.race([
+                Promise.all(subprocessPromises),
+                new Promise<void>((_, reject) =>
+                  setTimeout(() => reject(timeoutError), SUBPROCESS_TIMEOUT)
+                ),
+              ]).catch((err) => {
+                const isTimeout = err === timeoutError;
+                if (isTimeout) {
+                  console.warn(`[Soul Chat] Subprocesses timed out after ${SUBPROCESS_TIMEOUT / 1000}s, closing stream`);
+                  // Optionally notify client of timeout
+                  try {
+                    controller.enqueue(encoder.encode(`event: subprocess-timeout\ndata: ${JSON.stringify({ message: 'Background generation timed out' })}\n\n`));
+                  } catch { /* stream may be closing */ }
+                } else {
+                  // Unexpected subprocess error - log with more detail
+                  console.error('[Soul Chat] Subprocess error:', err instanceof Error ? err.message : err);
+                  localLogger.subprocess('chat', 'end', {
+                    result: 'error',
+                    error: err instanceof Error ? err.message : String(err),
+                  });
+                }
+                // Continue closing stream regardless
+              });
             }
 
             controller.close();

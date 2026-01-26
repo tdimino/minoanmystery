@@ -224,8 +224,8 @@ export async function embodiesTheTarot(
 
   // ─── All gates passed - Generate tarot ───────────────────────────
 
-  // Update turn tracking before generation (prevents re-triggering)
-  soulMemory.setLastTarotTurn(userMessageCount);
+  // NOTE: setLastTarotTurn moved to AFTER successful generation
+  // Previously it was here, which consumed the turn even if generation failed
 
   // Generate tarot prompt using LLM to decide card count and selection
   log('[Tarot] Generating tarot prompt...');
@@ -337,9 +337,19 @@ export async function embodiesTheTarot(
     }
   }
 
-  // Update session state
-  const newTarotCount = tarotCount + 1;
-  soulMemory.setTarotCount(newTarotCount);
+  // Only consume the turn slot if at least one card succeeded
+  // This ensures users don't lose tarot opportunities on total failures
+  const successfulCards = cardResults.filter(c => c.success);
+  let newTarotCount = tarotCount;
+
+  if (successfulCards.length > 0) {
+    soulMemory.setLastTarotTurn(userMessageCount);
+    newTarotCount = tarotCount + 1;
+    soulMemory.setTarotCount(newTarotCount);
+    log(`[Tarot] Session state updated: turn=${userMessageCount}, count=${newTarotCount}`);
+  } else {
+    log('[Tarot] No cards succeeded, not consuming session tarot slot');
+  }
 
   // Build final result
   const finalResult: TarotResult = {

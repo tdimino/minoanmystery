@@ -6,7 +6,53 @@ export const prerender = false;
 // Use process.env for Vercel runtime, import.meta.env for local dev
 const resend = new Resend(process.env.RESEND_API_KEY || import.meta.env.RESEND_API_KEY);
 
-export const POST: APIRoute = async ({ request }) => {
+// ─────────────────────────────────────────────────────────────
+// Rate Limiting (stricter for contact form to prevent spam)
+// ─────────────────────────────────────────────────────────────
+const requestCounts = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 3; // contact submissions per hour
+const RATE_WINDOW = 3600000; // 1 hour in ms
+let requestCounter = 0; // For periodic cleanup
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = requestCounts.get(ip);
+
+  // Periodic cleanup of expired entries to prevent Map growth
+  // Use 10 due to 1-hour window (entries persist longer)
+  if (++requestCounter % 10 === 0) {
+    try {
+      for (const [key, rec] of requestCounts) {
+        if (now > rec.resetTime) requestCounts.delete(key);
+      }
+    } catch (cleanupError) {
+      console.error('[RateLimit] Cleanup failed:', cleanupError);
+    }
+  }
+
+  if (!record || now > record.resetTime) {
+    requestCounts.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  // Rate limiting
+  const ip = clientAddress || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return new Response(
+      JSON.stringify({ error: 'Too many submissions. Please try again later.' }),
+      { status: 429, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   try {
     const data = await request.json();
     const { name, email, message } = data;

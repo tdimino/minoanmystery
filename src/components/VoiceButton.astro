@@ -419,6 +419,14 @@ const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
     private currentTranscript = '';
     private mode: 'default' | 'chat';
 
+    // Track bound handlers for cleanup
+    private boundStartListening: () => void;
+    private boundStopListening: () => void;
+    private boundTouchStart: (e: TouchEvent) => void;
+    private boundTouchEnd: (e: TouchEvent) => void;
+    private boundKeydown: (e: KeyboardEvent) => void;
+    private boundKeyup: (e: KeyboardEvent) => void;
+
     constructor(container: HTMLElement) {
       this.container = container;
       this.button = container.querySelector('.oracle-ear')!;
@@ -430,38 +438,64 @@ const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
       this.stt = getDeepgramSTT();
       this.tts = getCartesiaTTS();
 
+      // Bind handlers for cleanup
+      this.boundStartListening = this.startListening.bind(this);
+      this.boundStopListening = this.stopListening.bind(this);
+      this.boundTouchStart = (e: TouchEvent) => {
+        e.preventDefault();
+        this.startListening();
+      };
+      this.boundTouchEnd = (e: TouchEvent) => {
+        e.preventDefault();
+        this.stopListening();
+      };
+      this.boundKeydown = (e: KeyboardEvent) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          this.startListening();
+        }
+      };
+      this.boundKeyup = (e: KeyboardEvent) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          this.stopListening();
+        }
+      };
+
       this.setupEventListeners();
     }
 
     private setupEventListeners(): void {
       // Mouse events for desktop
-      this.button.addEventListener('mousedown', this.startListening.bind(this));
-      this.button.addEventListener('mouseup', this.stopListening.bind(this));
-      this.button.addEventListener('mouseleave', this.stopListening.bind(this));
+      this.button.addEventListener('mousedown', this.boundStartListening);
+      this.button.addEventListener('mouseup', this.boundStopListening);
+      this.button.addEventListener('mouseleave', this.boundStopListening);
 
       // Touch events for mobile
-      this.button.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.startListening();
-      });
-      this.button.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.stopListening();
-      });
+      this.button.addEventListener('touchstart', this.boundTouchStart);
+      this.button.addEventListener('touchend', this.boundTouchEnd);
 
       // Keyboard accessibility
-      this.button.addEventListener('keydown', (e) => {
-        if (e.key === ' ' || e.key === 'Enter') {
-          e.preventDefault();
-          this.startListening();
-        }
-      });
-      this.button.addEventListener('keyup', (e) => {
-        if (e.key === ' ' || e.key === 'Enter') {
-          e.preventDefault();
-          this.stopListening();
-        }
-      });
+      this.button.addEventListener('keydown', this.boundKeydown);
+      this.button.addEventListener('keyup', this.boundKeyup);
+    }
+
+    destroy(): void {
+      // Stop any ongoing listening/speaking
+      if (this.isListening) {
+        this.stt.stop();
+      }
+
+      // Remove all event listeners
+      this.button.removeEventListener('mousedown', this.boundStartListening);
+      this.button.removeEventListener('mouseup', this.boundStopListening);
+      this.button.removeEventListener('mouseleave', this.boundStopListening);
+      this.button.removeEventListener('touchstart', this.boundTouchStart);
+      this.button.removeEventListener('touchend', this.boundTouchEnd);
+      this.button.removeEventListener('keydown', this.boundKeydown);
+      this.button.removeEventListener('keyup', this.boundKeyup);
+
+      this.resetState();
     }
 
     private async startListening(): Promise<void> {
@@ -599,15 +633,32 @@ const { bottom = '6rem', right = '1.5rem', mode = 'default' } = Astro.props;
     }
   }
 
-  // Initialize on DOM ready
-  document.addEventListener('DOMContentLoaded', () => {
+  // Track controller instances for cleanup
+  const controllers: OracleController[] = [];
+
+  function initOracleControllers() {
     const containers = document.querySelectorAll<HTMLElement>('.oracle-ear-container');
-    containers.forEach((container) => new OracleController(container));
-  });
+    containers.forEach((container) => {
+      const controller = new OracleController(container);
+      controllers.push(controller);
+    });
+  }
+
+  function cleanupOracleControllers() {
+    controllers.forEach((controller) => controller.destroy());
+    controllers.length = 0; // Clear array
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOracleControllers, { once: true });
+  } else {
+    initOracleControllers();
+  }
+
+  // Cleanup before View Transition swap
+  document.addEventListener('astro:before-swap', cleanupOracleControllers);
 
   // Re-initialize after Astro navigation
-  document.addEventListener('astro:after-swap', () => {
-    const containers = document.querySelectorAll<HTMLElement>('.oracle-ear-container');
-    containers.forEach((container) => new OracleController(container));
-  });
+  document.addEventListener('astro:after-swap', initOracleControllers);
 </script>
