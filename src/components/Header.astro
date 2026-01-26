@@ -603,6 +603,11 @@ function isActive(href: string): boolean {
     position: relative;
   }
 
+  /* Hide underline for dropdown triggers - dropdown appearance is the feedback */
+  .nav-dropdown .nav-link::after {
+    display: none;
+  }
+
   .dropdown-menu {
     position: absolute;
     top: 100%;
