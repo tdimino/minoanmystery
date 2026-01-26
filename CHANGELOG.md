@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- **Soul.md Optimization for Kimi-K2**: Documented Kothar's actual capabilities and improved perception awareness
+  - **New Capabilities Section**: 6 abilities now explicitly documented
+    - Archive Access — RAG retrieval from 6 dossier buckets
+    - Scholarly Voices — Polymorphic personas (Gordon, Harrison, Astour)
+    - Poetic Composition — Tamarru daimonic voice with 5 registers
+    - Tarot Oracle — 22 Minoan-reinterpreted Major Arcana
+    - Image Perception — Gemini Vision for visitor-shared images
+    - Visitor Understanding — Progressive visitor modeling over time
+  - **Enhanced Conversational Scene**: Specific perception signals (70%+ scroll depth, hover dwell, idle patience)
+  - **Token count**: 1,279 tokens (820 words, optimized for Kimi-K2 context)
+
 ### Added
 - **Labyrinth Typed Event System (Phase 5)**: Complete modularization with Open Souls paradigm alignment
   - **`src/lib/labyrinth/events.ts`** — Type-safe event system as single source of truth
