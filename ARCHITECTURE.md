@@ -255,6 +255,32 @@ Server-side soul integration.
 | `tts.ts` | ~100 | Text-to-speech synthesis |
 | `vision.ts` | ~150 | Image captioning |
 
+### Labyrinth (`src/lib/labyrinth/`)
+
+Modular chat interface with type-safe event system.
+
+| File | Lines | Purpose |
+|------|-------|---------|
+| `events.ts` | 314 | Type-safe event bus (LabyrinthEventMap, 17 events) |
+| `LabyrinthChat.ts` | 991 | Main chat orchestration |
+| `TarotRenderer.ts` | 321 | 3D card rendering with animations |
+| `BackgroundManifestations.ts` | 166 | Ambient visual effects |
+| `ImageAttachmentManager.ts` | 247 | Clipboard/file handling |
+| `userExtraction.ts` | 105 | Shared extraction utilities |
+
+**Event Flow**:
+```
+User Input → dispatch('user:message') → LabyrinthChat.send()
+          → dispatch('soul:stream:start') → SSE chunks
+          → dispatch('soul:stream:chunk') → UI update
+          → dispatch('soul:stream:done') → Complete
+```
+
+**CSS Organization**:
+- `src/styles/labyrinth/chat.css` — Message styling
+- `src/styles/labyrinth/tarot.css` — Card animations
+- `src/styles/labyrinth/backgrounds.css` — Ambient effects
+
 ---
 
 ## Architectural Invariants
@@ -343,6 +369,32 @@ interface SoulMemoryInterface {
 │  └─ Supabase (Vector store, RAG)                                │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## SEO & Structured Data
+
+### Entity Linking Strategy
+
+All pages share entity `@id` references for knowledge graph connections:
+- Person: `https://www.minoanmystery.org/#person`
+- Organization: `https://aldea.ai/#organization`
+- WebSite: `https://www.minoanmystery.org/#website`
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `src/components/StructuredData.astro` | JSON-LD @graph component |
+| `public/robots.txt` | AI crawler directives (GPTBot, Claude-Web, PerplexityBot) |
+| `public/llms.txt` | Professional summary for AI systems |
+| `public/about.md`, `public/portfolio.md` | Markdown for AI indexing |
+
+### Structured Data Schemas
+
+Person, WebSite, ItemList, FAQPage, CreativeWork, ContactPage, BreadcrumbList
+
+**Head Slot Pattern**: Pages inject content via `<Fragment slot="head">` into BaseLayout's `<slot name="head" />`.
 
 ---
 

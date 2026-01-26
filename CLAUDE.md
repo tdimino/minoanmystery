@@ -41,6 +41,13 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
 
+## SEO Conventions
+
+- **Structured Data**: Use `StructuredData.astro` component with @id entity linking
+- **AI Indexing**: Maintain `public/llms.txt` and markdown files for AI crawlers
+- **robots.txt**: AI crawler directives defined for GPTBot, Claude-Web, PerplexityBot
+- **Head Slot**: Use `<Fragment slot="head">` for page-specific meta/preconnects
+
 ## Brand Colors
 
 | Token | Light | Dark | Usage |

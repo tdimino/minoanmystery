@@ -233,6 +233,17 @@ getSoulLogger().logWorkingMemory(memory.memories, 'after-integration');
 getSoulLogger().logInternalMonologue(thought, 'decision-reasoning');
 ```
 
+## Labyrinth Event Integration
+
+The `/labyrinth` chat uses a type-safe event system (`src/lib/labyrinth/events.ts`) that integrates with SoulOrchestrator via stream events:
+
+- `soul:stream:start` — Response begins
+- `soul:stream:chunk` — Token received
+- `soul:stream:done` — Response complete
+- `soul:stream:error` — Error handling
+
+See `src/lib/labyrinth/LabyrinthChat.ts` for implementation and `ARCHITECTURE.md` for full module breakdown.
+
 ## Invariants
 
 1. **WorkingMemory is immutable** - All operations return new instances
