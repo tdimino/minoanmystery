@@ -574,19 +574,77 @@ export class SoulOrchestrator {
                 continue;
               }
 
-              // Handle tarot card events
-              if (currentEventType === 'tarot') {
-                document.dispatchEvent(new CustomEvent('soul:tarot', {
+              // Handle tarot placeholder events (shows pulsing cards while generating)
+              if (currentEventType === 'tarot-placeholder') {
+                document.dispatchEvent(new CustomEvent('soul:tarot-placeholder', {
+                  detail: {
+                    message: parsed.message || 'The cards are forming...',
+                    cardCount: parsed.cardCount || 1,
+                    spreadType: parsed.spreadType || 'single',
+                  }
+                }));
+                this.log('Tarot placeholder shown', {
+                  cardCount: parsed.cardCount,
+                  spreadType: parsed.spreadType
+                });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle individual tarot card events (each card as it generates)
+              if (currentEventType === 'tarot-card') {
+                document.dispatchEvent(new CustomEvent('soul:tarot-card', {
                   detail: {
                     dataUrl: parsed.dataUrl,
                     prompt: parsed.prompt,
                     cardName: parsed.cardName,
                     cardNumber: parsed.cardNumber,
-                    displayMode: parsed.displayMode || 'background',
+                    position: parsed.position,
+                    index: parsed.index,
+                    total: parsed.total,
+                    displayMode: parsed.displayMode || 'inline',
+                  }
+                }));
+                this.log('Tarot card received', {
+                  card: `${parsed.cardNumber} - ${parsed.cardName}`,
+                  index: `${parsed.index + 1}/${parsed.total}`
+                });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle tarot spread complete events (oracle message)
+              if (currentEventType === 'tarot-complete') {
+                document.dispatchEvent(new CustomEvent('soul:tarot-complete', {
+                  detail: {
+                    success: parsed.success,
+                    cardCount: parsed.cardCount,
+                    spreadType: parsed.spreadType,
+                    oracleMessage: parsed.oracleMessage,
                     duration: parsed.duration || 30000,
                   }
                 }));
-                this.log('Tarot card received', { card: `${parsed.cardNumber} - ${parsed.cardName}` });
+                this.log('Tarot spread complete', {
+                  spreadType: parsed.spreadType,
+                  hasOracle: !!parsed.oracleMessage
+                });
+                currentEventType = 'message'; // Reset for next event
+                continue;
+              }
+
+              // Handle legacy tarot card events (inline mode)
+              if (currentEventType === 'tarot') {
+                document.dispatchEvent(new CustomEvent('soul:tarot-inline', {
+                  detail: {
+                    dataUrl: parsed.dataUrl,
+                    prompt: parsed.prompt,
+                    cardName: parsed.cardName,
+                    cardNumber: parsed.cardNumber,
+                    displayMode: parsed.displayMode || 'inline',
+                    duration: parsed.duration || 30000,
+                  }
+                }));
+                this.log('Tarot card received (inline)', { card: `${parsed.cardNumber} - ${parsed.cardName}` });
                 currentEventType = 'message'; // Reset for next event
                 continue;
               }

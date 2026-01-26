@@ -1,0 +1,1185 @@
+/**
+ * Labyrinth Chat & Layout
+ * Page layout, conversation history, messages, form, inline tarot
+ * Extracted from labyrinth.astro for modularity
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   Page Layout
+   ───────────────────────────────────────────────────────────── */
+
+.labyrinth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.labyrinth-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 48px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+  position: relative;
+}
+
+.labyrinth-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.labyrinth-title {
+  text-align: center;
+}
+
+.labyrinth-menu-container {
+  position: absolute;
+  right: 48px;
+}
+
+.labyrinth-title h1 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.labyrinth-title p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 2px 0 0;
+}
+
+/* Soul State Indicator */
+.soul-state-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.soul-state-indicator:hover {
+  opacity: 0.7;
+}
+
+.soul-state-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  animation: soul-pulse 2s ease-in-out infinite;
+}
+
+.soul-state-text {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+@keyframes soul-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* State-specific dot colors */
+.soul-state-dot[data-state="greeting"] {
+  background-color: #966a85; /* Tyrian purple */
+}
+.soul-state-dot[data-state="curious"] {
+  background-color: #d4af37; /* Gold */
+}
+.soul-state-dot[data-state="engaged"] {
+  background-color: #7b5e99; /* Deep purple */
+}
+.soul-state-dot[data-state="ready"] {
+  background-color: #5a9a6e; /* Sage green */
+}
+.soul-state-dot[data-state="returning"] {
+  background-color: #5b8cb8; /* Mediterranean blue */
+}
+.soul-state-dot[data-state="dormant"] {
+  background-color: #888888; /* Gray */
+  animation: soul-pulse 4s ease-in-out infinite; /* Slower pulse */
+}
+.soul-state-dot[data-state="exiting"] {
+  background-color: #b89ac9; /* Soft lavender */
+}
+
+/* Options Menu */
+.labyrinth-menu-container {
+  position: relative;
+}
+
+.labyrinth-menu-trigger {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.labyrinth-menu-trigger:hover {
+  background: var(--color-background-alt);
+  color: var(--color-text);
+}
+
+.labyrinth-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.95);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.labyrinth-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.labyrinth-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.labyrinth-menu-item:hover {
+  background: var(--color-background-alt);
+}
+
+.labyrinth-menu-item svg {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.labyrinth-menu-item--danger {
+  color: #dc3545;
+}
+
+.labyrinth-menu-item--danger svg {
+  color: #dc3545;
+}
+
+.labyrinth-menu-item--danger:hover {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.labyrinth-menu-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 6px 0;
+}
+
+/* Dark mode menu adjustments */
+[data-theme='dark'] .labyrinth-menu {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.labyrinth-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 48px;
+}
+
+.conversation-history {
+  flex: 1;
+  padding-top: 32px;
+  padding-bottom: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conversation-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 32px 24px;
+  gap: 0;
+}
+
+.empty-icon {
+  margin-bottom: 20px;
+}
+
+.empty-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.7;
+  box-shadow:
+    0 0 0 3px var(--color-background),
+    0 0 0 4px rgba(150, 106, 133, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Empty avatar button wrapper */
+.empty-avatar-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.empty-avatar-btn:hover {
+  transform: scale(1.05);
+}
+
+.empty-avatar-btn:hover .empty-avatar {
+  opacity: 1;
+  box-shadow:
+    0 0 0 3px var(--color-background),
+    0 0 0 5px rgba(150, 106, 133, 0.35),
+    0 12px 32px rgba(150, 106, 133, 0.2);
+}
+
+.empty-avatar-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.empty-hint {
+  font-size: 0.875rem;
+  opacity: 0.6;
+  margin: 0 0 28px 0;
+}
+
+/* Starter Prompt Chips - oracle-like conversation starters */
+.starter-prompts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 440px;
+  opacity: 0;
+  animation: fade-in-up 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.starter-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(128, 128, 128, 0.06);
+  border: 1px solid rgba(128, 128, 128, 0.12);
+  border-radius: 100px;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.starter-chip:hover {
+  background: rgba(150, 106, 133, 0.08);
+  border-color: rgba(150, 106, 133, 0.2);
+  box-shadow: 0 2px 8px rgba(150, 106, 133, 0.1);
+  transform: translateY(-1px);
+}
+
+.starter-chip:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.starter-chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.starter-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.starter-text {
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.starter-chip:hover .starter-text {
+  color: var(--color-text);
+}
+
+/* Dark mode adjustments for starter chips */
+[data-theme='dark'] .starter-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .starter-chip:hover {
+  background: rgba(150, 106, 133, 0.12);
+  border-color: rgba(150, 106, 133, 0.25);
+}
+
+/* Mobile: stack chips vertically if needed */
+@media (max-width: 480px) {
+  .starter-prompts {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 280px;
+  }
+
+  .starter-chip {
+    justify-content: center;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .starter-prompts {
+    animation: none;
+    opacity: 1;
+  }
+
+  .starter-chip {
+    transition: none;
+  }
+
+  .starter-chip:hover {
+    transform: none;
+  }
+}
+
+/* Message bubbles */
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 85%;
+}
+
+.message-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  margin-right: 4px; /* Room for avatar hover scale */
+}
+
+.message-assistant {
+  align-self: flex-start;
+  margin-left: 4px; /* Room for avatar hover scale */
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* Avatar button variant - reset button styles */
+.message-avatar-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  aspect-ratio: 1;
+  align-self: flex-start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-avatar-btn:hover {
+  transform: scale(1.1);
+}
+
+.message-avatar-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Assistant avatar hover glow */
+.message-assistant .message-avatar-btn:hover {
+  box-shadow: 0 0 12px rgba(150, 106, 133, 0.4);
+}
+
+/* User avatar - only interactive on mobile */
+.message-user .message-avatar-btn {
+  cursor: pointer;
+}
+
+.message-user .message-avatar {
+  background: var(--color-primary);
+  color: white;
+}
+
+.message-assistant .message-avatar {
+  background: transparent;
+  overflow: visible;
+}
+
+.minoan-avatar-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.message-content {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.message-user .message-content {
+  background: var(--color-primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+/* Richer Tyrian purple for dark mode bubbles */
+[data-theme="dark"] .message-user .message-content {
+  background: #6d4463;
+}
+
+[data-theme="dark"] .message-user .message-avatar {
+  background: #6d4463;
+}
+
+.message-assistant .message-content {
+  background: var(--color-background-alt);
+  color: var(--color-text);
+  border-bottom-left-radius: 4px;
+}
+
+.message-meta {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* Loading state */
+.message-loading .message-content {
+  display: flex;
+  gap: 4px;
+  padding: 16px 20px;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: loading-pulse 1.4s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(1) { animation-delay: 0s; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loading-pulse {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(1); }
+  30% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Form */
+.labyrinth-form {
+  padding: 16px 0 24px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.form-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.labyrinth-input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  border-radius: 24px;
+  font-size: 16px;
+  font-family: var(--font-body);
+  background: rgba(128, 128, 128, 0.04);
+  color: var(--color-text);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.labyrinth-input:hover {
+  border-color: rgba(128, 128, 128, 0.25);
+  background: rgba(128, 128, 128, 0.06);
+}
+
+.labyrinth-input:focus {
+  border-color: var(--color-primary);
+  background: var(--color-background);
+  box-shadow: 0 0 0 4px rgba(150, 106, 133, 0.12);
+}
+
+.labyrinth-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.labyrinth-submit {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--color-primary), #b485a6);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(150, 106, 133, 0.25);
+}
+
+.labyrinth-submit:hover {
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 4px 12px rgba(150, 106, 133, 0.35);
+}
+
+.labyrinth-submit:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(150, 106, 133, 0.2);
+}
+
+.labyrinth-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Richer Tyrian purple for dark mode send button */
+[data-theme="dark"] .labyrinth-submit {
+  background: linear-gradient(135deg, #8b5a7e, #a67b94);
+  box-shadow: 0 2px 8px rgba(150, 106, 133, 0.35);
+}
+
+[data-theme="dark"] .labyrinth-submit:hover {
+  box-shadow: 0 4px 16px rgba(150, 106, 133, 0.45);
+}
+
+[data-theme="dark"] .labyrinth-input {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .labyrinth-input:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .labyrinth-input:focus {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.form-hints {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+.form-hints kbd {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.6875rem;
+  padding: 3px 7px;
+  background: rgba(128, 128, 128, 0.08);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.hint-separator {
+  opacity: 0.25;
+}
+
+.hint-paste {
+  opacity: 0.6;
+}
+
+/* Hidden file input */
+.image-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Attachment Preview Bar */
+.attachment-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: var(--color-background-alt);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.attachment-thumbnail {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.attachment-dismiss {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-text-muted);
+  color: var(--color-background);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.attachment-dismiss:hover {
+  background: var(--color-text);
+  transform: scale(1.1);
+}
+
+/* Attach Button */
+.attach-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.attach-button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(150, 106, 133, 0.05);
+}
+
+.attach-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-theme='dark'] .attach-button:hover {
+  background: rgba(201, 160, 184, 0.1);
+}
+
+/* Message Image (inline in messages) */
+.message-image {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.message-image:hover {
+  transform: scale(1.02);
+}
+
+/* Image lightbox overlay */
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  animation: lightbox-fade-in 0.2s ease;
+}
+
+@keyframes lightbox-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.image-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .labyrinth-header {
+    padding: 12px 16px;
+  }
+
+  .labyrinth-title h1 {
+    font-size: 16px;
+  }
+
+  .labyrinth-title p {
+    display: none;
+  }
+
+  .labyrinth-menu-container {
+    right: 16px;
+  }
+
+  .labyrinth-menu {
+    right: 0;
+  }
+
+  .labyrinth-container {
+    padding: 0 20px;
+  }
+
+  .message {
+    max-width: 90%;
+  }
+
+  .form-hints {
+    display: none;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .labyrinth-input {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .labyrinth-input:focus {
+  box-shadow: 0 0 0 3px rgba(201, 160, 184, 0.2);
+}
+
+/* Toast notification */
+.labyrinth-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--color-text);
+  color: var(--color-background);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.labyrinth-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+[data-theme='dark'] .labyrinth-toast {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Avatar pulse animation for visitor model updates */
+@keyframes avatar-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(150, 106, 133, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(150, 106, 133, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(150, 106, 133, 0);
+  }
+}
+
+.message-avatar-btn.avatar-pulse {
+  animation: avatar-pulse 1s ease-out 2;
+}
+
+/* Model update toast - smaller and more subtle */
+.model-update-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(150, 106, 133, 0.95);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.model-update-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.model-update-toast svg {
+  width: 14px;
+  height: 14px;
+}
+
+[data-theme='dark'] .model-update-toast {
+  background: rgba(109, 68, 99, 0.95);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Inline Tarot Cards - Displayed within chat messages
+   Supports 1-3 card spreads with pyramid layout for 3 cards
+   ───────────────────────────────────────────────────────────── */
+
+/* Spread container - holds all cards in a reading */
+.tarot-spread-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  gap: 16px;
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Row for horizontal card layout */
+.tarot-spread-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* Placeholder - shows while card is generating */
+.tarot-placeholder-container {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  animation: fade-in 0.3s ease-out;
+}
+
+.tarot-placeholder {
+  width: 140px;
+  height: 186px;
+  background: rgba(212, 175, 66, 0.1);
+  border: 2px dashed var(--color-primary);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  animation: tarot-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Stagger animation delays for multiple placeholders */
+.tarot-placeholder[data-index="1"] {
+  animation-delay: 0.2s;
+}
+.tarot-placeholder[data-index="2"] {
+  animation-delay: 0.4s;
+}
+
+.tarot-forming-symbol {
+  font-size: 28px;
+  color: var(--color-primary);
+  animation: tarot-symbol-glow 1.5s ease-in-out infinite;
+}
+
+.tarot-forming-text {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tarot-position-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+@keyframes tarot-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+@keyframes tarot-symbol-glow {
+  0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 4px var(--color-primary)); }
+  50% { opacity: 1; filter: drop-shadow(0 0 12px var(--color-primary)); }
+}
+
+/* Individual card container */
+.tarot-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Legacy container (for single cards) */
+.tarot-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 12px;
+}
+
+.tarot-card {
+  width: 140px;
+  height: 186px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 20px rgba(150, 106, 133, 0.3),
+    0 0 40px rgba(212, 175, 66, 0.15);
+  flex-shrink: 0;
+}
+
+.tarot-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarot-card.revealed {
+  animation: tarot-card-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+/* Stagger card reveal animations */
+.tarot-card-wrapper[data-index="1"] .tarot-card.revealed {
+  animation-delay: 0.15s;
+}
+.tarot-card-wrapper[data-index="2"] .tarot-card.revealed {
+  animation-delay: 0.3s;
+}
+
+@keyframes tarot-card-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotateY(90deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.95) rotateY(30deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+.tarot-card-label {
+  font-size: clamp(10px, 1.3vw, 12px);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  text-align: center;
+  max-width: 140px;
+}
+
+/* Oracle message - appears after spread completes */
+.tarot-oracle-message {
+  font-size: clamp(13px, 1.5vw, 15px);
+  color: var(--color-primary);
+  font-style: italic;
+  text-align: center;
+  max-width: 400px;
+  padding: 12px 20px;
+  background: rgba(150, 106, 133, 0.1);
+  border-radius: 8px;
+  margin-top: 8px;
+  animation: oracle-appear 0.6s ease-out;
+}
+
+@keyframes oracle-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .tarot-placeholder {
+  background: rgba(212, 175, 66, 0.05);
+}
+
+[data-theme='dark'] .tarot-card {
+  box-shadow:
+    0 4px 20px rgba(150, 106, 133, 0.4),
+    0 0 60px rgba(212, 175, 66, 0.2);
+}
+
+[data-theme='dark'] .tarot-oracle-message {
+  background: rgba(150, 106, 133, 0.15);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .tarot-placeholder,
+  .tarot-forming-symbol,
+  .tarot-card.revealed,
+  .tarot-oracle-message {
+    animation: none;
+  }
+}
+
+/* Responsive: smaller cards on mobile */
+@media (max-width: 480px) {
+  .tarot-placeholder,
+  .tarot-card {
+    width: 100px;
+    height: 133px;
+  }
+  .tarot-spread-row {
+    gap: 8px;
+  }
+  .tarot-card-label {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Message Highlight (Deep Link Navigation)
+   ───────────────────────────────────────────────────────────── */
+
+.message.is-highlighted {
+  animation: highlight-pulse 2s ease-out;
+}
+
+@keyframes highlight-pulse {
+  0% {
+    box-shadow: 0 0 0 4px rgba(150, 106, 133, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 4px rgba(150, 106, 133, 0);
+  }
+}

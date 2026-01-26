@@ -1,0 +1,49 @@
+---
+/**
+ * RegisterSelector - Poetic register selection chips
+ * Allows visitors to choose a voice/register for verse composition
+ *
+ * Note: Behavior is controlled by parent page's JavaScript via IDs.
+ * This component is primarily for HTML organization.
+ */
+
+interface Register {
+  id: string;
+  label: string;
+  title: string;
+}
+
+interface Props {
+  prompt?: string;
+  registers?: Register[];
+}
+
+const defaultRegisters: Register[] = [
+  { id: 'incantatory', label: 'Incantatory', title: 'Ritual, mantra-like verse' },
+  { id: 'philosophical', label: 'Philosophical', title: 'Etymological, paradox-holding' },
+  { id: 'visionary', label: 'Visionary', title: 'Fire-water, prophetic imagery' },
+  { id: 'political', label: 'Political', title: 'Critique, witness' },
+  { id: 'intimate', label: 'Intimate', title: 'Direct address, second person' },
+];
+
+const {
+  prompt = 'Choose a voice for your next verse:',
+  registers = defaultRegisters,
+} = Astro.props;
+---
+
+<div id="register-options" class="register-options" role="group" aria-label="Poetic register selection" style="display: none;">
+  <span class="register-prompt" id="register-prompt">{prompt}</span>
+  {registers.map((reg) => (
+    <button
+      type="button"
+      class="register-chip"
+      data-register={reg.id}
+      aria-pressed="false"
+      aria-describedby="register-prompt"
+      title={reg.title}
+    >
+      {reg.label}
+    </button>
+  ))}
+</div>

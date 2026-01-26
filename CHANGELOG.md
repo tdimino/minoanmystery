@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Labyrinth Typed Event System (Phase 5)**: Complete modularization with Open Souls paradigm alignment
+  - **`src/lib/labyrinth/events.ts`** — Type-safe event system as single source of truth
+    - `LabyrinthEventMap` interface mapping all 17 event types to typed payloads
+    - Generic `dispatch<K>()` and `listen<K>()` functions with full type inference
+    - `listenMany()` for batch subscription with single cleanup function
+    - `once()` for auto-removing listeners
+    - `isLabyrinthEvent()` type guard for generic handlers
+  - **Stream Events**: Added `soul:stream:start`, `soul:stream:chunk`, `soul:stream:done`, `soul:stream:error`
+  - **`WINDOW_EVENTS` Set**: Extensible routing for events targeting window vs document
+  - **`src/lib/labyrinth/userExtraction.ts`** — Shared extraction utilities
+    - `extractNameHeuristic()` and `extractTitleHeuristic()` pure functions
+    - `NAME_PATTERNS` and `TITLE_PATTERNS` regex arrays exported for reuse
+    - Eliminates code duplication between browser (LabyrinthChat) and server (cognitive steps)
+  - **Unsubscribe Pattern**: `listen()` returns cleanup function, LabyrinthChat stores in `eventUnsubscribers[]`
+  - **Barrel Exports**: Clean public API via `src/lib/labyrinth/index.ts`
+
+### Changed
+- **LabyrinthChat Event Handling**: Migrated from manual addEventListener to typed `listen()` helper
+  - 12 event listeners now type-safe with automatic payload inference
+  - `destroy()` method calls all unsubscribe functions for proper cleanup
+  - Removed bound handler class properties in favor of inline arrow functions
+- **Tarot Event Naming**: Renamed `soul:tarot` → `soul:tarot-inline` for consistency with other tarot events
+  - Updated `SoulOrchestrator.ts` dispatch to match
+
+### Fixed
+- **submitBtn Null Check**: Added explicit validation with descriptive error message
+- **XSS Prevention**: TarotRenderer uses DOM APIs instead of innerHTML for user content
+
+---
+
+### Added
 - **Advanced SEO & Entity Optimization**: 2026 best practices for knowledge graph eligibility
   - **@id Entity Linking**: Consistent entity IDs across all pages for knowledge graph connectivity
     - Person: `https://www.minoanmystery.org/#person`
