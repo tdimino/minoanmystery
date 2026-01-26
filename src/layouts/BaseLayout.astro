@@ -66,6 +66,9 @@ const canonicalURL = new URL(pathname, Astro.site);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+  <!-- Page-specific head content -->
+  <slot name="head" />
+
   <!-- View Transitions for smooth page navigation -->
   <ViewTransitions />
 

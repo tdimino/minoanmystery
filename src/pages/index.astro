@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StructuredData from '../components/StructuredData.astro';
 
 const projects = [
   {
@@ -27,9 +28,59 @@ const projects = [
 
 <BaseLayout
   title="Tom di Mino, poet, designer, and AI/ML engineer"
-  description="The human language system remains the most potent magic known to us. At Minoan Mystery, I dig to the root of what you do, and make it more powerful with words."
+  description="Tom di Mino is a poet-turned-AI/ML engineer and Principal AI/ML Engineer at Aldea AI. He builds AI systems with genuine interiority, trains LLMs on expert knowledge, and develops evaluation frameworks. Previously at JP Morgan Chase, Google, and CZI."
   image="/images/og/og-home-1.png"
 >
+  <StructuredData schemas={[
+    {
+      type: "Person",
+      data: {
+        "@id": "https://www.minoanmystery.org/#person",
+        name: "Tom di Mino",
+        url: "https://www.minoanmystery.org",
+        image: "https://www.minoanmystery.org/images/tyrian-profile.png",
+        jobTitle: "Principal AI/ML Engineer",
+        worksFor: {
+          "@type": "Organization",
+          "@id": "https://aldea.ai/#organization",
+          name: "Aldea AI",
+          url: "https://aldea.ai"
+        },
+        alumniOf: {
+          "@type": "CollegeOrUniversity",
+          name: "The College of New Jersey"
+        },
+        knowsAbout: [
+          "AI/ML Engineering",
+          "LLM Training",
+          "Cognitive Design",
+          "Content Strategy",
+          "Soul Engineering",
+          "Bronze Age Linguistics",
+          "Ugaritic",
+          "Biblical Hebrew"
+        ],
+        sameAs: [
+          "https://www.linkedin.com/in/tomdimino/",
+          "https://github.com/tdimino"
+        ]
+      }
+    },
+    {
+      type: "WebSite",
+      data: {
+        "@id": "https://www.minoanmystery.org/#website",
+        name: "Minoan Mystery",
+        url: "https://www.minoanmystery.org",
+        description: "Tom di Mino's creative studio specializing in cognitive design, soul engineering, and full-stack AI applications.",
+        author: {
+          "@type": "Person",
+          "@id": "https://www.minoanmystery.org/#person",
+          name: "Tom di Mino"
+        }
+      }
+    }
+  ]} />
   <Header slot="header" />
 
   <!-- Hero Section -->

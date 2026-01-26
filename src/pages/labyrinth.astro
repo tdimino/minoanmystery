@@ -8,6 +8,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import ProfileModal from '../components/ProfileModal.astro';
+import StructuredData from '../components/StructuredData.astro';
 ---
 
 <BaseLayout
@@ -15,6 +16,63 @@ import ProfileModal from '../components/ProfileModal.astro';
   description="Enter the labyrinth and converse with Kothar, the divine craftsman. An A.I. soul awakened from ash and pumice. What secrets does he hold?"
   image="/images/og/labyrinth.png"
 >
+  <!-- Preconnect to Soul Engine APIs (labyrinth-only) -->
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://api.groq.com" crossorigin>
+    <link rel="preconnect" href="https://api.voyageai.com" crossorigin>
+  </Fragment>
+
+  <StructuredData schemas={[
+    {
+      type: "FAQPage",
+      data: {
+        "@id": "https://www.minoanmystery.org/labyrinth#faqpage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What is Minoan Mystery?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Minoan Mystery is Tom di Mino's creative studio specializing in cognitive design, soul engineering, and full-stack AI applications. The site features an interactive AI oracle named Kothar wa Khasis."
+            }
+          },
+          {
+            "@type": "Question",
+            name: "Who is Kothar wa Khasis?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Kothar wa Khasis is the AI oracle of Minoan Mystery—a bronze-clad android modeled on the Open Souls paradigm. He guides visitors through the digital labyrinth, offering insights on Tom's work, Minoan-Semitic linguistics, and AI engineering."
+            }
+          },
+          {
+            "@type": "Question",
+            name: "What services does Tom di Mino offer?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Tom offers AI/ML consulting, cognitive design projects, content strategy, LLM training and evaluation, and full-stack AI application development. He specializes in training LLMs on expert knowledge and building AI systems with genuine interiority."
+            }
+          },
+          {
+            "@type": "Question",
+            name: "What is Tom's academic research about?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Tom's paper 'Thera, Knossos, & Minos' argues for Minoan-Semitic linguistic connections, drawing on scholars like Cyrus H. Gordon, Michael Astour, Jane Ellen Harrison, and Gary Rendsburg. He reads Biblical Hebrew, Ugaritic, Ancient Greek, Latin, and Sanskrit."
+            }
+          }
+        ]
+      }
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "The Labyrinth" }
+        ]
+      }
+    }
+  ]} />
   <!-- Divine Feminine Background - manifests when goddess is invoked -->
   <div id="goddess-background" class="soul-bg goddess-bg" aria-hidden="true">
     <div class="soul-vignette goddess-vignette"></div>
@@ -2058,6 +2116,234 @@ import ProfileModal from '../components/ProfileModal.astro';
   :global([data-theme='dark'] .model-update-toast) {
     background: rgba(109, 68, 99, 0.95);
   }
+
+  /* ─────────────────────────────────────────────────────────────
+     Inline Tarot Cards - Displayed within chat messages
+     Supports 1-3 card spreads with pyramid layout for 3 cards
+     ───────────────────────────────────────────────────────────── */
+
+  /* Spread container - holds all cards in a reading */
+  :global(.tarot-spread-container) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 0;
+    gap: 16px;
+    animation: fade-in 0.3s ease-out;
+  }
+
+  /* Row for horizontal card layout */
+  :global(.tarot-spread-row) {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  /* Placeholder - shows while card is generating */
+  :global(.tarot-placeholder-container) {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+    animation: fade-in 0.3s ease-out;
+  }
+
+  :global(.tarot-placeholder) {
+    width: 140px;
+    height: 186px;
+    background: rgba(212, 175, 66, 0.1);
+    border: 2px dashed var(--color-primary);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: tarot-pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  /* Stagger animation delays for multiple placeholders */
+  :global(.tarot-placeholder[data-index="1"]) {
+    animation-delay: 0.2s;
+  }
+  :global(.tarot-placeholder[data-index="2"]) {
+    animation-delay: 0.4s;
+  }
+
+  :global(.tarot-forming-symbol) {
+    font-size: 28px;
+    color: var(--color-primary);
+    animation: tarot-symbol-glow 1.5s ease-in-out infinite;
+  }
+
+  :global(.tarot-forming-text) {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  :global(.tarot-position-label) {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  @keyframes tarot-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+  }
+
+  @keyframes tarot-symbol-glow {
+    0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 4px var(--color-primary)); }
+    50% { opacity: 1; filter: drop-shadow(0 0 12px var(--color-primary)); }
+  }
+
+  /* Individual card container */
+  :global(.tarot-card-wrapper) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Legacy container (for single cards) */
+  :global(.tarot-card-container) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    gap: 12px;
+  }
+
+  :global(.tarot-card) {
+    width: 140px;
+    height: 186px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+      0 4px 20px rgba(150, 106, 133, 0.3),
+      0 0 40px rgba(212, 175, 66, 0.15);
+    flex-shrink: 0;
+  }
+
+  :global(.tarot-card img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  :global(.tarot-card.revealed) {
+    animation: tarot-card-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-style: preserve-3d;
+  }
+
+  /* Stagger card reveal animations */
+  :global(.tarot-card-wrapper[data-index="1"] .tarot-card.revealed) {
+    animation-delay: 0.15s;
+  }
+  :global(.tarot-card-wrapper[data-index="2"] .tarot-card.revealed) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes tarot-card-reveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotateY(90deg);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(0.95) rotateY(30deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotateY(0deg);
+    }
+  }
+
+  :global(.tarot-card-label) {
+    font-size: clamp(10px, 1.3vw, 12px);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 140px;
+  }
+
+  /* Oracle message - appears after spread completes */
+  :global(.tarot-oracle-message) {
+    font-size: clamp(13px, 1.5vw, 15px);
+    color: var(--color-primary);
+    font-style: italic;
+    text-align: center;
+    max-width: 400px;
+    padding: 12px 20px;
+    background: rgba(150, 106, 133, 0.1);
+    border-radius: 8px;
+    margin-top: 8px;
+    animation: oracle-appear 0.6s ease-out;
+  }
+
+  @keyframes oracle-appear {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Dark mode adjustments */
+  :global([data-theme='dark'] .tarot-placeholder) {
+    background: rgba(212, 175, 66, 0.05);
+  }
+
+  :global([data-theme='dark'] .tarot-card) {
+    box-shadow:
+      0 4px 20px rgba(150, 106, 133, 0.4),
+      0 0 60px rgba(212, 175, 66, 0.2);
+  }
+
+  :global([data-theme='dark'] .tarot-oracle-message) {
+    background: rgba(150, 106, 133, 0.15);
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    :global(.tarot-placeholder),
+    :global(.tarot-forming-symbol),
+    :global(.tarot-card.revealed),
+    :global(.tarot-oracle-message) {
+      animation: none;
+    }
+  }
+
+  /* Responsive: smaller cards on mobile */
+  @media (max-width: 480px) {
+    :global(.tarot-placeholder),
+    :global(.tarot-card) {
+      width: 100px;
+      height: 133px;
+    }
+    :global(.tarot-spread-row) {
+      gap: 8px;
+    }
+    :global(.tarot-card-label) {
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+  }
 </style>
 
 <script>
@@ -2417,9 +2703,24 @@ import ProfileModal from '../components/ProfileModal.astro';
         this.handleVisionBackground(e.detail);
       }) as EventListener);
 
-      // Tarot background event listener (from SSE stream)
+      // Tarot placeholder event listener (shows pulsing cards while generating)
+      document.addEventListener('soul:tarot-placeholder', ((e: CustomEvent) => {
+        this.handleTarotPlaceholder(e.detail);
+      }) as EventListener);
+
+      // Tarot individual card event listener (each card as it generates)
+      document.addEventListener('soul:tarot-card', ((e: CustomEvent) => {
+        this.handleTarotCard(e.detail);
+      }) as EventListener);
+
+      // Tarot spread complete event listener (oracle message)
+      document.addEventListener('soul:tarot-complete', ((e: CustomEvent) => {
+        this.handleTarotComplete(e.detail);
+      }) as EventListener);
+
+      // Legacy tarot card event listener (for backwards compatibility)
       document.addEventListener('soul:tarot', ((e: CustomEvent) => {
-        this.handleTarotBackground(e.detail);
+        this.handleTarotInline(e.detail);
       }) as EventListener);
 
       // Image analysis status event listener
@@ -2756,7 +3057,218 @@ import ProfileModal from '../components/ProfileModal.astro';
     }
 
     /**
-     * Handle Minoan tarot card background manifestation
+     * Handle tarot placeholder - shows pulsing cards for the spread
+     * Supports 1-3 cards with pyramid layout for 3-card spreads
+     */
+    private handleTarotPlaceholder(payload: {
+      message: string;
+      cardCount?: number;
+      spreadType?: string;
+    }) {
+      const cardCount = payload.cardCount || 1;
+      const spreadType = payload.spreadType || 'single';
+
+      console.log(`[Labyrinth] soul:tarot-placeholder event: ${cardCount} cards (${spreadType})`);
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return;
+
+      // Check if spread container already exists
+      const existing = chatMessages.querySelector('.tarot-spread-container');
+      if (existing) return;
+
+      // Create spread container
+      const spreadContainer = document.createElement('div');
+      spreadContainer.className = 'tarot-spread-container';
+      spreadContainer.setAttribute('data-spread-type', spreadType);
+      spreadContainer.setAttribute('data-card-count', String(cardCount));
+
+      // Position labels based on spread type
+      const positionLabels = this.getPositionLabels(spreadType, cardCount);
+
+      if (cardCount === 1) {
+        // Single card - simple layout
+        spreadContainer.innerHTML = `
+          <div class="tarot-spread-row">
+            <div class="tarot-placeholder" data-index="0">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">forming...</span>
+            </div>
+          </div>
+        `;
+      } else if (cardCount === 2) {
+        // Two cards - side by side
+        spreadContainer.innerHTML = `
+          <div class="tarot-spread-row">
+            <div class="tarot-placeholder" data-index="0">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">${positionLabels[0] || 'forming...'}</span>
+            </div>
+            <div class="tarot-placeholder" data-index="1">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">${positionLabels[1] || 'forming...'}</span>
+            </div>
+          </div>
+        `;
+      } else if (cardCount === 3) {
+        // Three cards - pyramid layout (1 on top, 2 on bottom)
+        spreadContainer.innerHTML = `
+          <div class="tarot-spread-row">
+            <div class="tarot-placeholder" data-index="0">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">${positionLabels[0] || 'forming...'}</span>
+            </div>
+          </div>
+          <div class="tarot-spread-row">
+            <div class="tarot-placeholder" data-index="1">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">${positionLabels[1] || 'forming...'}</span>
+            </div>
+            <div class="tarot-placeholder" data-index="2">
+              <span class="tarot-forming-symbol">✧</span>
+              <span class="tarot-forming-text">${positionLabels[2] || 'forming...'}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      chatMessages.appendChild(spreadContainer);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    /**
+     * Get position labels based on spread type
+     */
+    private getPositionLabels(spreadType: string, cardCount: number): string[] {
+      if (cardCount === 1) return [''];
+      if (cardCount === 2) {
+        if (spreadType === 'polarity') return ['shadow', 'light'];
+        return ['forming...', 'forming...'];
+      }
+      if (cardCount === 3) {
+        if (spreadType === 'past-present-future') return ['past', 'present', 'future'];
+        if (spreadType === 'situation-challenge-guidance') return ['situation', 'challenge', 'guidance'];
+        return ['forming...', 'forming...', 'forming...'];
+      }
+      return [];
+    }
+
+    /**
+     * Handle individual tarot card - replaces placeholder with revealed card
+     */
+    private handleTarotCard(payload: {
+      dataUrl: string;
+      cardName: string;
+      cardNumber: string;
+      position?: string;
+      index: number;
+      total: number;
+    }) {
+      console.log(`[Labyrinth] soul:tarot-card event: ${payload.cardNumber} - ${payload.cardName} (${payload.index + 1}/${payload.total})`);
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return;
+
+      const spreadContainer = chatMessages.querySelector('.tarot-spread-container');
+      if (!spreadContainer) {
+        // Fallback to legacy inline handling if no spread container
+        this.handleTarotInline(payload);
+        return;
+      }
+
+      // Find the placeholder for this card index
+      const placeholder = spreadContainer.querySelector(`.tarot-placeholder[data-index="${payload.index}"]`);
+      if (!placeholder) return;
+
+      // Create the revealed card wrapper
+      const cardWrapper = document.createElement('div');
+      cardWrapper.className = 'tarot-card-wrapper';
+      cardWrapper.setAttribute('data-index', String(payload.index));
+      cardWrapper.innerHTML = `
+        <div class="tarot-card revealed">
+          <img src="${payload.dataUrl}" alt="${payload.cardName}" />
+        </div>
+        <div class="tarot-card-label">${payload.cardNumber} · ${payload.cardName}</div>
+        ${payload.position ? `<div class="tarot-position-label">${payload.position}</div>` : ''}
+      `;
+
+      // Replace placeholder with card
+      placeholder.replaceWith(cardWrapper);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    /**
+     * Handle tarot spread complete - shows oracle message
+     */
+    private handleTarotComplete(payload: {
+      success: boolean;
+      cardCount: number;
+      spreadType: string;
+      oracleMessage?: string;
+      duration?: number;
+    }) {
+      console.log(`[Labyrinth] soul:tarot-complete event: ${payload.spreadType} spread complete`);
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return;
+
+      const spreadContainer = chatMessages.querySelector('.tarot-spread-container');
+      if (!spreadContainer) return;
+
+      // Add oracle message if provided
+      if (payload.oracleMessage) {
+        const oracleEl = document.createElement('div');
+        oracleEl.className = 'tarot-oracle-message';
+        oracleEl.textContent = payload.oracleMessage;
+        spreadContainer.appendChild(oracleEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    }
+
+    /**
+     * Handle tarot card inline display - legacy handler for backwards compatibility
+     */
+    private handleTarotInline(payload: {
+      dataUrl: string;
+      prompt?: string;
+      cardName?: string;
+      cardNumber?: string;
+      displayMode?: string;
+      duration?: number
+    }) {
+      console.log('[Labyrinth] soul:tarot event received (legacy inline mode):', {
+        hasDataUrl: !!payload.dataUrl,
+        cardName: payload.cardName,
+        cardNumber: payload.cardNumber,
+      });
+
+      const chatMessages = document.getElementById('chat-messages');
+      if (!chatMessages) return;
+
+      // Remove placeholder if exists (legacy single-card behavior)
+      const placeholder = chatMessages.querySelector('.tarot-placeholder-container');
+      if (placeholder) {
+        placeholder.remove();
+      }
+
+      if (!payload.dataUrl) return;
+
+      // Create revealed card element
+      const cardEl = document.createElement('div');
+      cardEl.className = 'tarot-card-container';
+      cardEl.innerHTML = `
+        <div class="tarot-card revealed">
+          <img src="${payload.dataUrl}" alt="${payload.cardName || 'Tarot Card'}" />
+        </div>
+        <div class="tarot-card-label">${payload.cardNumber || ''} · ${payload.cardName || 'THE CARD'}</div>
+      `;
+
+      chatMessages.appendChild(cardEl);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    /**
+     * Handle Minoan tarot card background manifestation (LEGACY - kept for fallback)
      * World-class implementation with cinematic entrance, polyrhythmic halos,
      * floating particles, and graceful exit
      */

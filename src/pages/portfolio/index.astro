@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import StructuredData from '../../components/StructuredData.astro';
 
 // Fetch all portfolio entries, sorted by order
 const portfolios = (await getCollection('portfolio')).sort((a, b) => a.data.order - b.data.order);
@@ -26,9 +27,36 @@ const disciplineLabels: Record<string, string> = {
 
 <BaseLayout
   title="Case Studies"
-  description="A curated collection of design, content strategy, and AI projects from enterprise clients, startups, and nonprofits."
+  description="Tom di Mino's portfolio: Dolby Labs CMS migration (12 templates, 4+ years in use), American College of Surgeons (40% member increase), and CZI napari learning platform (15 modules for 300+ plugins). Content strategy, UX design, and AI engineering."
   image="/images/og/og-portfolio-1.png"
 >
+  <StructuredData schemas={[
+    {
+      type: "ItemList",
+      data: {
+        "@id": "https://www.minoanmystery.org/portfolio/#itemlist",
+        name: "Tom di Mino's Case Studies",
+        description: "A curated collection of design, content strategy, and AI projects from enterprise clients, startups, and nonprofits.",
+        numberOfItems: portfolios.length,
+        itemListElement: portfolios.map((entry, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: `https://www.minoanmystery.org/portfolio/${entry.slug}`,
+          name: entry.data.title,
+          description: entry.data.summary
+        }))
+      }
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Portfolio" }
+        ]
+      }
+    }
+  ]} />
   <Header slot="header" />
 
   <!-- Hero Section -->

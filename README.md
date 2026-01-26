@@ -100,6 +100,13 @@ src/
   - Divine feminine background (Asherah image) triggered by goddess vocabulary
   - Archive search indicator during RAG retrieval
 
+## SEO & Structured Data
+
+- **JSON-LD Schemas**: Person, WebSite, ItemList, FAQPage, CreativeWork, ContactPage, BreadcrumbList
+- **Entity Linking**: Consistent `@id` values across pages for knowledge graph connectivity
+- **AI Search Optimization**: robots.txt with AI crawler directives, llms.txt summary
+- **Content Freshness**: dateModified on portfolio pages
+
 ## Brand Colors
 
 | Token                  | Light   | Dark    |

@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import StructuredData from '../../components/StructuredData.astro';
 
 export async function getStaticPaths() {
   const portfolioEntries = await getCollection('portfolio');
@@ -23,6 +24,44 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
   description={entry.data.summary}
   image={heroImage}
 >
+  <StructuredData schemas={[
+    {
+      type: "CreativeWork",
+      data: {
+        "@id": `https://www.minoanmystery.org/portfolio/${entry.slug}#creativework`,
+        name: title,
+        description: entry.data.summary,
+        image: `https://www.minoanmystery.org${heroImage}`,
+        url: `https://www.minoanmystery.org/portfolio/${entry.slug}`,
+        datePublished: entry.data.datePublished || "2024-01-01",
+        dateModified: new Date().toISOString().split('T')[0],
+        author: {
+          "@type": "Person",
+          "@id": "https://www.minoanmystery.org/#person",
+          name: "Tom di Mino",
+          url: "https://www.minoanmystery.org"
+        },
+        provider: {
+          "@type": "Organization",
+          name: client
+        },
+        about: {
+          "@type": "Thing",
+          name: entry.data.category || "Case Study"
+        }
+      }
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Portfolio", item: "https://www.minoanmystery.org/portfolio/" },
+          { "@type": "ListItem", position: 3, name: title }
+        ]
+      }
+    }
+  ]} />
   <Header slot="header" />
 
   <!-- Hero Section: Title and Summary -->

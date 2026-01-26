@@ -41,6 +41,7 @@ src/
     │   ├── cognitiveSteps/ # externalDialog, poeticComposition, etc.
     │   ├── mentalProcesses/# greeting, curious, engaged, ready, returning
     │   ├── perception/     # SoulOrchestrator, memoryIntegrate
+    │   ├── providers/      # LLM providers (OpenRouter, Groq, Baseten)
     │   └── subprocesses/   # modelsTheVisitor, embodiesTheVision, embodiesTheTarot
     └── retrieval/  # RAG pipeline (kotharRag, VoyageAI embeddings)
 ```
@@ -108,6 +109,19 @@ The dossiers are processed through:
 - **Responsive**: Fluid typography with `clamp()`, mobile-first
 - **Soul Engine**: Visitor modeling with Open Souls paradigm
 - **Labyrinth**: `/labyrinth` chat interface with Kothar (Oracle persona)
+
+## SEO & Structured Data
+
+**JSON-LD Schemas** (via `StructuredData.astro`): Person, WebSite, ItemList, FAQPage, CreativeWork, ContactPage, BreadcrumbList
+
+**Entity Linking**: Consistent `@id` values create knowledge graph connections:
+- Person: `https://www.minoanmystery.org/#person`
+- Organization: `https://aldea.ai/#organization`
+- WebSite: `https://www.minoanmystery.org/#website`
+
+**Page-Specific Head Content**: Use `<Fragment slot="head">` in pages to inject content into BaseLayout's `<slot name="head" />`. Currently used by labyrinth.astro for API preconnects.
+
+**AI Search**: robots.txt with AI crawler directives, llms.txt summary, dateModified on portfolio pages
 
 ## Detailed Guides
 

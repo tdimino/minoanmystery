@@ -2,13 +2,45 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StructuredData from '../components/StructuredData.astro';
 ---
 
 <BaseLayout
   title="Let's chat online or IRL!"
-  description="The human language system remains the most potent magic known to us. At Minoan Mystery, I dig to the root of what you do, and make it more powerful with words."
+  description="Contact Tom di Mino for AI/ML consulting, content engineering, tech writing, or AI product MVP development. Available via email (contact@tomdimino.com), Calendly, or LinkedIn."
   image="/images/og/og-contact-1.png"
 >
+  <StructuredData schemas={[
+    {
+      type: "ContactPage",
+      data: {
+        "@id": "https://www.minoanmystery.org/contact#contactpage",
+        name: "Contact Tom di Mino",
+        description: "Get in touch for AI/ML consulting, cognitive design projects, or scholarly discourse on Bronze Age Aegean-Semitic connections.",
+        url: "https://www.minoanmystery.org/contact",
+        mainEntity: {
+          "@type": "Person",
+          "@id": "https://www.minoanmystery.org/#person",
+          name: "Tom di Mino",
+          email: "contact@tomdimino.com",
+          url: "https://www.minoanmystery.org",
+          sameAs: [
+            "https://www.linkedin.com/in/tomdimino/",
+            "https://calendly.com/tomdimino/"
+          ]
+        }
+      }
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Contact" }
+        ]
+      }
+    }
+  ]} />
   <Header slot="header" />
 
   <!-- Contact Section - Two Column Layout -->

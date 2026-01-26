@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Block API and internal paths
+Disallow: /api/
+Disallow: /_astro/
+
+# AI Crawlers - Allow all content
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Claude-Web
+User-agent: Anthropic-AI
+User-agent: PerplexityBot
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.minoanmystery.org/sitemap-index.xml

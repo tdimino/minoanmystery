@@ -1,0 +1,34 @@
+---
+/**
+ * StructuredData.astro
+ * Reusable component for injecting JSON-LD structured data
+ * Supports multiple schema types for SEO and AI search optimization
+ */
+
+interface Props {
+  schemas: Array<{
+    type: string;
+    data: Record<string, unknown>;
+  }>;
+}
+
+const { schemas } = Astro.props;
+
+// Build array of schema objects with @context
+const schemaObjects = schemas.map(({ type, data }) => ({
+  "@context": "https://schema.org",
+  "@type": type,
+  ...data
+}));
+
+// If single schema, output directly; if multiple, use @graph
+const output = schemaObjects.length === 1
+  ? schemaObjects[0]
+  : { "@context": "https://schema.org", "@graph": schemaObjects.map(s => {
+      const { "@context": _, ...rest } = s;
+      return rest;
+    })
+  };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(output, null, 0)} />

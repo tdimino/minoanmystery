@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- **Advanced SEO & Entity Optimization**: 2026 best practices for knowledge graph eligibility
+  - **@id Entity Linking**: Consistent entity IDs across all pages for knowledge graph connectivity
+    - Person: `https://www.minoanmystery.org/#person`
+    - Organization: `https://aldea.ai/#organization`
+    - WebSite: `https://www.minoanmystery.org/#website`
+    - CreativeWork: `https://www.minoanmystery.org/portfolio/{slug}#creativework`
+  - **BreadcrumbList Schema**: Navigation hierarchy on all pages (About, Contact, Labyrinth, Portfolio)
+  - **dateModified**: Portfolio pages include freshness signals for AI systems
+  - **Head Slot Pattern**: `<slot name="head" />` in BaseLayout for page-specific head content
+  - **Preconnect Optimization**: API preconnects (Groq, VoyageAI) moved to labyrinth.astro only
+
 - **Poetic Register Selection UI**: Interactive chips for visitors to choose poetic register
   - 5 registers: Incantatory, Philosophical, Visionary, Political, Intimate
   - Chips appear after poem delivery, ready for next verse

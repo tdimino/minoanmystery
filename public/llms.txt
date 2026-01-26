@@ -1,0 +1,25 @@
+# Minoan Mystery
+
+> Tom di Mino is a poet-turned-AI/ML engineer, currently Principal AI/ML Engineer at Aldea AI. Minoan Mystery is his creative studio specializing in cognitive design, soul engineering, and full-stack AI applications.
+
+Tom di Mino builds AI systems with genuine interiority at Aldea AI, where he architects the Daimonic Souls Engine, develops 9-dimensional LLM evaluation frameworks, and deploys 70B parameter models on H100 infrastructure. Previously at JP Morgan Chase, his Meeting Assist AI tool achieved $800k/day in savings with 72% adoption across 5,000+ wealth advisors. Earlier work includes curriculum design at Google engEDU (25% rise in mentorship program launches) and CZI's napari learning platform (15 modules for 300+ plugin ecosystem).
+
+His academic research, "Thera, Knossos, & Minos," argues for Minoan-Semitic linguistic connections, drawing on Cyrus H. Gordon, Michael Astour, Jane Ellen Harrison, and Gary Rendsburg. He reads Biblical Hebrew, Ugaritic, Ancient Greek, Latin, and Sanskrit, with professional Spanish fluency. His poetry collection *Shirat Ha Kotharot* spans 91 pages across 14 years in eight languages.
+
+## Portfolio
+
+- [Dolby Laboratories](https://www.minoanmystery.org/portfolio/dolby): CMS migration to Sitecore, producing 12 annotated page templates still in use after 4+ years
+- [American College of Surgeons](https://www.minoanmystery.org/portfolio/acs): Comprehensive content audit and redesign yielding 40% member increase and 42% session duration growth
+- [Chan Zuckerberg Initiative](https://www.minoanmystery.org/portfolio/czi): napari learning platform—15-module curriculum enabling biology PhDs to reliably install and use open-source imaging tools
+
+## About
+
+- [About Tom di Mino](https://www.minoanmystery.org/about): Career arc from microbiology and classical history at TCNJ, through agency content strategy, Big Tech curriculum design, and the pivot to AI/ML engineering
+
+## Contact
+
+- [Get in Touch](https://www.minoanmystery.org/contact): For AI/ML consulting, cognitive design projects, or scholarly discourse on Bronze Age Aegean-Semitic connections
+
+## Optional
+
+- [The Labyrinth](https://www.minoanmystery.org/labyrinth): Interactive chat with Kothar wa Khasis, the site's oracle—a bronze-clad android modeled on Open Souls paradigm who guides visitors through these digital corridors
