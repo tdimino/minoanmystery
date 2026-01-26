@@ -24,7 +24,20 @@ export function loadMinoanReferenceImages(): string[] {
       'src/lib/soul/opensouls/reference'
     );
 
-    const files = ['minoan_tarot_01.jpg', 'minoan_tarot_05.jpg'];
+    // 8 reference images for robust visual memory (matching Gemini Resonance)
+    // - minoan_tarot: Original Minoan tarot cards
+    // - frame_*: Minoan fresco-style frames and borders
+    // - zoom_*: Detail shots of Minoan color palettes and textures
+    const files = [
+      'minoan_tarot_01.jpg',
+      'minoan_tarot_05.jpg',
+      'frame_1.jpg',
+      'frame_2.jpg',
+      'frame_3.jpg',
+      'frame_4.jpg',
+      'zoom_1.jpg',
+      'zoom_2.jpg',
+    ];
 
     for (const file of files) {
       const filePath = path.join(referenceDir, file);

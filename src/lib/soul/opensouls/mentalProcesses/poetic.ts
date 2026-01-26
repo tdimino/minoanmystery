@@ -12,6 +12,7 @@
  */
 
 import type { ProcessContext, ProcessReturn } from './types';
+import type { MentalProcessMeta } from '../core/meta';
 import {
   externalDialog,
   decision,
@@ -25,6 +26,16 @@ import { useProcessMemory } from '../hooks';
 import { poeticReflection } from '../subprocesses/poeticReflection';
 import fs from 'node:fs';
 import path from 'node:path';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: MentalProcessMeta = {
+  name: 'poetic',
+  description: 'Multi-stage poetry composition channeling Tom di Mino\'s voice',
+  transitions: ['curious', 'engaged', 'academic', 'dormant'] as const,
+  entryConditions: ['poetic mode trigger', 'poem request detected'],
+} as const;
 
 // ─────────────────────────────────────────────────────────────
 // Trigger Patterns

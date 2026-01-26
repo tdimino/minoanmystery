@@ -110,7 +110,11 @@ export type { OrchestratorConfig, MemoryIntegratorConfig } from './perception';
 
 // LLM Provider setup
 import { setLLMProvider, getLLMProvider, registerProvider, stripModelPrefix } from './core/CognitiveStep';
-import { OpenRouterProvider, GroqProvider, BasetenProvider } from './providers';
+import {
+  createOpenRouterProvider,
+  createGroqProvider,
+  createBasetenProvider,
+} from './providers';
 import { registerActionHandlers } from './hooks';
 import { WorkingMemory, ChatMessageRoleEnum } from './core';
 import { PERSONA_MODEL, THINKING_MODEL, getModelForRole, getProviderFromModel } from './core';
@@ -148,16 +152,16 @@ export async function initializeOpenSouls(options: {
     onScheduleEvent?: (event: ScheduledEvent) => void;
   };
 }): Promise<OpenSoulsEngine> {
-  // Initialize default OpenRouter provider
-  const openRouterProvider = new OpenRouterProvider({
+  // Initialize default OpenRouter provider (using factory function)
+  const openRouterProvider = createOpenRouterProvider({
     apiKey: options.apiKey,
     defaultModel: options.config?.model ?? 'google/gemini-3-flash-preview',
   });
   setLLMProvider(openRouterProvider);
 
-  // Register Groq provider if API key provided
+  // Register Groq provider if API key provided (using factory function)
   if (options.groqApiKey) {
-    const groqProvider = new GroqProvider({
+    const groqProvider = createGroqProvider({
       apiKey: options.groqApiKey,
       defaultModel: 'moonshotai/kimi-k2-instruct',
     });
@@ -165,9 +169,9 @@ export async function initializeOpenSouls(options: {
     console.log('[OpenSouls] Groq provider registered (Kimi K2, Qwen3, Llama available)');
   }
 
-  // Register Baseten provider if API key provided
+  // Register Baseten provider if API key provided (using factory function)
   if (options.basetenApiKey) {
-    const basetenProvider = new BasetenProvider({
+    const basetenProvider = createBasetenProvider({
       apiKey: options.basetenApiKey,
       defaultModel: 'moonshotai/kimi-k2',
     });

@@ -72,3 +72,12 @@ export const internalDialog = createCognitiveStep<
 });
 
 export default internalDialog;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'internalDialog',
+  description: 'Persona-aware internal reasoning',
+  tags: ['reasoning', 'internal', 'persona'] as const,
+  internal: true,
+  provider: 'llm' as const,
+} as const;

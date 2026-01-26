@@ -20,6 +20,10 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Generated/temporary files
+screenshots/
+generated/
+
 # jetbrains setting folder
 .idea/
 .osgrep

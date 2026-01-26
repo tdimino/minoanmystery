@@ -7,6 +7,17 @@
  */
 
 import type { ProcessContext, ProcessReturn } from './types';
+import type { MentalProcessMeta } from '../core/meta';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: MentalProcessMeta = {
+  name: 'returning',
+  description: 'Personalized welcome for recognized returning visitors',
+  transitions: ['curious', 'engaged'] as const,
+  entryConditions: ['visitCount > 1', 'returning visitor detected'],
+} as const;
 import { externalDialog, internalMonologue, mentalQuery, decision, brainstorm } from '../cognitiveSteps';
 import { indentNicely } from '../core/utils';
 import { ChatMessageRoleEnum } from '../core/types';

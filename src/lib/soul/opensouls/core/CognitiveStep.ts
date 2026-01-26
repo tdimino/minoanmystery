@@ -203,14 +203,28 @@ export function createCognitiveStep<UserArgType, PostProcessReturnType = string>
         }
       })();
 
-      // Create finished memory (updated after stream completes)
-      const finishedMemory = memory.withMemory({
+      // Create finished memory with pending promise (Open Souls streaming pattern)
+      // The finished promise resolves when streaming completes, allowing:
+      // `await memory.finished` after `actions.speak(stream)`
+      const finishedMemory = memory.withPendingFinished().withMemory({
         role: ChatMessageRoleEnum.Assistant,
         content: '', // Will be filled by consumer
         name: memory.soulName,
       });
 
-      return [finishedMemory, outputStream, postProcessPromise];
+      // Wrap the output stream to resolve finished when done
+      const wrappedStream = (async function* () {
+        try {
+          for await (const chunk of outputStream) {
+            yield chunk;
+          }
+        } finally {
+          // Resolve the finished promise after stream completes
+          finishedMemory.resolveFinished();
+        }
+      })();
+
+      return [finishedMemory, wrappedStream, postProcessPromise];
     } else {
       // Non-streaming mode
       const logger = getSoulLogger();

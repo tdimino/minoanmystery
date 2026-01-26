@@ -53,3 +53,11 @@ export const brainstorm = createCognitiveStep<BrainstormOptions, string[]>(
 );
 
 export default brainstorm;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'brainstorm',
+  description: 'Idea generation and exploration',
+  tags: ['ideation', 'creative', 'list'] as const,
+  provider: 'llm' as const,
+} as const;

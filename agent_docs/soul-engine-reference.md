@@ -84,6 +84,12 @@ State machine for soul behavior. Each process returns `ProcessReturn`.
 | `engaged` | Deep scroll, time on page | Discuss content in depth |
 | `ready` | Contact-bound signals | Guide toward contact |
 | `returning` | `visitCount > 1` | Personalized welcome back |
+| `dormant` | 45s+ idle | Subconsciousness, ambient presence |
+| `exiting` | 5min+ idle | Farewell, session close |
+| `academic` | Scholarly intent detected | Gordon/Harrison/Astour personas |
+| `poetic` | Poetry request | Tamarru daimon (registers, constraints) |
+
+State transitions are defined in `mentalProcesses/transitions.ts`.
 
 ### Process Signature
 
@@ -124,6 +130,33 @@ await modelsTheVisitor(context, {
 **Updates**:
 - `soulMemory.visitorModel` - Bullet-point notes
 - `soulMemory.visitorWhispers` - Daimonic sense of visitor
+
+## Streaming Pattern (`memory.finished`)
+
+Cognitive steps support streaming via the `memory.finished` promise:
+
+```typescript
+// In mental process
+const [mem, stream] = await externalDialog(
+  memory,
+  instructions,
+  { stream: true }
+);
+
+actions.speak(stream);    // Send AsyncIterable to client
+await mem.finished;       // Wait for stream completion
+
+// Now safe to run subprocess with updated memory
+await modelsTheVisitor({ ...context, workingMemory: mem });
+```
+
+**Implementation** (in CognitiveStep.ts):
+1. `withPendingFinished()` creates memory with pending promise
+2. Stream generator yields chunks
+3. `finally` block calls `resolveFinished()`
+4. Consumer awaits `memory.finished`
+
+This pattern ensures subprocesses only run after the streaming response completes.
 
 ## Dependency Injection Pattern
 

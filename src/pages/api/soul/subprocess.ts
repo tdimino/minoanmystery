@@ -243,7 +243,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       getVisitorWhispers: originalGetVisitorWhispers,
       setVisitorWhispers: originalSetVisitorWhispers,
       getUserName: originalGetUserName,
+      getUserTitle: () => undefined,
       addTopic: originalAddTopic,
+      // Turn counting (not used by modelsTheVisitor, but required by interface)
+      getUserTurnCount: () => 0,
+      incrementUserTurnCount: () => 1,
+      // Tarot state (not used by modelsTheVisitor, but required by interface)
+      getTarotCount: () => 0,
+      setTarotCount: () => {},
+      getLastTarotTurn: () => 0,
+      setLastTarotTurn: () => {},
     };
 
     // Run the subprocess with injected memory

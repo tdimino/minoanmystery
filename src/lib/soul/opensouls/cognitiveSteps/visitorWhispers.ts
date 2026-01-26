@@ -70,3 +70,12 @@ export const visitorWhispers = createCognitiveStep<WhispersContext | undefined>(
 );
 
 export default visitorWhispers;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'visitorWhispers',
+  description: 'Generate daimonic whispers sensing visitor inner voice',
+  tags: ['visitor', 'daimonic', 'intuition'] as const,
+  internal: true,
+  provider: 'llm' as const,
+} as const;

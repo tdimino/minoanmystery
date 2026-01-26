@@ -105,3 +105,11 @@ export const visionPrompt = createCognitiveStep<VisionContext | undefined>(
 );
 
 export default visionPrompt;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'visionPrompt',
+  description: 'Generate image prompts for Gemini visualization',
+  tags: ['image', 'prompt', 'vision', 'minoan'] as const,
+  provider: 'llm' as const,
+} as const;

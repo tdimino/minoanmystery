@@ -211,3 +211,11 @@ export const poeticComposition = createCognitiveStep<PoeticCompositionOptions, s
 );
 
 export default poeticComposition;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'poeticComposition',
+  description: 'Compose poetry in Tom di Mino voice',
+  tags: ['creative', 'poetry', 'composition'] as const,
+  provider: 'llm' as const,
+} as const;

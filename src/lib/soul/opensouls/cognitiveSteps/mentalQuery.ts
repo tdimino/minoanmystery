@@ -42,3 +42,11 @@ export const mentalQuery = createCognitiveStep<string, boolean>((query) => ({
 }));
 
 export default mentalQuery;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'mentalQuery',
+  description: 'Boolean evaluation of yes/no questions',
+  tags: ['query', 'boolean', 'evaluation'] as const,
+  provider: 'llm' as const,
+} as const;

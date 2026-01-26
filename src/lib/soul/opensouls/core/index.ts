@@ -77,3 +77,13 @@ export {
   type StateTransitionLog,
   type LogLevel,
 } from './SoulLogger';
+
+// Meta types for manifest generation
+export {
+  defineCognitiveStepMeta,
+  defineMentalProcessMeta,
+  defineSubprocessMeta,
+  type CognitiveStepMeta,
+  type MentalProcessMeta,
+  type SubprocessMeta,
+} from './meta';

@@ -55,3 +55,11 @@ export const decision = createCognitiveStep<DecisionOptions, string>(
 );
 
 export default decision;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'decision',
+  description: 'Choice-making from a set of options',
+  tags: ['decision', 'routing', 'choice'] as const,
+  provider: 'llm' as const,
+} as const;

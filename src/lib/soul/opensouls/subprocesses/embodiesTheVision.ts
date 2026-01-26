@@ -19,6 +19,16 @@
  */
 
 import type { ProcessContext, ProcessReturn } from '../mentalProcesses/types';
+import type { SubprocessMeta } from '../core/meta';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: SubprocessMeta = {
+  name: 'embodiesTheVision',
+  description: 'Generates contextual images for vision-worthy conversation moments',
+  gates: ['minInteractionsBeforeVision', 'cooldown', 'sessionLimit', 'visionTriggered'],
+} as const;
 import type { WorkingMemory } from '../core/WorkingMemory';
 import { getSoulLogger } from '../core/SoulLogger';
 import { localLogger } from '../../localLogger';

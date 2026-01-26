@@ -36,3 +36,12 @@ export const externalDialog = createCognitiveStep<string>((instructions) => ({
 }));
 
 export default externalDialog;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'externalDialog',
+  description: 'User-facing response generation with streaming support',
+  tags: ['dialog', 'streaming', 'user-facing'] as const,
+  stream: true,
+  provider: 'llm' as const,
+} as const;

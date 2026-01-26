@@ -8,6 +8,17 @@
  */
 
 import type { ProcessContext, ProcessReturn } from './types';
+import type { MentalProcessMeta } from '../core/meta';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: MentalProcessMeta = {
+  name: 'exiting',
+  description: 'Exit intent handling with graceful farewell and conversation summary',
+  transitions: ['dormant'] as const,
+  entryConditions: ['exit intent detected', 'very long idle (5min+)'],
+} as const;
 import { externalDialog, internalMonologue, mentalQuery, decision, brainstorm } from '../cognitiveSteps';
 import { indentNicely } from '../core/utils';
 import { ChatMessageRoleEnum } from '../core/types';

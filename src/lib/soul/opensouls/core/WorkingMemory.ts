@@ -20,11 +20,52 @@ export class WorkingMemory {
   private readonly _regionalOrder: readonly string[];
   private readonly _regionConfigs: ReadonlyMap<string, MemoryRegionConfig>;
 
+  /**
+   * Promise that resolves when streaming completes (Open Souls pattern).
+   * Set by cognitive steps when returning streaming responses.
+   * Usage: `await memory.finished` after `actions.speak(stream)`
+   */
+  readonly finished: Promise<void>;
+  private _resolveFinished?: () => void;
+
   constructor(config: WorkingMemoryConfig) {
     this.soulName = config.soulName;
     this._memories = Object.freeze(config.memories ?? []);
     this._regionalOrder = Object.freeze(config.regionalOrder ?? ['core', 'summary', 'default']);
     this._regionConfigs = new Map();
+    // Initialize finished promise (resolves immediately if no streaming)
+    this.finished = new Promise<void>((resolve) => {
+      this._resolveFinished = resolve;
+      // Auto-resolve for non-streaming cases
+      resolve();
+    });
+  }
+
+  /**
+   * Create a new WorkingMemory with a pending finished promise.
+   * Used by cognitive steps to return memory that resolves after streaming.
+   */
+  withPendingFinished(): WorkingMemory {
+    const wm = WorkingMemory.create(
+      this.soulName,
+      this._memories,
+      this._regionalOrder,
+      this._regionConfigs
+    );
+    // Create a new pending promise
+    let resolve: () => void;
+    (wm as any).finished = new Promise<void>((r) => { resolve = r; });
+    (wm as any)._resolveFinished = resolve!;
+    return wm;
+  }
+
+  /**
+   * Resolve the finished promise (called when streaming completes)
+   */
+  resolveFinished(): void {
+    if (this._resolveFinished) {
+      this._resolveFinished();
+    }
   }
 
   // Private constructor for immutable operations

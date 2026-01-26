@@ -39,3 +39,12 @@ export const internalMonologue = createCognitiveStep<string>((instructions) => (
 }));
 
 export default internalMonologue;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'internalMonologue',
+  description: 'Internal reasoning not shown to user',
+  tags: ['reasoning', 'internal', 'planning'] as const,
+  internal: true,
+  provider: 'llm' as const,
+} as const;

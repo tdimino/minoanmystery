@@ -66,3 +66,12 @@ export const visitorNotes = createCognitiveStep<VisitorNotesOptions | string | u
 );
 
 export default visitorNotes;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'visitorNotes',
+  description: 'Update visitor understanding and notes',
+  tags: ['visitor', 'modeling', 'memory'] as const,
+  internal: true,
+  provider: 'llm' as const,
+} as const;

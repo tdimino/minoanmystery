@@ -12,6 +12,7 @@
  */
 
 import type { ProcessContext, ProcessReturn } from './types';
+import type { MentalProcessMeta } from '../core/meta';
 import { externalDialog, decision, internalDialog, internalMonologue } from '../cognitiveSteps';
 import { indentNicely } from '../core/utils';
 import { ChatMessageRoleEnum } from '../core/types';
@@ -19,6 +20,16 @@ import { useProcessMemory } from '../hooks';
 import { scholarsReflection } from '../subprocesses/scholarsReflection';
 import fs from 'node:fs';
 import path from 'node:path';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: MentalProcessMeta = {
+  name: 'academic',
+  description: 'Polymorphic scholarly mode channeling Gordon, Harrison, or Astour',
+  transitions: ['curious', 'engaged', 'poetic', 'dormant'] as const,
+  entryConditions: ['scholarly mode trigger', 'academic query detected'],
+} as const;
 
 // ─────────────────────────────────────────────────────────────
 // Scholar Persona Constants

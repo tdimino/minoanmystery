@@ -34,6 +34,20 @@ export type { ProcessContext, ProcessReturn, HydratedUserModel, SoulActions, Per
 // Re-export runner
 export { ProcessRunner } from './runner';
 
+// Re-export transitions
+export {
+  transitions,
+  canTransition,
+  getTransitions,
+  validateTransition,
+  transitionTo,
+  entryConditions,
+  checkEntryCondition,
+  findBestTransition,
+  createTransitionEvent,
+  type TransitionEvent,
+} from './transitions';
+
 /**
  * Process registry mapping state names to process functions
  */
@@ -99,6 +113,13 @@ export function getInitialState(userModel: HydratedUserModel): SoulState {
 
 /**
  * State transition map for reference
+ *
+ * @deprecated Use `transitions` from './transitions' instead.
+ * This export is kept for backwards compatibility.
+ * The new transitions module provides type-safe helpers:
+ * - canTransition(from, to) - validate transitions
+ * - getTransitions(from) - get valid targets
+ * - transitionTo(memory, from, to, params) - safe transition helper
  *
  * greeting ──(returning visitor)──▶ returning
  *    │

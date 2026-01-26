@@ -29,6 +29,7 @@ import {
 import {
   embodiesTheTarot,
   type TarotResult,
+  type TarotCardResult,
   type TarotProcessContext,
 } from '../../../lib/soul/opensouls/subprocesses/embodiesTheTarot';
 import {
@@ -73,6 +74,7 @@ function createServerSideMemoryAdapter(initialTurnCount: number = 0): SoulMemory
     getVisitorWhispers: () => visitorWhispers,
     setVisitorWhispers: (whispers: string) => { visitorWhispers = whispers; },
     getUserName: () => undefined,
+    getUserTitle: () => undefined,
     addTopic: () => {},
     // Turn counting - source of truth for subprocess turn checks
     getUserTurnCount: () => userTurnCount,
@@ -684,24 +686,57 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 turnInterval: 10,  // Generate tarot every 10 turns
                 displayDuration: 30000,
                 maxTarotsPerSession: 3,
-                onTarotGenerated: (result: TarotResult) => {
-                  // [Tarot Debug] Pre-SSE emission logging
-                  console.log(`[Tarot] Callback fired: success=${result.success}, hasDataUrl=${!!result.imageDataUrl}, dataUrlLength=${result.imageDataUrl?.length ?? 0}, cardName=${result.cardName}, error=${result.error ?? 'none'}`);
+                onPlaceholder: (info: { message: string; cardCount: number; spreadType: string }) => {
+                  // Emit placeholder event with card count immediately when gates pass
+                  try {
+                    controller.enqueue(encoder.encode(`event: tarot-placeholder\ndata: ${JSON.stringify({
+                      message: info.message,
+                      cardCount: info.cardCount,
+                      spreadType: info.spreadType,
+                    })}\n\n`));
+                    console.log(`[Tarot] Placeholder emitted via SSE: ${info.cardCount} cards (${info.spreadType})`);
+                  } catch (e) {
+                    console.log('[Tarot] Could not emit placeholder (stream closed):', e);
+                  }
+                },
+                onCardGenerated: (card: TarotCardResult, index: number, total: number) => {
+                  // Emit each card individually as it completes
+                  console.log(`[Tarot] Card ${index + 1}/${total} callback: success=${card.success}, hasDataUrl=${!!card.imageDataUrl}, cardName=${card.cardName}, error=${card.error ?? 'none'}`);
 
-                  if (result.success && result.imageDataUrl) {
+                  if (card.success && card.imageDataUrl) {
                     try {
-                      controller.enqueue(encoder.encode(`event: tarot\ndata: ${JSON.stringify({
-                        dataUrl: result.imageDataUrl,
-                        prompt: result.prompt,
-                        cardName: result.cardName,
-                        cardNumber: result.cardNumber,
-                        displayMode: 'background',
-                        duration: result.duration,
+                      controller.enqueue(encoder.encode(`event: tarot-card\ndata: ${JSON.stringify({
+                        dataUrl: card.imageDataUrl,
+                        prompt: card.prompt,
+                        cardName: card.cardName,
+                        cardNumber: card.cardNumber,
+                        position: card.position,
+                        index,
+                        total,
+                        displayMode: 'inline',
                       })}\n\n`));
-                      console.log(`[Tarot] Card emitted via SSE: ${result.cardNumber} - ${result.cardName}`);
+                      console.log(`[Tarot] Card emitted via SSE: ${card.cardNumber} - ${card.cardName} (${index + 1}/${total})`);
                     } catch (e) {
-                      console.log('[Tarot] Could not emit tarot (stream closed):', e);
+                      console.log('[Tarot] Could not emit card (stream closed):', e);
                     }
+                  }
+                },
+                onTarotGenerated: (result: TarotResult) => {
+                  // Emit final tarot-complete event with oracle message
+                  console.log(`[Tarot] Complete callback: success=${result.success}, cardCount=${result.cardCount}, spreadType=${result.spreadType}, error=${result.error ?? 'none'}`);
+
+                  try {
+                    controller.enqueue(encoder.encode(`event: tarot-complete\ndata: ${JSON.stringify({
+                      success: result.success,
+                      cardCount: result.cardCount,
+                      spreadType: result.spreadType,
+                      oracleMessage: result.oracleMessage,
+                      error: result.error,
+                      duration: result.duration,
+                    })}\n\n`));
+                    console.log(`[Tarot] Complete emitted via SSE: ${result.spreadType} spread`);
+                  } catch (e) {
+                    console.log('[Tarot] Could not emit complete (stream closed):', e);
                   }
                 },
               }).catch((err) => {

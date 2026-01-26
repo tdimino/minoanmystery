@@ -204,3 +204,11 @@ Provide detailed analysis in the caption. Respond with only the JSON object:`;
 }
 
 export default imageCaption;
+
+/** Step metadata for manifest generation */
+export const meta = {
+  name: 'imageCaption',
+  description: 'Analyze images using Gemini Vision',
+  tags: ['image', 'analysis', 'vision', 'multimodal'] as const,
+  provider: 'vision' as const,
+} as const;

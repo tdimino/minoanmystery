@@ -16,6 +16,16 @@
  */
 
 import type { ProcessContext, ProcessReturn } from '../mentalProcesses/types';
+import type { SubprocessMeta } from '../core/meta';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: SubprocessMeta = {
+  name: 'poeticReflection',
+  description: 'Reflects on poetic trajectory to inform future compositions',
+  gates: ['minPoemsBeforeReflection', 'reflectionValue'],
+} as const;
 import { ChatMessageRoleEnum } from '../core/types';
 import { indentNicely } from '../core/utils';
 import { getSoulMemory, type SoulMemoryInterface } from '../../memory';

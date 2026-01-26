@@ -19,6 +19,17 @@
  */
 
 import type { ProcessContext, ProcessReturn } from '../mentalProcesses/types';
+import type { SubprocessMeta } from '../core/meta';
+
+/**
+ * Metadata for manifest generation
+ */
+export const meta: SubprocessMeta = {
+  name: 'embodiesTheTarot',
+  description: 'Generates Minoan tarot cards at turn intervals',
+  serverOnly: true,
+  gates: ['turnInterval', 'sessionLimit', 'providerAvailability'],
+} as const;
 import type { WorkingMemory } from '../core/WorkingMemory';
 import type { SoulMemoryInterface } from '../../memory';
 import { getSoulLogger } from '../core/SoulLogger';
@@ -50,16 +61,32 @@ export interface EmbodiesTheTarotConfig {
   displayDuration?: number;
   /** Maximum tarots per session (default: 3) */
   maxTarotsPerSession?: number;
-  /** Callback when tarot is generated */
+  /** Callback when gates pass and generation is starting (for placeholder) */
+  onPlaceholder?: (info: { message: string; cardCount: number; spreadType: string }) => void;
+  /** Callback when a single tarot card is generated (called for each card) */
+  onCardGenerated?: (result: TarotCardResult, index: number, total: number) => void;
+  /** Callback when all tarot cards are generated */
   onTarotGenerated?: (result: TarotResult) => void;
 }
 
-export interface TarotResult {
+/** Result for a single generated card */
+export interface TarotCardResult {
   success: boolean;
   imageDataUrl?: string;
-  cardName?: string;
-  cardNumber?: string;
-  prompt?: string;
+  cardName: string;
+  cardNumber: string;
+  position?: string;
+  prompt: string;
+  error?: string;
+}
+
+/** Result for the complete tarot reading */
+export interface TarotResult {
+  success: boolean;
+  cardCount: number;
+  spreadType: string;
+  cards: TarotCardResult[];
+  oracleMessage?: string;
   error?: string;
   duration: number;
 }
@@ -185,6 +212,9 @@ export async function embodiesTheTarot(
     if (cfg.onTarotGenerated) {
       cfg.onTarotGenerated({
         success: false,
+        cardCount: 0,
+        spreadType: 'error',
+        cards: [],
         error: 'Tarot provider not configured',
         duration: cfg.displayDuration!,
       });
@@ -197,29 +227,53 @@ export async function embodiesTheTarot(
   // Update turn tracking before generation (prevents re-triggering)
   soulMemory.setLastTarotTurn(userMessageCount);
 
-  // Generate tarot prompt using LLM
+  // Generate tarot prompt using LLM to decide card count and selection
   log('[Tarot] Generating tarot prompt...');
   const conversationSummary = extractConversationSummary(workingMemory);
+
+  // Get visitor whispers for daimonic context (visitorModel omitted for now)
+  const visitorWhispers = soulMemory.getVisitorWhispers();
+
+  if (visitorWhispers) {
+    log('[Tarot] Including visitor whispers in tarot prompt');
+  }
 
   let tarotResult: TarotPromptResult;
   try {
     const [, result] = await tarotPrompt(workingMemory, {
       conversationSummary,
       turnNumber: userMessageCount,
+      whispers: visitorWhispers || undefined,
     });
     tarotResult = result;
-    log(`[Tarot] Selected: ${tarotResult.cardNumber} - ${tarotResult.cardName}`);
+    const cardSummary = tarotResult.cards.map(c => `${c.cardNumber} - ${c.cardName}`).join(', ');
+    log(`[Tarot] Selected ${tarotResult.cardCount} cards (${tarotResult.spreadType}): ${cardSummary}`);
   } catch (promptError) {
     const errorMessage = promptError instanceof Error ? promptError.message : String(promptError);
     log('[Tarot] Prompt generation failed:', errorMessage);
     if (cfg.onTarotGenerated) {
       cfg.onTarotGenerated({
         success: false,
+        cardCount: 0,
+        spreadType: 'error',
+        cards: [],
         error: 'Failed to generate tarot prompt',
         duration: cfg.displayDuration!,
       });
     }
     return workingMemory;
+  }
+
+  // Emit placeholder event with card count (before image generation starts)
+  if (cfg.onPlaceholder) {
+    cfg.onPlaceholder({
+      message: tarotResult.cardCount === 1
+        ? 'A card is forming...'
+        : `${tarotResult.cardCount} cards are forming...`,
+      cardCount: tarotResult.cardCount,
+      spreadType: tarotResult.spreadType,
+    });
+    log(`[Tarot] Placeholder emitted for ${tarotResult.cardCount} cards`);
   }
 
   // Load reference images for visual style matching
@@ -232,60 +286,83 @@ export async function embodiesTheTarot(
     log('[Tarot] Could not load reference images, proceeding without visual memory');
   }
 
-  // Call Gemini to generate image with reference images
-  log('[Tarot] Generating image with Gemini...');
-  log('[Tarot] Prompt:', tarotResult.prompt.slice(0, 150) + '...');
+  // Generate images for each card in the spread
+  const cardResults: TarotCardResult[] = [];
+  let overallSuccess = true;
 
-  let imageResult: GeminiImageResult;
-  try {
-    imageResult = await geminiProvider.generate({
-      prompt: tarotResult.prompt,
-      style: 'ancient', // Closest to Minoan aesthetic
-      aspectRatio: '3:4', // Tarot card proportions
-      referenceImages, // Pass reference images for visual memory
-    });
+  for (let i = 0; i < tarotResult.cards.length; i++) {
+    const card = tarotResult.cards[i];
+    log(`[Tarot] Generating card ${i + 1}/${tarotResult.cardCount}: ${card.cardNumber} - ${card.cardName}`);
+    log('[Tarot] Prompt:', card.prompt.slice(0, 150) + '...');
 
-    // [Tarot Debug] Log Gemini result before success check
-    log(`[Tarot] Gemini result: success=${imageResult.success}, hasDataUrl=${!!imageResult.imageDataUrl}, dataUrlLength=${imageResult.imageDataUrl?.length ?? 0}, error=${imageResult.error ?? 'none'}`);
-  } catch (imageError) {
-    const errorMessage = imageError instanceof Error ? imageError.message : String(imageError);
-    log('[Tarot] Image generation failed:', errorMessage);
-    if (cfg.onTarotGenerated) {
-      cfg.onTarotGenerated({
+    let imageResult: GeminiImageResult;
+    try {
+      imageResult = await geminiProvider.generate({
+        prompt: card.prompt,
+        style: 'ancient', // Closest to Minoan aesthetic
+        aspectRatio: '3:4', // Tarot card proportions
+        referenceImages, // Pass reference images for visual memory
+      });
+
+      log(`[Tarot] Card ${i + 1} result: success=${imageResult.success}, hasDataUrl=${!!imageResult.imageDataUrl}, dataUrlLength=${imageResult.imageDataUrl?.length ?? 0}, error=${imageResult.error ?? 'none'}`);
+    } catch (imageError) {
+      const errorMessage = imageError instanceof Error ? imageError.message : String(imageError);
+      log(`[Tarot] Card ${i + 1} image generation failed:`, errorMessage);
+      imageResult = {
         success: false,
         error: `Image generation failed: ${errorMessage}`,
-        duration: cfg.displayDuration!,
-      });
+      };
     }
-    return workingMemory;
+
+    const cardResult: TarotCardResult = {
+      success: imageResult.success,
+      imageDataUrl: imageResult.imageDataUrl,
+      cardName: card.cardName,
+      cardNumber: card.cardNumber,
+      position: card.position,
+      prompt: card.prompt,
+      error: imageResult.error,
+    };
+
+    cardResults.push(cardResult);
+
+    if (!imageResult.success) {
+      overallSuccess = false;
+    }
+
+    // Emit individual card result as it completes
+    if (cfg.onCardGenerated) {
+      cfg.onCardGenerated(cardResult, i, tarotResult.cardCount);
+      log(`[Tarot] Card ${i + 1} emitted via callback`);
+    }
   }
 
   // Update session state
   const newTarotCount = tarotCount + 1;
   soulMemory.setTarotCount(newTarotCount);
 
-  // Build result
+  // Build final result
   const finalResult: TarotResult = {
-    success: imageResult.success,
-    imageDataUrl: imageResult.imageDataUrl,
-    cardName: tarotResult.cardName,
-    cardNumber: tarotResult.cardNumber,
-    prompt: tarotResult.prompt,
-    error: imageResult.error,
+    success: overallSuccess,
+    cardCount: tarotResult.cardCount,
+    spreadType: tarotResult.spreadType,
+    cards: cardResults,
+    oracleMessage: tarotResult.oracleMessage,
     duration: cfg.displayDuration!,
   };
 
-  if (imageResult.success) {
-    log(`[Tarot] Tarot manifested: ${tarotResult.cardName} (${newTarotCount}/${cfg.maxTarotsPerSession} this session)`);
+  if (overallSuccess) {
+    const cardSummary = cardResults.map(c => `${c.cardNumber} - ${c.cardName}`).join(', ');
+    log(`[Tarot] Tarot manifested: ${tarotResult.spreadType} spread - ${cardSummary} (${newTarotCount}/${cfg.maxTarotsPerSession} this session)`);
     logger.logInternalMonologue?.(
-      `Tarot manifested: ${tarotResult.cardNumber} ${tarotResult.cardName}`,
+      `Tarot manifested: ${tarotResult.spreadType} spread - ${cardSummary}`,
       'tarot-generation'
     );
   } else {
-    log('[Tarot] Tarot generation failed:', imageResult.error);
+    log('[Tarot] Some cards failed to generate');
   }
 
-  // Invoke callback with result
+  // Invoke callback with complete result
   if (cfg.onTarotGenerated) {
     cfg.onTarotGenerated(finalResult);
   }
