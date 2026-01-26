@@ -9,12 +9,12 @@ Knowledge corpus for the Kothar oracle soul, organized by domain.
 | Folder | Count | Description |
 |--------|-------|-------------|
 | [thera-knossos-minos/](thera-knossos-minos/INDEX.md) | 22 | Academic paper dossiers: volcanic memory, palace culture, Minos-Moses parallels |
-| [scholarly-sources/](scholarly-sources/) | 4 authors | Per-article dossiers: Gordon, Astour, Harrison, Rendsburg |
+| [scholarly-sources/](scholarly-sources/) | 78 | Per-article dossiers: Allen, Astour, Gordon, Harrison, Rendsburg |
 | [oracle-concepts/](oracle-concepts/INDEX.md) | 3 | Daimonic wisdom, poetry as philosophy |
-| [daimonic-soul-engine/](daimonic-soul-engine/INDEX.md) | 7 | Soul Engine architecture and cognitive steps |
+| [daimonic-soul-engine/](daimonic-soul-engine/INDEX.md) | 6 | Soul Engine architecture and cognitive steps |
 | [biography/](biography/INDEX.md) | 6 | Tom di Mino's background and expertise |
-| [portfolio/](portfolio/INDEX.md) | 11 | Project case studies |
-| [poetry/](poetry/INDEX.md) | 8 | Original poems and translations |
+| [portfolio/](portfolio/INDEX.md) | 9 | Project case studies |
+| [poetry/](poetry/INDEX.md) | 7 | Original poems and translations |
 
 ---
 
@@ -35,12 +35,13 @@ Law-giver typology, etymological chains, Canaanite-Israelite convergence
 
 ## Scholarly Sources
 
-| Author | Focus | Index |
-|--------|-------|-------|
-| Cyrus H. Gordon | Ugaritic-Minoan connections | [gordon/INDEX.md](scholarly-sources/gordon/INDEX.md) |
-| Michael C. Astour | Hellenosemitica etymologies | [astour/INDEX.md](scholarly-sources/astour/INDEX.md) |
-| Jane Ellen Harrison | Themis, Greek religion | [harrison/INDEX.md](scholarly-sources/harrison/INDEX.md) |
-| Gary Rendsburg | Hebrew linguistics | [rendsburg/INDEX.md](scholarly-sources/rendsburg/INDEX.md) |
+| Author | Dossiers | Focus | Index |
+|--------|----------|-------|-------|
+| Paula Gunn Allen | 18 | Ritual gynocracy, feminine divine | [allen/INDEX.md](scholarly-sources/allen/INDEX.md) |
+| Michael C. Astour | 10 | Hellenosemitica etymologies | [astour/INDEX.md](scholarly-sources/astour/INDEX.md) |
+| Cyrus H. Gordon | 19 | Ugaritic-Minoan connections | [gordon/INDEX.md](scholarly-sources/gordon/INDEX.md) |
+| Jane Ellen Harrison | 16 | Themis, Greek religion | [harrison/INDEX.md](scholarly-sources/harrison/INDEX.md) |
+| Gary Rendsburg | 15 | Hebrew linguistics | [rendsburg/INDEX.md](scholarly-sources/rendsburg/INDEX.md) |
 
 ---
 
@@ -56,4 +57,4 @@ These dossiers feed the RAG pipeline for the Kothar oracle:
 
 ## RAG Tags
 
-minoan, dossier, oracle, kothar, thera, knossos, minos, gordon, astour, harrison, rendsburg, academic, research, bronze age, aegean, semitic, hebrew, ugaritic, canaanite
+minoan, dossier, oracle, kothar, thera, knossos, minos, allen, astour, gordon, harrison, rendsburg, academic, research, bronze age, aegean, semitic, hebrew, ugaritic, canaanite, gynocracy, feminine divine

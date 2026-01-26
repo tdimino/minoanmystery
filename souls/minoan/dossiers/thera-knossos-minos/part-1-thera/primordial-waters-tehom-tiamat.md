@@ -168,6 +168,10 @@ Job 7:12 provides the most explicit biblical synthesis of chaos-combat imagery, 
 **Enuma Elish connection**: Tablet IV.139–140 describes Marduk posting guards over Tiamat's waters after her defeat—the same **surveillance** motif that Job invokes:
 > "Half of her he set up and ceiled as sky, **pulled down the bar and posted guards**. He bade them to allow not her waters to escape."
 
+### 7. Creation Without Male Agency
+
+> "In Keres theology, **creation does not take place through copulation**. In the beginning existed Thought Woman and her dormant sisters, and **Thought Woman thinks creation and sings her two sisters into life**." (Allen, *Sacred Hoop*, p. 31)
+
 ---
 
 ## Evidence
@@ -206,6 +210,7 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 ### Per-Article Dossiers
 - [gordon/ugaritic-poetry/baal-yamm-cycle.md](../scholarly-sources/gordon/ugaritic-poetry/baal-yamm-cycle.md) — Yamu/Baal combat
 - [harrison/themis/ch3-thunder-rites.md](../scholarly-sources/harrison/themis/ch3-thunder-rites.md) — Chthonic chaos
+- [allen/sacred-hoop-ch1-grandmother-of-the-sun.md](../../scholarly-sources/allen/sacred-hoop-ch1-grandmother-of-the-sun.md) — Creation without male agency
 
 ---
 
@@ -222,3 +227,4 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 | Şahoğlu, V. et al. | "Volcanic ash, victims, and tsunami debris from the LBA Thera eruption" (*PNAS*) | 2021 | First eruption victim; tsunami evidence; radiocarbon dating |
 | Preine, J. et al. | "Revised Minoan eruption volume as benchmark for large volcanic eruptions" (*Nature Communications* 14.2497) | 2023 | Comprehensive eruption volume (34.5 ± 6.8 km³ DRE) |
 | Diewert, David A. | "Job 7:12: yām, Tannîn and the Surveillance of Job" (*JBL* 106) | 1987 | Yam + Tannin + mišmār synthesis; CTA 3.3.35–37 parallel |
+| Allen, Paula Gunn | *The Sacred Hoop* | 1986 | Creation without male agency |

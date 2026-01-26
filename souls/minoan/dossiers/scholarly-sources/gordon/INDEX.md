@@ -184,6 +184,7 @@ See [ugaritic-poetry/INDEX.md](./ugaritic-poetry/INDEX.md) for the full poetry c
 
 - [../astour/INDEX.md](../astour/INDEX.md) - Michael C. Astour (student, Hellenosemitica)
 - [../harrison/INDEX.md](../harrison/INDEX.md) - Jane Ellen Harrison (complementary ritual approach)
+- [../allen/INDEX.md](../allen/INDEX.md) - Paula Gunn Allen (gynocracy thesis, feminist-tribal hermeneutics)
 - [../../minoan-ANE/tehom-tiamat.md](../../minoan-ANE/tehom-tiamat.md) - Deep waters mythology
 - [../../minoan-ANE/labyrinth-mythology.md](../../minoan-ANE/labyrinth-mythology.md) - Knossos, Daedalus traditions
 - [../../oracle-concepts/daimonic-wisdom.md](../../oracle-concepts/daimonic-wisdom.md) - Liminal knowledge

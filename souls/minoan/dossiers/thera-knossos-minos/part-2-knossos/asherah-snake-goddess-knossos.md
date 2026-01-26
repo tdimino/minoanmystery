@@ -156,6 +156,20 @@ The Snake Goddess connects to the Potnia/Deborah tradition (see [potnia-daboritu
 
 The priestesses who held snakes at Knossos may have been embodying the "Lady of the Serpent"—the same goddess known as Asherah in the Levant.
 
+### 11. Allen on Serpent Woman and the Snake Mother
+
+Paula Gunn Allen's study of Native American goddess traditions identifies **Serpent Woman** as a name for the primordial creatrix—a parallel to the Mediterranean Snake Goddess:
+
+> "There is a spirit that pervades everything, that is capable of powerful song and radiant movement, and that moves in and out of the mind... Old Spider Woman is one name for this quintessential spirit, and **Serpent Woman is another**." (Allen, *Sacred Hoop*, p. 28)
+
+The identification of Spider Woman with Serpent Woman in Pueblo theology provides a striking parallel to the Minoan Snake Goddess tradition. Both represent the primordial feminine creative power—not merely a "fertility goddess" but the source of all existence.
+
+**Snake Mother as Initiator**:
+
+> "The hero in that tale is a woman who journeys to the spirit world with Snake Man, where she is **initiated by Snake Man's mother**. After she has passed the tests provided for her learning, she is given particular rites to take back to her people." (Allen, *Sacred Hoop*, p. 39)
+
+This Navajo ceremonial narrative shows the **Snake Mother as initiator**—granting ritual knowledge to those who pass her tests. The Minoan Snake Goddess may have functioned similarly: a divine mother who presided over initiatory ceremonies at Knossos, testing and teaching priestesses who then "brought back" sacred rites to their communities.
+
 ---
 
 ## Evidence
@@ -195,6 +209,9 @@ Figurines, cylindrical stands, shrine models from MBA-LBA Canaan.
 ### Part 3 Connections
 - [canaanite-baalim-yahweh-absorption.md](../part-3-minos/canaanite-baalim-yahweh-absorption.md) — Absorption mechanism
 
+### Per-Article Dossiers
+- [allen/sacred-hoop-ch1-grandmother-of-the-sun.md](../../scholarly-sources/allen/sacred-hoop-ch1-grandmother-of-the-sun.md) — Serpent Woman, Snake Mother initiation
+
 ---
 
 ## Sources Cited
@@ -206,6 +223,7 @@ Figurines, cylindrical stands, shrine models from MBA-LBA Canaan.
 | Bonney | Snake Goddess reassessment | 2011 | Levantine-Cretan hybrid |
 | Evans, Arthur | *Palace of Minos* | 1921-35 | Original Snake Goddess publication |
 | Marinatos, Nanno | *Minoan Religion* | 1993 | Priestess impersonation |
+| Allen, Paula Gunn | *The Sacred Hoop* | 1986 | Serpent Woman, Snake Mother as initiator |
 
 ---
 

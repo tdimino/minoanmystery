@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- **Dossier INDEX Update**: Refreshed `souls/minoan/dossiers/INDEX.md` with accurate counts
+  - Added Paula Gunn Allen (18 dossiers) as 5th scholar in scholarly-sources
+  - Updated per-author dossier counts: Gordon (19), Harrison (16), Rendsburg (15), Astour (10)
+  - Total scholarly-sources: 78 dossiers across 5 authors
+  - Corrected counts: daimonic-soul-engine (6), portfolio (9), poetry (7)
+  - Added RAG tags: `allen, gynocracy, feminine divine`
+- **RAG Exclusion Pattern**: Added `SPEC.md` to excluded files in `chunk-dossiers.ts`
+  - Now excludes: INDEX*, README*, RESEARCHER_PERSONA*, SPEC*
+  - Prevents meta-documentation from polluting RAG retrieval
+
 ### Fixed
 - **Comprehensive View Transition Audit**: Fixed memory leaks and listener accumulation across 7 components
   - **Lightbox.astro**: Added `astro:before-swap` cleanup, tracked click/keydown handlers

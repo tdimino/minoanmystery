@@ -100,6 +100,16 @@ Apollo addresses Cretan sailors whom he brings to Delphi as his priests:
 
 **Proverbs and oral tradition**: The term **Kinnusha** appears in wisdom literature contexts. Proverbs, like the Zohar, participate in an oral tradition stretching to remote antiquity. The ultimate age of a single saying could conceivably go back to the dawn of human speech—preserving vocabulary that predates written attestations.
 
+#### 6c. Allen on Ceremonial Gathering
+
+The ceremony-as-integration model from Paula Gunn Allen illuminates the *knesset* function of Knossos—what the sacred gathering accomplished:
+
+> "The purpose of a ceremony is to integrate: to fuse the individual with his or her fellows, the community of people with that of the other kingdoms, and this larger communal group with the worlds beyond this one." (Allen, *Sacred Hoop*, p. 91)
+
+> "This community is not made up only of members of the tribe but necessarily includes all beings that inhabit the tribe's universe." (Allen, *Sacred Hoop*, p. 91–92)
+
+This is precisely what the Zoharic concept of *Kenishta Qadisha* describes: gathering that enables divine indwelling. The Minoan palace-sanctuary served this integrative function—fusing individual worshippers, the human community, the natural world, and the divine realms.
+
 ### 7. Palace as Gathering-Distribution Center
 
 **Minoan palatial function**:
@@ -176,6 +186,7 @@ Administrative records showing the palace's distribution function—allocating o
 
 ### Per-Article Dossiers
 - [gordon/evidence-minoan-language-1966-lexicon.md](../scholarly-sources/gordon/evidence-minoan-language-1966-lexicon.md) — Linear A vocabulary
+- [allen/sacred-hoop-ch10-whose-dream-is-this-anyway.md](../../scholarly-sources/allen/sacred-hoop-ch10-whose-dream-is-this-anyway.md) — Ceremony as integration
 
 ---
 
@@ -190,6 +201,7 @@ Administrative records showing the palace's distribution function—allocating o
 | Peatfield, Alan | "Palace and Peak" | 1987 | Sanctuary function |
 | Rendsburg, Gary | Black Athena etymologies | 1989 | Semitic-Greek parallels |
 | Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Priest-administration, professional priesthood |
+| Allen, Paula Gunn | *The Sacred Hoop* | 1986 | Ceremony as communal integration |
 
 ---
 

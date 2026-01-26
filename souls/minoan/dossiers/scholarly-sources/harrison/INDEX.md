@@ -156,6 +156,7 @@ The mystery religions (Dionysos, Orphism) preserved the original life-affirming 
 
 - **Gordon dossiers**: Gordon on Minoan-Semitic linguistics; Harrison on Minoan ritual theory
 - **Astour dossiers**: Kouretes/Korybantes etymology in Hellenosemitica
+- **Allen dossiers**: [../allen/INDEX.md](../allen/INDEX.md) - Paula Gunn Allen on gynocracy, ritual, indigenous goddess traditions (parallel methodology for recovering suppressed feminine power)
 - **Tehom-Tiamat**: Harrison's treatment of primordial chaos in thunder-rites
 - **Labyrinth mythology**: Knossos initiation chambers, Minoan palace religion
 

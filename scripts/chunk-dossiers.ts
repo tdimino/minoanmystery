@@ -78,7 +78,7 @@ function findDossierFiles(dir: string): string[] {
 
       if (stat.isDirectory()) {
         walk(fullPath);
-      } else if (entry.endsWith('.md') && !entry.startsWith('INDEX') && !entry.startsWith('README') && !entry.startsWith('RESEARCHER_PERSONA')) {
+      } else if (entry.endsWith('.md') && !entry.startsWith('INDEX') && !entry.startsWith('README') && !entry.startsWith('RESEARCHER_PERSONA') && !entry.startsWith('SPEC')) {
         files.push(fullPath);
       }
     }
