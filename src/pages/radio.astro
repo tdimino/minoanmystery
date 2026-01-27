@@ -1,0 +1,518 @@
+---
+/**
+ * Daimonic Radio - Two-Soul AI Radio Station
+ *
+ * A live radio experience where Kothar and Tamarru host discussions
+ * on topics chosen by the audience. Features natural turn-taking,
+ * interruptions, and fluid dialogue between the two AI souls.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import StructuredData from '../components/StructuredData.astro';
+
+import '../styles/radio.css';
+---
+
+<BaseLayout
+  title="Daimonic Radio"
+  description="Listen to Kothar and Tamarru discuss the mysteries of mind, myth, and machine. A two-soul AI radio station with live discussions and audience participation."
+  image="/images/og/radio.png"
+>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://api.groq.com" crossorigin>
+  </Fragment>
+
+  <StructuredData schemas={[
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Daimonic Radio" }
+        ]
+      }
+    }
+  ]} />
+
+  <Header />
+
+  <main class="radio-page">
+    <header class="radio-header">
+      <div class="radio-title">
+        <h1>Daimonic Radio</h1>
+        <p>Where two souls discourse on the mysteries</p>
+      </div>
+    </header>
+
+    <!-- Now Playing Section -->
+    <section class="radio-now-playing">
+      <div class="radio-container">
+        <!-- Speaker Indicator -->
+        <div class="speaker-section">
+          <div class="speaker-avatars">
+            <div class="speaker-avatar" id="kothar-avatar" data-soul="kothar">
+              <img src="/images/avatars/minoan-avatar.webp" alt="Kothar" />
+              <span class="speaker-label">Kothar</span>
+            </div>
+            <div class="speaker-connector">
+              <div class="connector-line"></div>
+              <div class="connector-pulse" id="connector-pulse"></div>
+            </div>
+            <div class="speaker-avatar tamarru" id="tamarru-avatar" data-soul="tamarru">
+              <img src="/images/avatars/minoan-avatar.webp" alt="Tamarru" />
+              <span class="speaker-label">Tamarru</span>
+            </div>
+          </div>
+
+          <div class="now-speaking" id="now-speaking">
+            <span class="speaking-indicator"></span>
+            <span class="speaking-text" id="speaking-text">Awaiting broadcast...</span>
+          </div>
+        </div>
+
+        <!-- Current Topic -->
+        <div class="topic-section">
+          <span class="topic-label">Current Topic</span>
+          <h2 class="topic-title" id="topic-title">The station is preparing...</h2>
+        </div>
+
+        <!-- Audio Player -->
+        <div class="audio-section">
+          <div class="audio-player" id="audio-player">
+            <button class="play-button" id="play-button" aria-label="Play/Pause">
+              <svg class="play-icon" id="play-icon" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg class="pause-icon hidden" id="pause-icon" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+
+            <div class="audio-visualizer" id="audio-visualizer">
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+              <div class="visualizer-bar"></div>
+            </div>
+
+            <div class="volume-control">
+              <button class="volume-button" id="volume-button" aria-label="Mute/Unmute">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </button>
+              <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="75" aria-label="Volume">
+            </div>
+          </div>
+
+          <!-- Stream Info -->
+          <div class="stream-info">
+            <div class="stream-status" id="stream-status">
+              <span class="status-dot offline"></span>
+              <span class="status-text">Offline</span>
+            </div>
+            <div class="listener-count" id="listener-count">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+              <span id="listener-number">0</span> listening
+            </div>
+          </div>
+        </div>
+
+        <!-- External Player Link -->
+        <div class="external-player">
+          <span class="external-label">Stream URL</span>
+          <div class="stream-url-wrapper">
+            <code class="stream-url" id="stream-url">https://radio.minoanmystery.org/stream</code>
+            <button class="copy-button" id="copy-stream-url" aria-label="Copy stream URL">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Question Submission Section -->
+    <section class="radio-questions">
+      <div class="radio-container">
+        <h3 class="questions-title">Ask the Hosts</h3>
+        <p class="questions-subtitle">Submit a question for Kothar and Tamarru to discuss</p>
+
+        <form class="question-form" id="question-form">
+          <div class="form-row">
+            <input
+              type="text"
+              class="question-input"
+              id="question-input"
+              placeholder="What mystery would you have them explore?"
+              maxlength="280"
+              required
+            />
+            <button type="submit" class="submit-question" id="submit-question">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="form-meta">
+            <span class="char-count"><span id="char-count">0</span>/280</span>
+            <span class="optional-name">
+              <label for="submitter-name">Name (optional)</label>
+              <input type="text" id="submitter-name" placeholder="Anonymous" maxlength="50" />
+            </span>
+          </div>
+        </form>
+
+        <!-- Question Queue -->
+        <div class="question-queue" id="question-queue">
+          <h4 class="queue-title">
+            <span class="queue-icon">◈</span>
+            Question Queue
+          </h4>
+
+          <div class="queue-empty" id="queue-empty">
+            <p>No questions yet. Be the first to ask!</p>
+          </div>
+
+          <ul class="queue-list" id="queue-list">
+            <!-- Questions will be populated by JavaScript -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transcript Section -->
+    <section class="radio-transcript">
+      <div class="radio-container">
+        <h3 class="transcript-title">Live Transcript</h3>
+
+        <div class="transcript-content" id="transcript-content">
+          <div class="transcript-empty" id="transcript-empty">
+            <p>The transcript will appear here when the broadcast begins...</p>
+          </div>
+
+          <div class="transcript-messages" id="transcript-messages">
+            <!-- Transcript entries will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  /**
+   * Daimonic Radio Page Controller
+   *
+   * Manages the radio UI, audio playback, question submission,
+   * and real-time updates from the radio API.
+   */
+  import type { RadioSoulName, ListenerQuestion } from '../lib/radio/types';
+
+  interface RadioState {
+    isPlaying: boolean;
+    currentSpeaker: RadioSoulName | null;
+    currentTopic: string;
+    listenerCount: number;
+    isLive: boolean;
+    questions: ListenerQuestion[];
+  }
+
+  // State
+  let state: RadioState = {
+    isPlaying: false,
+    currentSpeaker: null,
+    currentTopic: 'The station is preparing...',
+    listenerCount: 0,
+    isLive: false,
+    questions: [],
+  };
+
+  // DOM Elements
+  let playButton: HTMLButtonElement;
+  let playIcon: SVGElement;
+  let pauseIcon: SVGElement;
+  let volumeSlider: HTMLInputElement;
+  let volumeButton: HTMLButtonElement;
+  let statusDot: HTMLElement;
+  let statusText: HTMLElement;
+  let listenerNumber: HTMLElement;
+  let speakingText: HTMLElement;
+  let topicTitle: HTMLElement;
+  let kotharAvatar: HTMLElement;
+  let tamarruAvatar: HTMLElement;
+  let connectorPulse: HTMLElement;
+  let questionForm: HTMLFormElement;
+  let questionInput: HTMLInputElement;
+  let charCount: HTMLElement;
+  let submitterName: HTMLInputElement;
+  let queueList: HTMLElement;
+  let queueEmpty: HTMLElement;
+  let transcriptMessages: HTMLElement;
+  let transcriptEmpty: HTMLElement;
+  let visualizer: HTMLElement;
+  let copyButton: HTMLButtonElement;
+
+  // Audio context for visualizer
+  let audioContext: AudioContext | null = null;
+  let analyser: AnalyserNode | null = null;
+  let audioElement: HTMLAudioElement | null = null;
+
+  function initRadio() {
+    // Get DOM elements
+    playButton = document.getElementById('play-button') as HTMLButtonElement;
+    playIcon = document.getElementById('play-icon') as unknown as SVGElement;
+    pauseIcon = document.getElementById('pause-icon') as unknown as SVGElement;
+    volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
+    volumeButton = document.getElementById('volume-button') as HTMLButtonElement;
+    statusDot = document.querySelector('#stream-status .status-dot') as HTMLElement;
+    statusText = document.querySelector('#stream-status .status-text') as HTMLElement;
+    listenerNumber = document.getElementById('listener-number') as HTMLElement;
+    speakingText = document.getElementById('speaking-text') as HTMLElement;
+    topicTitle = document.getElementById('topic-title') as HTMLElement;
+    kotharAvatar = document.getElementById('kothar-avatar') as HTMLElement;
+    tamarruAvatar = document.getElementById('tamarru-avatar') as HTMLElement;
+    connectorPulse = document.getElementById('connector-pulse') as HTMLElement;
+    questionForm = document.getElementById('question-form') as HTMLFormElement;
+    questionInput = document.getElementById('question-input') as HTMLInputElement;
+    charCount = document.getElementById('char-count') as HTMLElement;
+    submitterName = document.getElementById('submitter-name') as HTMLInputElement;
+    queueList = document.getElementById('queue-list') as HTMLElement;
+    queueEmpty = document.getElementById('queue-empty') as HTMLElement;
+    transcriptMessages = document.getElementById('transcript-messages') as HTMLElement;
+    transcriptEmpty = document.getElementById('transcript-empty') as HTMLElement;
+    visualizer = document.getElementById('audio-visualizer') as HTMLElement;
+    copyButton = document.getElementById('copy-stream-url') as HTMLButtonElement;
+
+    // Event listeners
+    playButton?.addEventListener('click', togglePlayback);
+    volumeSlider?.addEventListener('input', handleVolumeChange);
+    volumeButton?.addEventListener('click', toggleMute);
+    questionForm?.addEventListener('submit', handleQuestionSubmit);
+    questionInput?.addEventListener('input', updateCharCount);
+    copyButton?.addEventListener('click', copyStreamUrl);
+
+    // Initial state fetch
+    fetchRadioStatus();
+
+    // Poll for updates
+    setInterval(fetchRadioStatus, 5000);
+  }
+
+  async function fetchRadioStatus() {
+    try {
+      const response = await fetch('/api/radio/status');
+      if (response.ok) {
+        const data = await response.json();
+        updateState(data);
+      }
+    } catch (error) {
+      console.warn('[Radio] Failed to fetch status:', error);
+    }
+  }
+
+  function updateState(data: Partial<RadioState>) {
+    state = { ...state, ...data };
+    renderUI();
+  }
+
+  function renderUI() {
+    // Stream status
+    if (statusDot && statusText) {
+      statusDot.className = `status-dot ${state.isLive ? 'live' : 'offline'}`;
+      statusText.textContent = state.isLive ? 'Live' : 'Offline';
+    }
+
+    // Listener count
+    if (listenerNumber) {
+      listenerNumber.textContent = String(state.listenerCount);
+    }
+
+    // Current speaker
+    if (speakingText) {
+      if (state.currentSpeaker) {
+        const name = state.currentSpeaker === 'kothar' ? 'Kothar' : 'Tamarru';
+        speakingText.textContent = `${name} is speaking...`;
+      } else {
+        speakingText.textContent = state.isLive ? 'Silence...' : 'Awaiting broadcast...';
+      }
+    }
+
+    // Speaker avatars
+    if (kotharAvatar && tamarruAvatar) {
+      kotharAvatar.classList.toggle('is-speaking', state.currentSpeaker === 'kothar');
+      tamarruAvatar.classList.toggle('is-speaking', state.currentSpeaker === 'tamarru');
+    }
+
+    // Connector pulse
+    if (connectorPulse) {
+      connectorPulse.classList.toggle('is-active', state.currentSpeaker !== null);
+    }
+
+    // Topic
+    if (topicTitle) {
+      topicTitle.textContent = state.currentTopic || 'The station is preparing...';
+    }
+
+    // Question queue
+    renderQuestionQueue();
+  }
+
+  function renderQuestionQueue() {
+    if (!queueList || !queueEmpty) return;
+
+    if (state.questions.length === 0) {
+      queueEmpty.classList.remove('hidden');
+      queueList.classList.add('hidden');
+      return;
+    }
+
+    queueEmpty.classList.add('hidden');
+    queueList.classList.remove('hidden');
+
+    queueList.innerHTML = state.questions
+      .filter(q => q.status !== 'answered')
+      .map(q => `
+        <li class="queue-item ${q.status === 'addressing' ? 'is-active' : ''}" data-id="${q.id}">
+          <div class="queue-question">${escapeHtml(q.question)}</div>
+          <div class="queue-meta">
+            <span class="queue-author">${escapeHtml(q.submittedBy || 'Anonymous')}</span>
+            <button class="upvote-button" data-id="${q.id}" aria-label="Upvote">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                <path d="M7 14l5-5 5 5z"/>
+              </svg>
+              <span class="upvote-count">${q.upvotes}</span>
+            </button>
+          </div>
+        </li>
+      `)
+      .join('');
+
+    // Add upvote listeners
+    queueList.querySelectorAll('.upvote-button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).dataset.id;
+        if (id) handleUpvote(id);
+      });
+    });
+  }
+
+  function togglePlayback() {
+    state.isPlaying = !state.isPlaying;
+
+    if (playIcon && pauseIcon) {
+      playIcon.classList.toggle('hidden', state.isPlaying);
+      pauseIcon.classList.toggle('hidden', !state.isPlaying);
+    }
+
+    if (visualizer) {
+      visualizer.classList.toggle('is-playing', state.isPlaying);
+    }
+
+    // Audio playback would be handled here with actual HLS stream
+    if (state.isPlaying) {
+      startAudioPlayback();
+    } else {
+      stopAudioPlayback();
+    }
+  }
+
+  function startAudioPlayback() {
+    // Placeholder for HLS stream integration
+    console.log('[Radio] Starting playback...');
+  }
+
+  function stopAudioPlayback() {
+    // Placeholder for HLS stream integration
+    console.log('[Radio] Stopping playback...');
+  }
+
+  function handleVolumeChange(e: Event) {
+    const value = (e.target as HTMLInputElement).value;
+    console.log('[Radio] Volume:', value);
+  }
+
+  function toggleMute() {
+    if (volumeSlider) {
+      const isMuted = volumeSlider.value === '0';
+      volumeSlider.value = isMuted ? '75' : '0';
+    }
+  }
+
+  async function handleQuestionSubmit(e: Event) {
+    e.preventDefault();
+
+    const question = questionInput?.value.trim();
+    if (!question) return;
+
+    const name = submitterName?.value.trim() || undefined;
+
+    try {
+      const response = await fetch('/api/radio/question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, submittedBy: name }),
+      });
+
+      if (response.ok) {
+        if (questionInput) questionInput.value = '';
+        if (submitterName) submitterName.value = '';
+        updateCharCount();
+        fetchRadioStatus();
+      }
+    } catch (error) {
+      console.warn('[Radio] Failed to submit question:', error);
+    }
+  }
+
+  function updateCharCount() {
+    if (charCount && questionInput) {
+      charCount.textContent = String(questionInput.value.length);
+    }
+  }
+
+  async function handleUpvote(questionId: string) {
+    try {
+      await fetch('/api/radio/upvote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questionId }),
+      });
+      fetchRadioStatus();
+    } catch (error) {
+      console.warn('[Radio] Failed to upvote:', error);
+    }
+  }
+
+  function copyStreamUrl() {
+    const url = document.getElementById('stream-url')?.textContent;
+    if (url) {
+      navigator.clipboard.writeText(url).then(() => {
+        if (copyButton) {
+          copyButton.classList.add('copied');
+          setTimeout(() => copyButton.classList.remove('copied'), 2000);
+        }
+      });
+    }
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Initialize on page load
+  initRadio();
+
+  // Handle View Transitions
+  document.addEventListener('astro:after-swap', () => {
+    if (window.location.pathname === '/radio') {
+      initRadio();
+    }
+  });
+</script>
