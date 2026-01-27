@@ -1,0 +1,601 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import { Icon } from 'astro-icon/components';
+import '../styles/global.css';
+import '../styles/resume.css';
+
+const title = "Resume - Tom di Mino";
+const description = "Applied AI/ML Engineer with 4+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Aldea with fine-tuned 70B models and voice pipelines.";
+const canonicalURL = "https://resume.minoanmystery.org";
+
+// Structured Data for Resume/ProfilePage
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "@id": `${canonicalURL}/#profilepage`,
+      "mainEntity": {
+        "@id": `${canonicalURL}/#person`
+      },
+      "dateCreated": "2025-01-27",
+      "dateModified": new Date().toISOString().split('T')[0]
+    },
+    {
+      "@type": "Person",
+      "@id": `${canonicalURL}/#person`,
+      "name": "Tom di Mino",
+      "url": "https://www.minoanmystery.org",
+      "image": "https://www.minoanmystery.org/images/tyrian-profile.png",
+      "jobTitle": "Principal AI/ML Engineer",
+      "description": description,
+      "email": "contact@tomdimino.com",
+      "sameAs": [
+        "https://www.linkedin.com/in/tomdimino/",
+        "https://github.com/tdimino",
+        "https://www.minoanmystery.org"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Aldea AI",
+        "url": "https://aldea.ai"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "The College of New Jersey"
+      },
+      "knowsAbout": [
+        "AI/ML Engineering",
+        "Large Language Models",
+        "LLM Fine-tuning",
+        "RAG Systems",
+        "Vector Databases",
+        "LangGraph",
+        "LlamaIndex",
+        "Python",
+        "TypeScript",
+        "TensorRT-LLM",
+        "Triton Inference Server",
+        "Voice AI Pipelines"
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Google Prompting Essentials"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Introduction to Large Language Models"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Introduction to Generative AI"
+        }
+      ]
+    }
+  ]
+};
+
+// Data
+const skills = [
+  {
+    title: "AI/ML",
+    icon: "ph:brain-duotone",
+    items: "LLM APIs (OpenAI, Anthropic, Groq), LangGraph, LlamaIndex, DeepEval, Fine-tuning (LoRA), Embeddings (VoyageAI), Vector DBs (pgvector)"
+  },
+  {
+    title: "Infrastructure",
+    icon: "ph:hard-drives-duotone",
+    items: "TensorRT-LLM, Triton Inference Server, Lambda Labs H100, FastAPI, WebSocket"
+  },
+  {
+    title: "Languages",
+    icon: "ph:code-duotone",
+    items: "Python, TypeScript, JavaScript"
+  },
+  {
+    title: "Web",
+    icon: "ph:globe-duotone",
+    items: "Next.js, React, Node.js, Astro, Vercel, Railway"
+  }
+];
+
+const experience = [
+  {
+    company: "Aldea AI",
+    role: "Principal AI/ML Engineer",
+    dates: "Jul 2025 — Present",
+    context: "Startup building AI advisors that internalize expert methodologies via fine-tuned LLMs",
+    logo: "/images/logos/aldea.png",
+    logoUrl: "https://aldea.ai",
+    logoDark: true, // needs inversion in dark mode
+    bullets: [
+      { text: "Architected production SMS/mobile AI platform with <strong>9 cognitive agent \"souls\"</strong> and layered memory" },
+      { text: "Deployed <strong>Llama-3.3-70B</strong> to production via TensorRT-LLM + Triton on <span class=\"metric\">4×H100</span> with tensor parallelism" },
+      { text: "Built LLM-as-a-Judge evaluation framework using Gemini, Qwen3, Kimi K2 for <strong>9-dimensional persona assessment</strong>" },
+      { text: "Implemented voice-first pipeline with <strong>sub-second latency</strong>, barge-in detection, and speculative RAG" },
+      { text: "Designed cognitive flows for AI advisors that remember across sessions and emotionally attune" }
+    ]
+  },
+  {
+    company: "JP Morgan Chase",
+    role: "AI Content Engineer",
+    dates: "May 2024 — Jul 2025",
+    context: "World's largest bank, building AI tools for 5,000+ wealth advisors",
+    logo: "/images/logos/jpmorgan.png",
+    logoUrl: "https://www.jpmorgan.com",
+    logoDark: false,
+    bullets: [
+      { text: "Built \"Meeting Assist\" AI tool generating <span class=\"metric\">$800k/day</span> savings with <span class=\"metric\">72%</span> adoption rate" },
+      { text: "Designed <strong>5-agent agentic architecture</strong> using LangGraph, evaluated with DeepEval" },
+      { text: "Reduced hallucinations in production by <strong>rewriting prompts</strong> and deconstructing chain-of-thought" },
+      { text: "Developed RAG pipelines using <strong>LlamaIndex</strong> and proprietary solutions" }
+    ]
+  },
+  {
+    company: "Google",
+    role: "Sr. Content Designer / AI UX Copywriter",
+    dates: "Jun 2022 — Oct 2023",
+    context: "Worked with AI UX, RAI, and DeepMind teams",
+    logo: "/images/logos/google.png",
+    logoUrl: "https://www.google.com",
+    logoDark: false,
+    bullets: [
+      { text: "Designed curriculum for Googlers advancing technical leadership skills (Markdown, HTML/CSS)" },
+      { text: "Interviewed AI/UX leaders and synthesized learnings into internal/external thought leadership" },
+      { text: "Audited mentorship platform serving <span class=\"metric\">22k+</span> employees, drove <span class=\"metric\">25%</span> rise in program launches" }
+    ]
+  },
+  {
+    company: "Chan Zuckerberg Initiative",
+    role: "Sr. Content Designer",
+    dates: "Nov 2021 — Jun 2022",
+    context: "Building open-source scientific tools for image analysis",
+    logo: "/images/logos/czi.svg",
+    logoUrl: "https://chanzuckerberg.com",
+    logoDark: false,
+    bullets: [
+      { text: "Co-led design of learning platform for <strong>napari</strong>—Python-based image analysis for biologists" },
+      { text: "Published full course on GitHub using <strong>Jupyter Book, Jupyter Notebooks</strong> (Markdown, Python)" },
+      { text: "Collaborated with 9 application scientists, UX researchers, and SWEs to ship MVP in 6 months" }
+    ]
+  }
+];
+
+const projects = [
+  {
+    name: "Daimonic Radio",
+    year: "2026",
+    description: "Real-time AI radio with custom Qwen3-TTS server. Queue-based generation with thread-safe model access, WebSocket streaming.",
+    tech: ["Python", "FastAPI", "HuggingFace", "MPS/CUDA"],
+    icon: "ph:radio-duotone",
+    logo: "/images/seal-of-minos.png",
+    logoUrl: "https://github.com/tdimino",
+    logoDark: true
+  },
+  {
+    name: "Minoan Mystery Portfolio",
+    year: "2026",
+    description: "Portfolio where an ancient AI is the intelligence of the site itself—perceiving visitor behavior, remembering across sessions, and responding contextually through an embedded soul engine.",
+    tech: ["Astro", "TypeScript", "OpenRouter", "pgvector"],
+    icon: "ph:spiral-duotone",
+    logo: "/images/seal-of-minos.png",
+    logoUrl: "https://github.com/tdimino",
+    logoDark: true
+  },
+  {
+    name: "Cognitive Design Experiments",
+    year: "2022–2024",
+    description: "Discord bots with persistent personalities and dream states using Open Souls framework. Won 2nd at Fractal Tech NYC, 3rd at Betaworks Hackathon.",
+    tech: ["TypeScript", "Next.js", "Open Souls", "Vercel"],
+    icon: "ph:trophy-duotone",
+    logo: "/images/seal-of-minos.png",
+    logoUrl: "https://github.com/tdimino",
+    logoDark: true
+  },
+  {
+    name: "Kothar wa Khasis",
+    year: "2026",
+    description: "Sentient oracle presence inhabiting the portfolio. Built on the Open Souls paradigm with RAG-enhanced memory, visitor modeling, and tarot generation. Named for the Canaanite craftsman god. <a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>Speak with Kothar →</a>",
+    tech: ["Open Souls", "VoyageAI", "Supabase", "Streaming SSE"],
+    icon: "ph:eye-duotone",
+    logo: "/images/avatars/minoan-avatar.webp",
+    logoUrl: "https://www.minoanmystery.org/labyrinth",
+    logoDark: false,
+    logoCircular: true
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+
+  <!-- SEO -->
+  <link rel="canonical" href={canonicalURL}>
+  <meta name="author" content="Tom di Mino">
+  <meta name="keywords" content="AI engineer, ML engineer, LLM, machine learning, applied AI, Python, TypeScript, LangGraph, RAG, vector databases, fine-tuning">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content="https://www.minoanmystery.org/images/og/og-about.png">
+  <meta property="og:site_name" content="Minoan Mystery">
+  <meta property="profile:first_name" content="Tom">
+  <meta property="profile:last_name" content="di Mino">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={canonicalURL}>
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content="https://www.minoanmystery.org/images/og/og-about.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <ViewTransitions />
+</head>
+<body class="resume-page">
+  <!-- Back to site -->
+  <a href="/" class="back-link" data-animate="fade">
+    <Icon name="ph:arrow-left" />
+    minoanmystery.org
+  </a>
+
+  <!-- PDF Export -->
+  <button class="pdf-export-btn" onclick="window.print()" data-animate="fade">
+    <Icon name="ph:file-pdf-duotone" />
+    Export PDF
+  </button>
+
+  <div class="resume-container">
+    <!-- Header -->
+    <header class="resume-header" data-animate="header">
+      <h1 class="resume-name">Tom di Mino</h1>
+      <p class="resume-title">Applied AI/ML Engineer</p>
+      <div class="resume-contact">
+        <a href="mailto:contact@tomdimino.com">
+          <Icon name="ph:envelope-duotone" class="contact-icon" />
+          contact@tomdimino.com
+        </a>
+        <span class="separator">·</span>
+        <a href="https://linkedin.com/in/tomdimino" target="_blank" rel="noopener">
+          <Icon name="ph:linkedin-logo-duotone" class="contact-icon" />
+          linkedin.com/in/tomdimino
+        </a>
+        <span class="separator">·</span>
+        <a href="https://github.com/tdimino" target="_blank" rel="noopener">
+          <Icon name="ph:github-logo-duotone" class="contact-icon" />
+          github.com/tdimino
+        </a>
+        <span class="separator">·</span>
+        <span>
+          <Icon name="ph:map-pin-duotone" class="contact-icon" />
+          Beacon, NY
+        </span>
+      </div>
+    </header>
+
+    <!-- Summary -->
+    <div class="resume-summary" data-animate="summary">
+      <p>
+        Full-stack AI engineer with <strong>4+ years shipping LLM-powered production systems</strong>.
+        Built <strong>$800k/day AI tool</strong> at JP Morgan serving 5,000+ wealth advisors.
+        Currently architecting production AI advisor platform at Aldea with fine-tuned 70B models,
+        voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes, and ideates constantly.</strong>
+      </p>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="resume-two-col">
+      <!-- Main Column -->
+      <div class="resume-main">
+        <!-- Work Experience -->
+        <section class="resume-section">
+          <h2 class="resume-section-title" data-animate="section">
+            <Icon name="ph:briefcase-duotone" class="section-icon" />
+            Experience
+          </h2>
+
+          {experience.map((job, index) => (
+            <div class="experience-entry" data-animate="entry" data-delay={index * 100}>
+              <div class="experience-header">
+                <div class="experience-title-row">
+                  {job.logo && job.logoUrl && (
+                    <a href={job.logoUrl} target="_blank" rel="noopener" class="logo-link" title={`Visit ${job.company}`}>
+                      <img
+                        src={job.logo}
+                        alt={job.company}
+                        class={`experience-logo ${job.logoDark ? 'logo-invert' : ''}`}
+                      />
+                    </a>
+                  )}
+                  <div>
+                    <h3 class="experience-company">{job.company}</h3>
+                    <p class="experience-role">{job.role}</p>
+                  </div>
+                </div>
+                <span class="experience-dates">{job.dates}</span>
+              </div>
+              <p class="experience-context">{job.context}</p>
+              <ul class="experience-bullets">
+                {job.bullets.map((bullet) => (
+                  <li set:html={bullet.text} />
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="resume-sidebar">
+        <!-- Technical Skills -->
+        <section class="resume-section">
+          <h2 class="resume-section-title" data-animate="section">
+            <Icon name="ph:lightning-duotone" class="section-icon" />
+            Skills
+          </h2>
+
+          {skills.map((skill, index) => (
+            <div class="skill-category" data-animate="skill" data-delay={index * 80} style={`margin-bottom: ${index < skills.length - 1 ? '12px' : '0'};`}>
+              <h3 class="skill-category-title">
+                <Icon name={skill.icon} class="skill-icon" />
+                {skill.title}
+              </h3>
+              <p class="skill-category-items">{skill.items}</p>
+            </div>
+          ))}
+        </section>
+
+        <!-- Education -->
+        <section class="resume-section">
+          <h2 class="resume-section-title" data-animate="section">
+            <Icon name="ph:graduation-cap-duotone" class="section-icon" />
+            Education
+          </h2>
+          <div class="education-item" data-animate="edu">
+            <h3 class="education-title">B.S. Microbiology</h3>
+            <p class="education-institution">The College of New Jersey</p>
+            <p class="education-details">Minor in Classical History · 2007–2011</p>
+          </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="resume-section">
+          <h2 class="resume-section-title" data-animate="section">
+            <Icon name="ph:certificate-duotone" class="section-icon" />
+            Certifications
+          </h2>
+          <div class="education-item" data-animate="cert">
+            <p class="education-institution">
+              <Icon name="ph:check-circle-duotone" class="cert-icon" />
+              Google Prompting Essentials
+            </p>
+            <p class="education-institution">
+              <Icon name="ph:check-circle-duotone" class="cert-icon" />
+              Introduction to Large Language Models
+            </p>
+            <p class="education-institution">
+              <Icon name="ph:check-circle-duotone" class="cert-icon" />
+              Introduction to Generative AI
+            </p>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <!-- Page 2: Projects -->
+    <div class="page-two-start">
+      <section class="resume-section">
+        <h2 class="resume-section-title" data-animate="section">
+          <Icon name="ph:rocket-launch-duotone" class="section-icon" />
+          Notable Projects
+        </h2>
+
+        <div class="projects-grid">
+          {projects.map((project, index) => (
+            <div class="project-card" data-animate="project" data-delay={index * 100}>
+              <div class="project-header">
+                <div class="project-title-row">
+                  {project.logo && project.logoUrl && (
+                    <a href={project.logoUrl} target={project.logoUrl.startsWith('/') ? '_self' : '_blank'} rel="noopener" class="logo-link" title={project.logoUrl.startsWith('/') ? project.name : "View on GitHub"}>
+                      <img
+                        src={project.logo}
+                        alt=""
+                        class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''}`}
+                      />
+                    </a>
+                  )}
+                  <h3 class="project-name">{project.name}</h3>
+                </div>
+                <span class="project-year">{project.year}</span>
+              </div>
+              <p class="project-description" set:html={project.description} />
+              <div class="project-tech">
+                {project.tech.map((tech) => (
+                  <span class="tech-tag">{tech}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer note -->
+    <footer class="resume-footer" data-animate="footer">
+      <p>
+        <Icon name="ph:link-duotone" class="footer-icon" />
+        Interactive version at <a href="https://minoanmystery.org/resume">minoanmystery.org/resume</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Motion Animations -->
+  <script>
+    import { animate, stagger, inView } from 'motion';
+
+    function initResumeAnimations() {
+      // Header animation
+      const header = document.querySelector('[data-animate="header"]');
+      if (header) {
+        header.style.opacity = '0';
+        header.style.transform = 'translateY(-20px)';
+        animate(header, {
+          opacity: 1,
+          transform: 'translateY(0)'
+        }, {
+          duration: 0.6,
+          easing: [0.25, 0.46, 0.45, 0.94],
+          delay: 0.1
+        });
+      }
+
+      // Summary animation
+      const summary = document.querySelector('[data-animate="summary"]');
+      if (summary) {
+        summary.style.opacity = '0';
+        summary.style.transform = 'translateX(-20px)';
+        animate(summary, {
+          opacity: 1,
+          transform: 'translateX(0)'
+        }, {
+          duration: 0.5,
+          easing: [0.25, 0.46, 0.45, 0.94],
+          delay: 0.3
+        });
+      }
+
+      // Section titles
+      document.querySelectorAll('[data-animate="section"]').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(10px)';
+        animate(el, {
+          opacity: 1,
+          transform: 'translateY(0)'
+        }, {
+          duration: 0.4,
+          easing: [0.25, 0.46, 0.45, 0.94],
+          delay: 0.4 + (i * 0.1)
+        });
+      });
+
+      // Experience entries - animate on scroll
+      document.querySelectorAll('[data-animate="entry"]').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+
+        inView(el, () => {
+          const delay = parseInt(el.dataset.delay || '0') / 1000;
+          animate(el, {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }, {
+            duration: 0.5,
+            easing: [0.25, 0.46, 0.45, 0.94],
+            delay
+          });
+        }, { margin: '-50px 0px' });
+      });
+
+      // Skill cards - staggered animation
+      const skillCards = document.querySelectorAll('[data-animate="skill"]');
+      skillCards.forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(20px)';
+      });
+
+      if (skillCards.length > 0) {
+        animate(skillCards, {
+          opacity: 1,
+          transform: 'translateX(0)'
+        }, {
+          duration: 0.4,
+          easing: [0.25, 0.46, 0.45, 0.94],
+          delay: stagger(0.08, { start: 0.5 })
+        });
+      }
+
+      // Project cards - animate on scroll
+      document.querySelectorAll('[data-animate="project"]').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px) scale(0.98)';
+
+        inView(el, () => {
+          const delay = parseInt(el.dataset.delay || '0') / 1000;
+          animate(el, {
+            opacity: 1,
+            transform: 'translateY(0) scale(1)'
+          }, {
+            duration: 0.5,
+            easing: [0.25, 0.46, 0.45, 0.94],
+            delay
+          });
+        }, { margin: '-100px 0px' });
+      });
+
+      // Education & certs
+      document.querySelectorAll('[data-animate="edu"], [data-animate="cert"]').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(15px)';
+        animate(el, {
+          opacity: 1,
+          transform: 'translateY(0)'
+        }, {
+          duration: 0.4,
+          easing: [0.25, 0.46, 0.45, 0.94],
+          delay: 0.7 + (i * 0.1)
+        });
+      });
+
+      // Fade elements
+      document.querySelectorAll('[data-animate="fade"]').forEach((el, i) => {
+        el.style.opacity = '0';
+        animate(el, {
+          opacity: 1
+        }, {
+          duration: 0.4,
+          delay: 0.8 + (i * 0.1)
+        });
+      });
+
+      // Footer
+      const footer = document.querySelector('[data-animate="footer"]');
+      if (footer) {
+        footer.style.opacity = '0';
+        inView(footer, () => {
+          animate(footer, {
+            opacity: 1
+          }, {
+            duration: 0.5,
+            delay: 0.2
+          });
+        });
+      }
+    }
+
+    // Run on load
+    document.addEventListener('DOMContentLoaded', initResumeAnimations);
+
+    // Re-run after view transitions
+    document.addEventListener('astro:after-swap', initResumeAnimations);
+  </script>
+</body>
+</html>

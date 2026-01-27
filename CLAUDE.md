@@ -20,7 +20,7 @@ souls/minoan/         # Soul identity files
 ├── soul.md           # Core Kothar persona
 ├── academic/         # Scholarly mode (Gordon/Harrison/Astour)
 ├── poetic/           # Tamarru daimon
-└── dossiers/         # RAG knowledge base (~120 files)
+└── dossiers/         # RAG knowledge base (~132 files, 5 scholars)
 ```
 
 See **ARCHITECTURE.md** for complete Soul Engine codemap.
@@ -30,7 +30,7 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - Dev: `npm run dev` (localhost:4321)
 - Build: `npm run build`
 - Preview: `npm run preview`
-- Reingest dossiers: `./scripts/reingest-dossiers.sh`
+- **Reingest RAG**: `./scripts/reingest-dossiers.sh` (sources .env + .env.local for VOYAGE_API_KEY)
 
 ## Conventions
 
@@ -63,6 +63,9 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **Theme Toggle**: `Cmd+Shift+D` or button in header
 - **View Transitions**: Smooth page navigation
 - **Labyrinth**: `/labyrinth` chat interface with Kothar oracle
+- **Resume**: `/resume` interactive resume (subdomain: `resume.minoanmystery.org`)
+  - Tyrian purple dark theme, Motion animations, PDF export
+  - SEO with ProfilePage/Person structured data
 
 ## Detailed Guides
 

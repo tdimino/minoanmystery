@@ -1,0 +1,863 @@
+/* Resume Styles - Tom di Mino */
+/* Tyrian Purple Theme - The color of ancient royalty */
+
+/* Force dark theme for resume */
+.resume-page {
+  --color-background: #0a0a0a;
+  --color-background-alt: #111111;
+  --color-text: #f0f0f0;
+  --color-text-muted: #a0a0a0;
+  --color-text-dim: #666666;
+  --color-primary: #c9a0b8;
+  --color-primary-bright: #d4b5c8;
+  --color-primary-deep: #966a85;
+  --color-border: #1a1a1a;
+  --color-border-purple: rgba(201, 160, 184, 0.15);
+  --color-card: #0f0f0f;
+  --color-accent-cyan: #5eead4;
+  --color-accent-blue: #60a5fa;
+  --color-glow: rgba(150, 106, 133, 0.4);
+
+  background: var(--color-background);
+  color: var(--color-text-muted);
+  min-height: 100vh;
+  font-family: 'Thicccboi', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Subtle grid background with purple tint */
+.resume-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201, 160, 184, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 160, 184, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Purple radial vignette */
+.resume-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    rgba(150, 106, 133, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main container */
+.resume-container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+/* Header */
+.resume-header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+}
+
+/* Decorative labyrinth corner mark */
+.resume-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  border-right: 2px solid var(--color-primary-deep);
+  border-top: 2px solid var(--color-primary-deep);
+  opacity: 0.5;
+}
+
+.resume-header::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-right: 1px solid var(--color-primary);
+  border-top: 1px solid var(--color-primary);
+  opacity: 0.3;
+}
+
+.resume-name {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  /* Subtle purple text shadow for depth */
+  text-shadow: 0 0 60px rgba(150, 106, 133, 0.5);
+  animation: name-glow 4s ease-in-out infinite;
+}
+
+@keyframes name-glow {
+  0%, 100% {
+    text-shadow: 0 0 60px rgba(150, 106, 133, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 80px rgba(150, 106, 133, 0.6), 0 0 120px rgba(150, 106, 133, 0.3);
+  }
+}
+
+.resume-title {
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 500;
+  color: var(--color-primary);
+  margin: 0 0 20px 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.resume-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.resume-contact a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.resume-contact a:hover {
+  color: var(--color-primary);
+}
+
+.resume-contact .separator {
+  color: var(--color-text-dim);
+}
+
+/* Summary */
+.resume-summary {
+  margin-bottom: 40px;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--color-card) 0%, transparent 100%);
+  border-left: 2px solid var(--color-primary);
+  border-radius: 0 8px 8px 0;
+}
+
+.resume-summary p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.resume-summary strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Section headings */
+.resume-section {
+  margin-bottom: 36px;
+}
+
+.resume-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+/* Gradient underline with purple glow */
+.resume-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-deep) 0%,
+    var(--color-primary) 30%,
+    var(--color-border) 100%
+  );
+}
+
+/* The ::before is now replaced by section-icon */
+
+/* Skills grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.skill-category {
+  padding: 16px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  border-top: 2px solid var(--color-primary-deep);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-category:hover {
+  border-top-color: var(--color-primary);
+  box-shadow: 0 4px 20px rgba(150, 106, 133, 0.15);
+}
+
+.skill-category-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.skill-category-items {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+/* Experience entries */
+.experience-entry {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.experience-entry:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.experience-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.experience-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Invert dark logos in dark mode */
+.logo-invert {
+  filter: invert(1) brightness(0.9);
+}
+
+/* Logo links */
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.08);
+}
+
+.logo-link:hover .experience-logo,
+.logo-link:hover .project-logo {
+  box-shadow: 0 0 12px var(--color-glow);
+}
+
+.experience-company {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.experience-role {
+  font-size: 14px;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.experience-dates {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.experience-context {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 4px 0 12px 0;
+}
+
+.experience-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.experience-bullets li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.experience-bullets li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.experience-bullets li strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Metrics highlight */
+.metric {
+  color: var(--color-accent-cyan);
+  font-weight: 600;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.95em;
+}
+
+/* Projects section */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  padding: 20px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Purple accent line on left */
+.project-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary) 0%,
+    var(--color-primary-deep) 100%
+  );
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover {
+  border-color: rgba(201, 160, 184, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(150, 106, 133, 0.2);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.project-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.project-logo.logo-circular {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-border-purple);
+}
+
+.project-card:hover .project-logo {
+  opacity: 1;
+}
+
+.project-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.project-year {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.project-description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin: 0 0 12px 0;
+}
+
+.project-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--color-primary);
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.project-link:hover {
+  color: var(--color-primary-bright);
+  transform: translateX(3px);
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-tag {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: rgba(201, 160, 184, 0.1);
+  border: 1px solid rgba(201, 160, 184, 0.2);
+  border-radius: 3px;
+  color: var(--color-primary);
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+/* Education & Certs */
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.education-item {
+  padding: 16px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.education-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 4px 0;
+}
+
+.education-institution {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0 0 4px 0;
+}
+
+.education-details {
+  font-size: 12px;
+  color: var(--color-text-dim);
+}
+
+/* PDF Export button */
+.pdf-export-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--color-primary);
+  color: #0a0a0a;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(201, 160, 184, 0.3);
+  z-index: 100;
+}
+
+.pdf-export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 160, 184, 0.4);
+}
+
+.pdf-export-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Back link */
+.back-link {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  z-index: 100;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Page break hints for PDF */
+.page-break {
+  page-break-before: always;
+}
+
+/* Two-column layout for page 1 */
+.resume-two-col {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.resume-main {
+  min-width: 0;
+}
+
+.resume-sidebar {
+  min-width: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-container {
+    padding: 24px 16px;
+  }
+
+  .resume-two-col {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .resume-sidebar {
+    order: -1;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pdf-export-btn {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .back-link {
+    top: 16px;
+    left: 16px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print styles */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+
+  .resume-page {
+    background: white !important;
+    color: #333 !important;
+    --color-background: white;
+    --color-text: #111;
+    --color-text-muted: #444;
+    --color-text-dim: #666;
+    --color-primary: #7a4f6b;
+    --color-border: #ddd;
+    --color-card: #f8f8f8;
+  }
+
+  .resume-page::before {
+    display: none;
+  }
+
+  .pdf-export-btn,
+  .back-link {
+    display: none !important;
+  }
+
+  .resume-container {
+    max-width: none;
+    padding: 0;
+  }
+
+  .resume-summary {
+    background: #f5f5f5 !important;
+    border-left-color: #7a4f6b !important;
+  }
+
+  .skill-category,
+  .project-card,
+  .education-item {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+    break-inside: avoid;
+  }
+
+  .experience-entry {
+    break-inside: avoid;
+  }
+
+  .tech-tag {
+    background: #f0e8ed !important;
+    border-color: #d4c4ce !important;
+    color: #7a4f6b !important;
+  }
+
+  .metric {
+    color: #2a7a7a !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* Page 2 starts after skills */
+  .page-two-start {
+    page-break-before: always;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ICON STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Contact icons */
+.contact-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -2px;
+  margin-right: 4px;
+  color: var(--color-primary);
+  opacity: 0.8;
+}
+
+/* Section header icons */
+.section-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-primary);
+  opacity: 0.9;
+}
+
+/* Skill category icons */
+.skill-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -2px;
+  margin-right: 6px;
+  color: var(--color-primary);
+}
+
+/* Certification check icons */
+.cert-icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  margin-right: 6px;
+  color: var(--color-primary);
+  opacity: 0.7;
+}
+
+/* Project card icons */
+.project-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+  margin-right: 6px;
+  color: var(--color-primary);
+}
+
+/* Footer icon */
+.footer-icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  margin-right: 4px;
+  color: var(--color-primary);
+  opacity: 0.6;
+}
+
+/* Resume footer */
+.resume-footer {
+  text-align: center;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+  margin-top: 40px;
+}
+
+.resume-footer p {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  margin: 0;
+}
+
+.resume-footer a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.resume-footer a:hover {
+  color: var(--color-primary-bright);
+}
+
+/* Icon hover effects on contact links */
+.resume-contact a:hover .contact-icon {
+  color: var(--color-primary-bright);
+  opacity: 1;
+}
+
+/* Skill card icon animation */
+.skill-category:hover .skill-icon {
+  color: var(--color-primary-bright);
+  transform: scale(1.1);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Project card icon animation */
+.project-card:hover .project-icon {
+  color: var(--color-primary-bright);
+  transform: translateX(2px);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT: HIDE ICONS
+   ═══════════════════════════════════════════════════════════════ */
+@media print {
+  .contact-icon,
+  .section-icon,
+  .skill-icon,
+  .cert-icon,
+  .project-icon,
+  .footer-icon {
+    display: none;
+  }
+
+  .resume-section-title::before {
+    display: none;
+  }
+
+  /* Restore simple section underlines for print */
+  .resume-section-title::after {
+    background: #ddd;
+  }
+
+  /* Disable animations for print */
+  .resume-name {
+    animation: none;
+    text-shadow: none;
+  }
+
+  /* Handle logos for print */
+  .experience-logo,
+  .project-logo {
+    filter: grayscale(100%) !important;
+    opacity: 0.7;
+  }
+
+  .logo-invert {
+    filter: none !important;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .resume-name {
+    animation: none;
+  }
+
+  .skill-category,
+  .project-card {
+    transition: none;
+  }
+}

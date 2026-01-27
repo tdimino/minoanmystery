@@ -1,6 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "resume.minoanmystery.org"
+        }
+      ],
+      "destination": "/resume"
+    }
+  ],
   "redirects": [
     {
       "source": "/:path*",

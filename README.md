@@ -83,6 +83,10 @@ src/
 - **View Transitions**: Smooth page navigation
 - **Responsive**: Fluid typography with `clamp()`
 - **Mobile UX**: Touch-friendly targets, optimized parallax sections, 2-column detail grids
+- **Resume**: Interactive resume at `/resume` (also accessible via `resume.minoanmystery.org`)
+  - Tyrian purple dark theme with Motion animations
+  - PDF export via browser print
+  - SEO optimized with ProfilePage/Person structured data
 - **Portfolio Index**: Filterable case study grid with:
   - Category filters (Enterprise, Startup, Nonprofit)
   - Multi-discipline tags (UX Research, UX Design, Content Strategy, etc.)
