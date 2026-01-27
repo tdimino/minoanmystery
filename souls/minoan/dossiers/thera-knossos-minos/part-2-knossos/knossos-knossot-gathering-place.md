@@ -2,9 +2,9 @@
 title: "Knossos/Knossot: The Gathering Place"
 tags:
   deities: [demeter, apollo, shekhinah]
-  concepts: [knesset, assembly, gathering, k-n-s-root, sanctuary, palace-function, priest-administration, cult-continuity, distribution-center]
+  concepts: [knesset, assembly, gathering, k-n-s-root, sanctuary, palace-function, priest-administration, cult-continuity, distribution-center, four-enclosures, processional-movement, ritual-whole, sacred-architecture]
   places: [knossos, crete, gypsadhes, delphi, tyre]
-  scholars: [astour, coldstream, gordon, evans, peatfield, rendsburg, marinatos]
+  scholars: [astour, coldstream, gordon, evans, peatfield, rendsburg, marinatos, scully]
   periods: [bronze-age, minoan, hellenistic, classical]
   languages: [linear-a, linear-b, west-semitic, hebrew, aramaic, greek]
 ---
@@ -131,6 +131,26 @@ This priest-administration nexus confirms the *knesset* model: the Gathering Pla
 
 **The semantic fit**: If Knossos means "Gathering Place," the name describes the palace's essential function—a *knesset* where the community assembled for ritual and economic exchange.
 
+#### 7a. Scully: The Four Complementary Enclosures
+
+Vincent Scully's analysis of Greek sacred architecture confirms the temple-sanctuary interpretation of Knossos. The "palace" was not a royal residence but a liturgical space structured around processional movement toward the divine:
+
+> "Within that space the constructed elements take their form and create four complementary types of enclosures. They are: the labyrinthine passage, the open court, the columned pavilion, and the pillared cave. ... The natural and the man-made create one ritual whole."
+> — Scully, *The Earth, The Temple, and The Gods*, p. 11
+
+All four enclosure types appear at every Minoan "palace"—Knossos, Phaistos, Malia, Zakros:
+- **Labyrinthine passage**: The winding corridors throughout the complex
+- **Open court**: The central court where gatherings (*knesset*) occurred
+- **Columned pavilion**: The *megaron* halls with their characteristic columns
+- **Pillared cave**: The pillar crypts and lustral basins descending into darkness
+
+The consistency of these four elements across all major Minoan sites suggests not royal palaces with coincidentally similar floor plans, but temples following a liturgical program.
+
+#### 7b. Scully: Processional Movement to the Goddess Shrine
+
+> "The processional movement from light to dark to light and dark again—culminating as it does in the innermost cavern shrine where were found at once the hollow earth of the Goddess and the pillar which both enters and supports the earth and is thus also hers."
+> — Scully, *The Earth, The Temple, and The Gods*
+
 ### 8. Cretan Women and Linear A Tablets: Continuity of Reverence
 
 **Evans's observation**:
@@ -202,10 +222,11 @@ Administrative records showing the palace's distribution function—allocating o
 | Rendsburg, Gary | Black Athena etymologies | 1989 | Semitic-Greek parallels |
 | Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Priest-administration, professional priesthood |
 | Allen, Paula Gunn | *The Sacred Hoop* | 1986 | Ceremony as communal integration |
+| Scully, Vincent | *The Earth, The Temple, and The Gods* | 1962 | Four enclosures, processional architecture |
 
 ---
 
 ## RAG Tags
 
 <!-- 70 semantic keywords for retrieval -->
-knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, kinnusha, zohar, targum, wisdom, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, marinatos, hiereus, sacerdotal, priest-administration, divine indwelling, theophany
+knossos, knossot, k-n-s, kenos, knesset, assembly, gathering, congregation, synagogue, bet knesset, minyan, shekhinah, nehemiah, ecclesiastes, esther, psalm, infinitive construct, sheva, phonology, demeter, sanctuary, gypsadhes, coldstream, cult continuity, homeric hymn, apollo, wooded cnossus, palace, minoan, linear b, distribution, storage, pithoi, rations, kenishta, qadusha, kinnusha, zohar, targum, wisdom, proverbs, aramaic, mishnah, pirkei avot, great assembly, west semitic, bronze age, crete, ceremonial, administrative, priestess, peak sanctuary, cretan women, linear a tablets, charm, amulet, evans, continuity of reverence, tyrannion, tyrannos, tyre, marinatos, hiereus, sacerdotal, priest-administration, divine indwelling, theophany, scully, four enclosures, labyrinthine passage, open court, columned pavilion, pillared cave, processional movement, ritual whole, sacred architecture, phaistos, malia, zakros, temple not palace, liturgical program, hollow earth, goddess shrine, light and dark
