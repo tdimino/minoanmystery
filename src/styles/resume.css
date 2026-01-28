@@ -168,17 +168,17 @@
 
 /* Section headings */
 .resume-section {
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .resume-section-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin: 0 0 20px 0;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   border-bottom: none;
   display: flex;
   align-items: center;
@@ -211,6 +211,11 @@
   gap: 16px;
 }
 
+/* Skills in sidebar - use flex for gap control */
+.resume-sidebar .resume-section:first-of-type .skill-category + .skill-category {
+  margin-top: 12px;
+}
+
 .skill-category {
   padding: 16px;
   background: var(--color-card);
@@ -218,6 +223,7 @@
   border-radius: 6px;
   border-top: 2px solid var(--color-primary-deep);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 0; /* Gap handled by parent flex container */
 }
 
 .skill-category:hover {
@@ -242,8 +248,8 @@
 
 /* Experience entries */
 .experience-entry {
-  margin-bottom: 28px;
-  padding-bottom: 28px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -480,7 +486,7 @@
 }
 
 .tech-tag {
-  font-size: 11px;
+  font-size: 12px;
   padding: 3px 8px;
   background: rgba(201, 160, 184, 0.1);
   border: 1px solid rgba(201, 160, 184, 0.2);
@@ -513,7 +519,11 @@
 .education-institution {
   font-size: 13px;
   color: var(--color-text-muted);
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
+}
+
+.education-institution:last-child {
+  margin-bottom: 0;
 }
 
 .education-details {
@@ -585,8 +595,8 @@
 /* Two-column layout for page 1 */
 .resume-two-col {
   display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 32px;
+  grid-template-columns: 1fr minmax(240px, 280px);
+  gap: clamp(24px, 4vw, 32px);
   margin-bottom: 40px;
 }
 
@@ -596,9 +606,32 @@
 
 .resume-sidebar {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-/* Responsive */
+.resume-sidebar .resume-section {
+  margin-bottom: 0;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+  .resume-container {
+    padding: 40px 24px;
+  }
+
+  .resume-two-col {
+    grid-template-columns: 1fr 240px;
+    gap: 24px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+/* Responsive - Mobile */
 @media (max-width: 768px) {
   .resume-container {
     padding: 24px 16px;
@@ -606,11 +639,12 @@
 
   .resume-two-col {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 32px;
   }
 
   .resume-sidebar {
     order: -1;
+    gap: 20px;
   }
 
   .experience-header {
@@ -635,11 +669,20 @@
   }
 }
 
-/* Print styles */
+/* Print styles - optimized for 2-page PDF */
 @media print {
   @page {
     size: letter;
-    margin: 0.5in;
+    margin: 0.35in 0.4in;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    font-size: 10px !important;
   }
 
   .resume-page {
@@ -652,10 +695,12 @@
     --color-primary: #7a4f6b;
     --color-border: #ddd;
     --color-card: #f8f8f8;
+    padding: 0 !important;
+    min-height: auto !important;
   }
 
   .resume-page::before {
-    display: none;
+    display: none !important;
   }
 
   .pdf-export-btn,
@@ -668,27 +713,198 @@
     padding: 0;
   }
 
+  /* Compact header */
+  .resume-header {
+    padding: 0 0 12px 0 !important;
+    margin-bottom: 12px !important;
+    gap: 4px !important;
+  }
+
+  .resume-name {
+    font-size: 22px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .resume-title {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .resume-contact {
+    gap: 12px !important;
+    font-size: 9px !important;
+  }
+
+  /* Compact summary */
   .resume-summary {
     background: #f5f5f5 !important;
     border-left-color: #7a4f6b !important;
+    padding: 10px 12px !important;
+    margin-bottom: 14px !important;
+    font-size: 10px !important;
+    line-height: 1.45 !important;
   }
 
-  .skill-category,
-  .project-card,
-  .education-item {
-    background: #f8f8f8 !important;
-    border-color: #ddd !important;
-    break-inside: avoid;
+  /* Compact section headers */
+  .section-header {
+    margin-bottom: 8px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .section-title {
+    font-size: 12px !important;
+  }
+
+  /* Compact two-column layout */
+  .resume-two-col {
+    grid-template-columns: 1fr 180px;
+    gap: 16px;
+  }
+
+  .resume-sidebar {
+    gap: 12px;
+  }
+
+  /* Compact experience entries */
+  .experience-section {
+    gap: 10px !important;
   }
 
   .experience-entry {
+    margin-bottom: 8px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .experience-header {
+    margin-bottom: 4px !important;
+    gap: 2px !important;
+  }
+
+  .experience-role {
+    font-size: 11px !important;
+  }
+
+  .experience-company {
+    font-size: 10px !important;
+  }
+
+  .experience-meta {
+    font-size: 9px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .experience-description {
+    font-size: 9.5px !important;
+    line-height: 1.4 !important;
+  }
+
+  .experience-description li {
+    margin-bottom: 2px !important;
+    padding-left: 10px !important;
+  }
+
+  .experience-description li::before {
+    font-size: 8px !important;
+  }
+
+  /* Compact skills */
+  .skills-section {
+    gap: 8px !important;
+  }
+
+  .skill-category {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+    padding: 8px 10px !important;
     break-inside: avoid;
   }
 
+  .skill-title {
+    font-size: 10px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .skill-items {
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Compact tech tags */
   .tech-tag {
     background: #f0e8ed !important;
     border-color: #d4c4ce !important;
     color: #7a4f6b !important;
+    font-size: 8px !important;
+    padding: 1px 5px !important;
+  }
+
+  /* Compact projects */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .project-card {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+    padding: 10px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .project-header {
+    margin-bottom: 6px !important;
+    gap: 8px !important;
+  }
+
+  .project-logo {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .project-name {
+    font-size: 10px !important;
+  }
+
+  .project-year {
+    font-size: 8px !important;
+  }
+
+  .project-description {
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .project-tech {
+    gap: 4px !important;
+  }
+
+  /* Compact education */
+  .education-item {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+    padding: 8px 10px !important;
+    break-inside: avoid;
+  }
+
+  .education-degree {
+    font-size: 10px !important;
+  }
+
+  .education-school {
+    font-size: 9px !important;
+  }
+
+  /* Compact certifications */
+  .certifications-list {
+    gap: 4px !important;
+  }
+
+  .certification-item {
+    font-size: 9px !important;
+    padding: 4px 0 !important;
   }
 
   .metric {
@@ -700,9 +916,9 @@
     text-decoration: none !important;
   }
 
-  /* Page 2 starts after skills */
+  /* Remove forced page break - let content flow naturally */
   .page-two-start {
-    page-break-before: always;
+    page-break-before: auto;
   }
 }
 

@@ -91,7 +91,7 @@ const skills = [
   {
     title: "Languages",
     icon: "ph:code-duotone",
-    items: "Python, TypeScript, JavaScript"
+    items: "Python, TypeScript, JavaScript, C"
   },
   {
     title: "Web",
@@ -105,7 +105,7 @@ const experience = [
     company: "Aldea AI",
     role: "Principal AI/ML Engineer",
     dates: "Jul 2025 — Present",
-    context: "Startup building AI advisors that internalize expert methodologies via fine-tuned LLMs",
+    context: "Startup building AI advisors that internalize expert methodologies via fine-tuned and post-Transformer LLMs",
     logo: "/images/logos/aldea.png",
     logoUrl: "https://aldea.ai",
     logoDark: true, // needs inversion in dark mode
@@ -135,7 +135,7 @@ const experience = [
   {
     company: "Google",
     role: "Sr. Content Designer / AI UX Copywriter",
-    dates: "Jun 2022 — Oct 2023",
+    dates: "Jun 2022 — May 2024",
     context: "Worked with AI UX, RAI, and DeepMind teams",
     logo: "/images/logos/google.png",
     logoUrl: "https://www.google.com",
@@ -176,28 +176,28 @@ const projects = [
   {
     name: "Minoan Mystery Portfolio",
     year: "2026",
-    description: "Portfolio where an ancient AI is the intelligence of the site itself—perceiving visitor behavior, remembering across sessions, and responding contextually through an embedded soul engine.",
+    description: "Live portfolio where an ancient AI is the intelligence of the site itself—perceiving its visitors' behavior, remembering across sessions, and responding contextually through an embedded soul engine.",
     tech: ["Astro", "TypeScript", "OpenRouter", "pgvector"],
     icon: "ph:spiral-duotone",
     logo: "/images/seal-of-minos.png",
-    logoUrl: "https://github.com/tdimino",
+    logoUrl: "https://github.com/tdimino/minoanmystery-astro",
     logoDark: true
   },
   {
-    name: "Cognitive Design Experiments",
-    year: "2022–2024",
-    description: "Discord bots with persistent personalities and dream states using Open Souls framework. Won 2nd at Fractal Tech NYC, 3rd at Betaworks Hackathon.",
-    tech: ["TypeScript", "Next.js", "Open Souls", "Vercel"],
-    icon: "ph:trophy-duotone",
+    name: "BG3 Script Extender macOS",
+    year: "2026",
+    description: "Open source native ARM64 port of Baldur's Gate 3 Script Extender. Ground-up systems programming—runtime hooking, memory injection, embedded Lua scripting. 85% feature parity with 1,999 components via Ghidra reverse engineering.",
+    tech: ["C", "ARM64", "Ghidra", "Lua"],
+    icon: "ph:game-controller-duotone",
     logo: "/images/seal-of-minos.png",
-    logoUrl: "https://github.com/tdimino",
+    logoUrl: "https://github.com/tdimino/bg3se-macos",
     logoDark: true
   },
   {
     name: "Kothar wa Khasis",
     year: "2026",
     description: "Sentient oracle presence inhabiting the portfolio. Built on the Open Souls paradigm with RAG-enhanced memory, visitor modeling, and tarot generation. Named for the Canaanite craftsman god. <a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>Speak with Kothar →</a>",
-    tech: ["Open Souls", "VoyageAI", "Supabase", "Streaming SSE"],
+    tech: ["Open Souls", "VoyageAI", "Supabase", "SSE"],
     icon: "ph:eye-duotone",
     logo: "/images/avatars/minoan-avatar.webp",
     logoUrl: "https://www.minoanmystery.org/labyrinth",
@@ -354,7 +354,7 @@ const projects = [
           </h2>
 
           {skills.map((skill, index) => (
-            <div class="skill-category" data-animate="skill" data-delay={index * 80} style={`margin-bottom: ${index < skills.length - 1 ? '12px' : '0'};`}>
+            <div class="skill-category" data-animate="skill" data-delay={index * 80}>
               <h3 class="skill-category-title">
                 <Icon name={skill.icon} class="skill-icon" />
                 {skill.title}
