@@ -81,7 +81,7 @@ const skills = [
   {
     title: "AI/ML",
     icon: "ph:brain-duotone",
-    items: "LLM APIs (OpenAI, Anthropic, Groq), LangGraph, LlamaIndex, DeepEval, Fine-tuning (LoRA), Embeddings (VoyageAI), Vector DBs (pgvector)"
+    items: "LLM APIs (OpenAI, Anthropic, Groq), LangGraph, LlamaIndex, DeepEval, Fine-tuning (LoRA), Embeddings (VoyageAI), Vector DBs (pgvector), Semantic search"
   },
   {
     title: "Infrastructure",
@@ -96,7 +96,7 @@ const skills = [
   {
     title: "Web",
     icon: "ph:globe-duotone",
-    items: "Next.js, React, Node.js, Astro, Vercel, Railway"
+    items: "Next.js, React, Node.js, Astro, Tailwind, ShadCN, LiveKit, Vercel, Railway"
   }
 ];
 
@@ -156,7 +156,7 @@ const experience = [
     logoDark: false,
     bullets: [
       { text: "Co-led design of learning platform for <strong>napari</strong>—Python-based image analysis for biologists" },
-      { text: "Published full course on GitHub using <strong>Jupyter Book, Jupyter Notebooks</strong> (Markdown, Python)" },
+      { text: "Published full course on GitHub using <strong>Jupyter Book, Jupyter Notebooks</strong> (Markdown, Python, and narrated video)" },
       { text: "Collaborated with 9 application scientists, UX researchers, and SWEs to ship MVP in 6 months" }
     ]
   }
@@ -171,7 +171,8 @@ const projects = [
     icon: "ph:radio-duotone",
     logo: "/images/seal-of-minos.png",
     logoUrl: "https://github.com/tdimino",
-    logoDark: true
+    logoDark: true,
+    logoCircular: true
   },
   {
     name: "Minoan Mystery Portfolio",
@@ -181,7 +182,8 @@ const projects = [
     icon: "ph:spiral-duotone",
     logo: "/images/seal-of-minos.png",
     logoUrl: "https://github.com/tdimino/minoanmystery-astro",
-    logoDark: true
+    logoDark: true,
+    logoCircular: true
   },
   {
     name: "BG3 Script Extender macOS",
@@ -191,7 +193,8 @@ const projects = [
     icon: "ph:game-controller-duotone",
     logo: "/images/seal-of-minos.png",
     logoUrl: "https://github.com/tdimino/bg3se-macos",
-    logoDark: true
+    logoDark: true,
+    logoCircular: true
   },
   {
     name: "Kothar wa Khasis",
@@ -375,6 +378,11 @@ const projects = [
             <p class="education-institution">The College of New Jersey</p>
             <p class="education-details">Minor in Classical History · 2007–2011</p>
           </div>
+          <div class="education-item" data-animate="edu">
+            <h3 class="education-title">Improv Comedy 101</h3>
+            <p class="education-institution">Upright Citizens Brigade Theatre</p>
+            <p class="education-details">NYC · 2015</p>
+          </div>
         </section>
 
         <!-- Certifications -->
@@ -386,15 +394,15 @@ const projects = [
           <div class="education-item" data-animate="cert">
             <p class="education-institution">
               <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Google Prompting Essentials
+              Google Prompting Essentials (2025)
             </p>
             <p class="education-institution">
               <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Introduction to Large Language Models
+              Introduction to Large Language Models (2023)
             </p>
             <p class="education-institution">
               <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Introduction to Generative AI
+              Introduction to Generative AI (2023)
             </p>
           </div>
         </section>

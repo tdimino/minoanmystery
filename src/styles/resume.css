@@ -303,7 +303,7 @@
 }
 
 .logo-link:hover .experience-logo,
-.logo-link:hover .project-logo {
+.logo-link:hover .project-logo:not(.logo-circular) {
   box-shadow: 0 0 12px var(--color-glow);
 }
 
