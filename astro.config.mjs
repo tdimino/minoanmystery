@@ -9,7 +9,9 @@ export default defineConfig({
   site: 'https://www.minoanmystery.org',
   trailingSlash: 'never',
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    edgeMiddleware: true,
+  }),
   integrations: [
     sitemap(),
     icon({

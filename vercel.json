@@ -1,29 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "resume.minoanmystery.org"
-        }
-      ],
-      "destination": "/resume"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "host",
-          "value": "minoanmystery.org"
-        }
-      ],
-      "destination": "https://www.minoanmystery.org/:path*",
-      "permanent": true
-    }
-  ]
+  "trailingSlash": false
 }
