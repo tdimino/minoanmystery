@@ -13,7 +13,7 @@ tags:
 
 ## Overview
 
-The name **Knossos** (Κνωσός) may preserve a Semitic root *k-n-s* meaning "to gather, assemble." This etymology—proposed by scholars examining Aegean-Semitic linguistic connections—would make Knossos the "Gathering Place" or "Assembly," a name befitting the Minoan palace's function as a ceremonial and administrative center where priestesses, officials, and worshippers convened for religious rites and economic distribution.
+The name **Knossos** (Κνωσός) may preserve a Semitic root *k-n-s* meaning "to gather, assemble." This etymology—our own proposal, building on the Aegean-Semitic linguistic framework established by Gordon, Astour, Rendsburg, and Bernal—would make Knossos the "Gathering Place" or "Assembly," a name befitting the Minoan palace's function as a ceremonial and administrative center where priestesses, officials, and worshippers convened for religious rites and economic distribution.
 
 The Hebrew Bible attests the root *k-n-s* exclusively in verbal forms, yet later Aramaic and Mishnaic Hebrew develop the noun **כְּנֶסֶת** (*knesset*, "assembly")—the term that gives modern Israel's parliament its name. The phonological match is precise: the construct form **כְּנוֹס** (*kenos*, infinitive construct in Ecclesiastes 3:5) produces the consonant cluster *Kn-* that maps directly to Greek *Κν-* in Κνωσός. The sheva (ְ) under the כ represents an ultra-short or effectively silent vowel, yielding the same initial cluster.
 
@@ -188,11 +188,11 @@ Administrative records showing the palace's distribution function—allocating o
 
 ### Scholarly Support
 
-**Astour, Michael C.**: Proposed the *k-n-s* etymology in the context of Aegean-Semitic linguistic parallels.
+**Astour, Michael C.**: Analyzed Egyptian transcription *Ku-nu-sha* phonetically; did not propose etymology but established Semitic phonological framework.
 
 **Coldstream, J.N.** (*Knossos: The Sanctuary of Demeter*, 1973): Documented cult continuity at the Gypsadhes hill site.
 
-**Gordon, Cyrus H.**: Connected Linear A/B vocabulary to Semitic lexicon, supporting Knossos etymology.
+**Gordon, Cyrus H.**: Connected Linear A/B vocabulary to Semitic lexicon; did not discuss Knossos etymology specifically but established Semitic substrate framework.
 
 ---
 
@@ -214,7 +214,7 @@ Administrative records showing the palace's distribution function—allocating o
 
 | Scholar | Work | Year | Contribution |
 |---------|------|------|--------------|
-| Astour, Michael C. | *Hellenosemitica* | 1965 | Knossos etymology proposal |
+| Astour, Michael C. | "Aegean Place-Names in an Egyptian List" | 1966 | Egyptian transcription *Ku-nu-sha* phonology |
 | Coldstream, J.N. | *Knossos: The Sanctuary of Demeter* | 1973 | Archaeological cult continuity |
 | Gordon, Cyrus H. | "Evidence for the Minoan Language" | 1966 | Linear A Semitic substrate |
 | Evans, Arthur | *The Palace of Minos* | 1921–35 | Palatial archaeology |

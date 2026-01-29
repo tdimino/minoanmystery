@@ -166,7 +166,7 @@ thera, kalliste, volcanic, eruption, membliaros, ...
 - **Demeter's temples called megara; megaron = Semitic loan**
 
 ### 9. `knossos-knossot-gathering-place.md`
-**Scope**: Knossos etymology (Astour: possibly *knossot* with lost final -t), palace as egalitarian gathering place, ceremonial academy for priestesses. Extensive Semitic assembly terminology parallels.
+**Scope**: Knossos etymology (our proposal: *k-n-s* root = "gathering"; Astour analyzed Egyptian transcription *Ku-nu-sha* but did not propose etymology), palace as egalitarian gathering place, ceremonial academy for priestesses. Extensive Semitic assembly terminology parallels.
 
 **Key concepts**:
 - Knossos < *knst* (gathering?)
