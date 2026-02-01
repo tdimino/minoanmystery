@@ -1,4 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "trailingSlash": false
+  "trailingSlash": false,
+  "functions": {
+    "src/pages/api/soul/chat.ts": {
+      "maxDuration": 60
+    }
+  }
 }

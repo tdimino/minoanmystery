@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- **Labyrinth Chat Streaming Bug**: Fixed SSE stream completion blocking issue
+  - **Root Cause**: `await resultPromise` blocked before sending `done` SSE event, causing clients to never receive completion signal if post-processing delayed
+  - **Solution**: Accumulate response locally during streaming, send `done` event immediately after last chunk, make `resultPromise` non-blocking (fire-and-forget with error logging)
+  - **Paths Fixed**: Standard dialog (lines 624-634), poetic composition (lines 568-578), poetic fallback (lines 598-608)
+  - **Additional Changes**:
+    - `vercel.json`: Added `maxDuration: 60` for chat function
+    - Subprocess timeout reduced from 45s to 15s for safety margin within Vercel limits
+
 ### Changed
 - **Dossier INDEX Update**: Refreshed `souls/minoan/dossiers/INDEX.md` with accurate counts
   - Added Paula Gunn Allen (18 dossiers) as 5th scholar in scholarly-sources

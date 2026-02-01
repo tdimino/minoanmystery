@@ -31,3 +31,7 @@ generated/
 .vercel
 .env*.local
 src/pages/og-preview.astro
+src/pages/labyrinth-test.astro
+src/components/labyrinth/DebugPanel.astro
+src/styles/labyrinth/debug.css
+logs/

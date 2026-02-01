@@ -565,11 +565,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                   }
                 );
 
+                // Accumulate response while streaming to avoid blocking on resultPromise
+                let accumulatedResponse = '';
                 for await (const chunk of responseStream) {
+                  accumulatedResponse += chunk;
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
                 }
-                finalResult = await resultPromise;
+                // Use accumulated response for immediate done event
+                finalResult = accumulatedResponse;
                 newMemory = poeticMemory;
+                // Await resultPromise in background for memory updates (non-blocking for client)
+                resultPromise.catch((err) => console.warn('[Soul Chat] Poetic result promise error:', err));
 
                 console.log(`[Soul Chat] Poem generated: register=${register}, expandedDomains=${expandedDomains}`);
               } catch (poeticError) {
@@ -589,11 +595,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                   }
                 );
 
+                // Accumulate response while streaming to avoid blocking on resultPromise
+                let accumulatedFallback = '';
                 for await (const chunk of fallbackStream) {
+                  accumulatedFallback += chunk;
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
                 }
-                finalResult = await fallbackResult;
+                // Use accumulated response for immediate done event
+                finalResult = accumulatedFallback;
                 newMemory = fallbackMemory;
+                // Await fallbackResult in background for memory updates (non-blocking for client)
+                fallbackResult.catch((err) => console.warn('[Soul Chat] Fallback result promise error:', err));
               }
             } else {
               // Standard externalDialog for non-poetic responses
@@ -609,11 +621,17 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
                 }
               );
 
+              // Accumulate response while streaming to avoid blocking on resultPromise
+              let accumulatedResponse = '';
               for await (const chunk of responseStream) {
+                accumulatedResponse += chunk;
                 controller.enqueue(encoder.encode(`data: ${JSON.stringify({ chunk })}\n\n`));
               }
-              finalResult = await resultPromise;
+              // Use accumulated response for immediate done event
+              finalResult = accumulatedResponse;
               newMemory = dialogMemory;
+              // Await resultPromise in background for memory updates (non-blocking for client)
+              resultPromise.catch((err) => console.warn('[Soul Chat] Result promise error:', err));
             }
 
             console.log(JSON.stringify({
@@ -757,8 +775,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               subprocessPromises.push(tarotPromise as Promise<void>);
 
               // Wait for all subprocesses to complete before closing stream
-              // Timeout set to 45s to accommodate multi-card tarot generation
-              const SUBPROCESS_TIMEOUT = 45000;
+              // Timeout reduced to 15s to stay within Vercel function limits
+              // Tarot generation may be cut off but main response is already delivered
+              const SUBPROCESS_TIMEOUT = 15000;
               const timeoutError = new Error('Subprocess timeout');
 
               await Promise.race([
