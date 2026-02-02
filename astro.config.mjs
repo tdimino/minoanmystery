@@ -11,6 +11,7 @@ export default defineConfig({
   output: 'static',
   adapter: vercel({
     edgeMiddleware: true,
+    maxDuration: 60,
   }),
   integrations: [
     sitemap(),

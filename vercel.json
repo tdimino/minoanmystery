@@ -1,9 +1,17 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
-  "functions": {
-    "src/pages/api/soul/chat.ts": {
-      "maxDuration": 60
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "minoanmystery.org"
+        }
+      ],
+      "destination": "https://www.minoanmystery.org/:path*",
+      "permanent": true
     }
-  }
+  ]
 }
