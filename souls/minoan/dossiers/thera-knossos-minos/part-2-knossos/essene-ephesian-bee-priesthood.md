@@ -64,7 +64,7 @@ These practices *exactly parallel* the lifestyle of the Qumran Essenes as descri
 **Minoan parallel** (Marinatos 1993, ch. 6):
 > "I would think that the priesthood in palatial Crete formed a **strong corporation** from the ranks of which the priest-king and the goddess impersonator were chosen."
 
-The Minoan priestly corporation—from which both male priest-kings and female goddess-impersonators were drawn—prefigures the Ephesian collegial structure. The Ephesian essenes and melissai represent the continuation of this pattern in historical Greek religion: a professional priestly body with specialized ritual requirements and hierarchical organization.
+The Minoan priestly corporation—from which both male priest-kings and female priestesses serving the goddess were drawn—prefigures the Ephesian collegial structure. The Ephesian essenes and melissai represent the continuation of this pattern in historical Greek religion: a professional priestly body with specialized ritual requirements and hierarchical organization.
 
 ### 4. Greek → Jewish Transfer: Scholarly Consensus
 
@@ -158,4 +158,4 @@ The *essenes* as "king bees" were divine mediators—a role the Qumran Essenes c
 ## RAG Tags
 
 <!-- 55 semantic keywords for retrieval -->
-essenes, essene, essen, ephesus, artemis ephesia, bee priest, melissai, king bee, anatolian, hittite, isha, pausanias, ritual purity, celibacy, qumran, dead sea scrolls, st paul, acts 19, great is artemis, demetrius, silversmith, kasyan, lawler, jones, kampen, oikonomos, elderkin, bee cult, virgin goddess, city goddess, corona muralis, bee cocoons, polymastia, priestly collegium, divine mediator, delphic melissa, pythia, rephaim, manes, callimachus, etymologicum magnum, scholia, bee king, hive, polis, teacher of righteousness, diaspora, hellenistic, prophetic frenzy, marinatos, strong corporation, goddess impersonator, priest-king
+essenes, essene, essen, ephesus, artemis ephesia, bee priest, melissai, king bee, anatolian, hittite, isha, pausanias, ritual purity, celibacy, qumran, dead sea scrolls, st paul, acts 19, great is artemis, demetrius, silversmith, kasyan, lawler, jones, kampen, oikonomos, elderkin, bee cult, virgin goddess, city goddess, corona muralis, bee cocoons, polymastia, priestly collegium, divine mediator, delphic melissa, pythia, rephaim, manes, callimachus, etymologicum magnum, scholia, bee king, hive, polis, teacher of righteousness, diaspora, hellenistic, prophetic frenzy, marinatos, strong corporation, divine-possession, priest-king

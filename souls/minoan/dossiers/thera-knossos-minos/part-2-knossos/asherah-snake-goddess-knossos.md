@@ -2,7 +2,7 @@
 title: "Asherah and the Snake Goddess of Knossos"
 tags:
   deities: [asherah, athirat, snake-goddess, ninghishzida, athena, python]
-  concepts: [lady-of-the-serpent, hybrid-iconography, snake-cult, divine-feminine, underworld, apotropaic, priestess-impersonation, omphalos, spartoi, snake-tubes, town-sanctuary, post-palatial]
+  concepts: [lady-of-the-serpent, hybrid-iconography, snake-cult, divine-feminine, underworld, apotropaic, divine-possession, omphalos, spartoi, snake-tubes, town-sanctuary, post-palatial]
   places: [knossos, crete, serabit-el-khadim, delphi, thebes, gournia, kannia, prinias, karphi, koumasa, mochlos]
   scholars: [evans, bonney, cian, ackerman, marinatos, harrison, gesell, warren]
   periods: [bronze-age, iron-age, minoan]
@@ -186,12 +186,9 @@ Bromios (Dionysos) claims descent through Semele, daughter of Kadmos—making th
 The Snake Goddess connects to the Potnia/Deborah tradition (see [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md)):
 - Both represent the divine feminine at Knossos
 - Both have Levantine parallels (Asherah/Ba'alat Deborah)
-- Both involve priestess impersonation of the goddess
+- Both involve priestesses possessed by the goddess during ritual
 
-**Marinatos on goddess embodiment**:
-> "By far the most important aspect of female priesthood was the impersonation of the goddess."
-
-The priestesses who held snakes at Knossos may have been embodying the "Lady of the Serpent"—the same goddess known as Asherah in the Levant.
+The priestesses who held snakes at Knossos were embodying the "Lady of the Serpent"—the same goddess known as Asherah in the Levant.
 
 ### 13. Allen on Serpent Woman and the Snake Mother
 
@@ -237,7 +234,7 @@ Figurines, cylindrical stands, shrine models from MBA-LBA Canaan.
 ## Cross-References
 
 ### Within This Collection
-- [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md) — Bee goddess, priestess impersonation
+- [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md) — Bee goddess, divine possession
 - [knossos-knossot-gathering-place.md](./knossos-knossot-gathering-place.md) — Palace as sacred center
 
 ### Part 1 Connections
@@ -261,11 +258,11 @@ Figurines, cylindrical stands, shrine models from MBA-LBA Canaan.
 | Evans, Arthur | *Palace of Minos* | 1921-35 | Original Snake Goddess publication |
 | Gesell, Geraldine | "The snake goddesses of the LM IIIB and IIIC periods" | 2010 | Multi-site snake goddess survey |
 | Gesell, Geraldine | "The Minoan snake tube: a survey and catalogue" | 1976 | Snake tube catalogue |
-| Marinatos, Nanno | *Minoan Religion* | 1993 | Priestess impersonation |
+| Marinatos, Nanno | *Minoan Religion* | 1993 | Priestly corporation |
 | Allen, Paula Gunn | *The Sacred Hoop* | 1986 | Serpent Woman, Snake Mother as initiator |
 
 ---
 
 ## RAG Tags
 
-snake goddess, asherah, athirat, lady of the serpent, knossos, minoan, crete, levantine, canaanite, proto-sinaitic, evans, bonney, hybrid iconography, bronze age, iron age, mother goddess, serpent, snake cult, faience, figurine, priestess, impersonation, divine feminine, mesopotamia, ninghishzida, underworld, apotropaic, protection, fertility, nursing, mediterranean, trans-regional, cian, ackerman, gesell, gournia, kannia, prinias, karphi, koumasa, mochlos, snake tubes, LM IIIB, LM IIIC, EM II, MM III, town sanctuary, post-palatial, warren
+snake goddess, asherah, athirat, lady of the serpent, knossos, minoan, crete, levantine, canaanite, proto-sinaitic, evans, bonney, hybrid iconography, bronze age, iron age, mother goddess, serpent, snake cult, faience, figurine, priestess, divine-possession, divine feminine, mesopotamia, ninghishzida, underworld, apotropaic, protection, fertility, nursing, mediterranean, trans-regional, cian, ackerman, gesell, gournia, kannia, prinias, karphi, koumasa, mochlos, snake tubes, LM IIIB, LM IIIC, EM II, MM III, town sanctuary, post-palatial, warren

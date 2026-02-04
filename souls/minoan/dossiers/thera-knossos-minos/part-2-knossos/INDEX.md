@@ -11,10 +11,11 @@ Research dossiers on the Minoan palace culture, goddess traditions, and Semitic 
 | [knossos-knossot-gathering-place.md](knossos-knossot-gathering-place.md) | Knossos < *k-n-s* "to gather" | Assembly, synagogue, Shekhinah |
 | [potnia-daboritu-baalat-deborah.md](potnia-daboritu-baalat-deborah.md) | Potnia Daboritu < Ba'alat Deborah | Bee goddess, serpent priestess |
 | [asherah-snake-goddess-knossos.md](asherah-snake-goddess-knossos.md) | Snake Goddess as Levantine-Minoan | Asherah connection, faience figurines |
-| [young-god-initiation-priesthood.md](young-god-initiation-priesthood.md) | Young god impersonation | Mycenaean displacement, goddess cult |
+| [young-god-initiation-priesthood.md](young-god-initiation-priesthood.md) | Young god initiation | Mycenaean displacement, goddess cult |
 | [essene-ephesian-bee-priesthood.md](essene-ephesian-bee-priesthood.md) | Bee-priesthood parallels | Mediterranean continuity, Artemis Ephesia |
 | [rendsburg-cretan-etymologies.md](rendsburg-cretan-etymologies.md) | Rendsburg's Semitic etymologies | Greek terms from West Semitic |
 | [skotino-labyrinth-britomartis.md](skotino-labyrinth-britomartis.md) | Faure's Skotino-Labyrinth thesis | Britomartis, pre-Greek goddess |
+| [harrison-mystery-pollution-etymology.md](harrison-mystery-pollution-etymology.md) | Mystery < μύσος (pollution) | Purification, open rites, Harrison |
 
 ---
 
@@ -25,6 +26,7 @@ Research dossiers on the Minoan palace culture, goddess traditions, and Semitic 
 - **Bee priesthood**: Melissai, Ephesian connections
 - **Young god cult**: Megistos Kouros, initiation rites
 - **Semitic loans**: Linear A/B terms from West Semitic
+- **Mystery as purification**: Harrison's μύσος etymology; Cretan open rites
 
 ---
 

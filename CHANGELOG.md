@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- **Harrison Prolegomena OCR**: Full OCR of Jane Ellen Harrison's *Prolegomena to the Study of Greek Religion* (1908)
+  - 716-page PDF split into 4 parts, OCR'd via Marker, and added to academic-research RAG
+  - Total ~1.5MB of new Harrison scholarship now searchable
+- **New Part II Dossier**: `harrison-mystery-pollution-etymology.md`
+  - Harrison's argument that μυστήριον derives from μύσος (pollution), not μύω (secrecy)
+  - Mystery = "the doing of what relates to pollution" — purification, not secret knowledge
+  - Connected to Diodorus's testimony that Cretan mysteries were "open to all"
+  - τελετή (initiation) etymology from *Epilegomena* (1921): "completion, accomplishment, fulfilment"
+  - Links Minoan labyrinth function to ritual purification complexes
+
+### Changed
+- **Part II Dossier Edits**: Reframed "impersonation" language per Harrison's Frazerian critique
+  - `young-god-initiation-priesthood.md`: Title changed, editorial note on divine possession vs. impersonation
+  - `potnia-daboritu-baalat-deborah.md`: Section 9 renamed, Tamarru editorial note added
+  - Marinatos quotes preserved as historical; our framing emphasizes genuine possession
+- **Part II INDEX**: Added new dossier and "Mystery as purification" theme
+
 ### Fixed
 - **Labyrinth Chat Streaming Bug**: Fixed SSE stream completion blocking issue
   - **Root Cause**: `await resultPromise` blocked before sending `done` SSE event, causing clients to never receive completion signal if post-processing delayed

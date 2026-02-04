@@ -151,7 +151,7 @@ This genealogy places Britomartis within the **Phoenician family of Europa and K
 
 **Willetts, R.F.** (*Cretan Cults and Festivals*, 1962): Standard reference on Cretan religious traditions.
 
-**Marinatos, Nanno** (*Minoan Religion*, 1993): Priestess impersonation of the goddess; "strong corporation" of priestly craftsmen.
+**Marinatos, Nanno** (*Minoan Religion*, 1993): Priestess ritual roles; "strong corporation" of priestly craftsmen.
 
 ---
 
@@ -160,7 +160,7 @@ This genealogy places Britomartis within the **Phoenician family of Europa and K
 ### Within This Collection
 - [potnia-daboritu-baalat-deborah.md](./potnia-daboritu-baalat-deborah.md) — Linear B *da-pu₂-ri-to-jo po-ti-ni-ja*; bee-goddess traditions
 - [knossos-knossot-gathering-place.md](./knossos-knossot-gathering-place.md) — Palace as "gathering place" (complements cave as cult site)
-- [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Daedalus as young god impersonator; craftsman priesthood
+- [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Daedalus as divine craftsman; priestly initiation
 - [meinos-manna-etymology.md](../part-3-minos/meinos-manna-etymology.md) — Minos-Marnas connection; Gaza traditions
 
 ### Per-Article Dossiers
@@ -176,7 +176,7 @@ This genealogy places Britomartis within the **Phoenician family of Europa and K
 | Faure, Paul | *Fonctions des Cavernes Crétoises* | 1964 | Skotino-Labyrinth thesis; four cult types |
 | Evans, Arthur | *Palace of Minos* | 1921–35 | Skotino as sacred cave candidate |
 | Willetts, R.F. | *Cretan Cults and Festivals* | 1962 | Cretan religious traditions |
-| Marinatos, Nanno | *Minoan Religion* | 1993 | Priestess impersonation; priestly corporation |
+| Marinatos, Nanno | *Minoan Religion* | 1993 | Priestly corporation |
 | Buxton, Bridget Ann | *Diktynna: Myth and Cult* | 1995 | Britomartis dissertation |
 | Callimachus | *Hymn to Artemis* | 3rd c. BCE | Nine-month pursuit myth |
 | Pausanias | *Description of Greece* | 2nd c. CE | Daedalus statue at Olous |

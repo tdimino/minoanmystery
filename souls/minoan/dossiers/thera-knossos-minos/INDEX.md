@@ -25,7 +25,7 @@ Research dossiers supporting the academic paper on Minoan-Semitic linguistic con
 | [knossos-knossot-gathering-place](part-2-knossos/knossos-knossot-gathering-place.md) | Knossos < *k-n-s* "to gather"; the Gathering Place |
 | [potnia-daboritu-baalat-deborah](part-2-knossos/potnia-daboritu-baalat-deborah.md) | Potnia Daboritu < Ba'alat Deborah; bee goddess + serpent |
 | [asherah-snake-goddess-knossos](part-2-knossos/asherah-snake-goddess-knossos.md) | Snake Goddess as Levantine-Minoan hybrid; Asherah connection |
-| [young-god-initiation-priesthood](part-2-knossos/young-god-initiation-priesthood.md) | Young god impersonation; Mycenaean displacement of goddess cult |
+| [young-god-initiation-priesthood](part-2-knossos/young-god-initiation-priesthood.md) | Young god initiation; Mycenaean displacement of goddess cult |
 | [essene-ephesian-bee-priesthood](part-2-knossos/essene-ephesian-bee-priesthood.md) | Bee-priesthood parallels across Mediterranean |
 | [rendsburg-cretan-etymologies](part-2-knossos/rendsburg-cretan-etymologies.md) | Rendsburg's Semitic etymologies for Greek terms |
 | [skotino-labyrinth-britomartis](part-2-knossos/skotino-labyrinth-britomartis.md) | Faure's Skotino-Labyrinth thesis; Britomartis as pre-Greek goddess |

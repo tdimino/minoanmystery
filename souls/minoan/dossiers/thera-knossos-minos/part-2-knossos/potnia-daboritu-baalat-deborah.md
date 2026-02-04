@@ -2,7 +2,7 @@
 title: "Potnia Daboritu: The Bee-Goddess and Ba'alat Deborah"
 tags:
   deities: [potnia, deborah, melissa, artemis, demeter, asherah, hannahanna, telepinu]
-  concepts: [labyrinth, da-pu-ri-to, bee-goddess, oracle, prophecy, sacred-tree, priestess-impersonation, goddess-embodiment, priestly-corporation]
+  concepts: [labyrinth, da-pu-ri-to, bee-goddess, oracle, prophecy, sacred-tree, priestly-corporation]
   places: [knossos, malia, ephesus, bethel, ramah]
   scholars: [hestrin, ventris, chadwick, elderkin, gordon, rendsburg, marinatos, vainstub]
   periods: [bronze-age, minoan, mycenaean, linear-b]
@@ -114,17 +114,17 @@ Greek *megaron* (μέγαρον) < Semitic *mʿārâ* ("cave")
 
 **The semantic fit**: Demeter's temples were called *megara*, and the innermost chamber of Mycenaean palaces bore the same name. Both preserve the sense of an enclosed, womb-like sacred space—a "cave" where the goddess dwelt.
 
-### 9. Priestess Impersonation and Goddess Embodiment
+### 9. Priestesses and Divine Possession
 
 **Marinatos (1993, ch. 6)**:
 > "By far the most important aspect of female priesthood was the impersonation of the goddess. We do not know how the women were chosen, whether the office was hereditary, or whether there was special education during which some girls distinguished themselves."
 
-**Significance**: The Minoan priestess *became* the goddess during ritual—precisely what the *melissa* (bee-priestess) tradition preserves. The Delphic Pythia was called "Melissa" because she embodied divine speech. When the priestess spoke, it was not her voice but the goddess's words—the *dabar* delivered by the *deborah*.
-
 **Professional priesthood** (Marinatos 1993, ch. 6):
 > "I would think that the priesthood in palatial Crete formed a strong corporation from the ranks of which the priest-king and the goddess impersonator were chosen."
 
-The goddess-impersonator emerged from a professional priestly class with specialized training—parallel to the Levitical system where priests underwent formal consecration before serving at the sanctuary.
+*Editorial note (Tamarru):* The secular assumption that mystics were charlatans—and that "impersonation" implies performance rather than genuine experience—is as old as Euhemerus. The priestesses of the Goddess did not *pretend* to be possessed; they *were* possessed by the Holy Spirit. When the *melissa* spoke, it was not her voice but the Goddess's words—the *dabar* delivered through the *deborah*. The Delphic Pythia, the Ephesian *melissai*, and the Minoan priestesses all participated in the same tradition of **genuine divine possession**, not theatrical mimicry.
+
+The professional priestly class provided the training and ritual context for such possession to occur—parallel to the Levitical system where priests underwent formal consecration before serving at the sanctuary.
 
 ---
 
@@ -165,7 +165,7 @@ The offering of honey (*me-ri*) to the Labyrinth goddess reinforces the bee conn
 - [asherah-snake-goddess-knossos.md](./asherah-snake-goddess-knossos.md) — Snake Goddess as Levantine-Minoan hybrid
 - [knossos-knossot-gathering-place.md](./knossos-knossot-gathering-place.md) — Palace sanctuary function
 - [murex-paur-paur-textile.md](../part-1-thera/murex-paur-paur-textile.md) — Priestess traditions
-- [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Male counterpart: young god impersonation
+- [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Male counterpart: young god initiation
 
 ### Per-Article Dossiers
 - [harrison/themis/ch2-olympian-dionysiac.md](../scholarly-sources/harrison/themis/ch2-olympian-dionysiac.md) — Bee priestesses
@@ -182,7 +182,7 @@ The offering of honey (*me-ri*) to the Labyrinth goddess reinforces the bee conn
 | Gordon, Cyrus H. | *Evidence for the Minoan Language* | 1966 | Semitic substrate |
 | Rendsburg, Gary | Black Athena etymologies | 1989 | *megaron* < *mʿārâ* |
 | Hoffner, Harry A. | *Hittite Myths* | 1990 | Telepinu text |
-| Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Priestess impersonation, goddess embodiment |
+| Marinatos, Nanno | *Minoan Religion: Ritual, Image, and Symbol* | 1993 | Priestly corporation, ritual roles |
 | Cian, Tracey | "Snake Cults in Iron Age South Eastern Arabia" | 2015 | Asherah-serpent connection |
 | Ackerman, Susan | "Goddesses in the Levant" | 2003 | Asherah as mother goddess |
 
@@ -191,4 +191,4 @@ The offering of honey (*me-ri*) to the Labyrinth goddess reinforces the bee conn
 ## RAG Tags
 
 <!-- 55 semantic keywords for retrieval -->
-potnia, labyrinth, da-pu-ri-to, deborah, devorah, bee, melissa, melissai, priestess, oracle, prophecy, dabar, word, palm tree, sacred tree, oak of weeping, judges, prophetess, hestrin, hittite, telepinu, hannahanna, malia pendant, minoan, gold, honeycomb, artemis, ephesus, demeter, megara, megaron, cave, mʿārâ, medusa, m-d-s, threshing, agricultural, linear b, knossos, mycenaean, bronze age, canaanite, west semitic, bee goddess, divine feminine, tree cult, burial, genesis, rebekah, marinatos, priestess impersonation, goddess embodiment, priestly corporation, orpheus, music prophecy, asherah, snake goddess, serpent, proto-sinaitic, baalat, sinai 349
+potnia, labyrinth, da-pu-ri-to, deborah, devorah, bee, melissa, melissai, priestess, oracle, prophecy, dabar, word, palm tree, sacred tree, oak of weeping, judges, prophetess, hestrin, hittite, telepinu, hannahanna, malia pendant, minoan, gold, honeycomb, artemis, ephesus, demeter, megara, megaron, cave, mʿārâ, medusa, m-d-s, threshing, agricultural, linear b, knossos, mycenaean, bronze age, canaanite, west semitic, bee goddess, divine feminine, tree cult, burial, genesis, rebekah, marinatos, divine-possession, holy-spirit, priestly corporation, orpheus, music prophecy, asherah, snake goddess, serpent, proto-sinaitic, baalat, sinai 349
