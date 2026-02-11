@@ -11,7 +11,9 @@ npx ts-node scripts/chunk-dossiers.ts
 
 echo ""
 echo "🚀 Ingesting to Supabase..."
-export $(grep -E '^(VOYAGE_API_KEY|SUPABASE_URL|SUPABASE_SERVICE_ROLE_KEY)' .env | xargs)
+# Source env vars from .env and .env.local
+export $(grep -E '^[A-Z]' .env | xargs)
+[ -f .env.local ] && export $(grep -E '^[A-Z]' .env.local | xargs)
 npx ts-node scripts/ingest-embeddings.ts
 
 echo ""

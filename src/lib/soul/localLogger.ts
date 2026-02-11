@@ -21,8 +21,10 @@ if (isServer) {
   try {
     fs = require('fs');
     path = require('path');
-    LOG_DIR = path.join(process.cwd(), 'logs');
-    LOG_FILE = path.join(LOG_DIR, 'soul.log');
+    if (path) {
+      LOG_DIR = path.join(process.cwd(), 'logs');
+      LOG_FILE = path.join(LOG_DIR, 'soul.log');
+    }
   } catch {
     // Ignore - running in browser or edge runtime
   }

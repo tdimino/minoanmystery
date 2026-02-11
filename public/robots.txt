@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
 
-# Block API and internal paths
+# Block API, internal paths, and test pages
 Disallow: /api/
 Disallow: /_astro/
+Disallow: /labyrinth-test
 
 # AI Crawlers - Allow all content
 User-agent: GPTBot

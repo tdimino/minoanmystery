@@ -31,6 +31,7 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - Build: `npm run build`
 - Preview: `npm run preview`
 - **Reingest RAG**: `./scripts/reingest-dossiers.sh` (sources .env + .env.local for VOYAGE_API_KEY)
+- **Add Vercel subdomain**: `vercel domains add subdomain.minoanmystery.org` (then add A record pointing to 76.76.21.21)
 
 ## Conventions
 

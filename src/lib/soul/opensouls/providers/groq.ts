@@ -184,10 +184,13 @@ export class GroqProvider implements LLMProvider {
 }
 
 /**
- * Create Groq provider from environment
+ * Create Groq provider from environment or config
  */
-export function createGroqProvider(apiKey?: string): GroqProvider {
-  const key = apiKey ?? (typeof process !== 'undefined' ? process.env.GROQ_API_KEY : undefined);
+export function createGroqProvider(config?: string | GroqConfig): GroqProvider {
+  if (typeof config === 'object') {
+    return new GroqProvider(config);
+  }
+  const key = config ?? (typeof process !== 'undefined' ? process.env.GROQ_API_KEY : undefined);
   if (!key) {
     throw new Error('GROQ_API_KEY is required');
   }

@@ -206,7 +206,9 @@ export class ProcessManager {
       ready: 'Ready for contact, conversion intent',
       returning: 'Recognized visitor, personalized experience',
       dormant: 'Extended idle, soul reflecting on journey',
-      exiting: 'Exit intent detected, saving journey'
+      exiting: 'Exit intent detected, saving journey',
+      academic: 'Scholarly mode, discussing Harrison/Gordon/Astour',
+      poetic: 'Tamarru daimon, poetic composition mode',
     };
 
     return descriptions[s];

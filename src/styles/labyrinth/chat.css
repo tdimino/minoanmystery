@@ -970,8 +970,8 @@
 }
 
 .tarot-placeholder {
-  width: 140px;
-  height: 186px;
+  width: 105px;
+  height: 140px;
   background: rgba(212, 175, 66, 0.1);
   border: 2px dashed var(--color-primary);
   border-radius: 10px;
@@ -1042,8 +1042,8 @@
 }
 
 .tarot-card {
-  width: 140px;
-  height: 186px;
+  width: 105px;
+  height: 140px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow:
@@ -1093,7 +1093,7 @@
   letter-spacing: 2px;
   font-weight: 600;
   text-align: center;
-  max-width: 140px;
+  max-width: 105px;
 }
 
 /* Oracle message - appears after spread completes */
@@ -1155,8 +1155,8 @@
 @media (max-width: 480px) {
   .tarot-placeholder,
   .tarot-card {
-    width: 100px;
-    height: 133px;
+    width: 75px;
+    height: 100px;
   }
   .tarot-spread-row {
     gap: 8px;

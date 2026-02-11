@@ -50,7 +50,7 @@ function cleanResponse(response: string): string {
 export const questionResponse = createCognitiveStep<QuestionResponseOptions, ChunkedDialogResult>(
   (options) => ({
     command: (memory) => {
-      const otherSoul = options.soulName === 'kothar' ? 'Tamarru' : 'Kothar';
+      const otherSoul = options.soulName === 'kothar' ? 'Artifex' : 'Kothar';
       const isFollowUp = !!options.partnerResponse;
 
       return {

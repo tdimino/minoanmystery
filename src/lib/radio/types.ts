@@ -1,7 +1,7 @@
 /**
  * Daimonic Radio - Type definitions
  *
- * Types for the two-soul radio dialogue system where Kothar and Tamarru
+ * Types for the two-soul radio dialogue system where Kothar and Artifex
  * host discussions with natural turn-taking and interruptions.
  */
 
@@ -11,16 +11,16 @@ import type { WorkingMemory } from '../soul/opensouls/core/WorkingMemory';
 // Soul Identity Types
 // ============================================
 
-export type RadioSoulName = 'kothar' | 'tamarru';
+export type RadioSoulName = 'kothar' | 'artifex';
 
 export const SOUL_VOICES: Record<RadioSoulName, string> = {
   kothar: 'Ryan',    // Deep, measured craftsman
-  tamarru: 'Aiden',  // Dynamic, ecstatic poet
+  artifex: 'Aiden',  // Sardonic, precise futurist
 } as const;
 
 export const SOUL_STYLES: Record<RadioSoulName, string> = {
   kothar: 'Thoughtful, deliberate, ancient wisdom',
-  tamarru: 'Passionate, rhythmic, mystical fervor',
+  artifex: 'Sardonic, world-weary, futuristic precision',
 } as const;
 
 // ============================================
@@ -159,7 +159,7 @@ export interface DialogueState {
   /** Per-soul states */
   souls: {
     kothar: SoulDialogueState;
-    tamarru: SoulDialogueState;
+    artifex: SoulDialogueState;
   };
 
   /** Current speaker (null = silence) */
@@ -249,6 +249,14 @@ export interface BackchannelOptions {
 // TTS Client Types
 // ============================================
 
+/**
+ * Audio output formats supported by TTS server
+ * - pcm: Raw Float32 samples (default, for direct playback)
+ * - wav: WAV format with headers (debugging/testing)
+ * - aac: ADTS-wrapped AAC (HLS streaming, RFC 8216 compliant)
+ */
+export type AudioFormat = 'pcm' | 'wav' | 'aac';
+
 export interface TTSRequest {
   /** Text to synthesize */
   text: string;
@@ -261,17 +269,26 @@ export interface TTSRequest {
 
   /** Speed multiplier (0.5-2.0) */
   speed?: number;
+
+  /** Audio output format (default: 'pcm') */
+  format?: AudioFormat;
 }
 
 export interface TTSResult {
-  /** Audio samples */
-  audioBuffer: Float32Array;
+  /** Audio samples (Float32Array for PCM, null for AAC/WAV) */
+  audioBuffer: Float32Array | null;
+
+  /** Raw binary buffer for encoded formats (AAC/WAV) */
+  rawBuffer?: ArrayBuffer;
 
   /** Sample rate in Hz */
   sampleRate: number;
 
   /** Duration in milliseconds */
   durationMs: number;
+
+  /** Output format used */
+  format?: AudioFormat;
 }
 
 // ============================================

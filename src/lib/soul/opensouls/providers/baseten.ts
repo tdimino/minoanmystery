@@ -151,10 +151,13 @@ export class BasetenProvider implements LLMProvider {
 }
 
 /**
- * Create Baseten provider from environment
+ * Create Baseten provider from environment or config
  */
-export function createBasetenProvider(apiKey?: string): BasetenProvider {
-  const key = apiKey ?? (typeof process !== 'undefined' ? process.env.BASETEN_API_KEY : undefined);
+export function createBasetenProvider(config?: string | BasetenConfig): BasetenProvider {
+  if (typeof config === 'object') {
+    return new BasetenProvider(config);
+  }
+  const key = config ?? (typeof process !== 'undefined' ? process.env.BASETEN_API_KEY : undefined);
   if (!key) {
     throw new Error('BASETEN_API_KEY is required');
   }

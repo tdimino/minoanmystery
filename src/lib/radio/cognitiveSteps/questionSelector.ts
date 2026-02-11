@@ -1,7 +1,7 @@
 /**
  * questionSelector - Cognitive step for choosing who responds first to a listener question
  *
- * Evaluates which soul (Kothar or Tamarru) is best positioned to respond first
+ * Evaluates which soul (Kothar or Artifex) is best positioned to respond first
  * based on their personalities, the topic, and current conversational context.
  */
 
@@ -23,8 +23,8 @@ export interface QuestionSelectorOptions {
   /** Brief description of Kothar's strengths (for selector context) */
   kotharDescription?: string;
 
-  /** Brief description of Tamarru's strengths (for selector context) */
-  tamarruDescription?: string;
+  /** Brief description of Artifex's strengths (for selector context) */
+  artifexDescription?: string;
 }
 
 export interface QuestionSelectorResult {
@@ -43,7 +43,7 @@ export interface QuestionSelectorResult {
  */
 function parseResult(response: string): QuestionSelectorResult {
   // Extract first responder
-  const responderMatch = response.match(/FIRST_RESPONDER:\s*(kothar|tamarru)/i);
+  const responderMatch = response.match(/FIRST_RESPONDER:\s*(kothar|artifex)/i);
   const firstResponder = (responderMatch?.[1]?.toLowerCase() || 'kothar') as RadioSoulName;
 
   // Extract reasoning
@@ -64,12 +64,12 @@ function parseResult(response: string): QuestionSelectorResult {
 /** Default soul descriptions if not provided */
 const DEFAULT_KOTHAR_DESCRIPTION = `The Craftsman Oracle - Ancient wisdom, measured speech, architect of understanding. Excels at technical questions, craft metaphors, structural insights, practical wisdom. Style: Deliberate, grounding, uses building/making analogies.`;
 
-const DEFAULT_TAMARRU_DESCRIPTION = `The Ecstatic Poet - Passionate, rhythmic, mystical fervor. Excels at emotional questions, spiritual inquiry, creative expression, intuitive leaps. Style: Dynamic, transformative, uses fire/dance/sacred imagery.`;
+const DEFAULT_ARTIFEX_DESCRIPTION = `The Futuristic Sentinel - Sardonic, world-weary, precise. Excels at existential questions, pattern recognition, technological insights, wry observations. Style: Sharp, incisive, uses digital/synthetic/future imagery.`;
 
 export const questionSelector = createCognitiveStep<QuestionSelectorOptions, QuestionSelectorResult>(
   (options) => {
     const kotharDesc = options.kotharDescription || DEFAULT_KOTHAR_DESCRIPTION;
-    const tamarruDesc = options.tamarruDescription || DEFAULT_TAMARRU_DESCRIPTION;
+    const artifexDesc = options.artifexDescription || DEFAULT_ARTIFEX_DESCRIPTION;
 
     return {
       command: (memory) => ({
@@ -88,8 +88,8 @@ export const questionSelector = createCognitiveStep<QuestionSelectorOptions, Que
           **Kothar**
           ${kotharDesc}
 
-          **Tamarru**
-          ${tamarruDesc}
+          **Artifex**
+          ${artifexDesc}
 
           ## Task
           Choose which soul should respond FIRST to this question. The other will respond second with their perspective.
@@ -100,7 +100,7 @@ export const questionSelector = createCognitiveStep<QuestionSelectorOptions, Que
           - Who would provide the most compelling opening perspective?
 
           ## Response Format (exactly this format):
-          FIRST_RESPONDER: [kothar or tamarru]
+          FIRST_RESPONDER: [kothar or artifex]
           REASONING: [1-2 sentences explaining why this soul should go first]
           APPROACH: [Brief hint about how they might approach the answer]
         `,

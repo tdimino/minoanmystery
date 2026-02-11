@@ -7,7 +7,7 @@
  * Key Features:
  * - Prefetching: Generate chunk N+1 while playing chunk N
  * - Backchannel mixing: Overlay listener responses at reduced volume (0.3x)
- * - Dual-soul buffering: Separate queues for Kothar and Tamarru
+ * - Dual-soul buffering: Separate queues for Kothar and Artifex
  * - Smooth transitions: Crossfade between chunks
  */
 
@@ -185,7 +185,7 @@ export class AudioMixer {
       playbackPositionMs: 0,
       soulQueues: {
         kothar: [],
-        tamarru: [],
+        artifex: [],
       },
       backchannelQueue: [],
       isPlaying: false,
@@ -265,7 +265,7 @@ export class AudioMixer {
    */
   clearAllQueues(): void {
     this.clearQueue('kothar');
-    this.clearQueue('tamarru');
+    this.clearQueue('artifex');
 
     // Also reject backchannel promises to prevent memory leaks
     const cancelError = new Error('All queues cleared');
@@ -343,7 +343,7 @@ export class AudioMixer {
       ...this.state,
       soulQueues: {
         kothar: [...this.state.soulQueues.kothar],
-        tamarru: [...this.state.soulQueues.tamarru],
+        artifex: [...this.state.soulQueues.artifex],
       },
       backchannelQueue: [...this.state.backchannelQueue],
     };
@@ -601,7 +601,7 @@ export class AudioMixer {
     const primaryBuffer = primaryChunk.audioBuffer!;
 
     // Find ready backchannels from the OTHER soul
-    const otherSoul = primaryChunk.soul === 'kothar' ? 'tamarru' : 'kothar';
+    const otherSoul = primaryChunk.soul === 'kothar' ? 'artifex' : 'kothar';
     const backchannels = this.state.backchannelQueue.filter(
       c => c.soul === otherSoul && c.status === 'ready'
     );

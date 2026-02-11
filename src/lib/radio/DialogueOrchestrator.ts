@@ -2,7 +2,7 @@
  * DialogueOrchestrator - Coordinates the two-soul radio dialogue
  *
  * Manages turn-taking, interruptions, TTS generation, and audio mixing
- * for Kothar and Tamarru's discussions.
+ * for Kothar and Artifex's discussions.
  */
 
 import { WorkingMemory } from '../soul/opensouls/core/WorkingMemory';
@@ -36,14 +36,14 @@ export interface DialogueOrchestratorConfig {
   /** Kothar's personality (from soul.md) */
   kotharPersonality: string;
 
-  /** Tamarru's personality (from soul.md) */
-  tamarruPersonality: string;
+  /** Artifex's personality (from soul.md) */
+  artifexPersonality: string;
 
   /** Brief description of Kothar's strengths for question selection */
   kotharSelectorDescription?: string;
 
-  /** Brief description of Tamarru's strengths for question selection */
-  tamarruSelectorDescription?: string;
+  /** Brief description of Artifex's strengths for question selection */
+  artifexSelectorDescription?: string;
 
   /** Maximum exchanges per topic before transitioning */
   maxTopicDepth?: number;
@@ -105,7 +105,7 @@ export class DialogueOrchestrator {
       sharedMemory: new WorkingMemory({ soulName: 'radio' }),
       souls: {
         kothar: this.createSoulState('kothar'),
-        tamarru: this.createSoulState('tamarru'),
+        artifex: this.createSoulState('artifex'),
       },
       currentSpeaker: null,
       turnStartedAt: 0,
@@ -118,7 +118,7 @@ export class DialogueOrchestrator {
   private createSoulState(soul: RadioSoulName): SoulDialogueState {
     const personality = soul === 'kothar'
       ? this.config.kotharPersonality
-      : this.config.tamarruPersonality;
+      : this.config.artifexPersonality;
 
     return {
       workingMemory: new WorkingMemory({ soulName: soul })
@@ -134,14 +134,14 @@ export class DialogueOrchestrator {
   }
 
   private getRadioContext(soul: RadioSoulName): string {
-    const other = soul === 'kothar' ? 'Tamarru' : 'Kothar';
+    const other = soul === 'kothar' ? 'Artifex' : 'Kothar';
     return `You are co-hosting a radio discussion with ${other}.
 Let the conversation flow naturally between your perspectives.
 When interrupted, gracefully acknowledge and continue your point later if relevant.`;
   }
 
   private getOtherSoul(soul: RadioSoulName): RadioSoulName {
-    return soul === 'kothar' ? 'tamarru' : 'kothar';
+    return soul === 'kothar' ? 'artifex' : 'kothar';
   }
 
   /**
@@ -262,7 +262,7 @@ When interrupted, gracefully acknowledge and continue your point later if releva
         submittedBy: question.submittedBy,
         currentTopic: this.state.currentTopic,
         kotharDescription: this.config.kotharSelectorDescription,
-        tamarruDescription: this.config.tamarruSelectorDescription,
+        artifexDescription: this.config.artifexSelectorDescription,
       },
       { stream: false }
     ) as [WorkingMemory, QuestionSelectorResult];

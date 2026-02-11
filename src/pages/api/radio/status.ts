@@ -6,32 +6,10 @@
  */
 
 import type { APIRoute } from 'astro';
-import type { RadioSoulName, ListenerQuestion } from '../../../lib/radio/types';
-import { getQuestions } from './question';
+import { getActiveSession, getSession } from './start';
 
 // Mark as server-rendered
 export const prerender = false;
-
-// In-memory state (would be replaced with Redis/DB in production)
-interface RadioBroadcastState {
-  isLive: boolean;
-  currentSpeaker: RadioSoulName | null;
-  currentTopic: string;
-  listenerCount: number;
-  startedAt: number | null;
-  totalTurns: number;
-}
-
-// Simulated broadcast state
-// In production, this would be stored in Redis or similar
-const broadcastState: RadioBroadcastState = {
-  isLive: false,
-  currentSpeaker: null,
-  currentTopic: 'The station is preparing...',
-  listenerCount: 0,
-  startedAt: null,
-  totalTurns: 0,
-};
 
 // Rate limiting
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
@@ -74,24 +52,87 @@ export const GET: APIRoute = async ({ request }) => {
     );
   }
 
-  // Get questions from shared store
-  const questions = getQuestions();
+  const url = new URL(request.url);
+  const sessionId = url.searchParams.get('sessionId');
 
-  // Return current broadcast state
+  // Get session
+  const session = sessionId ? getSession(sessionId) : getActiveSession();
+
+  if (!session) {
+    return new Response(
+      JSON.stringify({
+        isLive: false,
+        currentSpeaker: null,
+        currentTopic: 'The station is preparing...',
+        listenerCount: 0,
+        questions: [],
+        totalTurns: 0,
+        message: 'No active radio session',
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        },
+      }
+    );
+  }
+
+  // Get orchestrator state
+  const dialogueState = session.orchestrator.getState();
+
+  // Get questions from QuestionManager
+  const pendingQuestions = session.questionManager.getPendingQuestions();
+  const queueState = session.questionManager.getState();
+
+  // Calculate runtime
+  const runtimeMs = Date.now() - session.createdAt;
+  const runtimeMinutes = Math.floor(runtimeMs / 60000);
+  const runtimeSeconds = Math.floor((runtimeMs % 60000) / 1000);
+
   return new Response(
     JSON.stringify({
-      isLive: broadcastState.isLive,
-      currentSpeaker: broadcastState.currentSpeaker,
-      currentTopic: broadcastState.currentTopic,
-      listenerCount: broadcastState.listenerCount,
-      questions: questions.map(q => ({
+      // Session info
+      sessionId: session.id,
+      isLive: session.state === 'running',
+      status: session.state,
+
+      // Dialogue state
+      currentSpeaker: dialogueState.currentSpeaker,
+      currentTopic: session.topic,
+      topicDepth: dialogueState.topicDepth,
+      totalTurns: dialogueState.totalTurns,
+
+      // Runtime
+      runtime: `${runtimeMinutes}:${runtimeSeconds.toString().padStart(2, '0')}`,
+      runtimeMs,
+      startedAt: session.createdAt,
+
+      // Audio queue info
+      audioQueueLength: session.audioQueue.length,
+      speechEventsCount: session.speechEvents.length,
+
+      // Questions
+      questions: pendingQuestions.map(q => ({
         id: q.id,
         question: q.question,
         submittedBy: q.submittedBy,
         upvotes: q.upvotes,
         status: q.status,
       })),
-      totalTurns: broadcastState.totalTurns,
+      currentQuestion: queueState.currentQuestion ? {
+        id: queueState.currentQuestion.id,
+        question: queueState.currentQuestion.question,
+        submittedBy: queueState.currentQuestion.submittedBy,
+      } : null,
+      questionsAddressed: session.questionsAddressed.length,
+      canSubmitQuestion: session.questionManager.canAskQuestion(),
+
+      // Last speech (for preview)
+      lastSpeech: session.speechEvents.length > 0
+        ? session.speechEvents[session.speechEvents.length - 1]
+        : null,
     }),
     {
       status: 200,
@@ -102,17 +143,3 @@ export const GET: APIRoute = async ({ request }) => {
     }
   );
 };
-
-// For future: Methods to update broadcast state
-// These would be called by the DialogueOrchestrator
-export function updateBroadcastState(update: Partial<RadioBroadcastState>): void {
-  Object.assign(broadcastState, update);
-}
-
-export function incrementListeners(): void {
-  broadcastState.listenerCount++;
-}
-
-export function decrementListeners(): void {
-  broadcastState.listenerCount = Math.max(0, broadcastState.listenerCount - 1);
-}

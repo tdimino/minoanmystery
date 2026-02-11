@@ -49,10 +49,10 @@ export class ImageAttachmentManager {
   // Current pending attachment
   private pendingImage: ImageAttachment | null = null;
 
-  // Bound event handlers for cleanup
-  private boundHandleFileSelect: () => void;
-  private boundOpenFileDialog: () => void;
-  private boundClear: () => void;
+  // Bound event handlers for cleanup (assigned in setupEventListeners called from constructor)
+  private boundHandleFileSelect!: () => void;
+  private boundOpenFileDialog!: () => void;
+  private boundClear!: () => void;
 
   constructor(config: ImageAttachmentManagerConfig) {
     this.fileInput = config.fileInput;

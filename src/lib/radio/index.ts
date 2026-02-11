@@ -1,7 +1,7 @@
 /**
  * Daimonic Radio - Main exports
  *
- * A two-soul AI radio station where Kothar and Tamarru host discussions
+ * A two-soul AI radio station where Kothar and Artifex host discussions
  * with natural turn-taking, interruptions, and fluid rapport.
  */
 
@@ -44,3 +44,26 @@ export {
   type QuestionManagerConfig,
   type ModerationResult,
 } from './QuestionManager';
+
+// HLS Streaming
+export {
+  HLSSegmenter,
+  createHLSSegmenter,
+  PlaylistManager,
+  createPlaylistManager,
+  generateMasterPlaylist,
+  InMemorySegmentStore,
+  VercelBlobSegmentStore,
+  createSegmentStore,
+} from './streaming';
+export type {
+  HLSSegmenterConfig,
+  SegmenterStats,
+  PlaylistManagerConfig,
+  PlaylistState,
+  PlaylistType,
+  StreamVariant,
+  SegmentStore,
+  SegmentStoreConfig,
+  StoredSegment,
+} from './streaming';

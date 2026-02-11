@@ -134,10 +134,13 @@ export class OpenRouterProvider implements LLMProvider {
 }
 
 /**
- * Create OpenRouter provider from environment
+ * Create OpenRouter provider from environment or config
  */
-export function createOpenRouterProvider(apiKey?: string): OpenRouterProvider {
-  const key = apiKey ?? (typeof process !== 'undefined' ? process.env.OPENROUTER_API_KEY : undefined);
+export function createOpenRouterProvider(config?: string | OpenRouterConfig): OpenRouterProvider {
+  if (typeof config === 'object') {
+    return new OpenRouterProvider(config);
+  }
+  const key = config ?? (typeof process !== 'undefined' ? process.env.OPENROUTER_API_KEY : undefined);
   if (!key) {
     throw new Error('OPENROUTER_API_KEY is required');
   }

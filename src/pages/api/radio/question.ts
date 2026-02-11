@@ -2,18 +2,17 @@
  * Radio Question Submission API Endpoint
  *
  * Handles listener question submissions for the Daimonic Radio.
+ * Integrates with the active session's QuestionManager.
  */
 
 import type { APIRoute } from 'astro';
 import type { ListenerQuestion } from '../../../lib/radio/types';
+import { getActiveSession, getSession } from './start';
 
 // Mark as server-rendered
 export const prerender = false;
 
-// In-memory question storage (would be Redis/DB in production)
-const questions: ListenerQuestion[] = [];
-
-// Rate limiting
+// Rate limiting (per IP)
 const submitCounts = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 5; // questions per hour per IP
 const RATE_WINDOW = 3600000; // 1 hour
@@ -33,10 +32,6 @@ function checkRateLimit(ip: string): boolean {
 
   record.count++;
   return true;
-}
-
-function generateId(): string {
-  return `q_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -60,7 +55,20 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
-    const { question, submittedBy } = body;
+    const { question, submittedBy, sessionId } = body;
+
+    // Get session (use provided ID or active session)
+    const session = sessionId ? getSession(sessionId) : getActiveSession();
+
+    if (!session) {
+      return new Response(
+        JSON.stringify({
+          error: 'No active radio session',
+          hint: 'Start a session with POST /api/radio/start',
+        }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Validate question
     if (!question || typeof question !== 'string') {
@@ -71,16 +79,15 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const trimmedQuestion = question.trim();
-    if (trimmedQuestion.length < 10) {
-      return new Response(
-        JSON.stringify({ error: 'Question must be at least 10 characters' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
 
-    if (trimmedQuestion.length > 280) {
+    // Use QuestionManager's moderation
+    const moderation = session.questionManager.moderateQuestion(trimmedQuestion);
+    if (!moderation.allowed) {
       return new Response(
-        JSON.stringify({ error: 'Question must not exceed 280 characters' }),
+        JSON.stringify({
+          error: moderation.reason || 'Question not allowed',
+          moderation,
+        }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -91,26 +98,13 @@ export const POST: APIRoute = async ({ request }) => {
       cleanName = submittedBy.trim().slice(0, 50) || undefined;
     }
 
-    // Create question
-    const newQuestion: ListenerQuestion = {
-      id: generateId(),
-      question: trimmedQuestion,
-      submittedAt: Date.now(),
-      submittedBy: cleanName,
-      upvotes: 0,
-      status: 'pending',
-    };
-
-    questions.push(newQuestion);
-
-    // Keep only the last 50 questions in memory
-    if (questions.length > 50) {
-      questions.shift();
-    }
+    // Add question via QuestionManager
+    const newQuestion = session.questionManager.addQuestion(trimmedQuestion, cleanName);
 
     return new Response(
       JSON.stringify({
         success: true,
+        sessionId: session.id,
         question: {
           id: newQuestion.id,
           question: newQuestion.question,
@@ -133,7 +127,61 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
-// Export for use by status endpoint
+// GET: List pending questions
+export const GET: APIRoute = async ({ request }) => {
+  const url = new URL(request.url);
+  const sessionId = url.searchParams.get('sessionId');
+
+  // Get session
+  const session = sessionId ? getSession(sessionId) : getActiveSession();
+
+  if (!session) {
+    return new Response(
+      JSON.stringify({
+        error: 'No active radio session',
+        questions: [],
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const pending = session.questionManager.getPendingQuestions();
+  const recentlyAnswered = session.questionManager.getRecentlyAnswered(5);
+  const queueState = session.questionManager.getState();
+
+  return new Response(
+    JSON.stringify({
+      sessionId: session.id,
+      pending: pending.map(q => ({
+        id: q.id,
+        question: q.question,
+        submittedBy: q.submittedBy,
+        upvotes: q.upvotes,
+        status: q.status,
+      })),
+      currentQuestion: queueState.currentQuestion ? {
+        id: queueState.currentQuestion.id,
+        question: queueState.currentQuestion.question,
+        submittedBy: queueState.currentQuestion.submittedBy,
+      } : null,
+      recentlyAnswered: recentlyAnswered.map(q => ({
+        id: q.id,
+        question: q.question,
+        submittedBy: q.submittedBy,
+        addressedBySoul: q.addressedBySoul,
+      })),
+      canSubmitQuestion: session.questionManager.canAskQuestion(),
+      queueLength: pending.length,
+    }),
+    {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
+};
+
+// Legacy export for backwards compatibility (deprecated)
 export function getQuestions(): ListenerQuestion[] {
-  return questions;
+  const session = getActiveSession();
+  return session ? session.questionManager.getPendingQuestions() : [];
 }

@@ -42,7 +42,7 @@ export const interruptionDecision = createCognitiveStep<InterruptionOptions, Int
     command: (memory) => ({
       role: ChatMessageRoleEnum.System,
       content: indentNicely`
-        You are ${options.soulName} listening to ${options.soulName === 'kothar' ? 'tamarru' : 'kothar'} speak.
+        You are ${options.soulName} listening to ${options.soulName === 'kothar' ? 'artifex' : 'kothar'} speak.
 
         ## Your conversation partner is currently saying:
         "${options.partnerCurrentUtterance}"

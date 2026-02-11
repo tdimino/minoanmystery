@@ -2,24 +2,27 @@
 /**
  * Daimonic Radio - Two-Soul AI Radio Station
  *
- * A live radio experience where Kothar and Tamarru host discussions
+ * A live radio experience where Kothar and Artifex host discussions
  * on topics chosen by the audience. Features natural turn-taking,
  * interruptions, and fluid dialogue between the two AI souls.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import StructuredData from '../components/StructuredData.astro';
+import ProfileModal from '../components/ProfileModal.astro';
 
 import '../styles/radio.css';
 ---
 
 <BaseLayout
   title="Daimonic Radio"
-  description="Listen to Kothar and Tamarru discuss the mysteries of mind, myth, and machine. A two-soul AI radio station with live discussions and audience participation."
+  description="Listen to Kothar and Artifex discuss the mysteries of mind, myth, and machine. A two-soul AI radio station with live discussions and audience participation."
   image="/images/og/radio.png"
 >
   <Fragment slot="head">
     <link rel="preconnect" href="https://api.groq.com" crossorigin>
+    <!-- HLS.js for streaming audio playback -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
   </Fragment>
 
   <StructuredData schemas={[
@@ -58,9 +61,11 @@ import '../styles/radio.css';
               <div class="connector-line"></div>
               <div class="connector-pulse" id="connector-pulse"></div>
             </div>
-            <div class="speaker-avatar tamarru" id="tamarru-avatar" data-soul="tamarru">
-              <img src="/images/avatars/minoan-avatar.webp" alt="Tamarru" />
-              <span class="speaker-label">Tamarru</span>
+            <div class="speaker-avatar artifex" id="artifex-avatar" data-soul="artifex">
+              <div class="avatar-zoom-wrapper">
+                <img src="/images/avatars/artifex.png" alt="Artifex" />
+              </div>
+              <span class="speaker-label">Artifex</span>
             </div>
           </div>
 
@@ -102,7 +107,9 @@ import '../styles/radio.css';
                   <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
                 </svg>
               </button>
-              <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="75" aria-label="Volume">
+              <div class="volume-slider-wrapper">
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="75" aria-label="Volume">
+              </div>
             </div>
           </div>
 
@@ -140,7 +147,7 @@ import '../styles/radio.css';
     <section class="radio-questions">
       <div class="radio-container">
         <h3 class="questions-title">Ask the Hosts</h3>
-        <p class="questions-subtitle">Submit a question for Kothar and Tamarru to discuss</p>
+        <p class="questions-subtitle">Submit a question for Kothar and Artifex to discuss</p>
 
         <form class="question-form" id="question-form">
           <div class="form-row">
@@ -202,16 +209,23 @@ import '../styles/radio.css';
       </div>
     </section>
   </main>
+
+  <ProfileModal />
 </BaseLayout>
 
 <script>
   /**
    * Daimonic Radio Page Controller
    *
-   * Manages the radio UI, audio playback, question submission,
-   * and real-time updates from the radio API.
+   * Manages the radio UI, HLS audio playback, SSE real-time updates,
+   * question submission, and transcript display.
+   *
+   * Phase 4: Web Player Integration
    */
   import type { RadioSoulName, ListenerQuestion } from '../lib/radio/types';
+
+  // Declare HLS.js type (loaded via CDN)
+  declare const Hls: any;
 
   interface RadioState {
     isPlaying: boolean;
@@ -220,6 +234,15 @@ import '../styles/radio.css';
     listenerCount: number;
     isLive: boolean;
     questions: ListenerQuestion[];
+    sessionId: string | null;
+    hlsPlaylistUrl: string | null;
+    sseStreamUrl: string | null;
+  }
+
+  interface TranscriptEntry {
+    soul: RadioSoulName;
+    text: string;
+    timestamp: number;
   }
 
   // State
@@ -227,10 +250,16 @@ import '../styles/radio.css';
     isPlaying: false,
     currentSpeaker: null,
     currentTopic: 'The station is preparing...',
-    listenerCount: 0,
+    listenerCount: 1, // At least the current viewer
     isLive: false,
     questions: [],
+    sessionId: null,
+    hlsPlaylistUrl: null,
+    sseStreamUrl: null,
   };
+
+  // Transcript history
+  let transcript: TranscriptEntry[] = [];
 
   // DOM Elements
   let playButton: HTMLButtonElement;
@@ -244,7 +273,7 @@ import '../styles/radio.css';
   let speakingText: HTMLElement;
   let topicTitle: HTMLElement;
   let kotharAvatar: HTMLElement;
-  let tamarruAvatar: HTMLElement;
+  let artifexAvatar: HTMLElement;
   let connectorPulse: HTMLElement;
   let questionForm: HTMLFormElement;
   let questionInput: HTMLInputElement;
@@ -256,13 +285,26 @@ import '../styles/radio.css';
   let transcriptEmpty: HTMLElement;
   let visualizer: HTMLElement;
   let copyButton: HTMLButtonElement;
+  let streamUrlElement: HTMLElement;
 
-  // Audio context for visualizer
-  let audioContext: AudioContext | null = null;
-  let analyser: AnalyserNode | null = null;
+  // HLS.js instance
+  let hls: any = null;
   let audioElement: HTMLAudioElement | null = null;
 
+  // SSE connection
+  let eventSource: EventSource | null = null;
+
+  // Topic input modal state
+  let isStartingSession = false;
+
+  // Track if radio page is initialized (prevent multiple audio elements)
+  let isInitialized = false;
+
   function initRadio() {
+    // Prevent double initialization
+    if (isInitialized) return;
+    isInitialized = true;
+
     // Get DOM elements
     playButton = document.getElementById('play-button') as HTMLButtonElement;
     playIcon = document.getElementById('play-icon') as unknown as SVGElement;
@@ -275,7 +317,7 @@ import '../styles/radio.css';
     speakingText = document.getElementById('speaking-text') as HTMLElement;
     topicTitle = document.getElementById('topic-title') as HTMLElement;
     kotharAvatar = document.getElementById('kothar-avatar') as HTMLElement;
-    tamarruAvatar = document.getElementById('tamarru-avatar') as HTMLElement;
+    artifexAvatar = document.getElementById('artifex-avatar') as HTMLElement;
     connectorPulse = document.getElementById('connector-pulse') as HTMLElement;
     questionForm = document.getElementById('question-form') as HTMLFormElement;
     questionInput = document.getElementById('question-input') as HTMLInputElement;
@@ -287,40 +329,522 @@ import '../styles/radio.css';
     transcriptEmpty = document.getElementById('transcript-empty') as HTMLElement;
     visualizer = document.getElementById('audio-visualizer') as HTMLElement;
     copyButton = document.getElementById('copy-stream-url') as HTMLButtonElement;
+    streamUrlElement = document.getElementById('stream-url') as HTMLElement;
+
+    // Reuse existing audio element or create new one
+    let existingAudio = document.getElementById('radio-audio') as HTMLAudioElement | null;
+    if (existingAudio) {
+      audioElement = existingAudio;
+    } else {
+      audioElement = document.createElement('audio');
+      audioElement.id = 'radio-audio';
+      audioElement.preload = 'auto';
+      document.body.appendChild(audioElement);
+    }
 
     // Event listeners
-    playButton?.addEventListener('click', togglePlayback);
+    playButton?.addEventListener('click', handlePlayButtonClick);
     volumeSlider?.addEventListener('input', handleVolumeChange);
     volumeButton?.addEventListener('click', toggleMute);
     questionForm?.addEventListener('submit', handleQuestionSubmit);
     questionInput?.addEventListener('input', updateCharCount);
     copyButton?.addEventListener('click', copyStreamUrl);
 
-    // Initial state fetch
-    fetchRadioStatus();
+    // Setup event delegation for question queue (attach once, handles all re-renders)
+    setupQueueEventDelegation();
 
-    // Poll for updates
-    setInterval(fetchRadioStatus, 5000);
+    // Kothar avatar click handler for profile modal
+    kotharAvatar?.addEventListener('click', () => {
+      (window as any).profileModal?.open('kothar-simple', kotharAvatar);
+    });
+
+    // Artifex avatar click handler for profile modal
+    artifexAvatar?.addEventListener('click', () => {
+      (window as any).profileModal?.open('artifex', artifexAvatar);
+    });
+
+    // Initialize volume slider fill
+    if (volumeSlider) {
+      volumeSlider.style.setProperty('--volume-percent', `${volumeSlider.value}%`);
+      if (audioElement) {
+        audioElement.volume = parseInt(volumeSlider.value) / 100;
+      }
+    }
+
+    // Check for existing active session
+    checkActiveSession();
   }
 
-  async function fetchRadioStatus() {
+  // ─────────────────────────────────────────────────────────────
+  // Session Management
+  // ─────────────────────────────────────────────────────────────
+
+  async function checkActiveSession(): Promise<void> {
     try {
-      const response = await fetch('/api/radio/status');
+      const response = await fetch('/api/radio/start');
       if (response.ok) {
         const data = await response.json();
-        updateState(data);
+        if (data.active) {
+          // Resume existing session
+          state.sessionId = data.sessionId;
+          state.currentTopic = data.topic;
+          state.hlsPlaylistUrl = data.hlsPlaylistUrl;
+          state.isLive = data.status === 'running';
+          updateStreamUrl();
+          renderUI();
+
+          // Connect to SSE for updates
+          connectSSE();
+        }
       }
     } catch (error) {
-      console.warn('[Radio] Failed to fetch status:', error);
+      console.warn('[Radio] Failed to check active session:', error);
     }
   }
 
-  function updateState(data: Partial<RadioState>) {
-    state = { ...state, ...data };
+  async function startSession(topic: string): Promise<boolean> {
+    try {
+      isStartingSession = true;
+      updatePlayButtonState();
+
+      const response = await fetch('/api/radio/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic,
+          questionsEnabled: true,
+          hlsEnabled: true,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('[Radio] Failed to start session:', error);
+        showError(error.error || 'Failed to start radio session');
+        return false;
+      }
+
+      const data = await response.json();
+      console.log('[Radio] Session started:', data);
+
+      state.sessionId = data.sessionId;
+      state.currentTopic = data.topic;
+      state.hlsPlaylistUrl = data.hlsPlaylistUrl;
+      state.sseStreamUrl = data.sseStreamUrl;
+      state.isLive = true;
+
+      updateStreamUrl();
+      renderUI();
+
+      // Connect to SSE for real-time updates
+      connectSSE();
+
+      return true;
+    } catch (error) {
+      console.error('[Radio] Failed to start session:', error);
+      showError('Failed to connect to radio server');
+      return false;
+    } finally {
+      isStartingSession = false;
+      updatePlayButtonState();
+    }
+  }
+
+  function updateStreamUrl(): void {
+    if (streamUrlElement && state.hlsPlaylistUrl) {
+      const fullUrl = `${window.location.origin}${state.hlsPlaylistUrl}`;
+      streamUrlElement.textContent = fullUrl;
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // SSE Connection
+  // ─────────────────────────────────────────────────────────────
+
+  function connectSSE(): void {
+    if (eventSource) {
+      eventSource.close();
+    }
+
+    if (!state.sessionId) return;
+
+    const url = `/api/radio/stream?sessionId=${state.sessionId}`;
+    console.log('[Radio] Connecting SSE:', url);
+
+    eventSource = new EventSource(url);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        handleSSEEvent(data);
+      } catch (error) {
+        console.warn('[Radio] SSE parse error:', error);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.warn('[Radio] SSE error:', error);
+      // Don't reconnect immediately - could be session ended
+      if (eventSource?.readyState === EventSource.CLOSED) {
+        state.isLive = false;
+        renderUI();
+      }
+    };
+  }
+
+  function handleSSEEvent(event: { type: string; data: any; timestamp: number }): void {
+    switch (event.type) {
+      case 'state':
+        handleStateEvent(event.data);
+        break;
+
+      case 'speech':
+        handleSpeechEvent(event.data);
+        break;
+
+      case 'question':
+        handleQuestionEvent(event.data);
+        break;
+
+      case 'audio':
+        // Audio is handled by HLS.js, but we can use this for fallback
+        console.log('[Radio] Audio chunk received:', event.data.id);
+        break;
+
+      case 'heartbeat':
+        // Connection keepalive
+        break;
+
+      case 'error':
+        console.error('[Radio] Server error:', event.data);
+        showError(event.data.message || 'Server error');
+        break;
+    }
+  }
+
+  function handleStateEvent(data: any): void {
+    if (data.currentSpeaker !== undefined) {
+      state.currentSpeaker = data.currentSpeaker;
+    }
+    if (data.topic) {
+      state.currentTopic = data.topic;
+    }
+    if (data.status) {
+      state.isLive = data.status === 'running';
+      if (data.status === 'stopped') {
+        stopPlayback();
+      }
+    }
     renderUI();
   }
 
-  function renderUI() {
+  function handleSpeechEvent(data: { soul: RadioSoulName; text: string; timestamp: number }): void {
+    // Add to transcript
+    transcript.push(data);
+
+    // Update current speaker
+    state.currentSpeaker = data.soul;
+
+    // Render transcript
+    renderTranscript();
+    renderUI();
+  }
+
+  function handleQuestionEvent(data: any): void {
+    if (data.type === 'addressed') {
+      // Mark question as being addressed in UI
+      console.log('[Radio] Question addressed:', data.question?.question);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // HLS Playback
+  // ─────────────────────────────────────────────────────────────
+
+  function startHLSPlayback(): void {
+    if (!audioElement || !state.hlsPlaylistUrl) {
+      console.warn('[Radio] Cannot start HLS playback - missing audio element or playlist URL');
+      return;
+    }
+
+    const fullUrl = `${window.location.origin}${state.hlsPlaylistUrl}`;
+    console.log('[Radio] Starting HLS playback:', fullUrl);
+
+    // Check for native HLS support (Safari, iOS)
+    if (audioElement.canPlayType('application/vnd.apple.mpegurl')) {
+      console.log('[Radio] Using native HLS support');
+      audioElement.src = fullUrl;
+      audioElement.play().catch(handlePlaybackError);
+      return;
+    }
+
+    // Check for HLS.js support
+    if (typeof Hls === 'undefined') {
+      console.error('[Radio] HLS.js not loaded');
+      showError('HLS.js library not available');
+      return;
+    }
+
+    if (!Hls.isSupported()) {
+      console.error('[Radio] HLS not supported in this browser');
+      showError('Your browser does not support HLS streaming');
+      return;
+    }
+
+    // Initialize HLS.js
+    console.log('[Radio] Using HLS.js');
+    hls = new Hls({
+      debug: false,
+      enableWorker: true,
+      lowLatencyMode: true,
+      backBufferLength: 30,
+    });
+
+    hls.loadSource(fullUrl);
+    hls.attachMedia(audioElement);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      console.log('[Radio] HLS manifest parsed, starting playback');
+      audioElement?.play().catch(handlePlaybackError);
+    });
+
+    hls.on(Hls.Events.ERROR, (event: string, data: any) => {
+      console.error('[Radio] HLS error:', data);
+      if (data.fatal) {
+        // Guard against race condition - hls may have been destroyed
+        if (!hls) {
+          console.warn('[Radio] HLS already destroyed, ignoring error');
+          return;
+        }
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            console.log('[Radio] Network error, attempting recovery...');
+            hls?.startLoad();
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            console.log('[Radio] Media error, attempting recovery...');
+            hls?.recoverMediaError();
+            break;
+          default:
+            console.error('[Radio] Fatal error, destroying HLS');
+            destroyHLS();
+            state.isPlaying = false;
+            renderUI();
+            break;
+        }
+      }
+    });
+  }
+
+  function stopHLSPlayback(): void {
+    if (audioElement) {
+      audioElement.pause();
+    }
+    destroyHLS();
+  }
+
+  function destroyHLS(): void {
+    if (hls) {
+      hls.destroy();
+      hls = null;
+    }
+  }
+
+  function handlePlaybackError(error: Error): void {
+    console.error('[Radio] Playback error:', error);
+    // User gesture may be required
+    if (error.name === 'NotAllowedError') {
+      showError('Click the play button to start audio');
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // UI Event Handlers
+  // ─────────────────────────────────────────────────────────────
+
+  async function handlePlayButtonClick(): Promise<void> {
+    if (isStartingSession) return;
+
+    if (!state.sessionId) {
+      // No active session - prompt for topic
+      const topic = promptForTopic();
+      if (!topic) return;
+
+      const started = await startSession(topic);
+      if (!started) return;
+    }
+
+    togglePlayback();
+  }
+
+  function promptForTopic(): string | null {
+    // Simple prompt for now - could be a modal in the future
+    const topic = window.prompt(
+      'What mystery shall Kothar and Artifex explore?\n\nEnter a topic for discussion:',
+      'The nature of consciousness and artificial minds'
+    );
+
+    if (!topic || topic.trim().length < 5) {
+      if (topic !== null) {
+        showError('Topic must be at least 5 characters');
+      }
+      return null;
+    }
+
+    return topic.trim();
+  }
+
+  function togglePlayback(): void {
+    state.isPlaying = !state.isPlaying;
+
+    if (state.isPlaying) {
+      startPlayback();
+    } else {
+      stopPlayback();
+    }
+
+    updatePlayButtonState();
+  }
+
+  function startPlayback(): void {
+    console.log('[Radio] Starting playback...');
+    state.isPlaying = true;
+
+    // Start HLS audio
+    if (state.hlsPlaylistUrl) {
+      startHLSPlayback();
+    }
+
+    updatePlayButtonState();
+  }
+
+  function stopPlayback(): void {
+    console.log('[Radio] Stopping playback...');
+    state.isPlaying = false;
+
+    stopHLSPlayback();
+    updatePlayButtonState();
+  }
+
+  function updatePlayButtonState(): void {
+    if (playIcon && pauseIcon) {
+      playIcon.classList.toggle('hidden', state.isPlaying);
+      pauseIcon.classList.toggle('hidden', !state.isPlaying);
+    }
+
+    if (visualizer) {
+      visualizer.classList.toggle('is-playing', state.isPlaying);
+    }
+
+    // Disable button while starting session
+    if (playButton) {
+      playButton.disabled = isStartingSession;
+      playButton.style.opacity = isStartingSession ? '0.6' : '1';
+    }
+  }
+
+  function handleVolumeChange(e: Event): void {
+    const value = parseInt((e.target as HTMLInputElement).value);
+
+    // Update CSS variable for filled track effect
+    volumeSlider.style.setProperty('--volume-percent', `${value}%`);
+
+    // Update audio volume
+    if (audioElement) {
+      audioElement.volume = value / 100;
+    }
+  }
+
+  function toggleMute(): void {
+    if (volumeSlider && audioElement) {
+      const isMuted = audioElement.volume === 0;
+      const newVolume = isMuted ? 75 : 0;
+      volumeSlider.value = String(newVolume);
+      volumeSlider.style.setProperty('--volume-percent', `${newVolume}%`);
+      audioElement.volume = newVolume / 100;
+    }
+  }
+
+  async function handleQuestionSubmit(e: Event): Promise<void> {
+    e.preventDefault();
+
+    if (!state.sessionId) {
+      showError('Start the radio first to submit questions');
+      return;
+    }
+
+    const question = questionInput?.value.trim();
+    if (!question) return;
+
+    const name = submitterName?.value.trim() || undefined;
+
+    try {
+      const response = await fetch('/api/radio/question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: state.sessionId,
+          question,
+          submittedBy: name,
+        }),
+      });
+
+      if (response.ok) {
+        if (questionInput) questionInput.value = '';
+        if (submitterName) submitterName.value = '';
+        updateCharCount();
+        // Questions will be updated via SSE
+      } else {
+        const error = await response.json();
+        showError(error.error || 'Failed to submit question');
+      }
+    } catch (error) {
+      console.warn('[Radio] Failed to submit question:', error);
+      showError('Failed to submit question');
+    }
+  }
+
+  function updateCharCount(): void {
+    if (charCount && questionInput) {
+      charCount.textContent = String(questionInput.value.length);
+    }
+  }
+
+  async function handleUpvote(questionId: string): Promise<void> {
+    if (!state.sessionId) return;
+
+    try {
+      await fetch('/api/radio/upvote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: state.sessionId,
+          questionId,
+        }),
+      });
+      // Updates will come via SSE
+    } catch (error) {
+      console.warn('[Radio] Failed to upvote:', error);
+    }
+  }
+
+  function copyStreamUrl(): void {
+    const url = streamUrlElement?.textContent;
+    if (url) {
+      navigator.clipboard.writeText(url).then(() => {
+        if (copyButton) {
+          copyButton.classList.add('copied');
+          setTimeout(() => copyButton.classList.remove('copied'), 2000);
+        }
+      });
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Rendering
+  // ─────────────────────────────────────────────────────────────
+
+  function renderUI(): void {
     // Stream status
     if (statusDot && statusText) {
       statusDot.className = `status-dot ${state.isLive ? 'live' : 'offline'}`;
@@ -335,17 +859,17 @@ import '../styles/radio.css';
     // Current speaker
     if (speakingText) {
       if (state.currentSpeaker) {
-        const name = state.currentSpeaker === 'kothar' ? 'Kothar' : 'Tamarru';
+        const name = state.currentSpeaker === 'kothar' ? 'Kothar' : 'Artifex';
         speakingText.textContent = `${name} is speaking...`;
       } else {
-        speakingText.textContent = state.isLive ? 'Silence...' : 'Awaiting broadcast...';
+        speakingText.textContent = state.isLive ? 'Contemplating...' : 'Awaiting broadcast...';
       }
     }
 
     // Speaker avatars
-    if (kotharAvatar && tamarruAvatar) {
+    if (kotharAvatar && artifexAvatar) {
       kotharAvatar.classList.toggle('is-speaking', state.currentSpeaker === 'kothar');
-      tamarruAvatar.classList.toggle('is-speaking', state.currentSpeaker === 'tamarru');
+      artifexAvatar.classList.toggle('is-speaking', state.currentSpeaker === 'artifex');
     }
 
     // Connector pulse
@@ -362,7 +886,7 @@ import '../styles/radio.css';
     renderQuestionQueue();
   }
 
-  function renderQuestionQueue() {
+  function renderQuestionQueue(): void {
     if (!queueList || !queueEmpty) return;
 
     if (state.questions.length === 0) {
@@ -374,14 +898,15 @@ import '../styles/radio.css';
     queueEmpty.classList.add('hidden');
     queueList.classList.remove('hidden');
 
+    // Use escapeAttr for data-id to prevent XSS via malicious IDs
     queueList.innerHTML = state.questions
       .filter(q => q.status !== 'answered')
       .map(q => `
-        <li class="queue-item ${q.status === 'addressing' ? 'is-active' : ''}" data-id="${q.id}">
+        <li class="queue-item ${q.status === 'addressing' ? 'is-active' : ''}" data-id="${escapeAttr(q.id)}">
           <div class="queue-question">${escapeHtml(q.question)}</div>
           <div class="queue-meta">
             <span class="queue-author">${escapeHtml(q.submittedBy || 'Anonymous')}</span>
-            <button class="upvote-button" data-id="${q.id}" aria-label="Upvote">
+            <button class="upvote-button" data-id="${escapeAttr(q.id)}" aria-label="Upvote">
               <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
                 <path d="M7 14l5-5 5 5z"/>
               </svg>
@@ -392,113 +917,60 @@ import '../styles/radio.css';
       `)
       .join('');
 
-    // Add upvote listeners
-    queueList.querySelectorAll('.upvote-button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = (e.currentTarget as HTMLElement).dataset.id;
+    // Note: Event delegation is used via setupQueueEventDelegation()
+    // No per-button listeners needed - prevents memory leaks on re-render
+  }
+
+  // Event delegation for question queue - attach once, not per render
+  function setupQueueEventDelegation(): void {
+    queueList?.addEventListener('click', (e) => {
+      const button = (e.target as HTMLElement).closest('.upvote-button');
+      if (button) {
+        const id = (button as HTMLElement).dataset.id;
         if (id) handleUpvote(id);
-      });
+      }
     });
   }
 
-  function togglePlayback() {
-    state.isPlaying = !state.isPlaying;
+  function renderTranscript(): void {
+    if (!transcriptMessages || !transcriptEmpty) return;
 
-    if (playIcon && pauseIcon) {
-      playIcon.classList.toggle('hidden', state.isPlaying);
-      pauseIcon.classList.toggle('hidden', !state.isPlaying);
+    if (transcript.length === 0) {
+      transcriptEmpty.style.display = 'block';
+      transcriptMessages.innerHTML = '';
+      return;
     }
 
-    if (visualizer) {
-      visualizer.classList.toggle('is-playing', state.isPlaying);
-    }
+    transcriptEmpty.style.display = 'none';
 
-    // Audio playback would be handled here with actual HLS stream
-    if (state.isPlaying) {
-      startAudioPlayback();
-    } else {
-      stopAudioPlayback();
-    }
+    // Render last 50 entries
+    const recentEntries = transcript.slice(-50);
+
+    transcriptMessages.innerHTML = recentEntries.map(entry => {
+      const isKothar = entry.soul === 'kothar';
+      const name = isKothar ? 'Kothar' : 'Artifex';
+      const avatarSrc = isKothar
+        ? '/images/avatars/minoan-avatar.webp'
+        : '/images/avatars/artifex.png';
+
+      return `
+        <div class="transcript-entry" data-soul="${entry.soul}">
+          <img class="transcript-avatar" src="${avatarSrc}" alt="${name}" />
+          <div class="transcript-bubble">
+            <span class="transcript-speaker">${name}</span>
+            <p class="transcript-text">${escapeHtml(entry.text)}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Auto-scroll to bottom
+    transcriptMessages.scrollTop = transcriptMessages.scrollHeight;
   }
 
-  function startAudioPlayback() {
-    // Placeholder for HLS stream integration
-    console.log('[Radio] Starting playback...');
-  }
-
-  function stopAudioPlayback() {
-    // Placeholder for HLS stream integration
-    console.log('[Radio] Stopping playback...');
-  }
-
-  function handleVolumeChange(e: Event) {
-    const value = (e.target as HTMLInputElement).value;
-    console.log('[Radio] Volume:', value);
-  }
-
-  function toggleMute() {
-    if (volumeSlider) {
-      const isMuted = volumeSlider.value === '0';
-      volumeSlider.value = isMuted ? '75' : '0';
-    }
-  }
-
-  async function handleQuestionSubmit(e: Event) {
-    e.preventDefault();
-
-    const question = questionInput?.value.trim();
-    if (!question) return;
-
-    const name = submitterName?.value.trim() || undefined;
-
-    try {
-      const response = await fetch('/api/radio/question', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, submittedBy: name }),
-      });
-
-      if (response.ok) {
-        if (questionInput) questionInput.value = '';
-        if (submitterName) submitterName.value = '';
-        updateCharCount();
-        fetchRadioStatus();
-      }
-    } catch (error) {
-      console.warn('[Radio] Failed to submit question:', error);
-    }
-  }
-
-  function updateCharCount() {
-    if (charCount && questionInput) {
-      charCount.textContent = String(questionInput.value.length);
-    }
-  }
-
-  async function handleUpvote(questionId: string) {
-    try {
-      await fetch('/api/radio/upvote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ questionId }),
-      });
-      fetchRadioStatus();
-    } catch (error) {
-      console.warn('[Radio] Failed to upvote:', error);
-    }
-  }
-
-  function copyStreamUrl() {
-    const url = document.getElementById('stream-url')?.textContent;
-    if (url) {
-      navigator.clipboard.writeText(url).then(() => {
-        if (copyButton) {
-          copyButton.classList.add('copied');
-          setTimeout(() => copyButton.classList.remove('copied'), 2000);
-        }
-      });
-    }
-  }
+  // ─────────────────────────────────────────────────────────────
+  // Utilities
+  // ─────────────────────────────────────────────────────────────
 
   function escapeHtml(text: string): string {
     const div = document.createElement('div');
@@ -506,13 +978,74 @@ import '../styles/radio.css';
     return div.innerHTML;
   }
 
+  function escapeAttr(text: string): string {
+    // Escape for use in HTML attributes
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function showError(message: string): void {
+    // Simple alert for now - could be a toast notification
+    console.error('[Radio] Error:', message);
+    alert(message);
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // Cleanup
+  // ─────────────────────────────────────────────────────────────
+
+  function cleanup(): void {
+    destroyHLS();
+
+    if (eventSource) {
+      eventSource.close();
+      eventSource = null;
+    }
+
+    // Don't remove audio element on cleanup - just pause it
+    // This prevents accumulation when kept, and allows reuse
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.src = '';
+    }
+
+    // Reset initialized flag so next navigation can reinit
+    isInitialized = false;
+  }
+
   // Initialize on page load
   initRadio();
 
-  // Handle View Transitions
+  // Handle View Transitions - cleanup when navigating AWAY from radio
+  document.addEventListener('astro:before-swap', () => {
+    // Always cleanup before swap - prevents SSE leaks when leaving page
+    cleanup();
+  });
+
+  // Re-initialize if navigating back to radio
   document.addEventListener('astro:after-swap', () => {
     if (window.location.pathname === '/radio') {
+      // Reset state for fresh start
+      state = {
+        isPlaying: false,
+        currentSpeaker: null,
+        currentTopic: 'The station is preparing...',
+        listenerCount: 1,
+        isLive: false,
+        questions: [],
+        sessionId: null,
+        hlsPlaylistUrl: null,
+        sseStreamUrl: null,
+      };
+      transcript = [];
       initRadio();
     }
   });
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', cleanup);
 </script>
