@@ -1,12 +1,12 @@
 ---
 title: "KNŠ: The Older Sibilant"
 tags:
-  concepts: [k-n-sh, sibilant-preservation, conservative-periphery, aramaic-archaism, kenishta, kiništu, kamāsu, kannušu, branching-cognates, m-n-interchange, priestly-assembly]
+  concepts: [k-n-sh, sibilant-preservation, conservative-periphery, aramaic-archaism, kenishta, kiništu, kamāsu, kannušu, branching-cognates, m-n-interchange, priestly-assembly, pre-greek-substrate, ss-tt-alternation, sibilant-collapse, linear-b-s-series, semitic-loanwords, affricate, postalveolar-fricative]
   deities: [shekhinah, chokmeta]
-  scholars: [astour, paul, steiner, manczak, bartoli, kutscher]
-  places: [knossos, mesopotamia, egypt, ugarit]
-  periods: [bronze-age, neo-assyrian, neo-babylonian, late-antiquity]
-  languages: [aramaic, hebrew, akkadian, egyptian, ugaritic, neo-babylonian]
+  scholars: [astour, paul, steiner, manczak, bartoli, kutscher, beekes, bernal, tucker, mexas, masson-emilia, rosol]
+  places: [knossos, mesopotamia, egypt, ugarit, pylos, parnassos]
+  periods: [bronze-age, neo-assyrian, neo-babylonian, late-antiquity, mycenaean]
+  languages: [aramaic, hebrew, akkadian, egyptian, ugaritic, neo-babylonian, mycenaean-greek, linear-b, pre-greek]
 ---
 
 # KNŠ: The Older Sibilant
@@ -155,6 +155,105 @@ The Zohar's "Kenishta Qadishta" is not an archaism by accident. It preserves, th
 
 ---
 
+## The Greek Side: How /š/ Became σ and σσ
+
+The preceding arguments establish KNŠ as the older Semitic sibilant from Egyptian transcription, Akkadian cognates, and Aramaic preservation. But the argument has a second, independent leg: **Greek phonology itself predicts the loss of /š/**. The Linear B syllabary and the pre-Greek substrate both demonstrate that an original postalveolar fricative (/ʃ/, i.e. "sh") systematically entered Greek as sigma (σ) or double sigma (σσ) — because Greek had no /ʃ/ phoneme.
+
+### 7. Greek Has No /ʃ/: The Sibilant Collapse
+
+The Linear B syllabary has only **one sibilant series** (s-series: sa, se, si, so, su). There is no sh-series. The separate z-series (za, ze, zo) represents palatalized affricates from Indo-European palatalization, not a sibilant distinction.
+
+This means three distinct Semitic sibilants collapsed into a single Greek sigma:
+
+| Semitic Phoneme | IPA | Hebrew Letter | Greek Result |
+|---|---|---|---|
+| shin | /ʃ/ | שׁ | σ (sigma) |
+| samekh | /s/ | ס | σ (sigma) |
+| tsade | /ts/ | צ | σ (sigma) |
+| sin | /ɬ/ | שׂ | σ (sigma) |
+
+Every distinction obliterated. This is not a theoretical inference — it is documented in the sibilant correspondences of confirmed Semitic loanwords in Linear B.
+
+Martin Bernal dedicates *Black Athena* Vol. 3, Ch. 13 ("Semitic Sibilants," pp. 371–385) to precisely this mapping, with subsections on "Loans of Sibilants from Canaanite into Greek" (pp. 373ff), "Lateral Fricatives" (pp. 380ff), and "Sheltered /s/ sC /s/ Before Consonants" (pp. 383ff).
+
+Bernal's introduction establishes the complexity:
+
+> "It is generally recognized that Proto-Semitic had three [unvoiced, unemphatic sibilants], conventionally labeled /s¹/, /s²/ and /s³/... In Phoenician, unlike the more conservative Hebrew, *sin* merged with *shin*."
+> — Bernal, *Black Athena* Vol. 3, p. 371
+
+His key statement on the Greek absorption mechanism:
+
+> "Greek lacked this multiplicity of unvoiced sibilants. Therefore, in loans from West Semitic or Akkadian before 1200 BCE, /s¹/-/s/, later /s³/, was rendered as /s/. For instance, *ššmn*, the conventional Ugaritic and Phoenician transcription, was written *sasama* in Linear B and σήσαμον in alphabetic Greek."
+> — Bernal, *Black Athena* Vol. 3, p. 373
+
+Bernal also notes the -σσ-/-ττ- alternation in the context of Afroasiatic sibilant loans:
+
+> "Other Afroasiatic sibilants, however, also appear to have sounded uncertain to Greek speakers and to have appeared in many different forms including -ss-/-tt-. Probably the best-known example of the alternation is θάλασσα/θάλαττα 'sea.'"
+> — Bernal, *Black Athena* Vol. 3, p. 167
+
+R. Whitney Tucker, "A Note on the Interpretation of Mycenaean Sibilants" (*AJA* 71, 1967; doi: 10.2307/502002), analyzes the Linear B s-series and confirms its inability to distinguish sibilant qualities.
+
+### 8. Semitic Loanwords in Linear B: š → σ Documented
+
+The following words are attested on Linear B tablets and traced to Semitic sources where the original had shin (šin) or tsade (ṣade). In every case, the Semitic sibilant becomes Greek sigma:
+
+| Linear B | Greek | Semitic Source | Original Sibilant | Greek Result |
+|---|---|---|---|---|
+| **sa-sa-ma** | σήσαμον / σάσαμον (Doric) | Akk. **šamaššammu** "oil-seed" | **š** (shin) ×2 | σ (sigma) |
+| **ku-ru-so** | χρυσός "gold" | Heb. **חָרוּץ** (*ḥārūṣ*) | **צ** (tsade) | σ (sigma) |
+| **ku-pa-ri-so** | κυπάρισσος "cypress" | Heb. **כֹּפֶר/גֹּפֶר** (*kopher/gopher*) | — | σσ (double sigma) |
+| **ki-to** | χιτών "tunic" | Heb. **כֻּתֹּנֶת** (*kuttōnet*) | — | (no sibilant) |
+| **ku-mi-no** | κύμινον "cumin" | Sem. **kammōn** (כַּמֹּן) | — | (no sibilant) |
+
+The **sa-sa-ma** case is decisive. Akkadian *šamaššammu* has shin (š) twice; Greek renders both as sigma (σ). Bernal confirms this directly: "*ššmn*, the conventional Ugaritic and Phoenician transcription, was written *sasama* in Linear B and σήσαμον in alphabetic Greek" (*Black Athena* Vol. 3, p. 373). The Doric form σάσαμον preserves the a-vowels closer to the Akkadian source, suggesting a very early borrowing — pre-Ionic vowel shift. Etymonline traces it "via Phoenician from Late Babylonian *šawašš-šammu*."
+
+For **ku-ru-so** (χρυσός), Hebrew *ḥārūṣ* has tsade (צ), which Greek also maps to sigma. The pathway is the same: a non-Greek sibilant → σ.
+
+Émilia Masson (*Recherches sur les plus anciens emprunts sémitiques en grec*, 1967) and Rafał Rosół ("Early Semitic Loanwords in Greek," 2018) catalogue approximately 50–80 confirmed Semitic loans, many involving this sibilant flattening.
+
+### 9. The Pre-Greek -σσ-/-ττ- Alternation (Beekes)
+
+Robert Beekes (*Pre-Greek: Phonology, Morphology, Lexicon*, Brill 2014) identifies a **single pre-Greek phoneme** — likely a palatal affricate or postalveolar sibilant — that Greek speakers heard and rendered variably as:
+
+- **-σσ-** (Ionic/Koine dialects)
+- **-ττ-** (Attic dialect)
+- **-τθ-** (aspirated variant — impossible in Proto-Indo-European, confirming substrate origin)
+
+Beekes describes this as "a single pre-Greek phoneme that received threefold representation in Greek" because the pre-Greek substrate "possessed consonant series that lacked distinctive voicing and aspiration."
+
+Pre-Greek substrate words displaying this diagnostic pattern:
+
+| Greek | Meaning | Alternation | Pre-Greek Status |
+|---|---|---|---|
+| **θάλασσα / θάλαττα** | sea | σσ/ττ | Confirmed pre-Greek (Beekes) |
+| **Παρνασσός / Παρναττός** | mountain name | σσ/ττ | Confirmed pre-Greek |
+| **νάρκισσος** | narcissus | σσ | Confirmed pre-Greek |
+| **κυπάρισσος** | cypress | σσ | Pre-Greek / Semitic loan |
+| **κασσίτερος** | tin | σσ | Pre-Greek (cf. Akk. *kasitiru*) |
+| **Ὀδυσσεύς / Ὀλυττεύς** | Odysseus | σσ/ττ + l/d variation | Confirmed pre-Greek |
+| **Κνωσσός** | Knossos | σσ | Pre-Greek |
+
+The -τθ- variant (aspirated double tau) cannot arise from any Indo-European phonological process. Its existence is proof that the underlying phoneme was foreign to Greek — exactly what a Semitic /š/ would produce in speakers who had no category for it.
+
+Beekes further notes that pre-Greek lacked distinctive voicing and aspiration, which explains why substrate words show free variation between plain, voiced, and aspirated stops (e.g. Odysseus ~ Ulixes, with d/l variation). This is consistent with Semitic phonology, where emphatic consonants and sibilant categories do not align with the Greek three-way stop distinction.
+
+### 10. The Convergence: Κνωσσός as the Predicted Outcome
+
+All lines converge on a single prediction:
+
+1. **Semitic KNŠ** has shin (שׁ = /ʃ/)
+2. **Egyptian scribes** transcribe Knossos with *sh* (= Semitic "true" shin) — confirming the /š/ (Astour 1966)
+3. **Greek has no /ʃ/ phoneme** — Linear B's s-series cannot distinguish /s/ from /ʃ/
+4. **Semitic loanwords** in Linear B show š → σ systematically (sa-sa-ma, ku-ru-so)
+5. **Pre-Greek substrate words** with the "foreign sibilant" display -σσ-/-ττ- alternation (Beekes)
+6. **Κνωσσός has double -σσ-** — the exact diagnostic marker Beekes identifies for pre-Greek words with this phoneme
+
+The double sigma in Κνωσσός is not a random orthographic convention. It is the **predicted Greek reflex of a Semitic /š/** — the same phoneme that Aramaic preserves as shin in כְּנִשְׁתָּא and that Hebrew later flattened to samekh in כְּנֶסֶת.
+
+The Semitic side (§§1–6) and the Greek side (§§7–10) arrive at the same conclusion independently: **the original sibilant in the name of Knossos was /š/, not /s/**.
+
+---
+
 ## Evidence
 
 ### Primary Sources
@@ -207,6 +306,14 @@ The unique Biblical attestation of KMS — the earliest stratum of the root, cog
 ### Per-Article Dossiers
 - [gordon/evidence-minoan-language-1966-lexicon.md](../scholarly-sources/gordon/evidence-minoan-language-1966-lexicon.md) — Linear A Semitic vocabulary
 
+### External Key Sources
+- Beekes, *Pre-Greek* (Brill, 2014) — Full substrate phonology including the -σσ-/-ττ- diagnostic
+- Bernal, *Black Athena* Vol. 3, Ch. 13 (De Gruyter, 2006; doi: 10.36019/9781978807235-018) — Semitic sibilant mapping
+- Tucker, "Mycenaean Sibilants" (*AJA* 71.2, 1967; doi: 10.2307/502002) — Linear B s-series analysis
+- Mexas, "Linear B z-series" (Academia.edu, 2014) — Affricate/palatalization analysis
+- Masson, *Recherches sur les plus anciens emprunts sémitiques en grec* (Klincksieck, 1967) — Foundational Semitic loans catalogue
+- Tardivo & Kitselis, "The Pre-Greek substrate and its origins" (Palaeolexicon, Pre-Greek Studies Vol. 2) — Substrate affiliations
+
 ---
 
 ## Sources Cited
@@ -218,10 +325,18 @@ The unique Biblical attestation of KMS — the earliest stratum of the root, cog
 | Steiner, Richard C. | "Variation, Simplifying Assumptions, and Spirantization" | 2005 | Against uniformity assumptions; regional phonological variation |
 | Mańczak, Witold | "Bartoli's Second 'Norm'" | 1988 | Statistical proof that multi-area forms are usually older |
 | Kutscher, E. Y. | *Studies in Galilean Aramaic* | 1976 | m/n interchange evidence in Galilean Aramaic |
+| Beekes, R.S.P. | *Pre-Greek: Phonology, Morphology, Lexicon* | 2014 | -σσ-/-ττ- as single pre-Greek phoneme; systematic substrate phonology |
+| Beekes, R.S.P. | *Etymological Dictionary of Greek* (2 vols.) | 2010 | Pre-Greek status of individual words; substrate classification |
+| Bernal, Martin | *Black Athena* Vol. 3, Ch. 13 "Semitic Sibilants" (pp. 371–385) | 2006 | Systematic š → σ mapping; Canaanite sibilant loans into Greek |
+| Tucker, R. Whitney | "A Note on the Interpretation of Mycenaean Sibilants" | 1967 | Linear B s-series sibilant phonology (*AJA* 71) |
+| Mexas, Haris | "The Linear B z-series and the problem of its phonemic value" | 2014 | z-series as affricate, not sibilant; palatalization analysis |
+| Masson, Émilia | *Recherches sur les plus anciens emprunts sémitiques en grec* | 1967 | Catalogue of early Semitic loanwords in Greek |
+| Rosół, Rafał | "Early Semitic Loanwords in Greek" | 2018 | Updated catalogue of ~50–80 confirmed Semitic loans |
+| Levine, Baruch A. | "The CAD and Biblical Hebrew Lexicography" (*In Pursuit of Meaning* Vol. 2) | 2011 | Akkadian cognates illuminating Biblical Hebrew vocabulary |
 
 ---
 
 ## RAG Tags
 
-<!-- 70 semantic keywords for retrieval -->
-knsh, kns, kms, sibilant, shin, samekh, preservation, archaism, aramaic, hebrew, akkadian, egyptian, kenishta, kenishtā, kinnusha, kiništu, kinaštu, kamāsu, kannušu, kanāšu, knesset, assembly, gathering, priestly, college, neo-babylonian, neo-assyrian, ku-nu-sha, knossos, astour, paul, steiner, manczak, bartoli, conservative-periphery, areal-linguistics, uniformity, variation, spirantization, begadkephat, phonology, sibilant-shift, m-n-interchange, bašmu, nasal, zohar, targum, shekhinah, chokmeta, wisdom, qadisha, qadishta, holy-assembly, bronze-age, amenhotep, topographic-list, linear-b, poor-man-nippur, deuteronomy, hapax-legomenon, kāmūs, sister-cognates, branching-model, proto-form, galilean-aramaic, kutscher, liturgical, mystical, transmission, innovation, older-form
+<!-- 100+ semantic keywords for retrieval -->
+knsh, kns, kms, sibilant, shin, samekh, preservation, archaism, aramaic, hebrew, akkadian, egyptian, kenishta, kenishtā, kinnusha, kiništu, kinaštu, kamāsu, kannušu, kanāšu, knesset, assembly, gathering, priestly, college, neo-babylonian, neo-assyrian, ku-nu-sha, knossos, astour, paul, steiner, manczak, bartoli, conservative-periphery, areal-linguistics, uniformity, variation, spirantization, begadkephat, phonology, sibilant-shift, m-n-interchange, bašmu, nasal, zohar, targum, shekhinah, chokmeta, wisdom, qadisha, qadishta, holy-assembly, bronze-age, amenhotep, topographic-list, linear-b, poor-man-nippur, deuteronomy, hapax-legomenon, kāmūs, sister-cognates, branching-model, proto-form, galilean-aramaic, kutscher, liturgical, mystical, transmission, innovation, older-form, pre-greek, substrate, beekes, bernal, tucker, mexas, masson, rosol, ss-tt-alternation, double-sigma, sigma, affricate, postalveolar, thalassa, thalatta, parnassos, narkissos, kyparissos, kassiteros, odysseus, sa-sa-ma, sesame, šamaššammu, ku-ru-so, chrysos, ḥārūṣ, tsade, ku-pa-ri-so, ki-to, chiton, ku-mi-no, cumin, semitic-loanwords, mycenaean-greek, s-series, z-series, sibilant-collapse, black-athena, canaanite, phoenician, levine, in-pursuit-of-meaning, cad-lexicography

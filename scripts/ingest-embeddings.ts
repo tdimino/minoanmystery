@@ -11,10 +11,10 @@
  * - Supports Matryoshka dimensions (256, 512, 1024, 2048)
  *
  * Usage:
- *   npx ts-node scripts/ingest-embeddings.ts
+ *   npx ts-node scripts/ingest-embeddings.ts              # Clears existing + reingests (default)
  *   npx ts-node scripts/ingest-embeddings.ts --input chunks.json
  *   npx ts-node scripts/ingest-embeddings.ts --dry-run
- *   npx ts-node scripts/ingest-embeddings.ts --clear  # Clear existing embeddings first
+ *   npx ts-node scripts/ingest-embeddings.ts --no-clear   # Append without clearing (risk of duplicates)
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -105,26 +105,38 @@ function createSupabaseClient(): SupabaseClient {
 }
 
 async function clearExistingEmbeddings(supabase: SupabaseClient): Promise<number> {
-  // First count existing records
-  const { count, error: countError } = await supabase
-    .from('kothar_dossiers')
-    .select('*', { count: 'exact', head: true });
+  // Batch-delete to avoid Supabase statement timeout on large tables
+  const DELETE_BATCH = 500;
+  let total = 0;
 
-  if (countError) {
-    throw new Error(`Failed to count embeddings: ${countError.message}`);
+  while (true) {
+    const { data, error: selectError } = await supabase
+      .from('kothar_dossiers')
+      .select('id')
+      .limit(DELETE_BATCH);
+
+    if (selectError) {
+      throw new Error(`Failed to select embeddings for deletion: ${selectError.message}`);
+    }
+
+    if (!data || data.length === 0) break;
+
+    const ids = data.map(r => r.id);
+    const { error: deleteError } = await supabase
+      .from('kothar_dossiers')
+      .delete()
+      .in('id', ids);
+
+    if (deleteError) {
+      throw new Error(`Failed to delete batch: ${deleteError.message}`);
+    }
+
+    total += ids.length;
+    process.stdout.write(`\r   Cleared ${total} rows...`);
   }
 
-  // Then delete all
-  const { error: deleteError } = await supabase
-    .from('kothar_dossiers')
-    .delete()
-    .neq('id', '00000000-0000-0000-0000-000000000000');
-
-  if (deleteError) {
-    throw new Error(`Failed to clear embeddings: ${deleteError.message}`);
-  }
-
-  return count || 0;
+  if (total > 0) process.stdout.write('\n');
+  return total;
 }
 
 async function insertChunks(
@@ -164,7 +176,7 @@ function formatProgress(current: number, total: number, tokens: number): string 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
-  const clearFirst = args.includes('--clear');
+  const skipClear = args.includes('--no-clear');
   const inputIndex = args.indexOf('--input');
   const inputPath = inputIndex !== -1 ? args[inputIndex + 1] : DEFAULT_INPUT;
 
@@ -210,8 +222,8 @@ async function main(): Promise<void> {
 
   const supabase = createSupabaseClient();
 
-  // Clear existing if requested
-  if (clearFirst) {
+  // Clear existing embeddings before insert (default) to prevent duplicates
+  if (!skipClear) {
     console.log('\n🗑️  Clearing existing embeddings...');
     const cleared = await clearExistingEmbeddings(supabase);
     console.log(`   Cleared ${cleared} existing records`);

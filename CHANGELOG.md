@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- **Embedding ingestion deduplication**: `ingest-embeddings.ts` now clears existing embeddings before insert by default, preventing duplicate accumulation across repeated ingests (was 39K stale rows)
+  - Replaced bulk `delete().neq()` with batched select→delete (500 rows/batch) to avoid Supabase statement timeouts
+  - Old `--clear` opt-in flag replaced with `--no-clear` opt-out
+  - `reingest-dossiers.sh` now idempotent without any flag changes
+
 ### Added
 - **Harrison Prolegomena OCR**: Full OCR of Jane Ellen Harrison's *Prolegomena to the Study of Greek Religion* (1908)
   - 716-page PDF split into 4 parts, OCR'd via Marker, and added to academic-research RAG
