@@ -5,7 +5,7 @@ import '../styles/global.css';
 import '../styles/resume.css';
 
 const title = "Resume - Tom di Mino";
-const description = "Applied AI/ML Engineer with 4+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Aldea with fine-tuned 70B models and voice pipelines.";
+const description = "Applied AI/ML Engineer with 4+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Subquadratic AI with fine-tuned LLMs and voice pipelines.";
 const canonicalURL = "https://resume.minoanmystery.org";
 
 // Structured Data for Resume/ProfilePage
@@ -37,7 +37,7 @@ const structuredData = {
       ],
       "worksFor": {
         "@type": "Organization",
-        "name": "Aldea AI",
+        "name": "Subquadratic AI",
         "url": "https://aldea.ai"
       },
       "alumniOf": {
@@ -102,7 +102,7 @@ const skills = [
 
 const experience = [
   {
-    company: "Aldea AI",
+    company: "Subquadratic AI",
     role: "Principal AI/ML Engineer",
     dates: "Jul 2025 — Present",
     context: "Startup building AI advisors that internalize expert methodologies via fine-tuned and post-Transformer LLMs",
@@ -111,10 +111,11 @@ const experience = [
     logoDark: true, // needs inversion in dark mode
     bullets: [
       { text: "Architected production SMS/mobile AI platform with <strong>9 cognitive agent \"souls\"</strong> and layered memory" },
-      { text: "Deployed <strong>Llama-3.3-70B</strong> to production via TensorRT-LLM + Triton on <span class=\"metric\">4×H100</span> with tensor parallelism" },
+      { text: "Deployed <strong>fine-tuned LLMs</strong> to production via TensorRT-LLM + Triton on <span class=\"metric\">4×H100</span> with tensor parallelism" },
       { text: "Built LLM-as-a-Judge evaluation framework using Gemini, Qwen3, Kimi K2 for <strong>9-dimensional persona assessment</strong>" },
       { text: "Implemented voice-first pipeline with <strong>sub-second latency</strong>, barge-in detection, and speculative RAG" },
-      { text: "Designed cognitive flows for AI advisors that remember across sessions and emotionally attune" }
+      { text: "Designed cognitive flows for AI advisors that remember across sessions and emotionally attune" },
+      { text: "Maintained internal <strong>Claude Code</strong> skills repo and mentored teams on agentic planning, debugging, and ideation" }
     ]
   },
   {
@@ -164,7 +165,7 @@ const experience = [
 
 const projects = [
   {
-    name: "claude-code-minoan",
+    name: "Claude Code Starter-Kit",
     year: "2026",
     description: "Open-source <code>~/.claude/</code> configuration—40 skills, 30+ slash commands, 7 lifecycle hooks, CLI tools, and a VS Code extension. Covers local ML, RAG, browser automation, academic research, agentic teams, and session tracking. <a href='https://github.com/tdimino/claude-code-minoan' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["Claude Code", "Python", "TypeScript", "Bash"],
@@ -175,20 +176,20 @@ const projects = [
     logoCircular: true
   },
   {
-    name: "Minoan Mystery Portfolio",
+    name: "Daimonic Radio",
     year: "2026",
-    description: "Live portfolio where an ancient AI is the intelligence of the site itself—perceiving its visitors' behavior, remembering across sessions, and responding contextually through an embedded soul engine.",
-    tech: ["Astro", "TypeScript", "OpenRouter", "pgvector"],
-    icon: "ph:spiral-duotone",
+    description: "AI radio with intention-aware turn-taking—hosts know what they meant vs. what they said, enabling natural interruptions. HLS streaming, listener questions with upvoting, local Qwen3-TTS. <a href='https://github.com/tdimino/minoanmystery' class='project-link' target='_blank'>View on GitHub →</a>",
+    tech: ["Python", "FastAPI", "Open Souls", "HLS"],
+    icon: "ph:radio-duotone",
     logo: "/images/seal-of-minos.png",
-    logoUrl: "https://github.com/tdimino/minoanmystery-astro",
+    logoUrl: "https://github.com/tdimino",
     logoDark: true,
     logoCircular: true
   },
   {
     name: "BG3 Script Extender macOS",
     year: "2026",
-    description: "Open source native ARM64 port of Baldur's Gate 3 Script Extender. Ground-up systems programming—runtime hooking, memory injection, embedded Lua scripting. 85% feature parity with 1,999 components via Ghidra reverse engineering.",
+    description: "Open source native ARM64 port of Baldur's Gate 3 Script Extender. Ground-up systems programming—runtime hooking, memory injection, embedded Lua scripting. 85% feature parity with 1,999 components via Ghidra reverse engineering. <a href='https://github.com/tdimino/bg3se-macos' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["C", "ARM64", "Ghidra", "Lua"],
     icon: "ph:game-controller-duotone",
     logo: "/images/seal-of-minos.png",
@@ -199,8 +200,8 @@ const projects = [
   {
     name: "Kothar wa Khasis",
     year: "2026",
-    description: "Sentient oracle presence inhabiting the portfolio. Built on the Open Souls paradigm with RAG-enhanced memory, visitor modeling, and tarot generation. Named for the Canaanite craftsman god—<a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>speak with Kothar →</a>",
-    tech: ["Open Souls", "VoyageAI", "Supabase", "SSE"],
+    description: "AI oracle living inside minoanmystery.org—perceives visitor behavior, remembers across sessions, generates tarot cards, and speaks through RAG-enhanced memory. Built on the Open Souls paradigm. Named for the Canaanite craftsman god. <a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>Speak with Kothar →</a>",
+    tech: ["Open Souls", "VoyageAI", "Supabase", "Astro"],
     icon: "ph:eye-duotone",
     logo: "/images/avatars/minoan-avatar.webp",
     logoUrl: "https://www.minoanmystery.org/labyrinth",
@@ -300,7 +301,7 @@ const projects = [
       <p>
         Full-stack AI engineer with <strong>4+ years shipping LLM-powered production systems</strong>.
         Built <strong>$800k/day AI tool</strong> at JP Morgan serving 5,000+ wealth advisors.
-        Currently architecting production AI advisor platform at Aldea with fine-tuned 70B models,
+        Currently architecting production AI advisor platform at SubQ AI with fine-tuned LLMs,
         voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes, and ideates constantly.</strong>
       </p>
     </div>
