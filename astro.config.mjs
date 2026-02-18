@@ -10,7 +10,6 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'static',
   adapter: vercel({
-    edgeMiddleware: true,
     maxDuration: 60,
   }),
   integrations: [

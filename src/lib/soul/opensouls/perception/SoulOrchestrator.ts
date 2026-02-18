@@ -521,6 +521,16 @@ export class SoulOrchestrator {
         throw new Error(`Chat API error: ${response.status}`);
       }
 
+      // Verify we got an SSE stream, not a JSON endpoint response.
+      // When Vercel's routing misbehaves, /api/soul/chat can return JSON
+      // from a different endpoint, causing blank chat bubbles.
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json') && !contentType.includes('text/event-stream')) {
+        // response.text() consumes the body stream — safe because we unconditionally throw.
+        const body = await response.text();
+        throw new Error(`Chat API returned JSON instead of SSE stream: ${body.slice(0, 100)}`);
+      }
+
       // Process SSE stream
       reader = response.body?.getReader();
       if (!reader) throw new Error('No response body');
