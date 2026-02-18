@@ -176,6 +176,49 @@ const soulMemory = context.soulMemory ?? getSoulMemory();
 - **Server (API endpoint)**: Injected adapter captures results in response
 - **Client (SoulOrchestrator)**: Falls back to localStorage singleton
 
+## Model Configuration
+
+Defined in `src/lib/soul/opensouls/core/models.ts`. Two model roles:
+
+| Role | Model | Provider | Purpose |
+|------|-------|----------|---------|
+| **PERSONA** | `groq/kimi-k2` | Groq | User-facing dialog — personality, streaming, emotional intelligence |
+| **THINKING** | `qwen/qwen3-30b-a3b-instruct-2507` | OpenRouter | Internal reasoning — gates, decisions, visitor modeling |
+
+### Thinking Model: Qwen3-30B-A3B
+
+MoE architecture: 30B total params, only 3B active per inference. Fast structured output at ~82-90% less cost than Gemini 3 Flash.
+
+Used by: `mentalQuery`, `internalMonologue`, `decision`, `brainstorm`, `visitorNotes`, `visitorWhispers`
+
+**Pricing (OpenRouter):** $0.08/M input, $0.33/M output
+
+**Key**: The `-instruct-2507` variant is **non-thinking only**. No `/think` or `/no_think` tags needed—it never produces `<think>` blocks. Use the separate `-thinking-2507` variant if chain-of-thought reasoning is needed (we don't).
+
+### Qwen3 Prompting: Sampling Parameters
+
+OpenRouter provider sends Qwen's recommended defaults: `top_p=0.8`, `top_k=20`. Temperature varies per cognitive step:
+
+| Cognitive Step | Temperature | Rationale |
+|---------------|-------------|-----------|
+| `mentalQuery` | 0.2 | Near-deterministic boolean gate |
+| `decision` | 0.4 | Consistent option selection |
+| `visitorNotes` | 0.5 | Analytical, structured notes |
+| `internalMonologue` | 0.7 | Balanced reasoning (Qwen default) |
+| `visitorWhispers` | 0.85 | Creative/intuitive daimonic sensing |
+| `brainstorm` | 0.9 | Maximum diversity |
+| `externalDialog` | Provider default | Set by PERSONA_MODEL (Groq/Kimi K2) |
+
+Per-step temperatures are passed via the `opts` parameter in `modelsTheVisitor`. The CognitiveStep factory at `core/CognitiveStep.ts` forwards `opts.temperature` to the provider.
+
+### Provider Prefixes
+
+Models are routed to providers by prefix:
+- `groq/` → Groq provider (ultra-low latency)
+- `qwen/` or no prefix → OpenRouter provider (default)
+
+The default model is set per-endpoint in `ensureProviders()` and as a fallback in `OpenRouterProvider` constructor.
+
 ## Key Files
 
 | File | Purpose |

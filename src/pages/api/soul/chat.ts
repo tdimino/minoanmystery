@@ -154,7 +154,7 @@ function loadSoulConfig(): Record<string, unknown> {
   } catch (error) {
     console.error('Failed to load soul config:', error);
     return {
-      model: 'google/gemini-3-flash-preview',
+      model: 'qwen/qwen3-30b-a3b-instruct-2507',
       temperature: 0.7,
       maxTokens: 150,
     };
@@ -176,7 +176,7 @@ function ensureProviders(): void {
 
   const openRouterProvider = new OpenRouterProvider({
     apiKey: openrouterKey,
-    defaultModel: 'google/gemini-3-flash-preview',
+    defaultModel: 'qwen/qwen3-30b-a3b-instruct-2507',
     siteUrl: 'https://minoanmystery.org',
     siteName: 'Minoan Mystery',
   });

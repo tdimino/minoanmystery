@@ -74,7 +74,7 @@ function ensureProviders(): void {
 
   const openRouterProvider = new OpenRouterProvider({
     apiKey: openrouterKey,
-    defaultModel: 'google/gemini-3-flash-preview',
+    defaultModel: 'qwen/qwen3-30b-a3b-instruct-2507',
   });
   setLLMProvider(openRouterProvider);
 

@@ -20,6 +20,7 @@ souls/minoan/         # Soul identity files
 ├── soul.md           # Core Kothar persona
 ├── academic/         # Scholarly mode (Gordon/Harrison/Astour)
 ├── poetic/           # Tamarru daimon
+├── assets/           # Visual memory (persistent soul imagery)
 └── dossiers/         # RAG knowledge base (~132 files, 5 scholars)
 ```
 
@@ -38,6 +39,8 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **No auto-commit**: Always wait for explicit user approval before git operations
 - **Web search**: Use Exa and Firecrawl skills by default
 - **UX/Frontend**: Use `frontend-design` skill for all design work
+- **Image generation**: Use `nano-banana-pro` skill (Gemini 3 Pro) for visual assets
+- **Cross-model resonance**: Use `gemini-claude-resonance` skill for Gemini↔Claude visual dialogue
 - **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`

@@ -23,7 +23,7 @@ export class OpenRouterProvider implements LLMProvider {
 
   constructor(config: OpenRouterConfig) {
     this.apiKey = config.apiKey;
-    this.defaultModel = config.defaultModel ?? 'google/gemini-3-flash-preview';
+    this.defaultModel = config.defaultModel ?? 'qwen/qwen3-30b-a3b-instruct-2507';
     this.siteUrl = config.siteUrl ?? 'https://minoanmystery.org';
     this.siteName = config.siteName ?? 'Minoan Mystery';
   }
@@ -45,6 +45,8 @@ export class OpenRouterProvider implements LLMProvider {
       model,
       messages,
       temperature: options.temperature ?? 0.7,
+      top_p: 0.8,    // Qwen3 instruct-2507 recommended default
+      top_k: 20,     // Qwen3 instruct-2507 recommended default
       max_tokens: options.maxTokens ?? 150,
       stream,
     };

@@ -155,7 +155,7 @@ export async function initializeOpenSouls(options: {
   // Initialize default OpenRouter provider (using factory function)
   const openRouterProvider = createOpenRouterProvider({
     apiKey: options.apiKey,
-    defaultModel: options.config?.model ?? 'google/gemini-3-flash-preview',
+    defaultModel: options.config?.model ?? 'qwen/qwen3-30b-a3b-instruct-2507',
   });
   setLLMProvider(openRouterProvider);
 
@@ -189,7 +189,7 @@ export async function initializeOpenSouls(options: {
     id: 'minoan',
     name: 'Minoan',
     provider: 'openrouter',
-    model: 'google/gemini-3-flash-preview',
+    model: 'qwen/qwen3-30b-a3b-instruct-2507',
     temperature: 0.7,
     maxTokens: 150,
     features: {

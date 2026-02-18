@@ -183,6 +183,15 @@ type CognitiveStep<Args, Result> = (
 ) => Promise<[WorkingMemory, Result | AsyncIterable<string>]>;
 ```
 
+### Model Configuration (`src/lib/soul/opensouls/core/models.ts`)
+
+| Role | Model ID | Provider | Use Case |
+|------|----------|----------|----------|
+| PERSONA | `groq/kimi-k2` | Groq | User-facing dialog, streaming |
+| THINKING | `qwen/qwen3-30b-a3b-instruct-2507` | OpenRouter | Gates, decisions, visitor modeling |
+
+THINKING_MODEL is a Qwen3 MoE (30B total, 3B active). $0.09/$0.30 per M tokens via OpenRouter.
+
 ### Providers (`src/lib/soul/opensouls/providers/`)
 
 LLM backend integrations.

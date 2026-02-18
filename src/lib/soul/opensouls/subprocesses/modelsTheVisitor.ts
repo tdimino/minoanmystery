@@ -108,9 +108,11 @@ export async function modelsTheVisitor(
 
   // Single combined check: should we update model OR reflect on behavior?
   // (Reduces LLM calls from 2 to 1)
+  // Temperature 0.2: near-deterministic for boolean gate decisions
   const [, shouldProcess] = await mentalQuery(
     mem,
-    `${mem.soulName} has learned something meaningful about ${userName} that warrants updating the mental model or adjusting engagement approach.`
+    `${mem.soulName} has learned something meaningful about ${userName} that warrants updating the mental model or adjusting engagement approach.`,
+    { temperature: 0.2 }
   );
 
   log('Should process?', shouldProcess);
@@ -127,9 +129,11 @@ export async function modelsTheVisitor(
   localLogger.visitorModel('updating', { userName });
 
   // Learn what's new (keep memory for context)
+  // Temperature 0.7: balanced reasoning (Qwen3 default)
   const [withLearnings, learnings] = await internalMonologue(
     mem,
-    `What have I learned specifically about ${userName} from the last few messages or their behavior? Consider what they seem interested in, how they communicate, and what they might need. If they mentioned a specific topic, note it.`
+    `What have I learned specifically about ${userName} from the last few messages or their behavior? Consider what they seem interested in, how they communicate, and what they might need. If they mentioned a specific topic, note it.`,
+    { temperature: 0.7 }
   );
   log('Learnings:', learnings);
 
@@ -156,10 +160,11 @@ export async function modelsTheVisitor(
   }
 
   // Update notes (result persisted, memory discarded)
+  // Temperature 0.5: analytical, structured note-taking
   const [, notes] = await visitorNotes(withLearnings, {
     currentNotes,
     focus: 'all',
-  });
+  }, { temperature: 0.5 });
   log('Updated notes:', notes);
 
   // Persist to soulMemory
@@ -173,12 +178,13 @@ export async function modelsTheVisitor(
   }
 
   // Optionally generate whispers
+  // Temperature 0.85: creative/intuitive daimonic sensing
   if (cfg.generateWhispers) {
     const [, whispers] = await visitorWhispers(mem, {
       visitorModel: notes,
       currentPage: userModel.currentPage,
       behavioralType: userModel.behavioralType,
-    });
+    }, { temperature: 0.85 });
     log('Whispers:', whispers);
 
     soulMemory.setVisitorWhispers(whispers);

@@ -31,13 +31,13 @@ export const PERSONA_MODEL = 'groq/kimi-k2';
 // Used by: internalMonologue, decision, mentalQuery, brainstorm
 // Requirements: Fast inference, good reasoning, structured output (JSON)
 
-// Gemini 3 Flash - Fast, excellent structured output
-export const THINKING_MODEL = 'google/gemini-3-flash-preview';
+// Qwen3 30B A3B — MoE (30B total, 3B active), fast structured output, 82-90% cheaper than Gemini Flash
+export const THINKING_MODEL = 'qwen/qwen3-30b-a3b-instruct-2507';
 
 // Alternative options:
+// export const THINKING_MODEL = 'google/gemini-3-flash-preview';  // Gemini Flash via OpenRouter
 // export const THINKING_MODEL = 'groq/qwen3-32b';  // Qwen3 32B - excellent structured output
 // export const THINKING_MODEL = 'groq/llama-3.1-8b-instant';  // Fastest option
-// export const THINKING_MODEL = 'google/gemini-3-flash-preview';  // Same as persona
 
 // ============================================================================
 // Model Utilities
