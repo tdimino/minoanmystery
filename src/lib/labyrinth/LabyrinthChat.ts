@@ -131,6 +131,7 @@ export class LabyrinthChat {
 
   // Orchestrator integration (Open Souls paradigm)
   private orchestrator: SoulOrchestrator | null = null;
+  private orchestratorRetrying = false;
   private currentRenderer: StreamRenderer | null = null;
   private pendingResolve: ((response: string) => void) | null = null;
 
@@ -179,6 +180,7 @@ export class LabyrinthChat {
   // Bound event handlers for form events (not using typed system)
   private boundHandleSubmit: (e: Event) => void;
   private boundHandlePaste: (e: ClipboardEvent) => void;
+  private boundHandleUnload: () => void;
 
   // Typed event unsubscribe functions (from listen() helper)
   private eventUnsubscribers: Array<() => void> = [];
@@ -240,6 +242,7 @@ export class LabyrinthChat {
     // Bind form event handlers (not using typed system - these are form/input specific)
     this.boundHandleSubmit = (e) => { e.preventDefault(); this.sendMessage(); };
     this.boundHandlePaste = (e) => this.imageManager.handlePaste(e);
+    this.boundHandleUnload = () => { this.orchestrator?.notifySessionEnd(); };
 
     // Initialize with optional elements
     this.init(config.emptyAvatarBtn, config.starterPrompts);
@@ -271,6 +274,9 @@ export class LabyrinthChat {
 
     // Image paste handler - delegate to ImageAttachmentManager
     this.input.addEventListener('paste', this.boundHandlePaste);
+
+    // Session end notification on page unload (generates summary for returning visitors)
+    window.addEventListener('beforeunload', this.boundHandleUnload);
 
     // Empty state avatar click handler (opens Kothar profile)
     if (emptyAvatarBtn) {
@@ -406,6 +412,17 @@ export class LabyrinthChat {
       console.log('[Labyrinth] SoulOrchestrator initialized');
     } catch (error) {
       console.error('[Labyrinth] Failed to initialize orchestrator:', error);
+      // Retry once after a short delay — transient network errors on page load
+      this.orchestratorRetrying = true;
+      setTimeout(() => {
+        this.initOrchestrator()
+          .catch((retryErr) => {
+            console.error('[Labyrinth] Orchestrator retry failed — chat will be unavailable:', retryErr);
+          })
+          .finally(() => {
+            this.orchestratorRetrying = false;
+          });
+      }, 3000);
     }
   }
 
@@ -416,7 +433,8 @@ export class LabyrinthChat {
         return JSON.parse(stored);
       }
     } catch (e) {
-      console.error('Failed to load conversation:', e);
+      console.error('[Labyrinth] Failed to load conversation, clearing corrupted data:', e);
+      try { localStorage.removeItem('minoan-soul-conversation'); } catch { /* localStorage unavailable */ }
     }
     return { messages: [], lastUpdated: Date.now(), schemaVersion: 1 };
   }
@@ -499,7 +517,7 @@ export class LabyrinthChat {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
-    contentDiv.innerHTML = content; // Safe: content is sanitized by formatContent
+    contentDiv.innerHTML = content; // Safe: formatContent escapes HTML entities before markdown transforms
 
     const metaDiv = document.createElement('div');
     metaDiv.className = 'message-meta';
@@ -549,6 +567,7 @@ export class LabyrinthChat {
     // Remove form/input event listeners
     this.form.removeEventListener('submit', this.boundHandleSubmit);
     this.input.removeEventListener('paste', this.boundHandlePaste);
+    window.removeEventListener('beforeunload', this.boundHandleUnload);
 
     // Unsubscribe all typed event listeners
     this.eventUnsubscribers.forEach(unsubscribe => unsubscribe());
@@ -799,7 +818,16 @@ export class LabyrinthChat {
   }
 
   private formatContent(content: string): string {
-    return content
+    // Escape HTML entities FIRST to prevent XSS via innerHTML
+    const escaped = content
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    // Then apply markdown-like transforms on the safe string
+    return escaped
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/`(.+?)`/g, '<code>$1</code>')
@@ -878,23 +906,35 @@ export class LabyrinthChat {
 
     try {
       if (!this.orchestrator) {
-        throw new Error('SoulOrchestrator not initialized');
+        throw new Error(
+          this.orchestratorRetrying
+            ? 'Kothar is still awakening — please try again in a moment.'
+            : 'SoulOrchestrator not initialized'
+        );
       }
 
       this.currentRenderer = new StreamRenderer(loadingEl);
       this.currentRenderer.start();
 
-      const responsePromise = new Promise<string>((resolve) => {
+      let rejectResponse: (reason: unknown) => void;
+      const responsePromise = new Promise<string>((resolve, reject) => {
         this.pendingResolve = resolve;
+        rejectResponse = reject;
       });
 
-      await this.orchestrator.handleMessage(
-        query || 'What do you see in this image?',
-        {
-          ...(imageAttachment ? { imageAttachment } : {}),
-          ...(registerSelection ? { register: registerSelection } : {}),
-        }
-      );
+      try {
+        await this.orchestrator.handleMessage(
+          query || 'What do you see in this image?',
+          {
+            ...(imageAttachment ? { imageAttachment } : {}),
+            ...(registerSelection ? { register: registerSelection } : {}),
+          }
+        );
+      } catch (handleErr) {
+        // Reject the pending promise so await below doesn't hang forever
+        rejectResponse!(handleErr);
+        throw handleErr;
+      }
 
       const finalResponse = await responsePromise;
       this.currentRenderer = null;

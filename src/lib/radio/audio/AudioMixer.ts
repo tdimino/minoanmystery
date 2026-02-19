@@ -473,6 +473,9 @@ export class AudioMixer {
       );
 
       // Create AudioBuffer from TTS result
+      if (!result.audioBuffer) {
+        throw new Error(`TTS returned null audioBuffer for chunk ${chunk.id}`);
+      }
       let audioBuffer = AudioBuffer.create({
         samples: result.audioBuffer,
         sampleRate: result.sampleRate,
@@ -657,6 +660,9 @@ export class AudioMixer {
           req.text
         );
 
+        if (!result.audioBuffer) {
+          throw new Error(`TTS returned null audioBuffer for ${req.id}`);
+        }
         const buffer = AudioBuffer.create({
           samples: result.audioBuffer,
           sampleRate: result.sampleRate,

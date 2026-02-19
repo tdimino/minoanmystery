@@ -70,6 +70,26 @@ export type BehavioralType =
   | 'focused';    // Few pages, high engagement
 
 // ─────────────────────────────────────────────────────────────
+// Session Tracking Types
+// ─────────────────────────────────────────────────────────────
+
+export interface SessionCosts {
+  prompt: number;
+  completion: number;
+  calls: number;
+  byModel: Record<string, { prompt: number; completion: number; calls: number }>;
+}
+
+export interface SessionSummary {
+  sid: string;
+  ts: string;
+  messages: number;
+  topics: string[];
+  engagement: 'brief' | 'moderate' | 'deep';
+  context: string;       // 1-2 sentences for returning visitor context
+}
+
+// ─────────────────────────────────────────────────────────────
 // User Model (Working Memory)
 // ─────────────────────────────────────────────────────────────
 
@@ -124,6 +144,12 @@ export interface UserModel {
   // Tarot generation state (session-scoped)
   tarotCount?: number;                  // tarots generated this session
   lastTarotTurn?: number;               // turn when last tarot was generated
+
+  // Session cost tracking (accumulated per session)
+  sessionCosts?: SessionCosts;
+
+  // Session history for returning visitors (last 5 sessions)
+  sessionHistory?: SessionSummary[];
 
   // Interaction tracking
   lastInteraction: number;      // timestamp

@@ -5,7 +5,7 @@
  * Follows Open Souls immutability patterns - all operations return new state.
  */
 
-import type { UserModel, SoulState, BehavioralType, SoulConfig } from './types';
+import type { UserModel, SoulState, BehavioralType, SoulConfig, SessionCosts, SessionSummary } from './types';
 import { DEFAULT_CONFIG } from './types';
 
 // ─────────────────────────────────────────────────────────────
@@ -33,6 +33,12 @@ export interface SoulMemoryInterface {
   setTarotCount(count: number): void;
   getLastTarotTurn(): number;
   setLastTarotTurn(turn: number): void;
+  // Session cost tracking
+  getSessionCosts(): SessionCosts;
+  addTokenUsage(model: string, prompt: number, completion: number): void;
+  // Session history for returning visitors
+  getSessionHistory(): SessionSummary[];
+  addSessionSummary(summary: SessionSummary): void;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -111,7 +117,7 @@ export class SoulMemory {
         const isNewSession = Date.now() - parsed.lastVisit > 30 * 60 * 1000; // 30 min gap
 
         if (isNewSession) {
-          // Returning visitor - new session, preserve history
+          // Returning visitor - new session, preserve history but reset session-scoped state
           return {
             ...parsed,
             sessionId: generateSessionId(),
@@ -120,7 +126,8 @@ export class SoulMemory {
             currentPage: '',
             currentState: 'returning',
             lastInteraction: Date.now(),
-            idleTime: 0
+            idleTime: 0,
+            sessionCosts: undefined,  // Reset cost tracking for new session
           };
         }
 
@@ -415,6 +422,54 @@ export class SoulMemory {
 
   setLastTarotTurn(turn: number): UserModel {
     return this.update({ lastTarotTurn: turn });
+  }
+
+  // ─── Session Cost Tracking ──────────────────────────────────
+
+  getSessionCosts(): SessionCosts {
+    const costs = this.memory.sessionCosts;
+    if (!costs) return { prompt: 0, completion: 0, calls: 0, byModel: {} };
+    // Defensive copy — prevent external mutation of internal state
+    return {
+      ...costs,
+      byModel: Object.fromEntries(
+        Object.entries(costs.byModel).map(([k, v]) => [k, { ...v }])
+      ),
+    };
+  }
+
+  addTokenUsage(model: string, prompt: number, completion: number): void {
+    const prev = this.getSessionCosts();
+    const prevByModel = prev.byModel[model] || { prompt: 0, completion: 0, calls: 0 };
+    // Construct new object — never mutate existing state
+    this.update({
+      sessionCosts: {
+        prompt: prev.prompt + prompt,
+        completion: prev.completion + completion,
+        calls: prev.calls + 1,
+        byModel: {
+          ...prev.byModel,
+          [model]: {
+            prompt: prevByModel.prompt + prompt,
+            completion: prevByModel.completion + completion,
+            calls: prevByModel.calls + 1,
+          },
+        },
+      },
+    });
+  }
+
+  // ─── Session History ────────────────────────────────────────
+
+  getSessionHistory(): SessionSummary[] {
+    return this.memory.sessionHistory ?? [];
+  }
+
+  addSessionSummary(summary: SessionSummary): void {
+    const history = this.getSessionHistory();
+    // Prepend new summary, cap at 5
+    const updated = [summary, ...history].slice(0, 5);
+    this.update({ sessionHistory: updated });
   }
 
   // ─── Utility Methods ───────────────────────────────────────

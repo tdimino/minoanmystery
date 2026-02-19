@@ -83,6 +83,12 @@ function createServerSideMemoryAdapter(initialTurnCount: number = 0): SoulMemory
     setTarotCount: (count: number) => { tarotCount = count; },
     getLastTarotTurn: () => lastTarotTurn,
     setLastTarotTurn: (turn: number) => { lastTarotTurn = turn; },
+    // Cost tracking (no-op server-side — accumulated in client localStorage)
+    getSessionCosts: () => ({ prompt: 0, completion: 0, calls: 0, byModel: {} }),
+    addTokenUsage: () => {},
+    // Session history (no-op server-side — persisted in client localStorage)
+    getSessionHistory: () => [],
+    addSessionSummary: () => {},
   };
 }
 
@@ -99,6 +105,17 @@ const RATE_WINDOW = 60000; // 1 minute in ms
 const MAX_QUERY_LENGTH = 2000; // characters
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 let requestCounter = 0; // For periodic cleanup
+
+// ─────────────────────────────────────────────────────────────
+// Origin Validation
+// ─────────────────────────────────────────────────────────────
+
+const ALLOWED_ORIGINS = ['https://minoanmystery.org', 'https://www.minoanmystery.org', 'http://localhost:4321', 'http://localhost:3000'];
+
+function isValidOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin') || request.headers.get('referer') || '';
+  return ALLOWED_ORIGINS.some(o => origin.startsWith(o));
+}
 
 // ─────────────────────────────────────────────────────────────
 // Raggy Thresholds (question-based RAG triggers)
@@ -219,6 +236,12 @@ interface ChatRequest {
     visitCount?: number;
     behavioralType?: string;
     inferredInterests?: string[];
+    sessionHistory?: Array<{
+      ts: string;
+      topics: string[];
+      engagement: string;
+      context: string;
+    }>;
   };
   conversationHistory?: Array<{
     role: 'user' | 'assistant';
@@ -255,6 +278,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Origin validation
+  if (!isValidOrigin(request)) {
+    return new Response(
+      JSON.stringify({ error: 'Forbidden' }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
     );
   }
 
@@ -950,7 +981,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(
       JSON.stringify({
         error: 'Failed to process request',
-        details: error instanceof Error ? error.message : 'Unknown error',
       }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
@@ -992,6 +1022,25 @@ function buildVisitorContext(ctx: ChatRequest['visitorContext']): string {
 
   if (ctx.inferredInterests && ctx.inferredInterests.length > 0) {
     parts.push(`- Inferred interests: ${ctx.inferredInterests.join(', ')}`);
+  }
+
+  // Returning visitor context from session history (client-provided, sanitize)
+  if (ctx.sessionHistory && ctx.sessionHistory.length > 0) {
+    const last = ctx.sessionHistory[0]; // Most recent session
+    parts.push('');
+    parts.push('## Last Visit');
+    if (Array.isArray(last.topics) && last.topics.length > 0) {
+      // Cap topics: max 5, max 100 chars each
+      const safeTops = last.topics.slice(0, 5).map(t => String(t).slice(0, 100));
+      parts.push(`- Topics discussed: ${safeTops.join(', ')}`);
+    }
+    if (last.context && typeof last.context === 'string') {
+      // Cap context at 300 chars (matches summary generation cap)
+      parts.push(`- Context: ${last.context.slice(0, 300)}`);
+    }
+    if (last.engagement && ['brief', 'moderate', 'deep'].includes(last.engagement)) {
+      parts.push(`- Engagement: ${last.engagement}`);
+    }
   }
 
   return parts.join('\n');

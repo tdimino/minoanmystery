@@ -234,6 +234,9 @@ export class SoulOrchestrator {
       this.handleProcessResult(result);
     } catch (error) {
       console.error('[SoulOrchestrator] Process error:', error);
+      this.log('Process error', { error: String(error) });
+      // Surface a fallback response so the user doesn't see a void
+      this.config.onResponse?.("I seem to have lost my train of thought. Could you try that again?");
     }
   }
 
@@ -336,17 +339,26 @@ export class SoulOrchestrator {
     this.config.onStreamStart?.();
 
     let fullText = '';
+    let streamError = false;
     try {
       for await (const chunk of stream) {
         fullText += chunk;
         this.config.onStreamChunk?.(chunk);
       }
     } catch (error) {
+      streamError = true;
       this.log('Stream error', { error: String(error) });
+      console.warn('[SoulOrchestrator] Stream interrupted:', error);
     }
 
     this.config.onStreamEnd?.();
-    this.config.onResponse?.(fullText);
+    // Deliver whatever we accumulated, with truncation marker if interrupted
+    if (streamError && fullText.length > 0) {
+      this.config.onResponse?.(fullText);
+    } else if (!streamError) {
+      this.config.onResponse?.(fullText);
+    }
+    // If streamError and no text was received, don't call onResponse with empty string
   }
 
   private log(message: string, data?: Record<string, unknown>): void {
@@ -493,6 +505,7 @@ export class SoulOrchestrator {
           visitCount: hydratedModel.visitCount,
           behavioralType: hydratedModel.behavioralType,
           inferredInterests: hydratedModel.inferredInterests,
+          sessionHistory: soulMemory.getSessionHistory(),
         },
         conversationHistory: this.getConversationHistory(),
       };
@@ -539,6 +552,7 @@ export class SoulOrchestrator {
       let buffer = '';
       let fullResponse = '';
       let currentEventType = 'message'; // Default SSE event type
+      let consecutiveParseFailures = 0;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -559,6 +573,7 @@ export class SoulOrchestrator {
             const data = line.slice(6);
             try {
               const parsed = JSON.parse(data);
+              consecutiveParseFailures = 0; // Reset on successful parse
 
               // Handle archive indicator events
               if (currentEventType === 'archive') {
@@ -708,7 +723,11 @@ export class SoulOrchestrator {
 
               currentEventType = 'message'; // Reset for next event
             } catch {
-              // Skip invalid JSON
+              consecutiveParseFailures++;
+              if (consecutiveParseFailures > 10) {
+                console.error('[SoulOrchestrator] Excessive JSON parse failures in SSE stream, possible server error. Last data:', data.slice(0, 200));
+                consecutiveParseFailures = 0; // Reset to avoid spamming
+              }
             }
           }
         }
@@ -795,8 +814,43 @@ export class SoulOrchestrator {
   }
 
   /**
-   * Get conversation history from working memory for API calls
+   * Fire-and-forget session end notification.
+   * Called on beforeunload to generate a session summary for returning visitors.
+   * Uses navigator.sendBeacon for reliable delivery during page unload.
    */
+  notifySessionEnd(): void {
+    if (!this.isInitialized) return;
+
+    const soulMemory = getSoulMemory();
+    const model = soulMemory.get();
+    const history = this.getConversationHistory();
+
+    // Skip if no meaningful conversation
+    if (history.filter(m => m.role === 'user').length < 2) return;
+
+    // Truncate history to stay under sendBeacon's 64KB limit
+    const truncatedHistory = history.slice(-6).map(m => ({
+      ...m,
+      content: m.content.slice(0, 500),
+    }));
+
+    const payload = JSON.stringify({
+      sessionId: model.sessionId,
+      conversationHistory: truncatedHistory,
+      pagesViewed: (model.pagesViewed || []).slice(0, 20),
+      timeOnSite: soulMemory.getTotalTimeOnSite(),
+      userName: soulMemory.getUserName(),
+      visitorModel: (soulMemory.getVisitorModel() || '').slice(0, 1000),
+    });
+
+    // sendBeacon is reliable during unload (unlike fetch)
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/soul/session-end', new Blob([payload], { type: 'application/json' }));
+    } else {
+      console.warn('[SoulOrchestrator] sendBeacon unavailable, session summary will not be generated');
+    }
+  }
+
   private getConversationHistory(): Array<{ role: 'user' | 'assistant'; content: string }> {
     return this.workingMemory.memories
       .filter((m) => m.role === 'user' || m.role === 'assistant')

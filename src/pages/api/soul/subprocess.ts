@@ -255,6 +255,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       setTarotCount: () => {},
       getLastTarotTurn: () => 0,
       setLastTarotTurn: () => {},
+      // Cost tracking (no-op server-side — accumulated in client localStorage)
+      getSessionCosts: () => ({ prompt: 0, completion: 0, calls: 0, byModel: {} }),
+      addTokenUsage: () => {},
+      // Session history (no-op server-side)
+      getSessionHistory: () => [],
+      addSessionSummary: () => {},
     };
 
     // Run the subprocess with injected memory

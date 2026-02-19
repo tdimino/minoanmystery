@@ -1,9 +1,10 @@
 # Soul Engine Logging & Observability
 
-Three-layer logging system for Soul Engine debugging:
+Four-layer logging system for Soul Engine debugging:
 
 | Layer | File | Format | Purpose |
 |-------|------|--------|---------|
+| **JSONL Event Log** | `logs/soul-events.jsonl` | Append-only JSONL | Structured events, parseable, auto-rotated |
 | **LocalLogger** | `logs/soul.log` | File + console | Subprocess lifecycle, gates, tarot, vision |
 | **SoulLogger** | Terminal (ANSI) | Colored boxes | Cognitive steps, token usage, memory mutations |
 | **API Logs** | Vercel | JSON structured | Production monitoring |
@@ -334,4 +335,164 @@ clearLocalLog();
 
 // Get log file path
 const path = getLogFilePath();  // logs/soul.log
+```
+
+---
+
+## JSONL Event Log — Structured Events
+
+Adapted from Claudius `git-track.sh` — append-only, one JSON line per event.
+
+**File:** `src/lib/soul/eventLog.ts`
+**Log:** `logs/soul-events.jsonl` (dev), `console.log(JSON.stringify())` (production/Vercel)
+
+### Event Schema
+
+```typescript
+interface SoulEvent {
+  ts: string;          // ISO 8601
+  sid: string;         // Session ID
+  ev: string;          // Event type
+  d?: Record<string, unknown>;
+}
+```
+
+### Event Types
+
+| Event | Fired From | Data |
+|-------|-----------|------|
+| `msg.in` | API endpoints | page, msgCount |
+| `msg.out` | API endpoints | process, tokens, latencyMs |
+| `transition` | SoulOrchestrator | from, to, reason |
+| `subprocess` | modelsTheVisitor | name, result, durationMs |
+| `gate` | modelsTheVisitor | gate, pass, threshold, actual |
+| `model.update` | modelsTheVisitor | type (notes/whispers/topics) |
+| `tokens` | CognitiveStep | model, prompt, completion |
+| `session.start` | localLogger | page, returning |
+| `session.end` | localLogger | duration, totalTokens, messages |
+| `session.heartbeat` | localLogger | msgCount, process |
+
+### Quick Start
+
+```bash
+# Dev: query JSONL events
+cat logs/soul-events.jsonl | jq .ev | sort | uniq -c
+
+# Filter by event type
+cat logs/soul-events.jsonl | jq 'select(.ev == "gate")'
+
+# Production: filter Vercel logs
+vercel logs --follow 2>&1 | grep '"ev":'
+```
+
+### Auto-Rotation
+
+Dev file auto-rotates at 5MB, keeping last 2 rotations (`soul-events.jsonl.1`, `soul-events.jsonl.2`).
+
+---
+
+## Session Cost Tracking
+
+Adapted from Claudius per-session token accumulation.
+
+### Interface
+
+```typescript
+// SoulMemoryInterface (memory.ts)
+getSessionCosts(): SessionCosts;
+addTokenUsage(model: string, prompt: number, completion: number): void;
+
+interface SessionCosts {
+  prompt: number;
+  completion: number;
+  calls: number;
+  byModel: Record<string, { prompt: number; completion: number; calls: number }>;
+}
+```
+
+### How It Works
+
+1. `CognitiveStep.ts` `onUsage` callbacks already capture per-call tokens
+2. Call sites (modelsTheVisitor, API endpoints) emit `soulEvents.tokens()`
+3. `SoulMemory.addTokenUsage()` accumulates in localStorage
+4. Costs reset on new session (30-min gap detection in `memory.ts`)
+
+### Checking Costs
+
+```javascript
+// Browser console
+JSON.parse(localStorage.getItem('soul_memory')).sessionCosts
+// → { prompt: 4521, completion: 387, calls: 6, byModel: { "qwen/qwen3-30b-a3b": { ... } } }
+```
+
+---
+
+## Session Summaries for Returning Visitors
+
+Adapted from Claudius `precompact-handoff.py` — LLM-summarized session context.
+
+### Flow
+
+1. User closes tab (or idles 5min) → `beforeunload` fires
+2. `SoulOrchestrator.notifySessionEnd()` sends `navigator.sendBeacon` to `/api/soul/session-end`
+3. `summarizeSession.ts` runs one `internalMonologue` call (Qwen3-30B, ~$0.0001)
+4. Returns `SessionSummary`, stored in `sessionHistory` (localStorage, last 5)
+
+### SessionSummary Schema
+
+```typescript
+interface SessionSummary {
+  sid: string;
+  ts: string;
+  messages: number;
+  topics: string[];
+  engagement: 'brief' | 'moderate' | 'deep';
+  context: string;  // 1-2 sentences, capped at 300 chars
+}
+```
+
+### Returning Visitor Context
+
+When `isReturning` is true and `sessionHistory` exists, `buildVisitorContext()` in `chat.ts` injects:
+
+```
+## Last Visit
+- Topics discussed: Minoan-Levant connections, purple dye trade
+- Context: Visitor asked about Crete's connections to the Levant and showed interest in Astour's etymologies
+- Engagement: deep
+```
+
+This gives Kothar genuine memory across sessions.
+
+### Files
+
+| File | Role |
+|------|------|
+| `src/lib/soul/opensouls/subprocesses/summarizeSession.ts` | LLM summary generation |
+| `src/pages/api/soul/session-end.ts` | API endpoint (best-effort, returns 200 on failure) |
+| `src/lib/soul/opensouls/perception/SoulOrchestrator.ts` | `notifySessionEnd()` via sendBeacon |
+| `src/lib/labyrinth/LabyrinthChat.ts` | `beforeunload` handler wiring |
+
+---
+
+## Session Lifecycle Events
+
+Adapted from Claudius `soul-registry.py` — register/heartbeat/deregister.
+
+### LocalLogger Methods
+
+```typescript
+localLogger.sessionRegister(sessionId, { page: '/labyrinth', returning: false });
+localLogger.sessionHeartbeat(sessionId, { msgCount: 5, process: 'externalDialog' });
+localLogger.sessionDeregister(sessionId, { duration: 180000, totalTokens: 4521, messages: 8 });
+```
+
+Each emits to both `logs/soul.log` (human-readable) and `logs/soul-events.jsonl` (structured).
+
+### Sample JSONL
+
+```json
+{"ts":"2026-02-17T10:30:00.000Z","sid":"abc12345","ev":"session.start","d":{"page":"/labyrinth","returning":false}}
+{"ts":"2026-02-17T10:35:00.000Z","sid":"abc12345","ev":"session.heartbeat","d":{"msgCount":5,"process":"externalDialog"}}
+{"ts":"2026-02-17T10:38:00.000Z","sid":"abc12345","ev":"session.end","d":{"duration":480000,"totalTokens":4521,"messages":8}}
 ```

@@ -10,6 +10,8 @@
  *   tail -f logs/soul.log | grep GATE
  */
 
+import { soulEvents } from './eventLog';
+
 // Browser-safe: only import fs on server-side
 const isServer = typeof window === 'undefined';
 let fs: typeof import('fs') | null = null;
@@ -21,12 +23,13 @@ if (isServer) {
   try {
     fs = require('fs');
     path = require('path');
-    if (path) {
-      LOG_DIR = path.join(process.cwd(), 'logs');
-      LOG_FILE = path.join(LOG_DIR, 'soul.log');
-    }
   } catch {
-    // Ignore - running in browser or edge runtime
+    // Browser or edge runtime — fs not available
+  }
+
+  if (fs && path) {
+    LOG_DIR = path.join(process.cwd(), 'logs');
+    LOG_FILE = path.join(LOG_DIR, 'soul.log');
   }
 }
 
@@ -37,8 +40,8 @@ function ensureLogDir() {
     if (!fs.existsSync(LOG_DIR)) {
       fs.mkdirSync(LOG_DIR, { recursive: true });
     }
-  } catch {
-    // Ignore errors
+  } catch (e) {
+    console.error('[LocalLogger] Cannot create log directory:', LOG_DIR, e);
   }
 }
 
@@ -314,6 +317,23 @@ class LocalLogger {
     visitorModelLength?: number;
   }) {
     this.log('debug', 'SESSION', 'State snapshot', data);
+  }
+
+  // ─── Session Lifecycle ────────────────────────────────────────
+
+  sessionRegister(sessionId: string, meta: { page?: string; returning: boolean }) {
+    this.log('info', 'SESSION:REGISTER', `Session ${sessionId.slice(0, 8)}`, meta);
+    soulEvents.sessionStart(sessionId, meta);
+  }
+
+  sessionHeartbeat(sessionId: string, meta: { msgCount: number; process?: string }) {
+    this.log('debug', 'SESSION:HEARTBEAT', `Session ${sessionId.slice(0, 8)}`, meta);
+    soulEvents.sessionHeartbeat(sessionId, meta);
+  }
+
+  sessionDeregister(sessionId: string, meta: { duration: number; totalTokens: number; messages: number }) {
+    this.log('info', 'SESSION:END', `Session ${sessionId.slice(0, 8)}`, meta);
+    soulEvents.sessionEnd(sessionId, meta);
   }
 
   // ─── Separator for readability ──────────────────────────────────────
