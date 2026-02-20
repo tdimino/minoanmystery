@@ -278,7 +278,7 @@ import StructuredData from '../components/StructuredData.astro';
     padding: 0 0 16px 0;
     margin-bottom: 56px;
     border: none;
-    border-bottom: 1px solid #acacac;
+    border-bottom: 1px solid var(--color-text-muted);
     background: transparent;
     font-size: 18px;
     line-height: 20px;
@@ -289,8 +289,16 @@ import StructuredData from '../components/StructuredData.astro';
   }
 
   .form-group input:focus {
-    outline: none;
     border-bottom-color: var(--color-text);
+  }
+
+  .form-group input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .form-group input:focus:not(:focus-visible) {
+    outline: none;
   }
 
   .form-group input:hover {
@@ -298,7 +306,7 @@ import StructuredData from '../components/StructuredData.astro';
   }
 
   .form-group input::placeholder {
-    color: #acacac;
+    color: var(--color-text-muted);
   }
 
   /* Textarea - Webflow exact */
@@ -307,7 +315,7 @@ import StructuredData from '../components/StructuredData.astro';
     padding: 0 0 16px 0;
     min-height: 100px;
     border: none;
-    border-bottom: 1.5px solid #acacac;
+    border-bottom: 1.5px solid var(--color-text-muted);
     background: transparent;
     font-size: 18px;
     line-height: 26px;
@@ -320,12 +328,20 @@ import StructuredData from '../components/StructuredData.astro';
 
   .form-group textarea:focus,
   .form-group textarea:hover {
-    outline: none;
     border-bottom-color: var(--color-text);
   }
 
+  .form-group textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .form-group textarea:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   .form-group textarea::placeholder {
-    color: #acacac;
+    color: var(--color-text-muted);
   }
 
   /* Form Actions */
@@ -389,15 +405,15 @@ import StructuredData from '../components/StructuredData.astro';
   }
 
   .form-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
+    background-color: var(--color-success-bg);
+    border: 1px solid var(--color-success-border);
+    color: var(--color-success-text);
   }
 
   .form-error {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
+    background-color: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    color: var(--color-error-text);
   }
 
   /* Tablet breakpoint */

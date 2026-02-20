@@ -1450,9 +1450,17 @@
   }
 
   .profile-confirm-input:focus {
-    outline: none;
     border-color: var(--color-destructive, #dc2626);
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+
+  .profile-confirm-input:focus-visible {
+    outline: 2px solid var(--color-destructive, #dc2626);
+    outline-offset: 2px;
+  }
+
+  .profile-confirm-input:focus:not(:focus-visible) {
+    outline: none;
   }
 
   .profile-confirm-actions {

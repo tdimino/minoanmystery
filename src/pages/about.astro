@@ -244,7 +244,7 @@ const experience = [
   .image-reveal-overlay {
     position: absolute;
     inset: 0;
-    background-color: #0d0d0d;
+    background-color: var(--color-background);
     animation: reveal-swipe 1s ease-out 0.3s forwards;
   }
 
@@ -302,7 +302,7 @@ const experience = [
   }
 
   .about-bio .paragraph-large {
-    color: var(--neutral-600, #686868);
+    color: var(--color-text-muted);
     font-size: 22px;
     line-height: 36px;
     margin-bottom: 24px;
@@ -419,11 +419,11 @@ const experience = [
     display: flex;
     gap: 24px;
     padding: 48px 0;
-    border-bottom: 1.5px solid var(--neutral-400, #cbcbcb);
+    border-bottom: 1.5px solid var(--color-border);
   }
 
   .experience-card.first {
-    border-top: 1.5px solid var(--neutral-400, #cbcbcb);
+    border-top: 1.5px solid var(--color-border);
   }
 
   .experience-logo {
@@ -464,7 +464,7 @@ const experience = [
   .text-divider {
     width: 25px;
     height: 1px;
-    background-color: var(--neutral-500, #acacac);
+    background-color: var(--color-text-muted);
     margin: 0 12px;
   }
 

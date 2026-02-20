@@ -132,7 +132,7 @@
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,7 +158,7 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px) scale(0.95);
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
   z-index: 100;
 }
 
@@ -598,6 +598,15 @@
   box-shadow: 0 0 0 4px rgba(150, 106, 133, 0.12);
 }
 
+.labyrinth-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.labyrinth-input:focus:not(:focus-visible) {
+  outline: none;
+}
+
 .labyrinth-input::placeholder {
   color: var(--color-text-muted);
   opacity: 0.7;
@@ -660,6 +669,11 @@
 
 [data-theme="dark"] .labyrinth-input:focus {
   background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .labyrinth-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .form-hints {
@@ -755,7 +769,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -859,6 +873,11 @@
   box-shadow: 0 0 0 3px rgba(201, 160, 184, 0.2);
 }
 
+[data-theme='dark'] .labyrinth-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* Toast notification */
 .labyrinth-toast {
   position: fixed;
@@ -872,7 +891,7 @@
   font-size: 14px;
   font-weight: 500;
   opacity: 0;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   z-index: 1000;
   pointer-events: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);

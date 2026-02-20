@@ -74,6 +74,14 @@
   --color-destructive: #dc2626;
   --color-destructive-hover: #b91c1c;
 
+  /* Feedback */
+  --color-success-bg: #d4edda;
+  --color-success-border: #a3d4b0;
+  --color-success-text: #155724;
+  --color-error-bg: #f8d7da;
+  --color-error-border: #e8b0b5;
+  --color-error-text: #721c24;
+
   /* Typography */
   --font-heading: 'Thicccboi', sans-serif;
   --font-body: 'Thicccboi', sans-serif;
@@ -121,6 +129,14 @@
   --color-destructive: #f87171;
   --color-destructive-hover: #ef4444;
 
+  /* Feedback */
+  --color-success-bg: rgba(52, 211, 153, 0.1);
+  --color-success-border: rgba(52, 211, 153, 0.3);
+  --color-success-text: #6ee7b7;
+  --color-error-bg: rgba(248, 113, 113, 0.1);
+  --color-error-border: rgba(248, 113, 113, 0.3);
+  --color-error-text: #fca5a5;
+
   /* Neutral scale for dark mode */
   --neutral-100: #0d0d0d;
   --neutral-200: #1a1a1a;
@@ -165,6 +181,12 @@
     --color-palette-border: #333333;
     --color-palette-input-bg: #0d0d0d;
     --color-kbd: #2a2a2a;
+    --color-success-bg: rgba(52, 211, 153, 0.1);
+    --color-success-border: rgba(52, 211, 153, 0.3);
+    --color-success-text: #6ee7b7;
+    --color-error-bg: rgba(248, 113, 113, 0.1);
+    --color-error-border: rgba(248, 113, 113, 0.3);
+    --color-error-text: #fca5a5;
   }
 }
 
@@ -379,7 +401,7 @@ img {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all var(--transition-normal);
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .btn-primary {

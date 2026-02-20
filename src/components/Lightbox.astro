@@ -1,8 +1,10 @@
 ---
 // Lightbox component for image galleries
-// Usage: Add data-lightbox-group="groupname" to images you want in a gallery
-// Or pass galleries prop for predefined gallery groups with specific captions
-// Supports structured metadata (title, year, description, tags, link) for rich card rendering
+// Native <dialog> with @starting-style animations, View Transitions morphing,
+// pointer-event swipe gestures, and structured metadata captions.
+//
+// Usage: Add data-lightbox to trigger elements containing an <img>.
+// Pass galleries prop for predefined gallery groups with captions/metadata.
 
 interface GalleryImage {
   src: string;
@@ -28,7 +30,7 @@ interface Props {
 const { galleries = [] } = Astro.props;
 ---
 
-<div id="lightbox-overlay" class="lightbox-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image lightbox">
+<dialog id="lightbox-overlay" class="lightbox-overlay" closedby="any" aria-label="Image lightbox">
   <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
   <button class="lightbox-prev" aria-label="Previous image">&#8249;</button>
   <button class="lightbox-next" aria-label="Next image">&#8250;</button>
@@ -36,45 +38,109 @@ const { galleries = [] } = Astro.props;
     <img id="lightbox-img" src="" alt="" />
     <div class="lightbox-caption"></div>
   </div>
-  <div class="lightbox-counter"></div>
-</div>
+  <div class="lightbox-counter" aria-live="polite"></div>
+</dialog>
 
 <!-- Store gallery data for JS access -->
 <script id="gallery-data" type="application/json" set:html={JSON.stringify(galleries)} />
 
 <style is:global>
-  /* Lightbox always renders on dark—define accent tokens independent of page theme */
-  .lightbox-overlay {
+  /* ── Dialog base ── */
+  dialog#lightbox-overlay {
     --lightbox-accent: #c9a0b8;
     --lightbox-accent-rgb: 201, 160, 184;
+
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(
-      ellipse 55% 65% at 50% 45%,
-      rgba(0, 0, 0, 0.96) 0%,
-      rgba(0, 0, 0, 0.92) 40%,
-      rgba(0, 0, 0, 0.82) 70%,
-      rgba(0, 0, 0, 0.72) 100%
-    );
-    backdrop-filter: blur(10px) saturate(0.6);
-    -webkit-backdrop-filter: blur(10px) saturate(0.6);
-    z-index: 9999;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #fff;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
 
-  .lightbox-overlay.is-active {
+    /* Entry/exit transitions */
     opacity: 1;
-    visibility: visible;
+    scale: 1;
+    transition:
+      opacity 0.25s ease,
+      scale 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+      overlay 0.25s ease allow-discrete,
+      display 0.25s ease allow-discrete;
   }
 
+  /* Entry animation starting state */
+  @starting-style {
+    dialog#lightbox-overlay {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
+  /* Exit animation end state */
+  dialog#lightbox-overlay:not([open]) {
+    opacity: 0;
+    scale: 0.96;
+  }
+
+  /* Skip dialog exit animation when View Transitions handles the close morph */
+  dialog#lightbox-overlay[data-vt-close],
+  dialog#lightbox-overlay[data-vt-close]::backdrop {
+    transition: none;
+  }
+
+  /* ── Backdrop ── */
+  dialog#lightbox-overlay::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    transition:
+      background-color 0.25s ease,
+      backdrop-filter 0.25s ease,
+      -webkit-backdrop-filter 0.25s ease,
+      overlay 0.25s ease allow-discrete,
+      display 0.25s ease allow-discrete;
+  }
+
+  @starting-style {
+    dialog#lightbox-overlay::backdrop {
+      background: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px) saturate(100%);
+      -webkit-backdrop-filter: blur(0px) saturate(100%);
+    }
+  }
+
+  dialog#lightbox-overlay:not([open])::backdrop {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+  }
+
+  /* ── View Transition morph ── */
+  ::view-transition-group(lightbox-hero) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    dialog#lightbox-overlay,
+    dialog#lightbox-overlay::backdrop {
+      transition: none;
+    }
+    .lightbox-content img.lightbox-img--circular {
+      animation: none;
+    }
+  }
+
+  /* ── Content area ── */
   .lightbox-content {
     max-width: 90vw;
     max-height: 85vh;
@@ -83,6 +149,7 @@ const { galleries = [] } = Astro.props;
     align-items: center;
     padding: 2rem 2.5rem;
     position: relative;
+    touch-action: pinch-zoom;
   }
 
   .lightbox-content img {
@@ -92,12 +159,12 @@ const { galleries = [] } = Astro.props;
     border-radius: 8px;
   }
 
-  /* Lightbox always has dark background—invert dark logos */
+  /* Invert dark logos on lightbox's dark background */
   .lightbox-content img.lightbox-img--invert {
     filter: invert(1) brightness(0.9);
   }
 
-  /* Circular images (avatars) — matches labyrinth chat avatar styling */
+  /* Circular images (avatars) — matches labyrinth chat avatar glow */
   .lightbox-content img.lightbox-img--circular {
     border-radius: 50%;
     border: 2px solid rgba(var(--lightbox-accent-rgb), 0.4);
@@ -120,6 +187,7 @@ const { galleries = [] } = Astro.props;
     }
   }
 
+  /* ── Captions ── */
   .lightbox-caption {
     color: #fff;
     text-align: center;
@@ -191,6 +259,7 @@ const { galleries = [] } = Astro.props;
     text-decoration: underline;
   }
 
+  /* ── Controls ── */
   .lightbox-close {
     position: absolute;
     top: 20px;
@@ -202,7 +271,7 @@ const { galleries = [] } = Astro.props;
     cursor: pointer;
     line-height: 1;
     transition: opacity 0.2s ease;
-    z-index: 10001;
+    z-index: 1;
   }
 
   .lightbox-close:hover {
@@ -227,16 +296,11 @@ const { galleries = [] } = Astro.props;
     cursor: pointer;
     padding: 20px;
     transition: opacity 0.2s ease;
-    z-index: 10001;
+    z-index: 1;
   }
 
-  .lightbox-prev {
-    left: 20px;
-  }
-
-  .lightbox-next {
-    right: 20px;
-  }
+  .lightbox-prev { left: 20px; }
+  .lightbox-next { right: 20px; }
 
   .lightbox-prev:hover,
   .lightbox-next:hover {
@@ -250,7 +314,12 @@ const { galleries = [] } = Astro.props;
     border-radius: 4px;
   }
 
-  /* Hide fixed page UI when lightbox is open */
+  /* ── Lock background scroll when lightbox is open ── */
+  body.lightbox-open {
+    overflow: hidden;
+  }
+
+  /* ── Hide fixed page UI when lightbox is open ── */
   body.lightbox-open .pdf-export-btn,
   body.lightbox-open .resume-theme-toggle,
   body.lightbox-open .back-link {
@@ -259,35 +328,39 @@ const { galleries = [] } = Astro.props;
     transition: opacity 0.2s ease;
   }
 
+  /* ── Counter ── */
   .lightbox-counter {
     position: absolute;
-    bottom: 20px;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
-    color: #fff;
-    font-size: 0.875rem;
-    opacity: 0.8;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
   }
 
+  /* ── Mobile ── */
   @media (max-width: 768px) {
-    .lightbox-prev,
-    .lightbox-next {
-      font-size: 40px;
-      padding: 10px;
-    }
-
-    .lightbox-prev {
-      left: 10px;
-    }
-
-    .lightbox-next {
-      right: 10px;
+    /* Swipe replaces arrow buttons on mobile */
+    dialog#lightbox-overlay .lightbox-prev,
+    dialog#lightbox-overlay .lightbox-next {
+      display: none;
     }
 
     .lightbox-close {
       top: 10px;
       right: 15px;
       font-size: 36px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content {
+      padding: 1.5rem 1rem;
     }
 
     .lightbox-caption.lightbox-caption--rich {
@@ -309,12 +382,10 @@ const { galleries = [] } = Astro.props;
   /**
    * Lightbox Controller
    *
-   * Handles image gallery lightbox with proper View Transition cleanup.
-   * Uses event delegation for click handling and tracks document-level
-   * listeners for cleanup on page navigation.
+   * Native <dialog> with @starting-style animations, View Transitions API
+   * morphing, pointer-event swipe gestures, and proper View Transition cleanup.
    */
   (function() {
-    // Track handlers for cleanup
     let clickHandler: ((e: MouseEvent) => void) | null = null;
     let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
     let initialized = false;
@@ -324,10 +395,9 @@ const { galleries = [] } = Astro.props;
     }
 
     function initLightbox() {
-      // Prevent multiple initializations
       if (initialized) return;
 
-      const overlay = document.getElementById('lightbox-overlay');
+      const overlay = document.getElementById('lightbox-overlay') as HTMLDialogElement | null;
       const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
       const caption = overlay?.querySelector('.lightbox-caption');
       const counter = overlay?.querySelector('.lightbox-counter');
@@ -336,10 +406,9 @@ const { galleries = [] } = Astro.props;
       const nextBtn = overlay?.querySelector('.lightbox-next');
 
       if (!overlay || !lightboxImg) return;
-
       initialized = true;
 
-      // Load gallery data from embedded JSON
+      // ── Gallery data ──
       interface GalleryImage {
         src: string;
         caption: string;
@@ -370,17 +439,17 @@ const { galleries = [] } = Astro.props;
 
       let currentGalleryImages: GalleryImage[] = [];
       let currentIndex = 0;
+      let triggerElement: HTMLElement | null = null;
 
-      // Extract filename from path
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      // ── Helpers ──
       function getFilename(path: string): string {
         return path.split('/').pop() || '';
       }
 
-      // Find gallery containing the clicked image, return gallery + starting index
       function findGalleryForImage(src: string): { gallery: Gallery; startIndex: number } | undefined {
         const filename = getFilename(src).toLowerCase();
-
-        // Check if any gallery image matches the clicked src
         for (const g of galleries) {
           const idx = g.images.findIndex(img => {
             const imgFilename = getFilename(img.src).toLowerCase();
@@ -388,12 +457,11 @@ const { galleries = [] } = Astro.props;
           });
           if (idx >= 0) return { gallery: g, startIndex: idx };
         }
-
-        // Fallback: match by gallery trigger
         const match = galleries.find(g => g.trigger !== '__match_any_image__' && filename.includes(g.trigger.toLowerCase()));
         return match ? { gallery: match, startIndex: 0 } : undefined;
       }
 
+      // ── Image display ──
       function showImage(index: number) {
         const item = currentGalleryImages[index];
         if (!item) return;
@@ -401,14 +469,12 @@ const { galleries = [] } = Astro.props;
         lightboxImg.src = item.src;
         lightboxImg.alt = item.title || item.caption;
 
-        // Handle inversion for dark logos on lightbox's dark background
         if (item.invertInLightbox) {
           lightboxImg.classList.add('lightbox-img--invert');
         } else {
           lightboxImg.classList.remove('lightbox-img--invert');
         }
 
-        // Handle circular images (avatars)
         if (item.circular) {
           lightboxImg.classList.add('lightbox-img--circular');
         } else {
@@ -417,7 +483,6 @@ const { galleries = [] } = Astro.props;
 
         if (caption) {
           if (item.title) {
-            // Rich structured caption
             let html = '<div class="lightbox-caption-header">';
             html += `<span class="lightbox-caption-title">${escapeHtml(item.title)}</span>`;
             if (item.year) html += `<span class="lightbox-caption-year">${escapeHtml(item.year)}</span>`;
@@ -438,7 +503,6 @@ const { galleries = [] } = Astro.props;
             caption.innerHTML = html;
             caption.classList.add('lightbox-caption--rich');
           } else {
-            // Plain text fallback
             caption.textContent = item.caption;
             caption.classList.remove('lightbox-caption--rich');
           }
@@ -451,13 +515,85 @@ const { galleries = [] } = Astro.props;
         }
       }
 
-      function closeLightbox() {
-        overlay.classList.remove('is-active');
-        overlay.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        document.body.classList.remove('lightbox-open');
+      // ── Open / Close ──
+      function openLightbox() {
+        overlay.showModal();
+        document.body.classList.add('lightbox-open');
       }
 
+      function closeLightbox() {
+        overlay.close();
+      }
+
+      // Cleanup on any close (Escape, button, backdrop, swipe)
+      overlay.addEventListener('close', () => {
+        // During View Transition morph, transition.finished handles cleanup
+        if (overlay.hasAttribute('data-vt-close')) return;
+        document.body.classList.remove('lightbox-open');
+        if (triggerElement) {
+          triggerElement.focus();
+          triggerElement = null;
+        }
+      });
+
+      // ── View Transitions morphing ──
+      function canMorph(): boolean {
+        return !!(document as any).startViewTransition && !prefersReducedMotion.matches;
+      }
+
+      function openWithMorph(triggerImg: HTMLElement) {
+        if (!canMorph()) {
+          openLightbox();
+          return;
+        }
+
+        triggerImg.style.viewTransitionName = 'lightbox-hero';
+        const transition = (document as any).startViewTransition(() => {
+          triggerImg.style.viewTransitionName = '';
+          lightboxImg.style.viewTransitionName = 'lightbox-hero';
+          openLightbox();
+        });
+
+        transition.finished.then(() => {
+          lightboxImg.style.viewTransitionName = '';
+        }).catch(() => {
+          lightboxImg.style.viewTransitionName = '';
+        });
+      }
+
+      function closeWithMorph() {
+        if (!canMorph() || !triggerElement) {
+          closeLightbox();
+          return;
+        }
+
+        const trigger = triggerElement;
+        const triggerImg = trigger.querySelector('img') || trigger;
+
+        // Skip dialog exit animation—let View Transition handle the visual
+        overlay.setAttribute('data-vt-close', '');
+        lightboxImg.style.viewTransitionName = 'lightbox-hero';
+
+        const transition = (document as any).startViewTransition(() => {
+          lightboxImg.style.viewTransitionName = '';
+          (triggerImg as HTMLElement).style.viewTransitionName = 'lightbox-hero';
+          overlay.close();
+        });
+
+        transition.finished.then(() => {
+          (triggerImg as HTMLElement).style.viewTransitionName = '';
+          document.body.classList.remove('lightbox-open');
+          overlay.removeAttribute('data-vt-close');
+          trigger.focus();
+          triggerElement = null;
+        }).catch(() => {
+          (triggerImg as HTMLElement).style.viewTransitionName = '';
+          document.body.classList.remove('lightbox-open');
+          overlay.removeAttribute('data-vt-close');
+        });
+      }
+
+      // ── Navigation ──
       function showPrev() {
         currentIndex = (currentIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
         showImage(currentIndex);
@@ -468,73 +604,81 @@ const { galleries = [] } = Astro.props;
         showImage(currentIndex);
       }
 
-      // Use event delegation for lightbox images (tracked for cleanup)
+      // ── Swipe gestures (Pointer Events) ──
+      const SWIPE_THRESHOLD = 50;
+      const SWIPE_TIMEOUT = 300;
+      let pointerStartX = 0, pointerStartY = 0, pointerStartTime = 0;
+
+      overlay.addEventListener('pointerdown', (e) => {
+        pointerStartX = e.clientX;
+        pointerStartY = e.clientY;
+        pointerStartTime = Date.now();
+        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      });
+
+      overlay.addEventListener('pointerup', (e) => {
+        const dx = e.clientX - pointerStartX;
+        const dy = e.clientY - pointerStartY;
+        if (Date.now() - pointerStartTime > SWIPE_TIMEOUT) return;
+        if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) return;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+          dx > 0 ? showPrev() : showNext();
+        } else if (dy > 0 && dy > SWIPE_THRESHOLD * 1.5) {
+          closeWithMorph();
+        }
+      });
+
+      // ── Light dismiss (fallback for browsers without closedby="any") ──
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeWithMorph();
+      });
+
+      // ── Event delegation for trigger clicks ──
       clickHandler = (e: MouseEvent) => {
         const target = (e.target as HTMLElement).closest('[data-lightbox]') as HTMLElement;
         if (!target) return;
 
         e.preventDefault();
 
-        // Get the image source
         const imgEl = target.tagName === 'IMG' ? target as HTMLImageElement : target.querySelector('img');
         const src = imgEl?.src || target.dataset.lightboxSrc || '';
 
-        // Check if there's a predefined gallery for this image
-        const result = findGalleryForImage(src);
+        // Store trigger for focus return + View Transition morph
+        triggerElement = target;
 
+        const result = findGalleryForImage(src);
         if (result && result.gallery.images.length > 0) {
-          // Use predefined gallery, start at the clicked image
           currentGalleryImages = result.gallery.images;
           currentIndex = result.startIndex;
         } else {
-          // Fallback: create single-image gallery from clicked image
           const alt = (imgEl as HTMLImageElement)?.alt || '';
           currentGalleryImages = [{ src, caption: alt }];
           currentIndex = 0;
         }
 
         showImage(currentIndex);
-        overlay.classList.add('is-active');
-        overlay.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('lightbox-open');
+        openWithMorph(imgEl || target);
       };
 
-      // Keyboard navigation (tracked for cleanup)
+      // ── Keyboard (Arrow keys only—<dialog> handles Escape natively) ──
       keydownHandler = (e: KeyboardEvent) => {
-        if (!overlay.classList.contains('is-active')) return;
-
+        if (!overlay.open) return;
         switch (e.key) {
-          case 'Escape':
-            closeLightbox();
-            break;
-          case 'ArrowLeft':
-            showPrev();
-            break;
-          case 'ArrowRight':
-            showNext();
-            break;
+          case 'ArrowLeft': showPrev(); break;
+          case 'ArrowRight': showNext(); break;
         }
       };
 
-      // Add document-level listeners
       document.addEventListener('click', clickHandler);
       document.addEventListener('keydown', keydownHandler);
 
-      // Element-level listeners (don't need cleanup - elements are replaced)
-      closeBtn?.addEventListener('click', closeLightbox);
+      closeBtn?.addEventListener('click', () => closeWithMorph());
       prevBtn?.addEventListener('click', showPrev);
       nextBtn?.addEventListener('click', showNext);
-
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          closeLightbox();
-        }
-      });
     }
 
     function cleanupLightbox() {
-      // Remove document-level listeners
       if (clickHandler) {
         document.removeEventListener('click', clickHandler);
         clickHandler = null;
@@ -546,17 +690,13 @@ const { galleries = [] } = Astro.props;
       initialized = false;
     }
 
-    // Initialize on load
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initLightbox);
     } else {
       initLightbox();
     }
 
-    // Cleanup before View Transition swap
     document.addEventListener('astro:before-swap', cleanupLightbox);
-
-    // Re-initialize after View Transition
     document.addEventListener('astro:after-swap', initLightbox);
   })();
 </script>

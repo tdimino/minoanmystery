@@ -44,8 +44,10 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
-- **Lightbox**: `Lightbox.astro` supports structured captions (`title`, `year`, `description`, `tags[]`, `link`, `circular`). Uses scoped `--lightbox-accent` tokens (always dark bg). `body.lightbox-open` class hides fixed UI elements.
+- **Lightbox**: Native `<dialog>` with `showModal()`/`close()`, `@starting-style` entry/exit animations, View Transitions API morphing (badge→lightbox), Pointer Events swipe gestures (left/right navigate, down closes), `closedby="any"` progressive enhancement. Structured captions (`title`, `year`, `description`, `tags[]`, `link`, `circular`). Scoped `--lightbox-accent` tokens (always dark bg). `body.lightbox-open` locks scroll + hides fixed UI.
 - **CSS transitions**: Never use `transition: all`—enumerate specific properties
+- **Focus styles**: Use `:focus-visible` progressive pattern: `:focus` for functional state, `:focus-visible` for outline, `:focus:not(:focus-visible)` to suppress for mouse. Never bare `outline: none` on `:focus`.
+- **Touch targets**: All interactive elements must meet 44px minimum height (WCAG 2.2 / Apple HIG)
 
 ## SEO Conventions
 
@@ -62,6 +64,8 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 | `--color-text` | #0d0d0d | #f5f5f5 | Primary text |
 | `--color-text-muted` | #686868 | #b8b8b8 | Secondary text |
 | `--color-background` | #ffffff | #0d0d0d | Page background |
+| `--color-success-*` | #d4edda / #a3d4b0 / #155724 | rgba(52,211,153,0.1/0.3) / #6ee7b7 | Form success feedback |
+| `--color-error-*` | #f8d7da / #e8b0b5 / #721c24 | rgba(248,113,113,0.1/0.3) / #fca5a5 | Form error feedback |
 
 ## Key Features
 

@@ -211,7 +211,7 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.5;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .connector-pulse.is-active {
@@ -555,7 +555,12 @@
   transform: scale(1.2);
 }
 
-.volume-slider:focus {
+.volume-slider:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.volume-slider:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -687,7 +692,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -758,6 +763,15 @@
 .question-input:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.question-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.question-input:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .question-input::placeholder {
@@ -840,9 +854,17 @@
 }
 
 .optional-name input:focus {
-  outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.optional-name input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.optional-name input:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Question Queue */
@@ -940,7 +962,7 @@
   color: var(--color-text-muted);
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .upvote-button:hover {

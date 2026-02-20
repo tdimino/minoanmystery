@@ -352,6 +352,7 @@
   font-size: 14px;
   color: var(--color-primary);
   font-weight: 500;
+  margin: 0;
 }
 
 .experience-dates {
@@ -451,7 +452,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .project-title-row {
@@ -520,7 +521,8 @@
 }
 
 .project-link {
-  display: inline;
+  display: inline-block;
+  margin-top: 4px;
   color: var(--color-primary);
   font-weight: 500;
   font-size: 12px;

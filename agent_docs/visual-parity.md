@@ -68,8 +68,12 @@ Pixel-perfect fidelity checklist for Webflow → Astro migration.
 
 ## Common Issues Found
 
-- Hardcoded colors → Use CSS variables
-- Fixed font sizes → Use `clamp()` for fluid typography
+- Hardcoded colors → Use CSS variables — **RESOLVED** (Feb 2026): All `var(--neutral-*)` fallbacks and hardcoded hex colors replaced with semantic tokens across contact, about, portfolio, and homepage
+- Fixed font sizes → Use `clamp()` for fluid typography — **RESOLVED** (Feb 2026): Homepage hero and section titles converted to `clamp()`
+- `transition: all` → Enumerate specific properties — **RESOLVED** (Feb 2026): 14 instances fixed across global.css, animations.css, radio.css, chat.css, tarot.css, debug.css, Header.astro, portfolio pages
+- `:focus` without `:focus-visible` → Progressive pattern — **RESOLVED** (Feb 2026): 13 instances fixed across contact, chat, radio, tarot, debug, ProfileModal, portfolio slug
+- Form validation colors illegible in dark mode → Theme-aware tokens — **RESOLVED** (Feb 2026): `--color-success-*` and `--color-error-*` tokens in both `[data-theme="dark"]` and `prefers-color-scheme` media query
+- Mobile touch targets below 44px → `min-height: 44px` + `inline-flex` — **RESOLVED** (Feb 2026): Footer links fixed for all viewports
 - Missing hover states → Check all interactive elements
 - Animation timing → Verify easing curves match
 

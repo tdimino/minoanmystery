@@ -234,7 +234,7 @@ const disciplineLabels: Record<string, string> = {
     border: 1px solid var(--color-border);
     border-radius: 100px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .filter-pill:hover {
@@ -245,12 +245,12 @@ const disciplineLabels: Record<string, string> = {
   .filter-pill.active {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: #fff;
+    color: var(--color-background);
   }
 
   :global([data-theme="dark"]) .filter-pill.active {
-    background: #6d4463;
-    border-color: #6d4463;
+    background: var(--color-primary-dark, #6d4463);
+    border-color: var(--color-primary-dark, #6d4463);
   }
 
   /* Portfolio Grid */
@@ -356,7 +356,7 @@ const disciplineLabels: Record<string, string> = {
   }
 
   :global([data-theme="dark"]) .discipline-tag {
-    color: #c9a0b8;
+    color: var(--color-primary);
   }
 
   .meta-separator {
@@ -454,7 +454,7 @@ const disciplineLabels: Record<string, string> = {
     font-family: var(--font-body);
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
+    color: var(--color-background);
     background: var(--color-primary);
     border: none;
     border-radius: 100px;

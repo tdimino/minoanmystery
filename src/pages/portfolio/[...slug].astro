@@ -215,7 +215,7 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast);
   }
 
   .scroll-down-btn:hover {
@@ -286,15 +286,11 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 
   /* Project Details - Overlapping Card */
   .portfolio-details {
-    background: var(--neutral-100, #fff);
+    background: var(--color-background);
     padding: 50px 56px;
     margin-top: -69px;
     position: relative;
     z-index: 10;
-  }
-
-  :global(.dark) .portfolio-details {
-    background: var(--color-background);
   }
 
   /* Corner frame - image at edges, solid bars inset from edges */
@@ -304,22 +300,6 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     left: 0;
     right: 0;
     height: 70px;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      transparent 2%,
-      var(--neutral-100, #fff) 2%,
-      var(--neutral-100, #fff) 10%,
-      transparent 10%,
-      transparent 90%,
-      var(--neutral-100, #fff) 90%,
-      var(--neutral-100, #fff) 98%,
-      transparent 98%,
-      transparent 100%
-    );
-  }
-
-  :global(.dark) .corner-frame {
     background: linear-gradient(
       to right,
       transparent 0%,
@@ -361,7 +341,7 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     font-size: 18px;
     font-weight: 500;
     line-height: 20px;
-    color: var(--neutral-600);
+    color: var(--color-text-muted);
   }
 
   .date-year {
@@ -381,8 +361,16 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     align-items: flex-start;
     width: fit-content;
     text-decoration: none !important;
-    outline: none !important;
     border: none !important;
+  }
+
+  .link-arrow:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .link-arrow:focus:not(:focus-visible) {
+    outline: none;
   }
 
   .link-arrow *,

@@ -223,8 +223,10 @@ const socialLinks = [
     text-decoration: none;
     transition: color var(--transition-fast);
     font-weight: 400;
-    padding: 8px 0; /* Touch-friendly vertical padding */
-    display: inline-block;
+    min-height: 44px;
+    padding: 8px 0;
+    display: inline-flex;
+    align-items: center;
   }
 
   .footer-link:hover,
@@ -325,7 +327,6 @@ const socialLinks = [
     }
 
     .footer-link {
-      line-height: 1;
       padding: 4px 0;
       font-weight: 400;
     }

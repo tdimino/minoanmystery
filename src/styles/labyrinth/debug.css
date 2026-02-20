@@ -1,0 +1,326 @@
+/**
+ * Debug Panel Styles for Labyrinth Test Harness
+ * Toggle visibility with Cmd+Shift+T
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Panel Container
+   ───────────────────────────────────────────────────────────── */
+
+.debug-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  max-height: calc(100vh - 120px);
+  background: var(--color-background);
+  border: 1px solid var(--color-border, #333);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  font-family: ui-monospace, 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 12px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.debug-panel.collapsed {
+  transform: translateY(calc(100% - 44px));
+}
+
+.debug-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Panel Header
+   ───────────────────────────────────────────────────────────── */
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--color-primary, #966a85);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.debug-header:hover {
+  filter: brightness(1.1);
+}
+
+.debug-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.debug-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.debug-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.debug-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Panel Content
+   ───────────────────────────────────────────────────────────── */
+
+.debug-content {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Sections (Fieldsets)
+   ───────────────────────────────────────────────────────────── */
+
+.debug-section {
+  border: 1px solid var(--color-border, #444);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0;
+  background: var(--color-surface, rgba(255, 255, 255, 0.03));
+}
+
+.debug-section legend {
+  padding: 0 8px;
+  font-weight: 600;
+  color: var(--color-primary, #966a85);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.debug-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.debug-row:last-child {
+  margin-bottom: 0;
+}
+
+.debug-row label {
+  color: var(--color-text-muted, #999);
+  font-size: 11px;
+  min-width: 50px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Buttons
+   ───────────────────────────────────────────────────────────── */
+
+.debug-action {
+  padding: 6px 10px;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 6px;
+  background: var(--color-background);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 11px;
+  font-family: inherit;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.debug-action:hover {
+  background: var(--color-primary, #966a85);
+  border-color: var(--color-primary, #966a85);
+  color: white;
+}
+
+.debug-action:active {
+  transform: scale(0.97);
+}
+
+.debug-action.active {
+  background: var(--color-primary, #966a85);
+  border-color: var(--color-primary, #966a85);
+  color: white;
+}
+
+/* Button grid for multi-button sections */
+.debug-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Debug Inputs
+   ───────────────────────────────────────────────────────────── */
+
+.debug-input {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 11px;
+  font-family: inherit;
+  width: 70px;
+}
+
+.debug-input:focus {
+  border-color: var(--color-primary, #966a85);
+}
+
+.debug-input:focus-visible {
+  outline: 2px solid var(--color-primary, #966a85);
+  outline-offset: 2px;
+}
+
+.debug-input:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.debug-select {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 11px;
+  font-family: inherit;
+  flex: 1;
+  min-width: 100px;
+}
+
+.debug-select:focus {
+  border-color: var(--color-primary, #966a85);
+}
+
+.debug-select:focus-visible {
+  outline: 2px solid var(--color-primary, #966a85);
+  outline-offset: 2px;
+}
+
+.debug-select:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Radio buttons */
+.debug-radio {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.debug-radio input[type="radio"] {
+  cursor: pointer;
+  accent-color: var(--color-primary, #966a85);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Event Log
+   ───────────────────────────────────────────────────────────── */
+
+.debug-log {
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.debug-log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--color-text-muted);
+}
+
+.debug-log-entry:last-child {
+  border-bottom: none;
+}
+
+.debug-log-entry .event-name {
+  color: var(--color-primary, #966a85);
+  font-weight: 600;
+}
+
+.debug-log-entry .event-time {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+  margin-left: 8px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Keyboard Shortcut Hint
+   ───────────────────────────────────────────────────────────── */
+
+.debug-shortcut {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 6px;
+  font-size: 11px;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.debug-shortcut.visible {
+  opacity: 1;
+}
+
+.debug-shortcut kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  margin: 0 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Responsive Adjustments
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .debug-panel {
+    width: calc(100vw - 40px);
+    max-width: 360px;
+    bottom: 10px;
+    right: 10px;
+  }
+}
