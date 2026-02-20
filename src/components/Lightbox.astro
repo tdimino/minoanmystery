@@ -2,10 +2,17 @@
 // Lightbox component for image galleries
 // Usage: Add data-lightbox-group="groupname" to images you want in a gallery
 // Or pass galleries prop for predefined gallery groups with specific captions
+// Supports structured metadata (title, year, description, tags, link) for rich card rendering
 
 interface GalleryImage {
   src: string;
   caption: string;
+  title?: string;
+  year?: string;
+  description?: string;
+  tags?: string[];
+  link?: { url: string; label: string };
+  circular?: boolean;
 }
 
 interface Gallery {
@@ -21,7 +28,7 @@ interface Props {
 const { galleries = [] } = Astro.props;
 ---
 
-<div id="lightbox-overlay" class="lightbox-overlay" aria-hidden="true">
+<div id="lightbox-overlay" class="lightbox-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image lightbox">
   <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
   <button class="lightbox-prev" aria-label="Previous image">&#8249;</button>
   <button class="lightbox-next" aria-label="Next image">&#8250;</button>
@@ -35,14 +42,25 @@ const { galleries = [] } = Astro.props;
 <!-- Store gallery data for JS access -->
 <script id="gallery-data" type="application/json" set:html={JSON.stringify(galleries)} />
 
-<style>
+<style is:global>
+  /* Lightbox always renders on dark—define accent tokens independent of page theme */
   .lightbox-overlay {
+    --lightbox-accent: #c9a0b8;
+    --lightbox-accent-rgb: 201, 160, 184;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: radial-gradient(
+      ellipse 55% 65% at 50% 45%,
+      rgba(0, 0, 0, 0.96) 0%,
+      rgba(0, 0, 0, 0.92) 40%,
+      rgba(0, 0, 0, 0.82) 70%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+    backdrop-filter: blur(10px) saturate(0.6);
+    -webkit-backdrop-filter: blur(10px) saturate(0.6);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -63,13 +81,43 @@ const { galleries = [] } = Astro.props;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 2rem 2.5rem;
+    position: relative;
   }
 
   .lightbox-content img {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 55vh;
     object-fit: contain;
-    border-radius: 4px;
+    border-radius: 8px;
+  }
+
+  /* Lightbox always has dark background—invert dark logos */
+  .lightbox-content img.lightbox-img--invert {
+    filter: invert(1) brightness(0.9);
+  }
+
+  /* Circular images (avatars) — matches labyrinth chat avatar styling */
+  .lightbox-content img.lightbox-img--circular {
+    border-radius: 50%;
+    border: 2px solid rgba(var(--lightbox-accent-rgb), 0.4);
+    box-shadow:
+      0 0 16px rgba(var(--lightbox-accent-rgb), 0.25),
+      0 0 40px rgba(var(--lightbox-accent-rgb), 0.1);
+    animation: lightbox-avatar-glow 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes lightbox-avatar-glow {
+    0% {
+      box-shadow:
+        0 0 16px rgba(var(--lightbox-accent-rgb), 0.25),
+        0 0 40px rgba(var(--lightbox-accent-rgb), 0.1);
+    }
+    100% {
+      box-shadow:
+        0 0 20px rgba(var(--lightbox-accent-rgb), 0.35),
+        0 0 50px rgba(var(--lightbox-accent-rgb), 0.15);
+    }
   }
 
   .lightbox-caption {
@@ -78,6 +126,69 @@ const { galleries = [] } = Astro.props;
     padding: 1rem;
     font-size: 0.9rem;
     max-width: 600px;
+  }
+
+  /* Rich structured caption */
+  .lightbox-caption.lightbox-caption--rich {
+    max-width: 520px;
+    text-align: left;
+    padding: 1.25rem 0 0;
+  }
+
+  .lightbox-caption-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .lightbox-caption-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .lightbox-caption-year {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  }
+
+  .lightbox-caption-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.55;
+    margin: 0 0 14px;
+  }
+
+  .lightbox-caption-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .lightbox-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    background: rgba(var(--lightbox-accent-rgb), 0.12);
+    border: 1px solid rgba(var(--lightbox-accent-rgb), 0.25);
+    border-radius: 12px;
+    color: var(--lightbox-accent);
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  .lightbox-caption-link {
+    font-size: 0.8rem;
+    color: var(--lightbox-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .lightbox-caption-link:hover {
+    color: oklch(0.8 0.05 340);
+    text-decoration: underline;
   }
 
   .lightbox-close {
@@ -96,6 +207,12 @@ const { galleries = [] } = Astro.props;
 
   .lightbox-close:hover {
     opacity: 0.7;
+  }
+
+  .lightbox-close:focus-visible {
+    outline: 2px solid var(--lightbox-accent);
+    outline-offset: 4px;
+    border-radius: 4px;
   }
 
   .lightbox-prev,
@@ -124,6 +241,22 @@ const { galleries = [] } = Astro.props;
   .lightbox-prev:hover,
   .lightbox-next:hover {
     opacity: 0.7;
+  }
+
+  .lightbox-prev:focus-visible,
+  .lightbox-next:focus-visible {
+    outline: 2px solid var(--lightbox-accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  /* Hide fixed page UI when lightbox is open */
+  body.lightbox-open .pdf-export-btn,
+  body.lightbox-open .resume-theme-toggle,
+  body.lightbox-open .back-link {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.2s ease;
   }
 
   .lightbox-counter {
@@ -156,6 +289,19 @@ const { galleries = [] } = Astro.props;
       right: 15px;
       font-size: 36px;
     }
+
+    .lightbox-caption.lightbox-caption--rich {
+      max-width: 90vw;
+      padding: 1rem 0.5rem 0;
+    }
+
+    .lightbox-caption-title {
+      font-size: 1.1rem;
+    }
+
+    .lightbox-caption-desc {
+      font-size: 0.8rem;
+    }
   }
 </style>
 
@@ -172,6 +318,10 @@ const { galleries = [] } = Astro.props;
     let clickHandler: ((e: MouseEvent) => void) | null = null;
     let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
     let initialized = false;
+
+    function escapeHtml(s: string): string {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     function initLightbox() {
       // Prevent multiple initializations
@@ -193,6 +343,13 @@ const { galleries = [] } = Astro.props;
       interface GalleryImage {
         src: string;
         caption: string;
+        title?: string;
+        year?: string;
+        description?: string;
+        tags?: string[];
+        link?: { url: string; label: string };
+        invertInLightbox?: boolean;
+        circular?: boolean;
       }
 
       interface Gallery {
@@ -219,10 +376,22 @@ const { galleries = [] } = Astro.props;
         return path.split('/').pop() || '';
       }
 
-      // Find gallery by trigger filename
-      function findGalleryByTrigger(src: string): Gallery | undefined {
+      // Find gallery containing the clicked image, return gallery + starting index
+      function findGalleryForImage(src: string): { gallery: Gallery; startIndex: number } | undefined {
         const filename = getFilename(src).toLowerCase();
-        return galleries.find(g => filename.includes(g.trigger.toLowerCase()));
+
+        // Check if any gallery image matches the clicked src
+        for (const g of galleries) {
+          const idx = g.images.findIndex(img => {
+            const imgFilename = getFilename(img.src).toLowerCase();
+            return filename === imgFilename || filename.includes(imgFilename) || imgFilename.includes(filename);
+          });
+          if (idx >= 0) return { gallery: g, startIndex: idx };
+        }
+
+        // Fallback: match by gallery trigger
+        const match = galleries.find(g => g.trigger !== '__match_any_image__' && filename.includes(g.trigger.toLowerCase()));
+        return match ? { gallery: match, startIndex: 0 } : undefined;
       }
 
       function showImage(index: number) {
@@ -230,10 +399,49 @@ const { galleries = [] } = Astro.props;
         if (!item) return;
 
         lightboxImg.src = item.src;
-        lightboxImg.alt = item.caption;
+        lightboxImg.alt = item.title || item.caption;
+
+        // Handle inversion for dark logos on lightbox's dark background
+        if (item.invertInLightbox) {
+          lightboxImg.classList.add('lightbox-img--invert');
+        } else {
+          lightboxImg.classList.remove('lightbox-img--invert');
+        }
+
+        // Handle circular images (avatars)
+        if (item.circular) {
+          lightboxImg.classList.add('lightbox-img--circular');
+        } else {
+          lightboxImg.classList.remove('lightbox-img--circular');
+        }
 
         if (caption) {
-          caption.textContent = item.caption;
+          if (item.title) {
+            // Rich structured caption
+            let html = '<div class="lightbox-caption-header">';
+            html += `<span class="lightbox-caption-title">${escapeHtml(item.title)}</span>`;
+            if (item.year) html += `<span class="lightbox-caption-year">${escapeHtml(item.year)}</span>`;
+            html += '</div>';
+            if (item.description) {
+              html += `<p class="lightbox-caption-desc">${escapeHtml(item.description)}</p>`;
+            }
+            if (item.tags && item.tags.length > 0) {
+              html += '<div class="lightbox-caption-tags">';
+              item.tags.forEach(tag => {
+                html += `<span class="lightbox-tag">${escapeHtml(tag)}</span>`;
+              });
+              html += '</div>';
+            }
+            if (item.link) {
+              html += `<a class="lightbox-caption-link" href="${escapeHtml(item.link.url)}" target="_blank" rel="noopener">${escapeHtml(item.link.label)} →</a>`;
+            }
+            caption.innerHTML = html;
+            caption.classList.add('lightbox-caption--rich');
+          } else {
+            // Plain text fallback
+            caption.textContent = item.caption;
+            caption.classList.remove('lightbox-caption--rich');
+          }
         }
 
         if (counter && currentGalleryImages.length > 1) {
@@ -247,6 +455,7 @@ const { galleries = [] } = Astro.props;
         overlay.classList.remove('is-active');
         overlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        document.body.classList.remove('lightbox-open');
       }
 
       function showPrev() {
@@ -271,12 +480,12 @@ const { galleries = [] } = Astro.props;
         const src = imgEl?.src || target.dataset.lightboxSrc || '';
 
         // Check if there's a predefined gallery for this image
-        const gallery = findGalleryByTrigger(src);
+        const result = findGalleryForImage(src);
 
-        if (gallery && gallery.images.length > 0) {
-          // Use predefined gallery
-          currentGalleryImages = gallery.images;
-          currentIndex = 0;
+        if (result && result.gallery.images.length > 0) {
+          // Use predefined gallery, start at the clicked image
+          currentGalleryImages = result.gallery.images;
+          currentIndex = result.startIndex;
         } else {
           // Fallback: create single-image gallery from clicked image
           const alt = (imgEl as HTMLImageElement)?.alt || '';
@@ -288,6 +497,7 @@ const { galleries = [] } = Astro.props;
         overlay.classList.add('is-active');
         overlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('lightbox-open');
       };
 
       // Keyboard navigation (tracked for cleanup)

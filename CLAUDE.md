@@ -44,6 +44,8 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
+- **Lightbox**: `Lightbox.astro` supports structured captions (`title`, `year`, `description`, `tags[]`, `link`, `circular`). Uses scoped `--lightbox-accent` tokens (always dark bg). `body.lightbox-open` class hides fixed UI elements.
+- **CSS transitions**: Never use `transition: all`—enumerate specific properties
 
 ## SEO Conventions
 
@@ -63,13 +65,16 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 
 ## Key Features
 
-- **Command Palette**: `Cmd+K` for navigation
+- **Command Palette**: `Cmd+K` for navigation + dynamic soul commands (routes to Kothar, not hardcoded)
 - **Theme Toggle**: `Cmd+Shift+D` or button in header
 - **View Transitions**: Smooth page navigation
 - **Labyrinth**: `/labyrinth` chat interface with Kothar oracle
 - **Resume**: `/resume` interactive resume (subdomain: `resume.minoanmystery.org`)
   - Tyrian purple dark theme, Motion animations, PDF export
   - SEO with ProfilePage/Person structured data
+  - Rich lightbox: click any project badge for structured card (title, year, description, tech tags, GitHub link)
+  - Single-gallery navigation: `<` `>` arrows cycle through all projects
+  - Badges sourced from GitHub profile (`tdimino/tdimino`) at 1024x1024, stored in `~/.claude/badges/`
 
 ## Detailed Guides
 

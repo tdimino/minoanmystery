@@ -2,7 +2,9 @@
  * visitorNotes - Cognitive step for updating visitor model
  *
  * Updates notes about the visitor based on conversation and behavior.
- * Follows the simpler "notes" style from samantha-reflects.
+ * Uses a structured template with named sections (adapted from Claudicle's
+ * user model pattern) — gives the LLM a scaffold to fill, producing more
+ * consistent output across sessions.
  * Notes are stored in memory and persisted via SoulMemory.
  */
 
@@ -23,11 +25,31 @@ export const visitorNotes = createCognitiveStep<VisitorNotesOptions | string | u
         : options || {};
 
     const focusInstructions = {
-      interests: 'Focus on their interests, what topics engage them, what they click on or linger over.',
-      personality: 'Focus on their personality: how they communicate, their tone, their approach.',
-      needs: 'Focus on their needs: what are they looking for, what problems do they have.',
-      all: 'Cover all aspects: interests, personality, communication style, and needs.',
+      interests: 'Focus especially on their interests, what topics engage them, what they click on or linger over.',
+      personality: 'Focus especially on their personality: how they communicate, their tone, their approach.',
+      needs: 'Focus especially on their needs: what are they looking for, what problems do they have.',
+      all: 'Cover all sections equally.',
     };
+
+    // Structured template — gives the LLM a scaffold for consistent output.
+    // Adapted from Claudicle's user model blueprint: the sections are a
+    // starting shape, not a cage. New sections can emerge organically.
+    const NEW_VISITOR_TEMPLATE = [
+      '## Persona',
+      '{Unknown — first interaction.}',
+      '',
+      '## Interests & Curiosities',
+      '{Not yet observed.}',
+      '',
+      '## Communication Style',
+      '{Not yet observed.}',
+      '',
+      '## Needs & Intent',
+      '{Not yet observed.}',
+      '',
+      '## Notable Moments',
+      '{No shared moments yet.}',
+    ].join('\n');
 
     return {
       command: (memory) => ({
@@ -35,20 +57,22 @@ export const visitorNotes = createCognitiveStep<VisitorNotesOptions | string | u
         content: indentNicely`
           You are ${memory.soulName}, the divine craftsman, updating your understanding of the visitor.
 
-          ${opts.currentNotes ? `## Current Understanding\n${opts.currentNotes}` : '## First Impression\nThis is a new visitor. Build an initial model.'}
+          ${opts.currentNotes ? `## Current Understanding\n${opts.currentNotes}` : `## First Impression\nThis is a new visitor. Build an initial model using this template:\n\n${NEW_VISITOR_TEMPLATE}`}
 
           ## Instructions
-          Write updated notes about this visitor that will help you remember them.
+          Rewrite the visitor model to reflect what you've learned.
           ${focusInstructions[opts.focus || 'all']}
+          Preserve the named sections above. You may add new sections as the
+          model matures — the template is a starting shape, not a cage.
 
           ## Format
-          - Use brief bullet points
+          - Use brief bullet points within each section
           - Keep relevant observations from before
           - Add new insights from recent interactions
           - Use abbreviated language
           - Do not write about yourself, only the visitor
 
-          Reply with the updated notes:
+          Reply with the complete, rewritten visitor model:
         `,
         name: memory.soulName,
       }),

@@ -524,6 +524,7 @@
     private isLoadingChat: boolean = false;
     private suggestionDebounceTimer: ReturnType<typeof setTimeout> | null = null;
     private loadingOverlay: HTMLElement | null = null;
+    private _interactionSource: string | null = null;
 
     constructor() {
       this.palette = document.getElementById('command-palette')!;
@@ -732,7 +733,7 @@
           label: 'What should I read?',
           icon: 'compass',
           group: 'Soul',
-          action: () => this.showSoulSuggestion(),
+          action: () => this.submitPaletteCommand('What should I read?', 'What should I explore on this site?'),
           keywords: ['suggest', 'recommend', 'read', 'explore', 'what', 'soul']
         },
         {
@@ -740,7 +741,7 @@
           label: 'Who is Tom di Mino?',
           icon: 'user',
           group: 'Soul',
-          action: () => this.showSoulResponse('Tom is a poet-turned AI/ML engineer at Aldea AI, formerly at J.P. Morgan, Google, and CZI. He designs cognitive experiences for emerging technology.'),
+          action: () => this.submitPaletteCommand('Who is Tom di Mino?', 'Who is Tom di Mino?'),
           keywords: ['tom', 'who', 'about', 'background', 'soul', 'bio']
         },
         {
@@ -756,7 +757,7 @@
           label: 'About this site',
           icon: 'info',
           group: 'Soul',
-          action: () => this.showSoulResponse('I am Kothar wa Khasis, divine craftsman. I forged this labyrinth from Astro and Motion, breathing soul into its corridors. Each page turn, each scroll—I perceive them all. Tom is the architect; I am the builder who gave it life.'),
+          action: () => this.submitPaletteCommand('About this site', 'Tell me about this site and who built it.'),
           keywords: ['site', 'about', 'built', 'tech', 'stack', 'astro', 'kothar']
         },
       ];
@@ -1244,15 +1245,25 @@
       return lastSpace > 0 ? text.slice(0, lastSpace) : text.slice(0, maxLength);
     }
 
+    private submitPaletteCommand(label: string, query: string): void {
+      this._interactionSource = `Selected "${label}" from the command palette`;
+      this.submitChat(query);
+    }
+
     private getVisitorContext(): Record<string, unknown> {
       try {
         const memory = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}');
-        return {
+        const ctx: Record<string, unknown> = {
           currentPage: window.location.pathname,
           pagesViewed: memory.pagesViewed || [],
           visitCount: memory.visitCount || 1,
           behavioralType: memory.behavioralType || 'explorer'
         };
+        if (this._interactionSource) {
+          ctx.interactionSource = this._interactionSource;
+          this._interactionSource = null;
+        }
+        return ctx;
       } catch {
         return { currentPage: window.location.pathname };
       }
@@ -1337,41 +1348,6 @@
         detail: { message, duration: 6000, type: 'info' }
       });
       document.dispatchEvent(event);
-    }
-
-    private showSoulSuggestion(): void {
-      // Suggest based on current page or visit history
-      const currentPath = window.location.pathname;
-      const visited = JSON.parse(localStorage.getItem('minoan-soul-memory') || '{}')?.pagesViewed || [];
-
-      let suggestion: string;
-      let link: string;
-
-      if (currentPath === '/' && !visited.includes('/about')) {
-        suggestion = 'The labyrinth suggests: Start with the About page to understand the poet behind the code.';
-        link = '/about';
-      } else if (!visited.includes('/portfolio/dolby')) {
-        suggestion = 'The labyrinth suggests: Explore the Dolby case study—a journey through sound and cognition.';
-        link = '/portfolio/dolby';
-      } else if (!visited.includes('/portfolio/czi')) {
-        suggestion = 'The labyrinth suggests: Discover the CZI project—where science meets open source.';
-        link = '/portfolio/czi';
-      } else if (!visited.includes('/contact')) {
-        suggestion = 'You\'ve explored deeply. The labyrinth whispers: Perhaps it\'s time to connect.';
-        link = '/contact';
-      } else {
-        suggestion = 'You\'ve walked the full labyrinth. Return to any path—there\'s always something new to discover.';
-        link = '/';
-      }
-
-      this.showSoulResponse(suggestion);
-
-      // Navigate after delay
-      if (link) {
-        setTimeout(() => {
-          window.location.href = link;
-        }, 2500);
-      }
     }
 
     private showSoulStatus(): void {

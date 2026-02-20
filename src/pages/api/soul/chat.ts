@@ -236,6 +236,7 @@ interface ChatRequest {
     visitCount?: number;
     behavioralType?: string;
     inferredInterests?: string[];
+    interactionSource?: string;
     sessionHistory?: Array<{
       ts: string;
       topics: string[];
@@ -1022,6 +1023,15 @@ function buildVisitorContext(ctx: ChatRequest['visitorContext']): string {
 
   if (ctx.inferredInterests && ctx.inferredInterests.length > 0) {
     parts.push(`- Inferred interests: ${ctx.inferredInterests.join(', ')}`);
+  }
+
+  if (ctx.interactionSource) {
+    // Strip newlines and Markdown control chars to prevent prompt injection
+    const safeSource = String(ctx.interactionSource)
+      .replace(/[\r\n]/g, ' ')
+      .replace(/[`*_#\[\]]/g, '')
+      .slice(0, 200);
+    parts.push(`- Interaction: ${safeSource}`);
   }
 
   // Returning visitor context from session history (client-provided, sanitize)

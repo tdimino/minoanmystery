@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import { Icon } from 'astro-icon/components';
+import Lightbox from '../components/Lightbox.astro';
 import '../styles/global.css';
 import '../styles/resume.css';
 
@@ -209,6 +210,31 @@ const projects = [
     logoCircular: true
   }
 ];
+
+// Generate lightbox galleries from project data
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+// Single gallery with all projects — arrows navigate between them
+const lightboxGalleries = [{
+  id: 'resume-projects',
+  trigger: '__match_any_image__',
+  images: projects.map(p => ({
+    src: p.logo,
+    caption: `${p.name} (${p.year})`,
+    title: p.name,
+    year: p.year,
+    description: stripHtml(p.description).replace(/View on GitHub →|Speak with Kothar →/g, '').trim(),
+    tags: p.tech,
+    invertInLightbox: p.logoDark,
+    circular: p.logoCircular,
+    link: p.logoUrl ? {
+      url: p.logoUrl,
+      label: p.logoUrl.includes('github') ? 'View on GitHub' : (p.logoUrl.includes('labyrinth') ? 'Speak with Kothar' : 'Visit')
+    } : undefined
+  }))
+}];
 ---
 
 <!DOCTYPE html>
@@ -254,18 +280,61 @@ const projects = [
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <ViewTransitions />
+
+  <!-- Theme: FOUC prevention (mirrors ThemeScript.astro) -->
+  <script is:inline>
+    (function() {
+      function getTimeBasedTheme() {
+        try {
+          var now = new Date();
+          var hour = now.getHours();
+          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          if (!tz || tz === 'UTC') {
+            var fmt = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'America/New_York', hour: 'numeric', hour12: false
+            });
+            hour = parseInt(fmt.format(now), 10);
+          }
+          return (hour >= 7 && hour < 17) ? 'light' : 'dark';
+        } catch (e) { return null; }
+      }
+      var stored = localStorage.getItem('theme');
+      var timeBased = getTimeBasedTheme();
+      var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = stored || timeBased || (systemDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body class="resume-page">
   <!-- Back to site -->
-  <a href="/" class="back-link" data-animate="fade">
+  <a href="/" class="back-link" aria-label="Back to minoanmystery.org" data-animate="fade">
     <Icon name="ph:arrow-left" />
-    minoanmystery.org
+    <span class="back-link-text" aria-hidden="true">minoanmystery.org</span>
   </a>
 
   <!-- PDF Export -->
   <button class="pdf-export-btn" onclick="window.print()" data-animate="fade">
     <Icon name="ph:file-pdf-duotone" />
     Export PDF
+  </button>
+
+  <!-- Theme Toggle -->
+  <button class="resume-theme-toggle" aria-label="Toggle theme" title="Toggle theme (Cmd+Shift+D)" data-animate="fade">
+    <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg class="theme-icon theme-icon--moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
   </button>
 
   <div class="resume-container">
@@ -439,14 +508,20 @@ const projects = [
             <div class="project-card" data-animate="project" data-delay={index * 100}>
               <div class="project-header">
                 <div class="project-title-row">
-                  {project.logo && project.logoUrl && (
-                    <a href={project.logoUrl} target={project.logoUrl.startsWith('/') ? '_self' : '_blank'} rel="noopener" class="logo-link" title={project.logoUrl.startsWith('/') ? project.name : "View on GitHub"}>
+                  {project.logo && (
+                    <button
+                      class="logo-lightbox-trigger"
+                      data-lightbox
+                      aria-label={`View ${project.name} logo in lightbox`}
+                      title={`View ${project.name} logo`}
+                      type="button"
+                    >
                       <img
                         src={project.logo}
-                        alt=""
+                        alt={project.name}
                         class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''}`}
                       />
-                    </a>
+                    </button>
                   )}
                   <h3 class="project-name">{project.name}</h3>
                 </div>
@@ -477,7 +552,14 @@ const projects = [
   <script>
     import { animate, stagger, inView } from 'motion';
 
+    // Track inView cleanups for View Transition teardown
+    let inViewCleanups: (() => void)[] = [];
+
     function initResumeAnimations() {
+      // Respect prefers-reduced-motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      inViewCleanups = [];
+
       // Header animation
       const header = document.querySelector('[data-animate="header"]');
       if (header) {
@@ -527,7 +609,7 @@ const projects = [
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
 
-        inView(el, () => {
+        const cleanup = inView(el, () => {
           const delay = parseInt(el.dataset.delay || '0') / 1000;
           animate(el, {
             opacity: 1,
@@ -538,6 +620,7 @@ const projects = [
             delay
           });
         }, { margin: '-50px 0px' });
+        inViewCleanups.push(cleanup);
       });
 
       // Skill cards - staggered animation
@@ -563,7 +646,7 @@ const projects = [
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px) scale(0.98)';
 
-        inView(el, () => {
+        const cleanup = inView(el, () => {
           const delay = parseInt(el.dataset.delay || '0') / 1000;
           animate(el, {
             opacity: 1,
@@ -574,38 +657,45 @@ const projects = [
             delay
           });
         }, { margin: '-100px 0px' });
+        inViewCleanups.push(cleanup);
       });
 
-      // Education & certs
-      document.querySelectorAll('[data-animate="edu"], [data-animate="cert"]').forEach((el, i) => {
+      // Education & certs - staggered animation
+      const eduCertEls = document.querySelectorAll('[data-animate="edu"], [data-animate="cert"]');
+      eduCertEls.forEach((el) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(15px)';
-        animate(el, {
+      });
+      if (eduCertEls.length > 0) {
+        animate(eduCertEls, {
           opacity: 1,
           transform: 'translateY(0)'
         }, {
           duration: 0.4,
           easing: [0.25, 0.46, 0.45, 0.94],
-          delay: 0.7 + (i * 0.1)
+          delay: stagger(0.1, { start: 0.7 })
         });
-      });
+      }
 
-      // Fade elements
-      document.querySelectorAll('[data-animate="fade"]').forEach((el, i) => {
+      // Fade elements - staggered animation
+      const fadeEls = document.querySelectorAll('[data-animate="fade"]');
+      fadeEls.forEach((el) => {
         el.style.opacity = '0';
-        animate(el, {
+      });
+      if (fadeEls.length > 0) {
+        animate(fadeEls, {
           opacity: 1
         }, {
           duration: 0.4,
-          delay: 0.8 + (i * 0.1)
+          delay: stagger(0.1, { start: 0.8 })
         });
-      });
+      }
 
       // Footer
       const footer = document.querySelector('[data-animate="footer"]');
       if (footer) {
         footer.style.opacity = '0';
-        inView(footer, () => {
+        const cleanup = inView(footer, () => {
           animate(footer, {
             opacity: 1
           }, {
@@ -613,14 +703,63 @@ const projects = [
             delay: 0.2
           });
         });
+        inViewCleanups.push(cleanup);
       }
     }
 
+    // Theme toggle
+    function initThemeToggle() {
+      const themeBtn = document.querySelector('.resume-theme-toggle');
+      if (!themeBtn) return;
+
+      themeBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    }
+
+    // Keyboard shortcut: Cmd+Shift+D
+    function handleThemeKeydown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        const themeBtn = document.querySelector('.resume-theme-toggle') as HTMLButtonElement;
+        themeBtn?.click();
+      }
+    }
+
+    document.addEventListener('keydown', handleThemeKeydown);
+
+    // Force light mode for print (ensures all CSS variable cascades resolve correctly)
+    window.addEventListener('beforeprint', () => {
+      document.documentElement.dataset.printTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', 'light');
+    });
+    window.addEventListener('afterprint', () => {
+      const original = document.documentElement.dataset.printTheme;
+      if (original) document.documentElement.setAttribute('data-theme', original);
+    });
+
     // Run on load
-    document.addEventListener('DOMContentLoaded', initResumeAnimations);
+    document.addEventListener('DOMContentLoaded', () => {
+      initResumeAnimations();
+      initThemeToggle();
+    });
+
+    // Cleanup inView observers before View Transition swap
+    document.addEventListener('astro:before-swap', () => {
+      inViewCleanups.forEach(cleanup => cleanup());
+      inViewCleanups = [];
+    });
 
     // Re-run after view transitions
-    document.addEventListener('astro:after-swap', initResumeAnimations);
+    document.addEventListener('astro:after-swap', () => {
+      initResumeAnimations();
+      initThemeToggle();
+    });
   </script>
+
+  <Lightbox galleries={lightboxGalleries} />
 </body>
 </html>
