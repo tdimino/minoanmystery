@@ -90,6 +90,20 @@ const { galleries = [] } = Astro.props;
     scale: 0.96;
   }
 
+  /* Skip dialog entry animation when View Transitions handles the open morph */
+  dialog#lightbox-overlay[data-vt-open],
+  dialog#lightbox-overlay[data-vt-open]::backdrop {
+    transition: none;
+    opacity: 1;
+    scale: 1;
+  }
+
+  dialog#lightbox-overlay[data-vt-open]::backdrop {
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+  }
+
   /* Skip dialog exit animation when View Transitions handles the close morph */
   dialog#lightbox-overlay[data-vt-close],
   dialog#lightbox-overlay[data-vt-close]::backdrop {
@@ -547,6 +561,8 @@ const { galleries = [] } = Astro.props;
           return;
         }
 
+        // Suppress @starting-style entry animation — View Transition handles the visual
+        overlay.setAttribute('data-vt-open', '');
         triggerImg.style.viewTransitionName = 'lightbox-hero';
         const transition = (document as any).startViewTransition(() => {
           triggerImg.style.viewTransitionName = '';
@@ -556,8 +572,10 @@ const { galleries = [] } = Astro.props;
 
         transition.finished.then(() => {
           lightboxImg.style.viewTransitionName = '';
+          overlay.removeAttribute('data-vt-open');
         }).catch(() => {
           lightboxImg.style.viewTransitionName = '';
+          overlay.removeAttribute('data-vt-open');
         });
       }
 
@@ -610,6 +628,9 @@ const { galleries = [] } = Astro.props;
       let pointerStartX = 0, pointerStartY = 0, pointerStartTime = 0;
 
       overlay.addEventListener('pointerdown', (e) => {
+        // Don't capture pointer on interactive controls — capture prevents
+        // their click events from firing (pointerup redirects to overlay)
+        if ((e.target as HTMLElement).closest('button, a')) return;
         pointerStartX = e.clientX;
         pointerStartY = e.clientY;
         pointerStartTime = Date.now();
