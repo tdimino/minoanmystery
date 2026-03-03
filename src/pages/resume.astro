@@ -59,20 +59,6 @@ const structuredData = {
         "Triton Inference Server",
         "Voice AI Pipelines"
       ],
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Google Prompting Essentials"
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Introduction to Large Language Models"
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "name": "Introduction to Generative AI"
-        }
-      ]
     }
   ]
 };
@@ -161,6 +147,36 @@ const experience = [
       { text: "Published full course on GitHub using <strong>Jupyter Book, Jupyter Notebooks</strong> (Markdown, Python, and narrated video)" },
       { text: "Collaborated with 9 application scientists, UX researchers, and SWEs to ship MVP in 6 months" }
     ]
+  },
+  {
+    company: "Hugo & Cat",
+    role: "Sr. Content Strategist",
+    dates: "Jun 2021 — Nov 2021",
+    context: "Top-50 award-winning agency; clients included Microsoft, Salesforce, and Johnson & Johnson",
+    logo: "/images/logos/hugo-cat.png",
+    logoUrl: "https://www.hugoandcat.com",
+    logoDark: false,
+    bullets: [
+      { text: "Performed comprehensive content audit for the <strong>American College of Surgeons</strong>—the world's largest surgical organization" },
+      { text: "Defined taxonomy, voice/tone guidelines, and content creation standards for the redesigned FACS.org" },
+      { text: "Drove <span class=\"metric\">40%</span> increase in member applications and <span class=\"metric\">42%</span> increase in session duration within 9 months" }
+    ],
+    printOnly: true
+  },
+  {
+    company: "Valtech",
+    role: "Technical Content Strategist",
+    dates: "May 2020 — Jun 2021",
+    context: "Top-50 global digital agency specializing in data science, AR/VR, and brand strategy",
+    logo: "/images/logos/valtech.jpg",
+    logoUrl: "https://www.valtech.com",
+    logoDark: false,
+    bullets: [
+      { text: "Migrated <strong>Dolby Laboratories</strong> to Sitecore, designing landing page and product page templates for desktop and mobile" },
+      { text: "Devised information architecture for AONA (surgical nonprofit) and IMA (financial continuing-ed organization)" },
+      { text: "Delivered content calendars incorporating keyword research, SEO analytics, and competitive research" }
+    ],
+    printOnly: true
   }
 ];
 
@@ -387,7 +403,7 @@ const lightboxGalleries = [{
           </h2>
 
           {experience.map((job, index) => (
-            <div class="experience-entry" data-animate="entry" data-delay={index * 100}>
+            <div class={`experience-entry ${job.printOnly ? 'print-only' : ''}`} data-animate="entry" data-delay={index * 100}>
               <div class="experience-header">
                 <div class="experience-title-row">
                   {job.logo && job.logoUrl && (
@@ -445,8 +461,8 @@ const lightboxGalleries = [{
           </h2>
           <div class="education-item" data-animate="edu">
             <h3 class="education-title">B.S. Microbiology</h3>
-            <p class="education-institution">The College of New Jersey</p>
-            <p class="education-details">Minor in Classical History · 2007–2011</p>
+            <p class="education-details">Minor in Classical History</p>
+            <p class="education-details">TCNJ · 2007–2011</p>
           </div>
           <div class="education-item" data-animate="edu">
             <h3 class="education-title">Improv Comedy 101</h3>
@@ -471,27 +487,35 @@ const lightboxGalleries = [{
           </div>
         </section>
 
-        <!-- Certifications -->
+        <!-- Hobbies -->
         <section class="resume-section">
           <h2 class="resume-section-title" data-animate="section">
-            <Icon name="ph:certificate-duotone" class="section-icon" />
-            Certifications
+            <Icon name="ph:heart-duotone" class="section-icon" />
+            Hobbies
           </h2>
-          <div class="education-item" data-animate="cert">
-            <p class="education-institution">
-              <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Google Prompting Essentials (2025)
-            </p>
-            <p class="education-institution">
-              <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Introduction to Large Language Models (2023)
-            </p>
-            <p class="education-institution">
-              <Icon name="ph:check-circle-duotone" class="cert-icon" />
-              Introduction to Generative AI (2023)
-            </p>
+          <div class="skill-category" data-animate="skill">
+            <h3 class="skill-category-title">
+              <Icon name="ph:translate-duotone" class="skill-icon" />
+              Linguistics/Philology
+            </h3>
+            <p class="skill-category-items hobbies-text">Spanish, Italian, French, Biblical Hebrew, Classical Latin, Arabic, Sanskrit, Ancient Greek, Ugaritic</p>
+          </div>
+          <div class="skill-category" data-animate="skill">
+            <h3 class="skill-category-title">
+              <Icon name="ph:scroll-duotone" class="skill-icon" />
+              History blog
+            </h3>
+            <p class="skill-category-items"><a href="https://tomdimino.substack.com">tomdimino.substack.com</a></p>
+          </div>
+          <div class="skill-category" data-animate="skill">
+            <h3 class="skill-category-title">
+              <Icon name="ph:island-duotone" class="skill-icon" />
+              Last trip abroad
+            </h3>
+            <p class="skill-category-items">Sitia, Crete · Nov 2025</p>
           </div>
         </section>
+
       </aside>
     </div>
 

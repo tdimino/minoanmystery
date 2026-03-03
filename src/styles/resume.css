@@ -585,6 +585,15 @@
 .education-details {
   font-size: 12px;
   color: var(--color-text-dim);
+  margin: 0 0 6px 0;
+}
+
+.education-details:last-child {
+  margin-bottom: 0;
+}
+
+.hobbies-text {
+  line-height: 1.5;
 }
 
 /* PDF Export button */
@@ -802,6 +811,11 @@
   }
 }
 
+/* Print-only elements: hidden on screen, visible in print */
+.print-only {
+  display: none !important;
+}
+
 /* Print styles - optimized for 2-page PDF */
 /* ═══════════════════════════════════════════════════════════════
    PRINT STYLES — Optimized for Playwright page.pdf() and
@@ -857,6 +871,10 @@
   [data-animate] {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .print-only {
+    display: block !important;
   }
 
   .pdf-export-btn,
@@ -1031,10 +1049,21 @@
 
   .education-title {
     font-size: 10px !important;
+    margin: 0 !important;
   }
 
   .education-institution {
     font-size: 9px !important;
+    margin: 0 !important;
+  }
+
+  .education-details {
+    font-size: 9px !important;
+    margin: 0 !important;
+  }
+
+  .hobbies-text {
+    line-height: 1.5 !important;
   }
 
   /* ── Certifications ── */
@@ -1049,7 +1078,8 @@
 
   /* ── Metrics ── */
   .metric {
-    color: #0d7377 !important;
+    color: #7a4f6b !important;
+    font-weight: 700 !important;
   }
 
   a {
