@@ -371,7 +371,7 @@ const lightboxGalleries = [{
         Full-stack AI engineer with <strong>4+ years shipping LLM-powered production systems</strong>.
         Built <strong>$800k/day AI tool</strong> at JP Morgan serving 5,000+ wealth advisors.
         Currently architecting production AI advisor platform at SubQ AI with fine-tuned LLMs,
-        voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes, and ideates constantly.</strong>
+        voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes with users, and ideates constantly.</strong>
       </p>
     </div>
 
@@ -732,9 +732,16 @@ const lightboxGalleries = [{
     document.addEventListener('keydown', handleThemeKeydown);
 
     // Force light mode for print (ensures all CSS variable cascades resolve correctly)
+    // Also strip inline animation styles — inView-triggered elements (entries,
+    // projects, footer) may still have opacity:0 if user hasn't scrolled there
     window.addEventListener('beforeprint', () => {
       document.documentElement.dataset.printTheme = document.documentElement.getAttribute('data-theme') || 'light';
       document.documentElement.setAttribute('data-theme', 'light');
+
+      document.querySelectorAll('[data-animate]').forEach((el) => {
+        (el as HTMLElement).style.opacity = '';
+        (el as HTMLElement).style.transform = '';
+      });
     });
     window.addEventListener('afterprint', () => {
       const original = document.documentElement.dataset.printTheme;

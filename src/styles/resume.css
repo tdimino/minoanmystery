@@ -803,6 +803,10 @@
 }
 
 /* Print styles - optimized for 2-page PDF */
+/* ═══════════════════════════════════════════════════════════════
+   PRINT STYLES — Optimized for Playwright page.pdf() and
+   browser Print. Consolidated into a single @media print block.
+   ═══════════════════════════════════════════════════════════════ */
 @media print {
   @page {
     size: letter;
@@ -843,6 +847,18 @@
     display: none !important;
   }
 
+  .resume-header::before,
+  .resume-header::after {
+    display: none !important;
+  }
+
+  /* Force all animated elements visible — JS inView observers may
+     not have fired for below-fold content */
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   .pdf-export-btn,
   .back-link,
   .resume-theme-toggle {
@@ -854,12 +870,6 @@
     padding: 0;
   }
 
-  /* Prevent section headings from being stranded at page bottom */
-  .resume-section-title {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
   /* Orphan/widow control */
   .experience-bullets li,
   .project-description,
@@ -868,7 +878,13 @@
     widows: 2;
   }
 
-  /* Compact header */
+  /* Prevent section headings from being stranded at page bottom */
+  .resume-section-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* ── Header ── */
   .resume-header {
     padding: 0 0 12px 0 !important;
     margin-bottom: 12px !important;
@@ -878,6 +894,8 @@
   .resume-name {
     font-size: 22px !important;
     margin-bottom: 2px !important;
+    animation: none;
+    text-shadow: none;
   }
 
   .resume-title {
@@ -890,7 +908,7 @@
     font-size: 9px !important;
   }
 
-  /* Compact summary */
+  /* ── Summary ── */
   .resume-summary {
     background: #f5f5f5 !important;
     border-left-color: #7a4f6b !important;
@@ -910,17 +928,31 @@
     font-size: 12px !important;
   }
 
-  /* Compact two-column layout */
+  /* ── Two-column layout — reset mobile overrides that fire at
+     letter-page width (~739px < 768px breakpoint) ── */
   .resume-two-col {
-    grid-template-columns: 1fr 180px;
-    gap: 16px;
+    display: grid !important;
+    grid-template-columns: 1fr 180px !important;
+    gap: 16px !important;
+  }
+
+  .resume-main {
+    order: 0 !important;
   }
 
   .resume-sidebar {
+    order: 0 !important;
     gap: 12px;
   }
 
-  /* Compact experience entries */
+  /* Reset mobile stacking of experience header */
+  .experience-header {
+    flex-direction: row !important;
+    margin-bottom: 4px !important;
+    gap: 2px !important;
+  }
+
+  /* ── Experience ── */
   .experience-section {
     gap: 10px !important;
   }
@@ -931,13 +963,9 @@
     page-break-inside: avoid;
   }
 
-  .experience-header {
-    margin-bottom: 4px !important;
-    gap: 2px !important;
-  }
-
   .experience-role {
     font-size: 11px !important;
+    color: #7a4f6b !important;
   }
 
   .experience-company {
@@ -949,21 +977,19 @@
     margin-bottom: 4px !important;
   }
 
-  .experience-description {
+  .experience-bullets li {
+    margin-bottom: 2px !important;
+    padding-left: 10px !important;
     font-size: 9.5px !important;
     line-height: 1.4 !important;
   }
 
-  .experience-description li {
-    margin-bottom: 2px !important;
-    padding-left: 10px !important;
-  }
-
-  .experience-description li::before {
+  .experience-bullets li::before {
     font-size: 8px !important;
+    color: #7a4f6b !important;
   }
 
-  /* Compact skills */
+  /* ── Skills ── */
   .skills-section {
     gap: 8px !important;
   }
@@ -971,21 +997,22 @@
   .skill-category {
     background: #f8f8f8 !important;
     border-color: #ddd !important;
+    border-top: 2px solid #7a4f6b !important;
     padding: 8px 10px !important;
     break-inside: avoid;
   }
 
-  .skill-title {
+  .skill-category-title {
     font-size: 10px !important;
     margin-bottom: 4px !important;
   }
 
-  .skill-items {
+  .skill-category-items {
     font-size: 9px !important;
     line-height: 1.35 !important;
   }
 
-  /* Compact tech tags */
+  /* ── Tech tags ── */
   .tech-tag {
     background: #f0e8ed !important;
     border-color: #d4c4ce !important;
@@ -994,7 +1021,47 @@
     padding: 1px 5px !important;
   }
 
-  /* Compact projects */
+  /* ── Education ── */
+  .education-item {
+    background: #f8f8f8 !important;
+    border-color: #ddd !important;
+    padding: 8px 10px !important;
+    break-inside: avoid;
+  }
+
+  .education-title {
+    font-size: 10px !important;
+  }
+
+  .education-institution {
+    font-size: 9px !important;
+  }
+
+  /* ── Certifications ── */
+  .certifications-list {
+    gap: 4px !important;
+  }
+
+  .certification-item {
+    font-size: 9px !important;
+    padding: 4px 0 !important;
+  }
+
+  /* ── Metrics ── */
+  .metric {
+    color: #0d7377 !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* ── Projects ── */
+  .page-two-start {
+    page-break-before: auto;
+  }
+
   .projects-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 10px !important;
@@ -1008,72 +1075,93 @@
     page-break-inside: avoid;
   }
 
+  .project-card::before {
+    background: linear-gradient(180deg, #7a4f6b 0%, #5c3a50 100%) !important;
+    opacity: 0.8 !important;
+  }
+
   .project-header {
-    margin-bottom: 6px !important;
-    gap: 8px !important;
+    margin-bottom: 4px !important;
+    gap: 6px !important;
   }
 
   .project-logo {
-    width: 28px !important;
-    height: 28px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .project-name {
-    font-size: 10px !important;
+    font-size: 9.5px !important;
+    color: #222 !important;
   }
 
   .project-year {
-    font-size: 8px !important;
+    font-size: 7.5px !important;
+    color: #888 !important;
   }
 
   .project-description {
-    font-size: 9px !important;
-    line-height: 1.35 !important;
-    margin-bottom: 6px !important;
+    font-size: 8.5px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4px !important;
+    color: #444 !important;
+  }
+
+  .project-description code {
+    font-size: 8px !important;
+    background: #ede8eb !important;
+    padding: 0 3px !important;
+    border-radius: 2px !important;
+    color: #7a4f6b !important;
+  }
+
+  .project-link {
+    color: #7a4f6b !important;
+    font-size: 8px !important;
+    font-weight: 600 !important;
   }
 
   .project-tech {
-    gap: 4px !important;
+    gap: 3px !important;
   }
 
-  /* Compact education */
-  .education-item {
-    background: #f8f8f8 !important;
-    border-color: #ddd !important;
-    padding: 8px 10px !important;
-    break-inside: avoid;
+  /* ── Footer ── */
+  .resume-footer {
+    padding-top: 12px !important;
+    margin-top: 12px !important;
   }
 
-  .education-degree {
-    font-size: 10px !important;
-  }
-
-  .education-school {
+  .resume-footer p {
     font-size: 9px !important;
   }
 
-  /* Compact certifications */
-  .certifications-list {
-    gap: 4px !important;
+  .resume-footer a {
+    color: #7a4f6b !important;
   }
 
-  .certification-item {
-    font-size: 9px !important;
-    padding: 4px 0 !important;
+  /* ── Icons: hide all inline SVGs ── */
+  .contact-icon,
+  .section-icon,
+  .skill-icon,
+  .cert-icon,
+  .project-icon,
+  .footer-icon {
+    display: none;
   }
 
-  .metric {
-    color: #2a7a7a !important;
+  /* ── Logos: full color in print ── */
+  .logo-lightbox-trigger {
+    display: contents;
   }
 
-  a {
-    color: inherit !important;
-    text-decoration: none !important;
+  .experience-logo,
+  .project-logo {
+    filter: none !important;
+    opacity: 1 !important;
   }
 
-  /* Remove forced page break - let content flow naturally */
-  .page-two-start {
-    page-break-before: auto;
+  .logo-invert {
+    filter: none !important;
   }
 }
 
@@ -1179,50 +1267,6 @@
   color: var(--color-primary-bright);
   transform: translateX(2px);
   transition: transform 0.2s ease, color 0.2s ease;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   PRINT: HIDE ICONS
-   ═══════════════════════════════════════════════════════════════ */
-@media print {
-  .contact-icon,
-  .section-icon,
-  .skill-icon,
-  .cert-icon,
-  .project-icon,
-  .footer-icon {
-    display: none;
-  }
-
-  .resume-section-title::before {
-    display: none;
-  }
-
-  /* Restore simple section underlines for print */
-  .resume-section-title::after {
-    background: #ddd;
-  }
-
-  /* Disable animations for print */
-  .resume-name {
-    animation: none;
-    text-shadow: none;
-  }
-
-  /* Handle logos for print */
-  .logo-lightbox-trigger {
-    display: contents;
-  }
-
-  .experience-logo,
-  .project-logo {
-    filter: grayscale(100%) !important;
-    opacity: 0.7;
-  }
-
-  .logo-invert {
-    filter: none !important;
-  }
 }
 
 /* Respect reduced motion preference */
