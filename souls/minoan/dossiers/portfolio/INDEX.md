@@ -23,15 +23,15 @@ Tom's portfolio spans enterprise content strategy, nonprofit tech education, and
 | Meeting Assist | JP Morgan Chase | $800k/day savings, 72% adoption | jpmc-meeting-assist.md |
 | Cognitive Design MVPs | Minoan Mystery | Discord bots with souls, dream states | cognitive-design-mvps.md |
 
-### Subquadratic / Aldea AI (2025-Present)
+### Subquadratic / SubQ AI (2025-Present)
 
 Tom's current work as Founding Engineer and Principal AI/ML Engineer. See `subquadratic/INDEX.md` for detailed dossiers.
 
 | Project | Focus | Impact | File |
 |---------|-------|--------|------|
-| Daimonic Souls Engine | Architecture & Platform | SMS/mobile AI advisors, production platform | subquadratic/aldea-soul-engine.md |
-| LLM Evaluation Framework | Evaluation | Multi-dimensional persona assessment | subquadratic/aldea-llm-evaluation.md |
-| Model Deployment | GPU Infrastructure | 70B production serving, LoRA switching | subquadratic/aldea-model-deployment.md |
+| Daimonic Souls Engine | Architecture & Platform | SMS/mobile AI advisors, production platform | subquadratic/subq-soul-engine.md |
+| LLM Evaluation Framework | Evaluation | Multi-dimensional persona assessment | subquadratic/subq-llm-evaluation.md |
+| Model Deployment | GPU Infrastructure | 70B production serving, LoRA switching | subquadratic/subq-model-deployment.md |
 
 ### Big Tech & Nonprofit (2021-2023)
 
@@ -55,7 +55,7 @@ Tom's current work as Founding Engineer and Principal AI/ML Engineer. See `subqu
 |--------|-------|---------|
 | **Daily Savings** | $800,000 | JPMC Meeting Assist |
 | **Adoption Rate** | 72% | JPMC Meeting Assist (5000+ advisors) |
-| **Model Size** | 70B parameters | Aldea Model Deployment |
+| **Model Size** | 70B parameters | SubQ AI Model Deployment |
 | **Member Growth** | 40% | ACS Website |
 | **Session Duration** | +42% | ACS Website |
 | **Program Launches** | +25% | Google Mentorship |
@@ -69,11 +69,11 @@ Tom's current work as Founding Engineer and Principal AI/ML Engineer. See `subqu
 
 | Skill | Projects |
 |-------|----------|
-| **LLM Prompting** | JPMC, Aldea (all), Cognitive Design |
-| **Agentic Architecture** | JPMC (LangGraph), Aldea (Souls Engine) |
-| **Evaluation Frameworks** | JPMC (DeepEval), Aldea (LLM-as-a-Judge) |
-| **GPU/ML Infrastructure** | Aldea (TensorRT-LLM, Triton) |
-| **LoRA Fine-tuning** | Aldea (persona adapters) |
+| **LLM Prompting** | JPMC, SubQ AI (all), Cognitive Design |
+| **Agentic Architecture** | JPMC (LangGraph), SubQ AI (Souls Engine) |
+| **Evaluation Frameworks** | JPMC (DeepEval), SubQ AI (LLM-as-a-Judge) |
+| **GPU/ML Infrastructure** | SubQ AI (TensorRT-LLM, Triton) |
+| **LoRA Fine-tuning** | SubQ AI (persona adapters) |
 | **Content Strategy** | ACS, Dolby, all projects |
 | **UX Research** | JPMC, ACS, CZI, Google |
 | **Instructional Design** | CZI, Google |
@@ -93,10 +93,10 @@ Tom's current work as Founding Engineer and Principal AI/ML Engineer. See `subqu
 | acs-hugo-cat.md | American College of Surgeons | Content Strategy | Complete |
 | dolby-sitecore.md | Dolby Laboratories | CMS Migration | Complete |
 | **subquadratic/** | | | |
-| subquadratic/INDEX.md | Subquadratic/Aldea | Index | Complete |
-| subquadratic/aldea-soul-engine.md | Subquadratic/Aldea | AI/ML Architecture | Complete |
-| subquadratic/aldea-llm-evaluation.md | Subquadratic/Aldea | AI/ML Evaluation | Complete |
-| subquadratic/aldea-model-deployment.md | Subquadratic/Aldea | ML Infrastructure | Complete |
+| subquadratic/INDEX.md | Subquadratic/SubQ AI | Index | Complete |
+| subquadratic/subq-soul-engine.md | Subquadratic/SubQ AI | AI/ML Architecture | Complete |
+| subquadratic/subq-llm-evaluation.md | Subquadratic/SubQ AI | AI/ML Evaluation | Complete |
+| subquadratic/subq-model-deployment.md | Subquadratic/SubQ AI | ML Infrastructure | Complete |
 
 ---
 
@@ -115,7 +115,7 @@ Every project involves translating between stakeholders: engineers and designers
 Whether it's AI for wealth advisors or soul-aware chatbots, the focus is on AI that serves human needs rather than replacing human judgment.
 
 ### Thread 5: Full-Stack AI
-The Aldea work demonstrates depth across the entire AI stack: model training (LoRA fine-tuning), evaluation (LLM-as-a-Judge), infrastructure (TensorRT-LLM, Triton), and application (Souls Engine).
+The SubQ AI work demonstrates depth across the entire AI stack: model training (LoRA fine-tuning), evaluation (LLM-as-a-Judge), infrastructure (TensorRT-LLM, Triton), and application (Souls Engine).
 
 ---
 
@@ -131,8 +131,8 @@ When visitors ask about Tom's professional capabilities, Kothar draws from these
 ## Cross-References
 - **Biography**: INDEX.md (career context)
 - **Biography**: ai-ml-chapter.md (current phase)
-- **Oracle-Concepts**: daimonic-wisdom.md (philosophy behind Aldea work)
+- **Oracle-Concepts**: daimonic-wisdom.md (philosophy behind SubQ AI work)
 - **Scholarly-Sources**: (theoretical grounding for cognitive design)
 
 ## RAG Tags
-portfolio, case study, Tom di Mino, JPMC, Subquadratic, Aldea, Google, CZI, ACS, Dolby, AI, ML, content strategy, UX research, LLM, agentic, cognitive design, metrics, impact, enterprise, nonprofit, startup, LLM-as-a-Judge, TensorRT-LLM, Triton, LoRA, evaluation framework, GPU infrastructure, Founding Engineer, Principal AI/ML Engineer
+portfolio, case study, Tom di Mino, JPMC, Subquadratic, SubQ AI, Google, CZI, ACS, Dolby, AI, ML, content strategy, UX research, LLM, agentic, cognitive design, metrics, impact, enterprise, nonprofit, startup, LLM-as-a-Judge, TensorRT-LLM, Triton, LoRA, evaluation framework, GPU infrastructure, Founding Engineer, Principal AI/ML Engineer

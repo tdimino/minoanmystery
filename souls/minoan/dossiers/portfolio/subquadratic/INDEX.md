@@ -1,4 +1,4 @@
-# Subquadratic / Aldea AI - Portfolio Index
+# Subquadratic / SubQ AI - Portfolio Index
 
 ## Source
 - Type: Portfolio Index
@@ -10,9 +10,9 @@
 
 ## Overview
 
-Tom is a Founding Engineer and Principal AI/ML Engineer at Subquadratic (also known as Aldea AI). The company pioneers cutting-edge STT/TTS and post-Transformer LLMs while training AI advisors that internalize the spirit, wisdom, and methodologies of world-renowned experts.
+Tom is a Founding Engineer and Principal AI/ML Engineer at Subquadratic (dba SubQ AI, formerly Aldea AI). The company pioneers cutting-edge STT/TTS and post-Transformer LLMs while training AI advisors that internalize the spirit, wisdom, and methodologies of world-renowned experts.
 
-This folder contains dossiers on Tom's work at Subquadratic/Aldea, covering:
+This folder contains dossiers on Tom's work at Subquadratic/SubQ AI, covering:
 - Soul Engine architecture and production SMS platform
 - LLM-as-a-Judge evaluation framework
 - GPU infrastructure and model deployment
@@ -23,7 +23,7 @@ This folder contains dossiers on Tom's work at Subquadratic/Aldea, covering:
 
 | Aspect | Details |
 |--------|---------|
-| **Organization** | Subquadratic (dba Aldea AI) |
+| **Organization** | Subquadratic (dba SubQ AI) |
 | **Tom's Role** | Founding Engineer / Principal AI/ML Engineer |
 | **Start Date** | July 2025 |
 | **Focus** | AI advisors with layered memory, voice-first interfaces |
@@ -35,9 +35,9 @@ This folder contains dossiers on Tom's work at Subquadratic/Aldea, covering:
 
 | File | Focus | Key Achievements |
 |------|-------|------------------|
-| aldea-soul-engine.md | Architecture & Platform | Open Souls-inspired WorkingMemory, SMS infrastructure, voice pipeline |
-| aldea-llm-evaluation.md | Evaluation Framework | LLM-as-a-Judge, 5 dimensions, automated rubric generation |
-| aldea-model-deployment.md | GPU Infrastructure | 70B model serving, TensorRT-LLM, LoRA switching |
+| subq-soul-engine.md | Architecture & Platform | Open Souls-inspired WorkingMemory, SMS infrastructure, voice pipeline |
+| subq-llm-evaluation.md | Evaluation Framework | LLM-as-a-Judge, 5 dimensions, automated rubric generation |
+| subq-model-deployment.md | GPU Infrastructure | 70B model serving, TensorRT-LLM, LoRA switching |
 
 ---
 
@@ -80,7 +80,7 @@ This folder contains dossiers on Tom's work at Subquadratic/Aldea, covering:
 
 ## Why This Matters for Kothar
 
-Kothar itself is built on principles developed at Subquadratic/Aldea. When visitors ask about Tom's current work, soul engineering, or AI architecture, Kothar draws from these dossiers to speak with specific technical knowledge and direct experience.
+Kothar itself is built on principles developed at Subquadratic/SubQ AI. When visitors ask about Tom's current work, soul engineering, or AI architecture, Kothar draws from these dossiers to speak with specific technical knowledge and direct experience.
 
 ---
 
@@ -90,4 +90,4 @@ Kothar itself is built on principles developed at Subquadratic/Aldea. When visit
 - **Portfolio**: cognitive-design-mvps.md (foundational experiments)
 
 ## RAG Tags
-Subquadratic, Aldea, Aldea AI, Principal AI/ML Engineer, Founding Engineer, soul engine, LLM evaluation, model deployment, TensorRT-LLM, Triton, H100, LoRA, voice AI, STT, TTS, cognitive design, Open Souls, WorkingMemory, Tom di Mino, 2025, current work, Alex Whedon, Saul Ramirez
+Subquadratic, SubQ AI, SubQ AI, Principal AI/ML Engineer, Founding Engineer, soul engine, LLM evaluation, model deployment, TensorRT-LLM, Triton, H100, LoRA, voice AI, STT, TTS, cognitive design, Open Souls, WorkingMemory, Tom di Mino, 2025, current work, Alex Whedon, Saul Ramirez

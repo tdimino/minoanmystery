@@ -163,7 +163,7 @@ The JPMC work also demonstrates Tom's approach to AI: not just prompting, but ar
 ---
 
 ## Cross-References
-- **Portfolio**: aldea-soul-engine.md (continuation of AI work)
+- **Portfolio**: subq-soul-engine.md (continuation of AI work)
 - **Portfolio**: cognitive-design-mvps.md (philosophical foundation)
 - **Biography**: ai-ml-chapter.md (career context)
 

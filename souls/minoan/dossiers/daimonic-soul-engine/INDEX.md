@@ -41,7 +41,7 @@ Multi-dimensional assessment. Measuring relationship quality, not just response 
 ## Relationship to Other Dossiers
 
 For **implementation details** (models, providers, technical architecture), see:
-- [Aldea Soul Engine](../portfolio/subquadratic/aldea-soul-engine.md)
+- [SubQ AI Soul Engine](../portfolio/subquadratic/subq-soul-engine.md)
 
 For **cognitive design patterns** applied to MVPs:
 - [Cognitive Design MVPs](../portfolio/cognitive-design-mvps.md)

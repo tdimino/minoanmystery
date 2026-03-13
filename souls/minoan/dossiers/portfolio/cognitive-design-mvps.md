@@ -177,7 +177,7 @@ When visitors ask about Tom's unique approach to AI, Kothar can speak from the l
 ---
 
 ## Cross-References
-- **Portfolio**: aldea-soul-engine.md (professional application)
+- **Portfolio**: subq-soul-engine.md (professional application)
 - **Portfolio**: jpmc-meeting-assist.md (enterprise precedent)
 - **Biography**: ai-ml-chapter.md (career context)
 - **Oracle-Concepts**: daimonic-wisdom.md (philosophical framework)

@@ -1,5 +1,5 @@
 ---
-title: "Subquadratic / Aldea AI - LLM Production Deployment"
+title: "Subquadratic / SubQ AI - LLM Production Deployment"
 tags:
   concepts: [tensorrt-llm, triton-inference-server, tensor-parallelism, lora-adapters, gpu-optimization, multi-gpu-inference, model-serving]
   clients: [aldea, subquadratic]
@@ -7,7 +7,7 @@ tags:
   periods: [contemporary]
 ---
 
-# Subquadratic / Aldea AI - LLM Production Deployment
+# Subquadratic / SubQ AI - LLM Production Deployment
 
 ## Source
 - Type: Portfolio
@@ -22,7 +22,7 @@ tags:
 
 | Aspect | Details |
 |--------|---------|
-| **Organization** | Subquadratic (dba Aldea AI) |
+| **Organization** | Subquadratic (dba SubQ AI) |
 | **Industry** | AI/ML Infrastructure |
 | **Duration** | July 2025 - Present |
 | **Tom's Role** | Founding Engineer / Principal AI/ML Engineer |
@@ -207,9 +207,9 @@ When visitors ask about LLM infrastructure or model deployment, Kothar draws fro
 ---
 
 ## Cross-References
-- **Portfolio**: aldea-soul-engine.md (overall architecture)
-- **Portfolio**: aldea-llm-evaluation.md (evaluation framework)
+- **Portfolio**: subq-soul-engine.md (overall architecture)
+- **Portfolio**: subq-llm-evaluation.md (evaluation framework)
 - **Biography**: ai-ml-chapter.md (career context)
 
 ## RAG Tags
-Subquadratic, Aldea, Aldea AI, Founding Engineer, Principal AI/ML Engineer, LLM deployment, TensorRT-LLM, TensorRT, Triton Inference Server, NVIDIA, H100, GPU, tensor parallelism, TP=2, multi-GPU, LoRA, PEFT, adapter switching, runtime switching, inference optimization, KV cache, Flash Attention, BF16, FP8, Docker, container orchestration, Lambda Labs, production ML, model serving, 70B parameters, shared memory, zero-copy, engine building, checkpoint conversion, Tom di Mino, 2025, ML infrastructure
+Subquadratic, SubQ AI, SubQ AI, Founding Engineer, Principal AI/ML Engineer, LLM deployment, TensorRT-LLM, TensorRT, Triton Inference Server, NVIDIA, H100, GPU, tensor parallelism, TP=2, multi-GPU, LoRA, PEFT, adapter switching, runtime switching, inference optimization, KV cache, Flash Attention, BF16, FP8, Docker, container orchestration, Lambda Labs, production ML, model serving, 70B parameters, shared memory, zero-copy, engine building, checkpoint conversion, Tom di Mino, 2025, ML infrastructure

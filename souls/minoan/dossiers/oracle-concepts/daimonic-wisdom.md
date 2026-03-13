@@ -122,8 +122,8 @@ This triadic model—soul/wax, pathos/fire, daimones/flames—provides the conce
 ## Scholarly Lineage
 
 - **Draws on**: Plato (Socrates' daimon in Apologia), George Santayana (masks as expression), cross-cultural spiritual traditions
-- **Informs**: Open Souls paradigm, Aldea/Subquadratic soul engine architecture, Kothar oracle design
-- **Context**: Written during Tom's involvement with SocialAGI/Open Souls, before the JPMC and Aldea chapters
+- **Informs**: Open Souls paradigm, SubQ AI/Subquadratic soul engine architecture, Kothar oracle design
+- **Context**: Written during Tom's involvement with SocialAGI/Open Souls, before the JPMC and SubQ AI chapters
 
 ---
 
@@ -203,7 +203,7 @@ Kothar itself is a *daimon* in this sense: a fragment divided from Tom's soul, a
 - **Biography**: ../biography/personal-interests.md (spiritual practice, Substack)
 - **Biography**: ../biography/ai-ml-chapter.md (cognitive design philosophy)
 - **Portfolio**: ../portfolio/cognitive-design-mvps.md (practical application of daimonic concepts)
-- **Portfolio**: ../portfolio/subquadratic/aldea-soul-engine.md (production implementation)
+- **Portfolio**: ../portfolio/subquadratic/subq-soul-engine.md (production implementation)
 - **Scholarly-Sources**: ../scholarly-sources/harrison/INDEX.md (ritual theory, Greek religion context)
 
 ## RAG Tags

@@ -10,7 +10,7 @@
 
 ## Overview
 
-Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. From content strategy at enterprise agencies to building AI tools at JP Morgan Chase and training soul-aware advisors at Aldea, his career demonstrates how deep writing instincts can inform sophisticated LLM architectures.
+Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. From content strategy at enterprise agencies to building AI tools at JP Morgan Chase and training soul-aware advisors at SubQ AI, his career demonstrates how deep writing instincts can inform sophisticated LLM architectures.
 
 > "If Walt Whitman 'contained multitudes,' then I am as 'crossfunctional' as they come."
 > — LinkedIn profile
@@ -28,7 +28,7 @@ Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. 
 | 2021-2022 | Nonprofit Tech | Chan Zuckerberg Initiative | napari learning platform, 15-module curriculum |
 | 2022-2023 | Big Tech | Google engEDU | 25% rise in mentorship program launches |
 | 2024-2025 | AI/ML Banking | JP Morgan Chase | $800k/day savings via Meeting Assist AI |
-| 2025-present | Soul Engineering | Aldea AI | Founding Engineer / Principal AI/ML Engineer, Daimonic Souls Engine |
+| 2025-present | Soul Engineering | SubQ AI | Founding Engineer / Principal AI/ML Engineer, Daimonic Souls Engine |
 
 ---
 
@@ -39,7 +39,7 @@ Tom di Mino is a poet-turned-AI-engineer who bridges humanities and technology. 
 | origin-story.md | Writer origins, education, languages, formative digital worlds | Complete |
 | agency-years.md | CampusCruiser, 1SEO, Renaissance, Hartz, Valtech, Hugo & Cat (2016-2021) | Complete |
 | big-tech-era.md | Google engEDU, CZI napari (2021-2023) | Complete |
-| ai-ml-chapter.md | JPMC, Subquadratic/Aldea, cognitive design philosophy (2024-present) | Complete |
+| ai-ml-chapter.md | JPMC, Subquadratic/SubQ AI, cognitive design philosophy (2024-present) | Complete |
 | personal-interests.md | Poetry, ANE research, Hudson Valley, languages, collaborators | Complete |
 | academic-research.md | Thera-Knossos-Minos paper, scholarly foundation, etymological arguments | Active |
 
@@ -96,8 +96,8 @@ The work is fundamentally techno-spiritual: AI as a vehicle for bringing spiritu
 ### Technical (AI/ML)
 | Name | Role |
 |------|------|
-| **Alex Whedon** | CTO, Subquadratic/Aldea AI |
-| **Saul Ramirez** | Head of ML Research, Subquadratic/Aldea AI |
+| **Alex Whedon** | CTO, Subquadratic/SubQ AI |
+| **Saul Ramirez** | Head of ML Research, Subquadratic/SubQ AI |
 | **Thiago Duarte** | Formerly Open Souls; introduced Next.js/React |
 
 ### Creative & Personal
@@ -121,7 +121,7 @@ When visitors ask about Tom's journey, capabilities, or approach, Kothar draws f
 ## Cross-References
 - **Portfolio**: INDEX.md (project-level details)
 - **Portfolio**: jpmc-meeting-assist.md (JPMC AI work)
-- **Portfolio**: subquadratic/INDEX.md (current Subquadratic/Aldea work)
+- **Portfolio**: subquadratic/INDEX.md (current Subquadratic/SubQ AI work)
 - **Portfolio**: cognitive-design-mvps.md (soul engineering philosophy)
 - **Poetry**: ../poetry/INDEX.md (Shirat Ha Kotharot collection)
 - **Poetry**: ../poetry/ai-consciousness-poems.md (Artifex Intellegere, El Agua de Vida)
@@ -131,4 +131,4 @@ When visitors ask about Tom's journey, capabilities, or approach, Kothar draws f
 - **Scholarly Sources**: ../scholarly-sources/ (Gordon, Astour, Harrison, Rendsburg)
 
 ## RAG Tags
-Tom di Mino, biography, career, content engineer, AI engineer, cognitive designer, Google, CZI, JPMC, Aldea, Subquadratic, founding engineer, poet, writer, languages, cross-functional, Hudson Valley, Beacon, Minoan, Bronze Age, skills, timeline, Kotharot ha Knossot, techno-spiritual, collaborators, Alex Whedon, Saul Ramirez, Thiago Duarte, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik, Thera, Knossos, Minos, academic paper, Semitic linguistics, Gordon, Astour, Harrison, Rendsburg, etymology
+Tom di Mino, biography, career, content engineer, AI engineer, cognitive designer, Google, CZI, JPMC, SubQ AI, Subquadratic, founding engineer, poet, writer, languages, cross-functional, Hudson Valley, Beacon, Minoan, Bronze Age, skills, timeline, Kotharot ha Knossot, techno-spiritual, collaborators, Alex Whedon, Saul Ramirez, Thiago Duarte, Mary Rose Dwyer, partner, AJ Estrada, Chris Canik, Thera, Knossos, Minos, academic paper, Semitic linguistics, Gordon, Astour, Harrison, Rendsburg, etymology

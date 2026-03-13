@@ -26,7 +26,7 @@ tags:
 |------|--------------|------|-----------------|
 | 2022-2024 | Minoan Mystery | Cognitive Designer | Discord bots with souls, SocialAGI experiments |
 | May 2024 - Jul 2025 | JP Morgan Chase | AI Content Engineer | $800k/day savings via Meeting Assist |
-| Jul 2025 - Present | Aldea AI | Principal AI/ML Engineer | Daimonic Souls Engine, 9-dim evaluation |
+| Jul 2025 - Present | SubQ AI | Principal AI/ML Engineer | Daimonic Souls Engine, 9-dim evaluation |
 
 ---
 
@@ -34,7 +34,7 @@ tags:
 
 | Aspect | Details |
 |--------|---------|
-| **Current Role** | Principal AI/ML Engineer at Aldea AI |
+| **Current Role** | Principal AI/ML Engineer at SubQ AI |
 | **Previous Role** | AI Content Engineer at JP Morgan Chase |
 | **Duration** | 2+ years in dedicated AI/ML work |
 | **Location** | Remote (Hudson Valley, NY) |
@@ -83,14 +83,14 @@ Enterprise AI requires more than good prompts—it requires architecture (5 agen
 
 ---
 
-## Aldea AI (2025-Present)
+## SubQ AI (2025-Present)
 
 ### Role: Founding Engineer / Principal AI/ML Engineer
 
-> "Aldea pioneers cutting-edge STT/TTS and post-Transformer LLMs, while training and serving AI advisors that internalize the spirit, wisdom, and methodologies of world-renowned experts."
+> "SubQ AI pioneers cutting-edge STT/TTS and post-Transformer LLMs, while training and serving AI advisors that internalize the spirit, wisdom, and methodologies of world-renowned experts."
 > — LinkedIn description
 
-As a founding engineer at Aldea (also known as Subquadratic), Tom builds core infrastructure from the ground up—from model deployment to evaluation pipelines to voice-first AI systems.
+As a founding engineer at SubQ AI (formerly Aldea AI; legal entity Subquadratic), Tom builds core infrastructure from the ground up—from model deployment to evaluation pipelines to voice-first AI systems.
 
 ### Responsibilities
 - Architecting production SMS/mobile AI platform
@@ -109,7 +109,7 @@ As a founding engineer at Aldea (also known as Subquadratic), Tom builds core in
 | Platforms | SMS, web, mobile |
 
 ### Philosophy
-At Aldea, Tom applies the "soul engineering" principles developed through years of cognitive design experiments. The goal: AI advisors that remember, reflect, and emotionally attune—not just respond.
+At SubQ AI, Tom applies the "soul engineering" principles developed through years of cognitive design experiments. The goal: AI advisors that remember, reflect, and emotionally attune—not just respond.
 
 ---
 
@@ -117,8 +117,8 @@ At Aldea, Tom applies the "soul engineering" principles developed through years 
 
 | Name | Role | Relationship |
 |------|------|--------------|
-| **Alex Whedon** | CTO, Subquadratic/Aldea AI | Co-founder, technical leadership |
-| **Saul Ramirez** | Head of ML Research, Subquadratic/Aldea AI | ML architecture, mentorship |
+| **Alex Whedon** | CTO, Subquadratic/SubQ AI | Co-founder, technical leadership |
+| **Saul Ramirez** | Head of ML Research, Subquadratic/SubQ AI | ML architecture, mentorship |
 | **Thiago Duarte** | Formerly Open Souls | Soul engine patterns, cognitive design, introduced Next.js/React |
 
 These collaborators represent the technical leadership and mentorship that enabled Tom's rapid growth as an AI/ML engineer.
@@ -149,7 +149,7 @@ Two concurrent Triton instances on 4×H100:
 4. Weight streaming ineffective → disable GEMM plugin
 5. BF16 LoRA dtype mismatch → uint16 bit-pattern conversion
 
-This infrastructure work enables Aldea's AI advisors to run at production scale with sub-second latency and dynamic persona switching.
+This infrastructure work enables SubQ AI's AI advisors to run at production scale with sub-second latency and dynamic persona switching.
 
 ---
 
@@ -197,7 +197,7 @@ This infrastructure work enables Aldea's AI advisors to run at production scale 
 This phase completed Tom's transition from content strategy to AI engineering. The same skills—audience analysis, information architecture, clarity of communication—now apply to prompt design and evaluation.
 
 ### 2. Proof of Concept → Production
-The cognitive design experiments (Discord bots, Samantha) proved the concept. JPMC proved it at enterprise scale. Aldea brings it to consumer-facing AI advisors.
+The cognitive design experiments (Discord bots, Samantha) proved the concept. JPMC proved it at enterprise scale. SubQ AI brings it to consumer-facing AI advisors.
 
 ### 3. Philosophy as Method
 The interest in consciousness, daimons, and soul became a practical methodology—not just aesthetic but architectural guidance for building AI that feels present.
@@ -223,7 +223,7 @@ When visitors ask about Tom's current work or AI capabilities, Kothar draws from
 - What Tom does day-to-day
 - How cognitive design differs from prompting
 - Why metrics like $800k/day and 72% adoption matter
-- What makes Aldea's approach distinctive
+- What makes SubQ AI's approach distinctive
 
 This chapter represents Tom's professional culmination—the integration of writing, philosophy, and technical skills into a coherent practice of soul engineering.
 
@@ -231,12 +231,12 @@ This chapter represents Tom's professional culmination—the integration of writ
 
 ## Cross-References
 - **Portfolio**: jpmc-meeting-assist.md (enterprise AI details)
-- **Portfolio**: subquadratic/aldea-soul-engine.md (current work details)
-- **Portfolio**: subquadratic/INDEX.md (Subquadratic/Aldea overview)
+- **Portfolio**: subquadratic/subq-soul-engine.md (current work details)
+- **Portfolio**: subquadratic/INDEX.md (Subquadratic/SubQ AI overview)
 - **Portfolio**: cognitive-design-mvps.md (foundational experiments)
 - **Oracle-Concepts**: daimonic-wisdom.md (philosophical framework)
 - **Biography**: INDEX.md (full career context)
 - **Biography**: big-tech-era.md (preceding phase)
 
 ## RAG Tags
-Tom di Mino, AI, ML, AI/ML, JPMC, JP Morgan Chase, Aldea, Subquadratic, Principal AI/ML Engineer, Founding Engineer, AI Content Engineer, cognitive design, LLM, GPT-4o, LangGraph, DeepEval, fine-tuning, LoRA, voice AI, STT, TTS, evaluation, Meeting Assist, soul engineering, 2024, 2025, current work, career, TensorRT-LLM, Triton, H100, Lambda Labs, tensor parallelism, weight streaming, Alex Whedon, Saul Ramirez, Thiago Duarte, collaborators
+Tom di Mino, AI, ML, AI/ML, JPMC, JP Morgan Chase, SubQ AI, Subquadratic, Principal AI/ML Engineer, Founding Engineer, AI Content Engineer, cognitive design, LLM, GPT-4o, LangGraph, DeepEval, fine-tuning, LoRA, voice AI, STT, TTS, evaluation, Meeting Assist, soul engineering, 2024, 2025, current work, career, TensorRT-LLM, Triton, H100, Lambda Labs, tensor parallelism, weight streaming, Alex Whedon, Saul Ramirez, Thiago Duarte, collaborators

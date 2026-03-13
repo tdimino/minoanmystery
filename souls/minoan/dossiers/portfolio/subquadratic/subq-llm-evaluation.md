@@ -1,5 +1,5 @@
 ---
-title: "Subquadratic / Aldea AI - LLM-as-a-Judge Evaluation Framework"
+title: "Subquadratic / SubQ AI - LLM-as-a-Judge Evaluation Framework"
 tags:
   concepts: [llm-evaluation, llm-as-a-judge, multi-dimensional-assessment, persona-assessment, statistical-analysis, prompt-engineering, rubric-design]
   clients: [aldea, subquadratic]
@@ -7,7 +7,7 @@ tags:
   periods: [contemporary]
 ---
 
-# Subquadratic / Aldea AI - LLM-as-a-Judge Evaluation Framework
+# Subquadratic / SubQ AI - LLM-as-a-Judge Evaluation Framework
 
 ## Source
 - Type: Portfolio
@@ -22,7 +22,7 @@ tags:
 
 | Aspect | Details |
 |--------|---------|
-| **Organization** | Subquadratic (dba Aldea AI) |
+| **Organization** | Subquadratic (dba SubQ AI) |
 | **Industry** | AI/ML, Evaluation Infrastructure |
 | **Duration** | July 2025 - Present |
 | **Tom's Role** | Founding Engineer / Principal AI/ML Engineer |
@@ -202,17 +202,17 @@ Each generated judge prompt includes:
 
 ## Why This Matters for Kothar
 
-Kothar's responses aren't randomly generated—they're evaluated against the same multi-dimensional framework used at Aldea. When Kothar speaks with authentic voice and maintains appropriate boundaries, it's because the same evaluation methodology ensures quality.
+Kothar's responses aren't randomly generated—they're evaluated against the same multi-dimensional framework used at SubQ AI. When Kothar speaks with authentic voice and maintains appropriate boundaries, it's because the same evaluation methodology ensures quality.
 
 When visitors ask about AI evaluation or how to measure persona authenticity, Kothar draws from direct experience building production-grade assessment systems.
 
 ---
 
 ## Cross-References
-- **Portfolio**: aldea-soul-engine.md (overall architecture)
-- **Portfolio**: aldea-model-deployment.md (infrastructure)
+- **Portfolio**: subq-soul-engine.md (overall architecture)
+- **Portfolio**: subq-model-deployment.md (infrastructure)
 - **Portfolio**: jpmc-meeting-assist.md (enterprise AI precedent)
 - **Biography**: ai-ml-chapter.md (career context)
 
 ## RAG Tags
-Subquadratic, Aldea, Aldea AI, Founding Engineer, Principal AI/ML Engineer, LLM evaluation, LLM-as-a-Judge, evaluation framework, multi-dimensional assessment, psychological authenticity, therapeutic value, emotional intelligence, conversational quality, content accuracy, judge model, GPT-4o, Kimi K2, Claude, parallel evaluation, statistical analysis, confidence intervals, win rate, persona assessment, prompt engineering, calibration, rubric design, framework generation, automated evaluation, fine-tuning feedback, quality assurance, Tom di Mino, 2025, AI evaluation
+Subquadratic, SubQ AI, SubQ AI, Founding Engineer, Principal AI/ML Engineer, LLM evaluation, LLM-as-a-Judge, evaluation framework, multi-dimensional assessment, psychological authenticity, therapeutic value, emotional intelligence, conversational quality, content accuracy, judge model, GPT-4o, Kimi K2, Claude, parallel evaluation, statistical analysis, confidence intervals, win rate, persona assessment, prompt engineering, calibration, rubric design, framework generation, automated evaluation, fine-tuning feedback, quality assurance, Tom di Mino, 2025, AI evaluation
