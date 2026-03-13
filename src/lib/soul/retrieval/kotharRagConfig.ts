@@ -1,7 +1,7 @@
 /**
  * Kothar RAG Configuration
  *
- * Topic-aware routing configuration following Aldea Soul Engine patterns.
+ * Topic-aware routing configuration following SubQ AI Soul Engine patterns.
  * Maps user queries to knowledge buckets via regex pattern matching.
  *
  * Bucket structure matches actual dossier folders:

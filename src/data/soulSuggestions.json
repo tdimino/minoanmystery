@@ -16,7 +16,7 @@
     },
     {
       "id": "aldea-work",
-      "text": "Tell me about Tom's work at Aldea",
+      "text": "Tell me about Tom's work at SubQ AI",
       "icon": "cpu",
       "priority": 3,
       "condition": "visitCount > 1",

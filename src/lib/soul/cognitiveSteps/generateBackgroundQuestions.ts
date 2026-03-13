@@ -4,7 +4,7 @@
  * Generates semantic questions for multi-dimensional retrieval (Raggy pattern).
  * Used when visitors ask open-ended questions like "Who is Tom?" or "Tell me about yourself".
  *
- * Following Aldea Soul Engine patterns (Emily Maxson's generateRapportQuestions).
+ * Following SubQ AI Soul Engine patterns (Emily Maxson's generateRapportQuestions).
  */
 
 import { createCognitiveStep } from '../opensouls/core/CognitiveStep';
@@ -22,7 +22,7 @@ import { z } from 'zod';
 export const FALLBACK_BACKGROUND_QUESTIONS = [
   "What is Tom di Mino's professional background and expertise in AI and design?",
   "What is Tom's journey from poetry and classical studies to AI engineering?",
-  "What notable projects has Tom worked on at Aldea and other companies?",
+  "What notable projects has Tom worked on at SubQ AI and other companies?",
 ] as const;
 
 // ─────────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ export function getFallbackQuestions(focus: 'professional' | 'personal' | 'portf
   const fallbacks: Record<string, string[]> = {
     professional: [
       "What is Tom di Mino's technical expertise in AI and machine learning?",
-      "What roles has Tom held at companies like Aldea, CZI, and Dolby?",
+      "What roles has Tom held at companies like SubQ AI, CZI, and Dolby?",
       "What is Tom's approach to AI safety and ethical evaluation?",
     ],
     personal: [
@@ -158,7 +158,7 @@ export function getFallbackQuestions(focus: 'professional' | 'personal' | 'portf
       "What philosophical perspectives shape Tom's approach to AI?",
     ],
     portfolio: [
-      "What AI projects has Tom worked on at Aldea?",
+      "What AI projects has Tom worked on at SubQ AI?",
       "What design work did Tom do for CZI and American Cancer Society?",
       "What are examples of Tom's full-stack AI applications?",
     ],

@@ -134,7 +134,7 @@ export class MemoryCompressor {
     const keyProjects = new Set<string>();
 
     // Project keywords to detect
-    const projectKeywords = ['ACS', 'CZI', 'Dolby', 'Aldea', 'portfolio', 'case study'];
+    const projectKeywords = ['ACS', 'CZI', 'Dolby', 'SubQ AI', 'portfolio', 'case study'];
     const topicKeywords = ['design', 'AI', 'development', 'UX', 'soul', 'labyrinth'];
 
     for (const mem of memory.rawMemories) {

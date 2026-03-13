@@ -180,7 +180,7 @@ export class SuggestionEngine {
       suggestions: [
         { id: 'who-is-tom', text: 'Who is Tom di Mino?', icon: 'user', priority: 1, pages: ['*'] },
         { id: 'what-does-tom-do', text: 'What kind of work does Tom do?', icon: 'briefcase', priority: 2, pages: ['*'] },
-        { id: 'aldea-work', text: "Tell me about Tom's work at Aldea", icon: 'cpu', priority: 3, condition: 'visitCount > 1', pages: ['*'] },
+        { id: 'aldea-work', text: "Tell me about Tom's work at SubQ AI", icon: 'cpu', priority: 3, condition: 'visitCount > 1', pages: ['*'] },
         { id: 'explain-labyrinth', text: 'What is this labyrinth?', icon: 'compass', priority: 4, pages: ['*'] },
         { id: 'contact-info', text: 'How can I get in touch with Tom?', icon: 'mail', priority: 5, pages: ['*'] },
         { id: 'dolby-details', text: 'Tell me more about the Dolby project', icon: 'briefcase', priority: 1, pages: ['/portfolio/dolby', '/'] },

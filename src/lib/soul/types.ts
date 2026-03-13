@@ -2,7 +2,7 @@
  * Soul Engine Types
  *
  * TypeScript interfaces for the Minoan Mystery Soul Engine,
- * adapted from the Open Souls / Aldea Soul Engine paradigm.
+ * adapted from the Open Souls / SubQ AI Soul Engine paradigm.
  */
 
 // ─────────────────────────────────────────────────────────────

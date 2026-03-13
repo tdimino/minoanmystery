@@ -1,7 +1,7 @@
 /**
  * Conditional RAG - Topic-Aware Retrieval-Augmented Generation
  *
- * Following Aldea Soul Engine patterns (Emily Maxson reference implementation).
+ * Following SubQ AI Soul Engine patterns (Emily Maxson reference implementation).
  * Routes user queries to knowledge buckets via regex pattern matching.
  */
 

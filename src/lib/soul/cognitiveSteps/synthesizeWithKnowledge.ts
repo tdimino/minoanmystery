@@ -4,7 +4,7 @@
  * Synthesizes RAG-retrieved knowledge into a coherent response
  * while maintaining the soul's voice and personality.
  *
- * Following Aldea Soul Engine patterns.
+ * Following SubQ AI Soul Engine patterns.
  */
 
 import { createCognitiveStep } from '../opensouls/core/CognitiveStep';
