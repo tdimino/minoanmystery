@@ -35,3 +35,15 @@ src/pages/labyrinth-test.astro
 src/components/labyrinth/DebugPanel.astro
 src/styles/labyrinth/debug.css
 logs/
+og-finals.html
+
+# OG image intermediates (only finals are committed)
+public/images/og/*_image_0_0.jpg
+public/images/og/*-resonance.*
+public/images/og/*-final.png
+public/images/og/*-kothar_0.jpg
+public/images/og/*-phone.jpg
+public/images/og/*-stars.*
+public/images/og/*-v2.png
+public/images/og/*-v3.*
+public/images/og/*-circuits.png

@@ -91,6 +91,8 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - `astro:after-swap` listener for View Transitions re-init
 - Suppress `.rich-text li::before` bullets via `<style is:global>` in components using lists
 
+**OG images**: Per-service social cards in `public/images/og/` — Kothar-referenced subjects (Gemini 3 Pro `generate_with_references.py`) composited via ImageMagick onto Tom's collage art. 500px circle, `#8E3568` Tyrian purple ring, 6px stroke. Brightness-matched to og-about.png (0.20–0.23 range). Optimized with pngquant.
+
 **GEO/SEO implementation**: `public/robots.txt` (21 AI crawlers), `public/llms.txt` (Kothar-voiced), `public/llms-full.txt` (163 lines), JSON-LD Service + BreadcrumbList schemas on all service pages, `/api/soul/query` REST endpoint.
 
 ## Key Features

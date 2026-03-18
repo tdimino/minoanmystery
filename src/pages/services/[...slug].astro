@@ -39,6 +39,15 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { title, tagline, summary, rate, features, ideal_for, related_portfolio, icon, heroImage } = entry.data;
 
+// Per-service OG images
+const ogImageMap: Record<string, string> = {
+  'geo-seo': '/images/og/og-geo-seo.png',
+  'ai-automation': '/images/og/og-ai-automation.png',
+  'claude-code-mentoring': '/images/og/og-mentoring.png',
+  'custom-applications': '/images/og/og-custom-apps.png',
+};
+const ogImage = ogImageMap[entry.slug] || '/images/og/og-about.png';
+
 // Fetch related portfolio entries if specified
 let relatedEntries: any[] = [];
 if (related_portfolio && related_portfolio.length > 0) {
@@ -50,7 +59,7 @@ if (related_portfolio && related_portfolio.length > 0) {
 <BaseLayout
   title={`${title} — Services`}
   description={summary}
-  image="/images/og/og-about.png"
+  image={ogImage}
 >
   <StructuredData schemas={[
     {
