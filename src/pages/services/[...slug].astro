@@ -1,0 +1,1038 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import StructuredData from '../../components/StructuredData.astro';
+import TerminalDemo from '../../components/interactive/TerminalDemo.astro';
+import FracturedSearch from '../../components/interactive/FracturedSearch.astro';
+import ClockworkForge from '../../components/interactive/ClockworkForge.astro';
+import TechStackLayers from '../../components/interactive/TechStackLayers.astro';
+import ClawdHero from '../../components/interactive/ClawdHero.astro';
+import EpochComparison from '../../components/interactive/EpochComparison.astro';
+import ClaudicleArchitecture from '../../components/interactive/ClaudicleArchitecture.astro';
+import WorkflowTransmutation from '../../components/interactive/WorkflowTransmutation.astro';
+import LiveProofDashboard from '../../components/interactive/LiveProofDashboard.astro';
+import BrowserShowcase from '../../components/interactive/BrowserShowcase.astro';
+import MissionTOC from '../../components/interactive/MissionTOC.astro';
+import BlueprintForge from '../../components/interactive/BlueprintForge.astro';
+import StackedCarousel from '../../components/interactive/StackedCarousel.astro';
+import GeoCommand from '../../components/interactive/GeoCommand.astro';
+import EvalTribunal from '../../components/interactive/EvalTribunal.astro';
+import ProjectArchive from '../../components/interactive/ProjectArchive.astro';
+
+const mentoringDemoLines = [
+  { prompt: '❯', text: 'claude "Audit this repo for automation opportunities"', response: 'Scanning 47 files... Found 6 automatable workflows:\n1. Test runner (manual → CI hook)\n2. Deploy script (3 steps → 1 command)\n3. Data export (copy-paste → scheduled pipeline)\n4. PR review (manual checklist → agent skill)\n5. Docs sync (stale → auto-generated)\n6. Dependency updates (monthly → automated PR)' },
+  { prompt: '❯', text: 'claude "Build a skill for #4, the PR review"', response: 'Created .claude/skills/pr-review/SKILL.md\nAdded 3 review focus areas: security, conventions, tests\nInstalled: 12 grep patterns, 4 custom rules\nReady — invoke with /pr-review or let Claude trigger automatically.' },
+  { prompt: '❯', text: '/pr-review 142', response: 'Reviewing PR #142 (3 files changed)...\n✓ No security issues\n⚠ Missing test for new validateEmail() utility\n⚠ Inconsistent error handling in auth.ts:47\n✓ Follows project conventions\nDone in 8.3s — 2 suggestions, 0 blockers.' },
+];
+
+export async function getStaticPaths() {
+  const serviceEntries = await getCollection('services');
+  return serviceEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title, tagline, summary, rate, features, ideal_for, related_portfolio, icon, heroImage } = entry.data;
+
+// Fetch related portfolio entries if specified
+let relatedEntries: any[] = [];
+if (related_portfolio && related_portfolio.length > 0) {
+  const allPortfolio = await getCollection('portfolio');
+  relatedEntries = allPortfolio.filter(p => related_portfolio.includes(p.slug));
+}
+---
+
+<BaseLayout
+  title={`${title} — Services`}
+  description={summary}
+  image="/images/og/og-about.png"
+>
+  <StructuredData schemas={[
+    {
+      type: "Service",
+      data: {
+        "@id": `https://www.minoanmystery.org/services/${entry.slug}#service`,
+        name: title,
+        description: summary,
+        provider: {
+          "@type": "Person",
+          "@id": "https://www.minoanmystery.org/#person",
+          name: "Tom di Mino"
+        },
+        areaServed: ["United States", "Hudson Valley, New York", "Beacon, NY"],
+        url: `https://www.minoanmystery.org/services/${entry.slug}`
+      }
+    },
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Services", item: "https://www.minoanmystery.org/services/" },
+          { "@type": "ListItem", position: 3, name: title }
+        ]
+      }
+    }
+  ]} />
+  <link rel="stylesheet" href="/fonts/phosphor.css" slot="head" />
+  <Header slot="header" />
+
+  <!-- Hero -->
+  <section class="service-hero">
+    <div class="container">
+      <div class="service-hero-content animate-on-scroll">
+        <a href="/services" class="back-link">
+          <span class="back-arrow">←</span>
+          <span>All Services</span>
+        </a>
+        <h1><i class={`ph ${icon} detail-icon`} aria-hidden="true"></i> {title}</h1>
+        <p class="paragraph-large">{tagline}</p>
+        <div class="service-hero-meta">
+          <span class="hero-rate">{rate}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero Image / Interactive Hero -->
+  {entry.slug === 'geo-seo' ? (
+    <section class="service-hero-image">
+      <div class="container">
+        <GeoCommand />
+      </div>
+    </section>
+  ) : entry.slug === 'claude-code-mentoring' ? (
+    <section class="service-hero-image">
+      <div class="container">
+        <ClawdHero />
+      </div>
+    </section>
+  ) : entry.slug === 'ai-automation' ? (
+    <section class="service-hero-image">
+      <div class="container">
+        <ClockworkForge />
+      </div>
+    </section>
+  ) : entry.slug === 'custom-applications' ? (
+    <section class="service-hero-image">
+      <div class="container">
+        <StackedCarousel projects={[
+          {
+            siteName: 'worldwarwatcher.com',
+            url: 'worldwarwatcher.com',
+            urlIcon: 'lock',
+            description: 'Real-time geopolitical intelligence',
+            metric: { value: '#1', label: 'Google', color: '#ef4444' },
+            screenshots: [
+              { src: '/images/services/body/wwatcher-screenshot.jpg', caption: 'Globe view — Persian Gulf theater' },
+              { src: '/images/services/body/wwatcher-infra.jpg', caption: 'Infrastructure — data center status' },
+              { src: '/images/services/body/wwatcher-markets.jpg', caption: 'Markets — financial impact tracking' },
+              { src: '/images/services/body/wwatcher-timeline.jpg', caption: 'Timeline — conflict event log' },
+              { src: '/images/services/body/wwatcher-ordnance.jpg', caption: 'Ordnance — weapons system tracker' },
+            ],
+          },
+          {
+            siteName: 'Dolby Laboratories',
+            url: 'dolby.com',
+            urlIcon: 'lock',
+            description: '12 page templates, Sitecore migration',
+            metric: { value: '4+', label: 'Years in prod', color: '#6366f1' },
+            screenshots: [
+              { src: '/images/portfolio/dolby-site-screenshot.jpg', caption: 'Dolby.com — consumer and professional site redesign' },
+              { src: '/images/portfolio/dolby-final-template.jpg', caption: 'Annotated page template deliverable' },
+            ],
+          },
+          {
+            siteName: 'American College of Surgeons',
+            url: 'facs.org/quality-programs',
+            urlIcon: 'lock',
+            description: 'IA restructure, member portal',
+            metric: { value: '+40%', label: 'Applications', color: '#22c55e' },
+            screenshots: [
+              { src: '/images/portfolio/acs-site-screenshot.jpg', caption: 'facs.org — surgical institution website restructure' },
+              { src: '/images/portfolio/acs-landing-audit.jpg', caption: 'Navigation audit — landing page analysis' },
+            ],
+          },
+        ]} />
+      </div>
+    </section>
+  ) : heroImage ? (
+    <section class="service-hero-image">
+      <div class="container">
+        <img src={heroImage} alt="" class="hero-img" loading="eager" />
+      </div>
+    </section>
+  ) : null}
+
+  <div class="container">
+    <div class="divider"></div>
+  </div>
+
+  <!-- Details Bar -->
+  <section class="service-details-bar">
+    <div class="container">
+      <div class="details-grid animate-scale-in">
+        <div class="detail-item">
+          <span class="detail-label">Ideal for</span>
+          <span class="detail-value">{ideal_for}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Deliverables</span>
+          <span class="detail-value">{features.length} included</span>
+        </div>
+        <div class="detail-item">
+          <a href="/contact" class="detail-cta">
+            <span>Get started</span>
+            <span class="detail-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="service-content">
+    <div class="container">
+      <div class="rich-text animate-scale-in">
+        <Content />
+        {entry.slug === 'custom-applications' && (
+          <>
+            <div data-slot-source="tech-stack-slot" class="component-slot">
+              <TechStackLayers />
+            </div>
+            <div data-slot-source="project-archive-slot" class="component-slot">
+              <ProjectArchive />
+            </div>
+          </>
+        )}
+        {entry.slug === 'geo-seo' && (
+          <>
+            <div data-slot-source="fractured-search-slot" class="component-slot">
+              <FracturedSearch />
+            </div>
+            <div data-slot-source="browser-showcase-slot" class="component-slot">
+              <BrowserShowcase
+                url="worldwarwatcher.com"
+                siteName="World War Watcher"
+                screenshots={[
+                  { src: '/images/services/body/wwatcher-screenshot.jpg', caption: 'Globe view — Persian Gulf theater with data center status overlay', url: 'https://worldwarwatcher.com' },
+                  { src: '/images/services/body/wwatcher-infra.jpg', caption: 'Infrastructure dashboard — real-time data center status monitoring', url: 'https://worldwarwatcher.com/#tab=infra' },
+                  { src: '/images/services/body/wwatcher-markets.jpg', caption: 'Markets view — financial impact tracking across global exchanges', url: 'https://worldwarwatcher.com/#tab=economic' },
+                  { src: '/images/services/body/wwatcher-timeline.jpg', caption: 'Timeline — chronological conflict event reporting', url: 'https://worldwarwatcher.com/#tab=timeline' },
+                  { src: '/images/services/body/wwatcher-ordnance.jpg', caption: 'Ordnance tracker — missile and drone strike catalog', url: 'https://worldwarwatcher.com/#tab=ordnance' },
+                ]}
+                rankings={[
+                  { platform: 'Google', value: '#1', color: '#4285f4' },
+                  { platform: 'Bing', value: '#1', color: '#00809d' },
+                  { platform: 'Perplexity', value: 'Cited', color: '#6366f1' },
+                ]}
+              />
+            </div>
+            <h2>The proof</h2>
+            <p>Two sites built with these exact techniques—live rankings you can verify yourself:</p>
+            <LiveProofDashboard />
+          </>
+        )}
+        {/* Slotted components — rendered here, moved into markdown placeholders via script */}
+        {entry.slug === 'ai-automation' && (
+          <>
+            <div data-slot-source="mission-toc-slot" class="component-slot">
+              <MissionTOC sections={[
+                { num: '01', icon: 'ph-warning', label: 'The problem', href: '#youre-spending-1020-hours-a-week-on-tasks-a-machine-should-handle' },
+                { num: '02', icon: 'ph-wrench', label: 'What I do', href: '#what-i-do' },
+                { num: '03', icon: 'ph-lightning', label: 'In practice', href: '#what-this-looks-like-in-practice' },
+                { num: '04', icon: 'ph-brain', label: 'LLM fine-tuning', href: '#llm-fine-tuning' },
+                { num: '05', icon: 'ph-hard-drives', label: 'Model hosting', href: '#model-hosting-and-serving' },
+                { num: '06', icon: 'ph-shield-check', label: 'Evaluation & safety', href: '#evaluation-and-safety' },
+                { num: '07', icon: 'ph-database', label: 'RAG systems', href: '#rag-systems' },
+                { num: '08', icon: 'ph-code', label: 'Open-source tooling', href: '#built-on-open-source-tooling' },
+                { num: '09', icon: 'ph-package', label: 'What you get', href: '#what-you-get' },
+              ]} />
+            </div>
+            <div data-slot-source="workflow-transmute-slot" class="component-slot">
+              <WorkflowTransmutation />
+            </div>
+            <div data-slot-source="eval-tribunal-slot" class="component-slot">
+              <EvalTribunal />
+            </div>
+          </>
+        )}
+        {entry.slug === 'claude-code-mentoring' && (
+          <>
+            <div data-slot-source="epoch-comparison-slot" class="component-slot">
+              <EpochComparison />
+            </div>
+            <div data-slot-source="claudicle-arch-slot" class="component-slot">
+              <ClaudicleArchitecture />
+            </div>
+            <h2>See it in action</h2>
+            <p>A real Claude Code workflow—from repo audit to deployed skill in three commands:</p>
+            <TerminalDemo lines={mentoringDemoLines} typingSpeed={25} startDelay={1000} />
+          </>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Portfolio -->
+  {relatedEntries.length > 0 && (
+    <section class="related-section">
+      <div class="container">
+        <h2 class="fade-animate">Related work</h2>
+        <div class="related-grid">
+          {relatedEntries.map((portfolio) => (
+            <a href={`/portfolio/${portfolio.slug}`} class="related-card fade-animate">
+              <img src={portfolio.data.heroImage} alt={portfolio.data.title} loading="lazy" />
+              <div class="related-card-content">
+                <h3>{portfolio.data.title}</h3>
+                <p>{portfolio.data.summary}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="section interested">
+    <div class="container">
+      <div class="interested-grid">
+        <div class="interested-content">
+          <h2>Ready to start? <a href="/contact" class="underline-heading">Get in touch</a> today.</h2>
+          <p class="paragraph-large">The first call is free. 30 minutes, no pitch—just your stack, your problems, and what I'd do about them. <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer">Book a call</a>.</p>
+        </div>
+        <a href="/contact" class="circle-link" aria-label="Get in touch">
+          <span class="circle-link-icon"></span>
+          <span class="circle-bg-hover"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .service-hero {
+    padding: 100px 0 60px;
+  }
+
+  .service-hero-content {
+    max-width: 800px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 32px;
+    transition: color 0.35s ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .back-arrow {
+    font-size: 18px;
+    transition: transform 0.35s ease;
+  }
+
+  .back-link:hover .back-arrow {
+    transform: translateX(-4px);
+  }
+
+  .service-hero h1 {
+    font-size: clamp(36px, 5vw + 1rem, 60px);
+    font-weight: 500;
+    line-height: 1.17;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .detail-icon {
+    font-size: 0.7em;
+    color: var(--color-primary);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  /* Hero Image */
+  .service-hero-image {
+    padding: 0 0 40px;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .service-hero .paragraph-large {
+    font-size: 22px;
+    line-height: 36px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  .service-hero-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .hero-rate {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero-rate-local {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  /* Details Bar */
+  .divider {
+    margin: 24px 0;
+  }
+
+  .service-details-bar {
+    padding: 0;
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr auto;
+    gap: 32px;
+    align-items: center;
+    padding: 24px 0 48px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .detail-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+  }
+
+  .detail-value {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text);
+  }
+
+  .detail-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-background);
+    background: var(--color-text);
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background-color 0.35s ease, transform 0.35s ease;
+  }
+
+  .detail-cta:hover {
+    background: var(--color-primary);
+    transform: scale(1.02);
+  }
+
+  .detail-arrow {
+    transition: transform 0.35s ease;
+  }
+
+  .detail-cta:hover .detail-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Content — markdown body */
+  .service-content {
+    padding: 40px 0 80px;
+  }
+
+  .rich-text {
+    max-width: 740px;
+  }
+
+  .rich-text :global(h2) {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 56px;
+    margin-bottom: 24px;
+    padding-top: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .rich-text :global(h2:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .rich-text :global(p) {
+    font-size: 18px;
+    line-height: 30px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  .rich-text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .rich-text :global(strong) {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  .rich-text :global(em) {
+    color: var(--color-primary);
+    font-style: italic;
+  }
+
+  .rich-text :global(a) {
+    color: var(--color-text);
+    text-decoration: underline;
+    transition: color 0.35s ease;
+  }
+
+  .rich-text :global(a:hover) {
+    color: var(--color-primary);
+  }
+
+  .rich-text :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+  }
+
+  .rich-text :global(li) {
+    font-size: 18px;
+    line-height: 30px;
+    color: var(--color-text-muted);
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  /* li::before, li strong, and code styles moved to global block */
+
+  /* Related Portfolio */
+  .related-section {
+    padding: 0 0 80px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 80px;
+  }
+
+  .related-section h2 {
+    margin-bottom: 40px;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.35s ease, border-color 0.35s ease;
+  }
+
+  .related-card:hover {
+    transform: scale(0.98);
+    border-color: var(--color-primary);
+  }
+
+  .related-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .related-card-content {
+    padding: 24px;
+  }
+
+  .related-card-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .related-card-content p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* CTA — reuse about.astro */
+  .interested {
+    padding: 80px 0 160px;
+  }
+
+  .interested-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .interested h2 {
+    margin-bottom: var(--space-md);
+    font-size: 48px;
+    line-height: 64px;
+    max-width: 720px;
+  }
+
+  .interested .paragraph-large {
+    margin-bottom: 0;
+    max-width: 900px;
+  }
+
+  .interested .paragraph-large a {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .interested .paragraph-large a:hover {
+    color: var(--color-primary);
+  }
+
+  .underline-heading {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 5px solid var(--color-text);
+    padding-bottom: 3px;
+  }
+
+  .underline-heading:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .circle-link {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .circle-link-icon {
+    width: 50px;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+    transition: background-image 0.35s ease;
+  }
+
+  .circle-bg-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--color-text);
+    border-radius: 50%;
+    transition: width 0.35s ease;
+    z-index: 1;
+  }
+
+  .circle-link:hover .circle-bg-hover {
+    width: 100%;
+  }
+
+  .circle-link:hover .circle-link-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  }
+
+  :global([data-theme='dark']) .circle-link-icon {
+    filter: invert(1);
+  }
+
+  /* Animations */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(36%) skew(-6deg, -1deg);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0) skew(0, 0);
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-scale-in.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .details-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .service-hero {
+      padding: 60px 0 40px;
+    }
+
+    .service-hero h1 {
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .service-hero-meta {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .service-content {
+      padding: 24px 0 60px;
+    }
+
+    .interested {
+      padding: 60px 0 80px;
+    }
+
+    .interested-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .interested h2 {
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .circle-link {
+      margin: var(--space-md) auto 0;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function initServiceAnimations() {
+    // Move slotted components into their markdown placeholder positions
+    document.querySelectorAll('[data-slot-source]').forEach((source) => {
+      const targetId = source.getAttribute('data-slot-source');
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (target) {
+        // Move all children from the source wrapper into the placeholder
+        while (source.firstChild) {
+          target.appendChild(source.firstChild);
+        }
+        source.remove();
+      }
+    });
+
+    // General scroll reveals
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '-50px 0px' }
+    );
+
+    document.querySelectorAll('.animate-on-scroll, .animate-scale-in, .fade-animate').forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Staggered H2 section reveals within rich-text
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '-30px 0px' }
+    );
+
+    document.querySelectorAll('.rich-text h2, .rich-text figure[data-badge]').forEach((el) => {
+      el.classList.add('section-reveal');
+      sectionObserver.observe(el);
+    });
+  }
+
+  // GlowBorder on related portfolio cards
+  function initDetailGlow() {
+    document.querySelectorAll('.related-card').forEach((card) => {
+      card.addEventListener('mousemove', (e: Event) => {
+        const mouseEvent = e as MouseEvent;
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        (card as HTMLElement).style.setProperty('--glow-x', `${mouseEvent.clientX - rect.left}px`);
+        (card as HTMLElement).style.setProperty('--glow-y', `${mouseEvent.clientY - rect.top}px`);
+      });
+    });
+  }
+
+  initServiceAnimations();
+  initDetailGlow();
+  document.addEventListener('astro:after-swap', () => {
+    initServiceAnimations();
+    initDetailGlow();
+  });
+</script>
+
+<style is:global>
+  /* ── Rich Text Globals (pseudo-elements need unscoped CSS) ── */
+  .rich-text li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  .rich-text li strong {
+    color: var(--color-text);
+  }
+
+  .rich-text code {
+    font-size: 15px;
+    background: var(--color-border);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── TOC nav ── */
+  .rich-text .toc {
+    margin: 0 0 32px 0;
+    padding: 16px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-background-alt);
+  }
+
+  .rich-text .toc ul,
+  .rich-text .toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rich-text .toc li {
+    padding-left: 0;
+    margin-bottom: 6px;
+  }
+
+  .rich-text .toc li::before {
+    display: none;
+  }
+
+  .rich-text .toc a {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .rich-text .toc a:hover {
+    color: var(--color-primary);
+  }
+
+  /* ── LiveProofDashboard link color override ── */
+  .live-proof .lp-site-name:hover {
+    color: var(--site-color) !important;
+  }
+
+  /* ── Badge Overlay System ── */
+  .rich-text figure[data-badge] {
+    position: relative;
+    margin: 40px 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .rich-text figure[data-badge] img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .rich-text figure[data-badge]::after {
+    content: attr(data-badge);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 100px;
+    background: var(--color-primary);
+    color: #fff;
+    z-index: 2;
+    line-height: 1;
+  }
+
+  /* Narrative arc: desaturated → primary → gold → bright */
+  .rich-text figure[data-badge="THE PROBLEM"]::after {
+    background: rgba(13, 13, 13, 0.7);
+    color: #f5f5f5;
+  }
+
+  /* THE METHOD uses default primary purple */
+
+  .rich-text figure.proof-badge::after {
+    background: var(--color-accent);
+    color: #0d0d0d;
+  }
+
+  .rich-text figure[data-badge="THE RESULT"]::after {
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(150, 106, 133, 0.3);
+  }
+
+  .rich-text figure.medallion {
+    float: right;
+    width: 320px;
+    margin: 0 0 24px 32px;
+  }
+
+  .rich-text figure.medallion img {
+    border-radius: 50%;
+  }
+
+  .rich-text figcaption {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Staggered section reveals */
+  .rich-text .section-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .rich-text .section-reveal.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GlowBorder on related cards */
+  .related-card {
+    --glow-x: 50%;
+    --glow-y: 50%;
+    position: relative;
+  }
+
+  .related-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    background: radial-gradient(400px circle at var(--glow-x) var(--glow-y), rgba(var(--color-primary-rgb), 0.15), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .related-card:hover::after {
+    opacity: 1;
+  }
+
+  .related-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 24px rgba(var(--color-primary-rgb), 0.08);
+  }
+
+  @media (hover: none) {
+    .related-card::after { display: none; }
+    .related-card:hover { transform: none; box-shadow: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rich-text .section-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .rich-text figure.medallion {
+      float: none;
+      width: 100%;
+      max-width: 280px;
+      margin: 24px auto;
+    }
+  }
+</style>

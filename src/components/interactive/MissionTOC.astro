@@ -1,0 +1,273 @@
+---
+/**
+ * MissionTOC — "Operations Manifest" table of contents.
+ * Zero-padded numbered entries with Phosphor icons, scroll-spy active state,
+ * left-border accent channel, staggered reveal.
+ * Kotharat design spec: 2026-03-17.
+ */
+interface Section {
+  num: string;
+  icon: string;
+  label: string;
+  href: string;
+}
+
+interface Props {
+  sections: Section[];
+}
+
+const { sections } = Astro.props;
+---
+
+<nav class="mission-toc" aria-label="Table of contents">
+  <div class="toc-header">
+    <span class="toc-ops">OPS</span>
+    <span class="toc-count">{sections.length}</span>
+  </div>
+  <ol class="toc-list">
+    {sections.map((s) => (
+      <li class="toc-item">
+        <a class="toc-link" href={s.href} data-active="false">
+          <span class="toc-num">{s.num}</span>
+          <i class={`ph ${s.icon} toc-icon`} aria-hidden="true"></i>
+          <span class="toc-label">{s.label}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .mission-toc {
+    margin: 0 0 40px 0;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-background-alt);
+    overflow: hidden;
+  }
+
+  .toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .toc-ops {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+  }
+
+  .toc-count {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .toc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc-item {
+    margin: 0;
+    padding: 0;
+    animation: toc-appear 0.4s ease-out forwards;
+    opacity: 0;
+  }
+
+  .toc-item:nth-child(1) { animation-delay: 0.05s; }
+  .toc-item:nth-child(2) { animation-delay: 0.08s; }
+  .toc-item:nth-child(3) { animation-delay: 0.11s; }
+  .toc-item:nth-child(4) { animation-delay: 0.14s; }
+  .toc-item:nth-child(5) { animation-delay: 0.17s; }
+  .toc-item:nth-child(6) { animation-delay: 0.20s; }
+  .toc-item:nth-child(7) { animation-delay: 0.23s; }
+  .toc-item:nth-child(8) { animation-delay: 0.26s; }
+  .toc-item:nth-child(9) { animation-delay: 0.29s; }
+
+  @keyframes toc-appear {
+    from { opacity: 0; transform: translateX(-6px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px 9px 14px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    border-left: 3px solid transparent;
+    transition: border-color 0.3s ease, background-color 0.2s ease;
+  }
+
+  .toc-link:hover {
+    background: rgba(150, 106, 133, 0.04);
+  }
+
+  .toc-link:hover .toc-label { color: var(--color-text); }
+  .toc-link:hover .toc-num { opacity: 0.7; }
+  .toc-link:hover .toc-icon { opacity: 0.7; }
+
+  .toc-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+    border-radius: 0;
+  }
+
+  /* Active state via scroll-spy */
+  .toc-link[data-active="true"] {
+    border-left-color: var(--color-primary);
+    background: rgba(150, 106, 133, 0.05);
+  }
+
+  .toc-link[data-active="true"] .toc-num {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .toc-link[data-active="true"] .toc-icon {
+    color: var(--color-primary);
+    opacity: 0.8;
+  }
+
+  .toc-link[data-active="true"] .toc-label {
+    color: var(--color-text);
+  }
+
+  .toc-num {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    opacity: 0.45;
+    min-width: 20px;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .toc-icon {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    width: 16px;
+    text-align: center;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .toc-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .toc-link { padding: 8px 12px 8px 11px; gap: 8px; }
+    .toc-label { font-size: 11px; }
+    .toc-header { padding: 8px 12px; }
+    .toc-icon { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .toc-num { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-item { animation: none; opacity: 1; }
+    .toc-link, .toc-num, .toc-icon, .toc-label { transition-duration: 0.01s; }
+  }
+</style>
+
+<style is:global>
+  /* Suppress rich-text list styles inside MissionTOC */
+  .mission-toc .toc-item::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .mission-toc .toc-list {
+    margin-bottom: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .mission-toc .toc-item {
+    margin-bottom: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* Scroll margin for targeted h2s */
+  .rich-text h2[id] {
+    scroll-margin-top: 80px;
+  }
+</style>
+
+<script>
+  function initMissionTOC() {
+    document.querySelectorAll('.mission-toc').forEach((nav) => {
+      const links = Array.from(nav.querySelectorAll('.toc-link'));
+      if (!links.length) return;
+
+      // Collect target h2 elements
+      const targets: { el: Element; link: HTMLElement }[] = [];
+      links.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const id = href.replace('#', '');
+        const el = document.getElementById(id);
+        if (el) targets.push({ el, link: link as HTMLElement });
+      });
+
+      // Scroll-spy via IntersectionObserver
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Deactivate all
+              links.forEach((l) => {
+                (l as HTMLElement).setAttribute('data-active', 'false');
+                (l as HTMLElement).removeAttribute('aria-current');
+              });
+              // Activate matching link
+              const match = targets.find((t) => t.el === entry.target);
+              if (match) {
+                match.link.setAttribute('data-active', 'true');
+                match.link.setAttribute('aria-current', 'true');
+              }
+            }
+          });
+        },
+        { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+      );
+
+      targets.forEach((t) => observer.observe(t.el));
+
+      // Smooth scroll on click
+      links.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const href = link.getAttribute('href');
+          if (!href) return;
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    });
+  }
+
+  initMissionTOC();
+  document.addEventListener('astro:after-swap', initMissionTOC);
+</script>

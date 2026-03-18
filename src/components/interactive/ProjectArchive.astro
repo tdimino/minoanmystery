@@ -1,0 +1,330 @@
+---
+/**
+ * ProjectArchive — Filterable project showcase with category tabs.
+ * 6 projects: 3 Enterprise, 2 Open Source, 1 Personal.
+ * Category filter tabs, live metric badges, type pills.
+ * Kotharat spec: 2026-03-17.
+ */
+const projects = [
+  {
+    name: 'Dolby Laboratories',
+    category: 'enterprise',
+    description: '12 page templates, Sitecore migration',
+    techs: ['Astro', 'React'],
+    metric: '4+ yrs',
+    url: '/portfolio/dolby',
+    external: false,
+  },
+  {
+    name: 'American College of Surgeons',
+    category: 'enterprise',
+    description: 'IA restructure, member portal',
+    techs: ['UX', 'Analytics'],
+    metric: '+40% apps',
+    url: '/portfolio/acs',
+    external: false,
+  },
+  {
+    name: 'Chan Zuckerberg Initiative',
+    category: 'enterprise',
+    description: 'napari learning platform',
+    techs: ['React', 'Python'],
+    metric: '300+ plugins',
+    url: '/portfolio/czi',
+    external: false,
+  },
+  {
+    name: 'worldwarwatcher.com',
+    category: 'personal',
+    description: 'Real-time geopolitical dashboard',
+    techs: ['Astro', 'Cloudflare'],
+    metric: '#1 Google',
+    url: 'https://worldwarwatcher.com',
+    external: true,
+  },
+  {
+    name: 'bg3se-macos',
+    category: 'opensource',
+    description: 'BG3 Script Extender ARM64 port',
+    techs: ['C++', 'Lua'],
+    metric: '28 stars',
+    url: 'https://github.com/tdimino/bg3se-macos',
+    external: true,
+  },
+  {
+    name: 'Open Rebellion',
+    category: 'opensource',
+    description: 'Star Wars Rebellion reimplementation',
+    techs: ['Rust', 'WASM'],
+    metric: '5,127 fns',
+    url: 'https://github.com/tdimino/open-rebellion',
+    external: true,
+  },
+];
+
+const categories = [
+  { id: 'all', label: 'All' },
+  { id: 'enterprise', label: 'Enterprise' },
+  { id: 'opensource', label: 'Open Source' },
+  { id: 'personal', label: 'Personal' },
+];
+
+const categoryLabels: Record<string, string> = {
+  enterprise: 'Enterprise',
+  opensource: 'Open Source',
+  personal: 'Personal',
+};
+
+const categoryColors: Record<string, string> = {
+  enterprise: '#4285f4',
+  opensource: '#2dd47f',
+  personal: '#d4a843',
+};
+---
+
+<div class="project-archive" aria-label="Project showcase">
+  <div class="pa-tabs" role="tablist">
+    {categories.map((c, i) => (
+      <button
+        class={`pa-tab ${i === 0 ? 'active' : ''}`}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+        data-category={c.id}
+      >
+        {c.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="pa-grid">
+    {projects.map((p) => (
+      <a
+        href={p.url}
+        class="pa-card"
+        data-category={p.category}
+        target={p.external ? '_blank' : undefined}
+        rel={p.external ? 'noopener noreferrer' : undefined}
+      >
+        <div class="pa-card-top">
+          <span class="pa-type-pill" style={`--type-color: ${categoryColors[p.category]}`}>
+            {categoryLabels[p.category]}
+          </span>
+          <span class="pa-metric">{p.metric}</span>
+        </div>
+        <h3 class="pa-name">{p.name}</h3>
+        <p class="pa-desc">{p.description}</p>
+        <div class="pa-techs">
+          {p.techs.map((t) => (
+            <span class="pa-tech-pill">{t}</span>
+          ))}
+        </div>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .project-archive {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 40px 0;
+  }
+
+  .pa-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background-alt);
+    overflow-x: auto;
+  }
+
+  .pa-tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    min-height: unset;
+    white-space: nowrap;
+  }
+
+  .pa-tab:hover { color: var(--color-text); }
+  .pa-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .pa-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  .pa-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    background: var(--color-background);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .pa-card:hover {
+    background: var(--color-background-alt);
+    transform: translateY(-2px);
+    color: var(--color-text);
+  }
+
+  .pa-card[data-hidden="true"] {
+    display: none;
+  }
+
+  .pa-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pa-type-pill {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--type-color) 12%, transparent);
+    color: var(--type-color);
+  }
+
+  .pa-metric {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent);
+  }
+
+  .pa-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 4px 0 0;
+    line-height: 1.3;
+  }
+
+  .pa-desc {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .pa-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: auto;
+  }
+
+  .pa-tech-pill {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 991px) {
+    .pa-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .pa-grid { grid-template-columns: 1fr; }
+    .pa-tab { padding: 8px 12px; font-size: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pa-card { transition: none; }
+  }
+
+  @media (scripting: enabled) {
+    .project-archive:not(.is-visible) {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .project-archive.is-visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+  }
+</style>
+
+<script>
+  function initProjectArchive() {
+    document.querySelectorAll('.project-archive').forEach((el) => {
+      const tabs = el.querySelectorAll('.pa-tab');
+      const cards = el.querySelectorAll('.pa-card');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const cat = (tab as HTMLElement).dataset.category;
+
+          // Update tabs
+          tabs.forEach((t) => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+
+          // Filter cards
+          cards.forEach((card) => {
+            const cardCat = (card as HTMLElement).dataset.category;
+            if (cat === 'all' || cardCat === cat) {
+              (card as HTMLElement).removeAttribute('data-hidden');
+            } else {
+              (card as HTMLElement).setAttribute('data-hidden', 'true');
+            }
+          });
+        });
+      });
+
+      // Keyboard nav
+      const tabArray = Array.from(tabs);
+      tabArray.forEach((tab, i) => {
+        tab.addEventListener('keydown', (e) => {
+          let next = -1;
+          if ((e as KeyboardEvent).key === 'ArrowRight') next = (i + 1) % tabArray.length;
+          else if ((e as KeyboardEvent).key === 'ArrowLeft') next = (i - 1 + tabArray.length) % tabArray.length;
+          if (next >= 0) {
+            (e as Event).preventDefault();
+            (tabArray[next] as HTMLElement).focus();
+            (tabArray[next] as HTMLElement).click();
+          }
+        });
+      });
+
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      setTimeout(() => { if (!el.classList.contains('is-visible')) el.classList.add('is-visible'); }, 2000);
+    });
+  }
+
+  initProjectArchive();
+  document.addEventListener('astro:after-swap', initProjectArchive);
+</script>

@@ -1,0 +1,527 @@
+---
+/**
+ * BrowserShowcase — Browser-chrome gallery with modal lightbox.
+ * Shows multiple site screenshots with thumbnail strip, captions, and nav.
+ * Used in GEO/SEO proof of concept section.
+ */
+interface Screenshot {
+  src: string;
+  caption: string;
+  url?: string;
+}
+
+interface Props {
+  screenshots: Screenshot[];
+  url: string;
+  siteName: string;
+  rankings?: { platform: string; value: string; color: string }[];
+}
+
+const { screenshots, url, siteName, rankings = [] } = Astro.props;
+---
+
+<div class="browser-showcase">
+  <div class="browser-chrome">
+    <div class="browser-controls">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    <div class="browser-url-bar">
+      <i class="ph ph-lock-simple" aria-hidden="true"></i>
+      <span class="browser-url">{url}</span>
+    </div>
+  </div>
+  <div class="browser-viewport">
+    <img src={screenshots[0].src} alt={screenshots[0].caption} loading="lazy" class="browser-main-img" data-index="0" />
+    {rankings.length > 0 && (
+      <div class="ranking-overlay">
+        {rankings.map((r) => (
+          <span class="ranking-pill" style={`--pill-color: ${r.color}`}>
+            <span class="pill-value">{r.value}</span>
+            <span class="pill-platform">{r.platform}</span>
+          </span>
+        ))}
+      </div>
+    )}
+    <button class="expand-btn" aria-label="View full size">
+      <i class="ph ph-arrows-out" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="browser-thumbs">
+    {screenshots.map((s, i) => (
+      <button class={`thumb ${i === 0 ? 'active' : ''}`} data-index={i} data-url={s.url || ''} aria-label={s.caption}>
+        <img src={s.src} alt="" loading="lazy" />
+      </button>
+    ))}
+  </div>
+  <div class="browser-footer">
+    <span class="browser-caption">{screenshots[0].caption}</span>
+    <a href={`https://${url}`} target="_blank" rel="noopener noreferrer" class="footer-link">
+      {url} <span aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+<!-- Modal lightbox (native dialog) -->
+<dialog class="bs-modal">
+  <button class="bs-modal-close" aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button>
+  <button class="bs-modal-nav bs-modal-prev" aria-label="Previous screenshot"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
+  <button class="bs-modal-nav bs-modal-next" aria-label="Next screenshot"><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+  <div class="bs-modal-content">
+    <img class="bs-modal-img" src="" alt="" />
+    <div class="bs-modal-info">
+      <span class="bs-modal-caption"></span>
+      <div class="bs-modal-meta">
+        <a href={`https://${url}`} target="_blank" rel="noopener noreferrer" class="bs-modal-url">{url} <span aria-hidden="true">&rarr;</span></a>
+        <span class="bs-modal-counter"></span>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .browser-showcase {
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 32px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .browser-controls { display: flex; gap: 6px; flex-shrink: 0; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green { background: #28c840; }
+
+  .browser-url-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: #0d0d0d;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .browser-url-bar i { font-size: 11px; color: #2dd47f; }
+
+  .browser-viewport {
+    position: relative;
+    background: #0d0d0d;
+    line-height: 0;
+    cursor: pointer;
+  }
+
+  .browser-main-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .ranking-overlay {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .ranking-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  }
+
+  .pill-value { font-size: 14px; font-weight: 700; color: var(--pill-color); }
+  .pill-platform { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .expand-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .browser-viewport:hover .expand-btn { opacity: 1; }
+
+  .browser-thumbs {
+    display: flex;
+    gap: 2px;
+    padding: 6px;
+    background: #111;
+    overflow-x: auto;
+  }
+
+  .thumb {
+    flex-shrink: 0;
+    width: 80px;
+    height: 48px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+    transition: border-color 0.2s ease;
+    opacity: 0.5;
+  }
+
+  .thumb.active {
+    border-color: var(--color-primary);
+    opacity: 1;
+  }
+
+  .thumb:hover { opacity: 0.8; }
+
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .browser-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #1a1a1a;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .browser-caption {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #999;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-link {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #2dd4bf;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .footer-link:hover { opacity: 0.8; }
+
+  /* ── Modal (native dialog) ── */
+  .bs-modal {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: none;
+    border-radius: 8px;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    padding: 0;
+    overflow: hidden;
+    margin: auto;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.2s ease, transform 0.2s ease,
+      display 0.2s ease allow-discrete, overlay 0.2s ease allow-discrete;
+  }
+
+  .bs-modal[open] {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @starting-style {
+    .bs-modal[open] { opacity: 0; transform: scale(0.96); }
+  }
+
+  .bs-modal::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.2s ease,
+      display 0.2s ease allow-discrete, overlay 0.2s ease allow-discrete;
+  }
+
+  .bs-modal[open]::backdrop { opacity: 1; }
+
+  @starting-style {
+    .bs-modal[open]::backdrop { opacity: 0; }
+  }
+
+  .bs-modal .bs-modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .bs-modal .bs-modal-img {
+    max-width: 85vw;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.5));
+  }
+
+  .bs-modal .bs-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: #f5f5f5;
+    font-size: 22px;
+    width: 44px;
+    height: 44px;
+    min-height: unset;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease;
+  }
+
+  .bs-modal .bs-modal-close:hover { background: rgba(0, 0, 0, 0.9); }
+
+  .bs-modal .bs-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #f5f5f5;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    min-height: unset;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease;
+  }
+
+  .bs-modal .bs-modal-nav:hover { background: rgba(0, 0, 0, 0.8); }
+  .bs-modal .bs-modal-prev { left: 16px; }
+  .bs-modal .bs-modal-next { right: 16px; }
+
+  .bs-modal .bs-modal-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 85vw;
+    padding: 12px 0 0;
+  }
+
+  .bs-modal .bs-modal-caption {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    color: #ccc;
+  }
+
+  .bs-modal .bs-modal-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .bs-modal .bs-modal-url {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #2dd4bf;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .bs-modal .bs-modal-url:hover { opacity: 0.8; color: #2dd4bf; }
+
+  .bs-modal .bs-modal-counter {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .ranking-overlay { bottom: 8px; right: 8px; gap: 4px; }
+    .ranking-pill { padding: 4px 8px; }
+    .pill-value { font-size: 12px; }
+    .browser-caption { display: none; }
+    .thumb { width: 60px; height: 36px; }
+    .bs-modal .bs-modal-content { padding: 16px; }
+    .bs-modal .bs-modal-nav { display: none; }
+    .bs-modal .bs-modal-img { max-width: 88vw; max-height: 70vh; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .browser-main-img { transition: none; }
+    .bs-modal, .bs-modal::backdrop { transition: none; }
+  }
+
+  @media (scripting: enabled) {
+    .browser-showcase:not(.is-visible) {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .browser-showcase.is-visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+  }
+</style>
+
+<script>
+  function initBrowserShowcase() {
+    document.querySelectorAll('.browser-showcase').forEach((showcase) => {
+      const mainImg = showcase.querySelector('.browser-main-img') as HTMLImageElement;
+      const caption = showcase.querySelector('.browser-caption');
+      const thumbs = showcase.querySelectorAll('.thumb');
+
+      const modal = showcase.nextElementSibling as HTMLDialogElement;
+      if (!modal || modal.tagName !== 'DIALOG') return;
+
+      const modalImg = modal.querySelector('.bs-modal-img') as HTMLImageElement;
+      const modalCaption = modal.querySelector('.bs-modal-caption');
+      const modalCounter = modal.querySelector('.bs-modal-counter');
+
+      const modalUrl = modal.querySelector('.bs-modal-url') as HTMLAnchorElement;
+
+      const screenshots: { src: string; caption: string; url: string }[] = [];
+      thumbs.forEach((t) => {
+        const img = t.querySelector('img') as HTMLImageElement;
+        screenshots.push({ src: img.src, caption: t.getAttribute('aria-label') || '', url: (t as HTMLElement).dataset.url || '' });
+      });
+
+      let currentIndex = 0;
+
+      const urlBar = showcase.querySelector('.browser-url') as HTMLElement;
+      const footerLink = showcase.querySelector('.footer-link') as HTMLAnchorElement;
+
+      function showSlide(i: number) {
+        currentIndex = i;
+        mainImg.src = screenshots[i].src;
+        mainImg.alt = screenshots[i].caption;
+        if (caption) caption.textContent = screenshots[i].caption;
+        const slideUrl = screenshots[i].url || `https://${showcase.querySelector('.browser-url')?.textContent}`;
+        if (urlBar && screenshots[i].url) {
+          urlBar.textContent = screenshots[i].url.replace('https://', '');
+        }
+        if (footerLink && screenshots[i].url) {
+          footerLink.href = screenshots[i].url;
+          footerLink.innerHTML = screenshots[i].url.replace('https://', '') + ' <span aria-hidden="true">&rarr;</span>';
+        }
+        thumbs.forEach((t, idx) => t.classList.toggle('active', idx === i));
+      }
+
+      function updateModal(i: number) {
+        currentIndex = i;
+        if (modalImg) { modalImg.src = screenshots[i].src; modalImg.alt = screenshots[i].caption; }
+        if (modalCaption) modalCaption.textContent = screenshots[i].caption;
+        if (modalCounter) modalCounter.textContent = `${i + 1} / ${screenshots.length}`;
+        if (modalUrl && screenshots[i].url) {
+          modalUrl.href = screenshots[i].url;
+          modalUrl.textContent = screenshots[i].url.replace('https://', '');
+          modalUrl.style.display = '';
+        } else if (modalUrl) {
+          modalUrl.style.display = 'none';
+        }
+      }
+
+      function openModal(i: number) {
+        updateModal(i);
+        showSlide(i);
+        modal.showModal();
+      }
+
+      function navigate(delta: number) {
+        const next = (currentIndex + delta + screenshots.length) % screenshots.length;
+        showSlide(next);
+        updateModal(next);
+      }
+
+      // Thumb clicks
+      thumbs.forEach((t, i) => t.addEventListener('click', () => showSlide(i)));
+
+      // Viewport click opens modal
+      showcase.querySelector('.browser-viewport')?.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement).closest('.expand-btn')) return;
+        openModal(currentIndex);
+      });
+      showcase.querySelector('.expand-btn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal(currentIndex);
+      });
+
+      // Modal nav
+      modal.querySelector('.bs-modal-prev')?.addEventListener('click', () => navigate(-1));
+      modal.querySelector('.bs-modal-next')?.addEventListener('click', () => navigate(1));
+
+      // Close
+      modal.querySelector('.bs-modal-close')?.addEventListener('click', () => modal.close());
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+
+      // Keyboard: arrows (Escape is free with <dialog>)
+      modal.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
+      });
+
+      // Mobile swipe
+      let touchStartX = 0;
+      modal.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+      modal.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) navigate(dx > 0 ? -1 : 1);
+      });
+
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); },
+        { threshold: 0.1 }
+      );
+      observer.observe(showcase);
+      setTimeout(() => { if (!showcase.classList.contains('is-visible')) showcase.classList.add('is-visible'); }, 2000);
+    });
+  }
+
+  initBrowserShowcase();
+  document.addEventListener('astro:after-swap', initBrowserShowcase);
+</script>

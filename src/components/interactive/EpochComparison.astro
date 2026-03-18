@@ -1,0 +1,348 @@
+---
+/**
+ * EpochComparison — 2004 Google vs 2026 Claude Code toggle.
+ * Binary switch between eras with crossfade transition.
+ */
+---
+
+<div class="epoch-comparison" aria-label="Comparison: using AI like Google in 2004 versus Claude Code in 2026">
+  <div class="epoch-toggle">
+    <span class="epoch-label left-label active-epoch">2004</span>
+    <button class="toggle-switch" role="switch" aria-checked="false" aria-label="Switch between 2004 and 2026 views">
+      <span class="toggle-thumb"></span>
+    </button>
+    <span class="epoch-label right-label">2026</span>
+  </div>
+
+  <div class="epoch-panels">
+    <div class="epoch-panel panel-2004 active" aria-hidden="false">
+      <div class="google-2004">
+        <div class="g04-logo">
+          <span style="color: #4285f4">G</span><span style="color: #ea4335">o</span><span style="color: #fbbc05">o</span><span style="color: #4285f4">g</span><span style="color: #34a853">l</span><span style="color: #ea4335">e</span>
+        </div>
+        <div class="g04-search">
+          <input type="text" value="how to automate data entry" disabled />
+        </div>
+        <div class="g04-buttons">
+          <span class="g04-btn">Google Search</span>
+          <span class="g04-btn">I'm Feeling Lucky</span>
+        </div>
+        <div class="g04-results">
+          <div class="g04-result">
+            <span class="g04-url">www.ehow.com/automate-data</span>
+            <span class="g04-title">How to Automate Data Entry - 10 Steps</span>
+            <span class="g04-snippet">Step 1: Open Microsoft Excel. Step 2: Click on Tools > Macro...</span>
+          </div>
+          <div class="g04-result">
+            <span class="g04-url">forums.about.com/ask/data-entry</span>
+            <span class="g04-title">Data Entry Automation? - About.com Forums</span>
+            <span class="g04-snippet">Has anyone tried automating data entry? I've been using macros but...</span>
+          </div>
+        </div>
+        <div class="g04-counter">Searched 8,058,044,651 web pages</div>
+      </div>
+    </div>
+
+    <div class="epoch-panel panel-2026" aria-hidden="true">
+      <div class="cc-2026">
+        <div class="cc-chrome">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="cc-title">claude code</span>
+          <span class="cc-session">12 skills loaded</span>
+        </div>
+        <div class="cc-conversation">
+          <div class="cc-line"><span class="cc-prompt">❯</span> Audit this codebase and build a skill for the top automation opportunity</div>
+          <div class="cc-agent-bar"><span class="cc-agent-dot"></span> Scanning 47 files across 3 workspaces...</div>
+          <div class="cc-output">
+            <div class="cc-file-op"><span class="cc-op write">WRITE</span> .claude/skills/pr-review/SKILL.md</div>
+            <div class="cc-file-op"><span class="cc-op write">WRITE</span> .claude/skills/pr-review/scripts/review.py</div>
+            <div class="cc-file-op"><span class="cc-op read">READ</span> src/auth.ts, src/api/routes.ts, tests/</div>
+          </div>
+          <div class="cc-response">
+            <div>Created PR review skill with 3 focus areas.</div>
+            <div class="cc-status-row"><span class="cc-dot green"></span> Security patterns (12 rules)</div>
+            <div class="cc-status-row"><span class="cc-dot green"></span> Convention compliance (4 custom)</div>
+            <div class="cc-status-row"><span class="cc-dot green"></span> Test coverage analysis</div>
+          </div>
+        </div>
+        <div class="cc-status-bar">
+          <span><i class="ph ph-brain" aria-hidden="true"></i> Memory: 3 sessions</span>
+          <span><i class="ph ph-puzzle-piece" aria-hidden="true"></i> Skills: 12</span>
+          <span><i class="ph ph-users-three" aria-hidden="true"></i> Agents: 2 active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .epoch-comparison {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .ec-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 5;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .epoch-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .epoch-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .epoch-label.active-epoch { color: var(--color-text); }
+
+  .toggle-switch {
+    --thumb-size: 16px;
+    --track-padding: 2px;
+    width: calc(var(--thumb-size) * 2 + var(--track-padding) * 2);
+    height: calc(var(--thumb-size) + var(--track-padding) * 2);
+    min-height: unset;
+    border-radius: 100px;
+    background: #c8c3bc;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding: 0;
+  }
+
+  :global([data-theme='dark']) .toggle-switch { background: #444; }
+
+  .toggle-switch[aria-checked="true"] { background: var(--color-primary); }
+
+  .toggle-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0 0.5px rgba(0, 0, 0, 0.04);
+    position: absolute;
+    top: var(--track-padding);
+    left: var(--track-padding);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .toggle-switch[aria-checked="true"] .toggle-thumb { transform: translateX(var(--thumb-size)); }
+
+  .epoch-panels { position: relative; min-height: 400px; }
+
+  .epoch-panel {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.3s ease;
+  }
+
+  .epoch-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+  }
+
+  .panel-2004:not(.active) { transform: scale(0.97); }
+  .panel-2026:not(.active) { transform: scale(1.02); }
+
+  /* 2004 Google */
+  .google-2004 {
+    padding: 40px;
+    text-align: center;
+    font-family: 'Times New Roman', Georgia, serif;
+    background: #f5f5f5;
+    min-height: 400px;
+    filter: sepia(0.08);
+  }
+
+  :global([data-theme='dark']) .google-2004 { background: #1a1a1a; }
+
+  .g04-logo { font-size: 48px; font-weight: 700; letter-spacing: -2px; margin-bottom: 20px; }
+  .g04-search { margin-bottom: 12px; }
+  .g04-search input {
+    width: 80%;
+    max-width: 400px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    color: #333;
+  }
+  :global([data-theme='dark']) .g04-search input { background: #222; border-color: #444; color: #ccc; }
+
+  .g04-buttons { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
+  .g04-btn {
+    padding: 4px 12px;
+    font-size: 12px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #333;
+    font-family: Arial, sans-serif;
+  }
+  :global([data-theme='dark']) .g04-btn { background: #2a2a2a; border-color: #444; color: #999; }
+
+  .g04-results { text-align: left; max-width: 500px; margin: 0 auto; }
+  .g04-result { margin-bottom: 16px; }
+  .g04-url { display: block; font-size: 11px; color: #006621; font-family: Arial, sans-serif; }
+  :global([data-theme='dark']) .g04-url { color: #4a9; }
+  .g04-title { display: block; font-size: 15px; color: #1a0dab; text-decoration: underline; font-family: Arial, sans-serif; }
+  :global([data-theme='dark']) .g04-title { color: #8ab4f8; }
+  .g04-snippet { display: block; font-size: 13px; color: #666; font-family: Arial, sans-serif; line-height: 1.4; }
+  :global([data-theme='dark']) .g04-snippet { color: #888; }
+  .g04-counter { font-size: 11px; color: #999; margin-top: 24px; font-family: Arial, sans-serif; }
+
+  /* 2026 Claude Code */
+  .cc-2026 {
+    background: #0d0d0d;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cc-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.red { background: #FF5F57; }
+  .dot.yellow { background: #FEBC2E; }
+  .dot.green { background: #28C840; }
+  .cc-title { margin-left: 8px; font-size: 11px; color: #686868; }
+  .cc-session { margin-left: auto; font-size: 10px; color: #555; padding: 2px 8px; border: 1px solid #333; border-radius: 100px; }
+
+  .cc-conversation { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .cc-line { font-size: 13px; color: #e0e0e0; }
+  .cc-prompt { color: var(--color-primary); font-weight: 600; }
+
+  .cc-agent-bar { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #888; }
+  .cc-agent-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); animation: agent-pulse 1.5s ease-in-out infinite; }
+  @keyframes agent-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .cc-output { display: flex; flex-direction: column; gap: 4px; }
+  .cc-file-op { font-size: 12px; color: #888; }
+  .cc-op { padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; margin-right: 6px; }
+  .cc-op.write { background: rgba(45, 212, 127, 0.15); color: #2dd47f; }
+  .cc-op.read { background: rgba(212, 175, 55, 0.15); color: var(--color-accent); }
+
+  .cc-response { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #e0e0e0; }
+  .cc-status-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #b8b8b8; }
+  .cc-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .cc-dot.green { background: #2dd47f; box-shadow: 0 0 6px rgba(45, 212, 127, 0.5); }
+
+  .cc-status-bar {
+    display: flex;
+    gap: 24px;
+    padding: 10px 20px;
+    border-top: 1px solid #1a1a1a;
+    font-size: 11px;
+    color: #666;
+  }
+  .cc-status-bar i { margin-right: 4px; }
+
+  @media (max-width: 768px) {
+    .g04-logo { font-size: 36px; }
+    .g04-search input { width: 100%; }
+    .cc-status-bar { flex-wrap: wrap; gap: 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epoch-panel { transition: none; }
+    .toggle-thumb { transition: none; }
+    .cc-agent-dot { animation: none; }
+  }
+
+  @media (scripting: enabled) {
+    .epoch-comparison:not(.is-visible) { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .epoch-comparison.is-visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
+  }
+</style>
+
+<script>
+  function initEpochComparison() {
+    document.querySelectorAll('.epoch-comparison').forEach((el) => {
+      const toggle = el.querySelector('.toggle-switch');
+      const panel2004 = el.querySelector('.panel-2004');
+      const panel2026 = el.querySelector('.panel-2026');
+      const leftLabel = el.querySelector('.left-label');
+      const rightLabel = el.querySelector('.right-label');
+
+      if (!toggle || !panel2004 || !panel2026) return;
+
+      toggle.addEventListener('click', () => {
+        const isChecked = toggle.getAttribute('aria-checked') === 'true';
+        const newState = !isChecked;
+        toggle.setAttribute('aria-checked', String(newState));
+
+        if (newState) {
+          panel2004.classList.remove('active');
+          panel2004.setAttribute('aria-hidden', 'true');
+          panel2026.classList.add('active');
+          panel2026.setAttribute('aria-hidden', 'false');
+          leftLabel?.classList.remove('active-epoch');
+          rightLabel?.classList.add('active-epoch');
+        } else {
+          panel2026.classList.remove('active');
+          panel2026.setAttribute('aria-hidden', 'true');
+          panel2004.classList.add('active');
+          panel2004.setAttribute('aria-hidden', 'false');
+          rightLabel?.classList.remove('active-epoch');
+          leftLabel?.classList.add('active-epoch');
+        }
+      });
+
+      // Scroll reveal — low threshold + fallback for nested animation contexts
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      // Fallback: if parent animate-scale-in delays visibility, retry after transition
+      setTimeout(() => { if (!el.classList.contains('is-visible')) el.classList.add('is-visible'); }, 2000);
+    });
+  }
+
+  initEpochComparison();
+  document.addEventListener('astro:after-swap', initEpochComparison);
+</script>

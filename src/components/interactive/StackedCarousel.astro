@@ -1,0 +1,718 @@
+---
+/**
+ * StackedCarousel — "Signal Desk" hero for Custom Applications.
+ * 3 browser windows in perspective cascade, auto-cycling every 5s.
+ * Click front card to open modal, click back cards to promote.
+ * Kotharat spec: 2026-03-18.
+ */
+interface Screenshot {
+  src: string;
+  caption: string;
+}
+
+interface Project {
+  siteName: string;
+  url: string;
+  urlIcon: 'lock' | 'clipboard';
+  description: string;
+  metric: { value: string; label: string; color: string };
+  screenshots: Screenshot[];
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+
+// Flatten all screenshots for modal cycling
+const allScreenshots = projects.flatMap((p, pi) =>
+  p.screenshots.map((s) => ({
+    ...s,
+    projectName: p.siteName,
+    projectColor: p.metric.color,
+    projectUrl: p.url,
+    projectUrlIcon: p.urlIcon,
+  }))
+);
+---
+
+<div class="stacked-carousel">
+  <div class="sc-header">
+    <span class="sc-label">Portfolio</span>
+    <div class="sc-controls">
+      <div class="sc-dots">
+        {projects.map((p, i) => (
+          <button class={`sc-dot ${i === 0 ? 'active' : ''}`} data-project={i} style={`--dot-color: ${p.metric.color}`} aria-label={`Show ${p.siteName}`}>
+            <span class="sc-dot-inner"></span>
+          </button>
+        ))}
+      </div>
+      <button class="sc-pause" aria-label="Pause auto-cycle">
+        <i class="ph ph-pause" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="sc-stage" role="group" aria-label="Portfolio showcase">
+    {projects.map((project, i) => {
+      const pos = i === 0 ? 'front' : i === 1 ? 'middle' : 'back';
+      return (
+        <button
+          class={`sc-card sc-card-${pos}`}
+          data-position={pos}
+          data-project-index={i}
+          style={`--project-color: ${project.metric.color}`}
+          aria-label={`${project.siteName}: ${project.description} — ${project.metric.value} ${project.metric.label}${pos === 'front' ? '. Click to expand' : ''}`}
+        >
+          <div class="sc-chrome">
+            <div class="sc-dots-chrome">
+              <span class="sc-d sc-d-r"></span>
+              <span class="sc-d sc-d-y"></span>
+              <span class="sc-d sc-d-g"></span>
+            </div>
+            <div class="sc-url-bar">
+              <i class={`ph ${project.urlIcon === 'lock' ? 'ph-lock-simple' : 'ph-clipboard-text'}`} aria-hidden="true"></i>
+              <span>{project.url}</span>
+            </div>
+          </div>
+          <div class="sc-viewport">
+            <img src={project.screenshots[0].src} alt={project.screenshots[0].caption} loading={i === 0 ? 'eager' : 'lazy'} />
+          </div>
+          <div class="sc-footer">
+            <div class="sc-footer-left">
+              <span class="sc-site-name">{project.siteName}</span>
+              <span class="sc-site-desc">{project.description}</span>
+            </div>
+            <div class="sc-footer-right">
+              <span class="sc-metric-value">{project.metric.value}</span>
+              <span class="sc-metric-label">{project.metric.label}</span>
+            </div>
+          </div>
+          <div class="sc-progress" aria-hidden="true"></div>
+        </button>
+      );
+    })}
+  </div>
+
+  <span class="sc-live-region" aria-live="polite" aria-atomic="true"></span>
+</div>
+
+<!-- Modal -->
+<dialog class="sc-modal">
+  <button class="sc-modal-close" aria-label="Close"><i class="ph ph-x" aria-hidden="true"></i></button>
+  <button class="sc-modal-nav sc-modal-prev" aria-label="Previous"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
+  <button class="sc-modal-nav sc-modal-next" aria-label="Next"><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+  <div class="sc-modal-body">
+    <img class="sc-modal-img" src="" alt="" />
+    <div class="sc-modal-info">
+      <div class="sc-modal-info-left">
+        <span class="sc-modal-project"></span>
+        <span class="sc-modal-caption"></span>
+      </div>
+      <span class="sc-modal-counter"></span>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .stacked-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .sc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 16px;
+  }
+
+  .sc-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #666;
+  }
+
+  .sc-controls { display: flex; align-items: center; gap: 4px; }
+
+  .sc-dots { display: flex; align-items: center; gap: 0; }
+
+  .sc-dot {
+    background: none;
+    border: none;
+    padding: 16px 6px;
+    cursor: pointer;
+    min-height: unset;
+    display: flex;
+    align-items: center;
+  }
+
+  .sc-dot-inner {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #333;
+    transition: background 0.3s ease, transform 0.3s ease;
+    display: block;
+  }
+
+  .sc-dot.active .sc-dot-inner {
+    background: var(--dot-color);
+    transform: scale(1.5);
+  }
+
+  .sc-pause {
+    width: 28px;
+    height: 28px;
+    min-height: unset;
+    border-radius: 4px;
+    background: none;
+    border: 1px solid #2a2a2a;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    font-size: 12px;
+  }
+
+  .sc-pause:hover { border-color: #555; color: #aaa; }
+
+  /* Stage */
+  .sc-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10.5;
+    perspective: 1200px;
+    perspective-origin: 50% 60%;
+  }
+
+  /* Card */
+  .sc-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+    background: #0d0d0d;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    padding: 0;
+    min-height: unset;
+    transition: transform 500ms cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 500ms cubic-bezier(0.25, 1, 0.5, 1),
+                filter 500ms cubic-bezier(0.25, 1, 0.5, 1),
+                box-shadow 500ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .sc-card[data-position="front"] {
+    transform: translateZ(0) translateY(0) translateX(0);
+    opacity: 1;
+    z-index: 3;
+    filter: none;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .sc-card[data-position="middle"] {
+    transform: translateZ(-20px) translateY(-8px) translateX(12px) rotateY(-1deg) rotateZ(0.8deg);
+    opacity: 0.65;
+    z-index: 2;
+    filter: brightness(0.85);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 3px 8px rgba(0,0,0,0.2);
+  }
+
+  .sc-card[data-position="back"] {
+    transform: translateZ(-40px) translateY(-16px) translateX(24px) rotateY(-2deg) rotateZ(1.5deg);
+    opacity: 0.4;
+    z-index: 1;
+    filter: brightness(0.7);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .sc-card[data-position="front"]:hover {
+    transform: translateY(-4px) scale(1.005);
+    border-color: var(--project-color);
+  }
+
+  .sc-card:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+
+  /* Card exiting */
+  .sc-card.exiting {
+    opacity: 0;
+    transform: translateX(-60px) translateZ(-80px) rotateZ(-3deg);
+    z-index: 0;
+  }
+
+  /* Chrome */
+  .sc-chrome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
+    flex-shrink: 0;
+  }
+
+  .sc-dots-chrome { display: flex; gap: 5px; }
+  .sc-d { width: 8px; height: 8px; border-radius: 50%; }
+  .sc-d-r { background: #ff5f57; }
+  .sc-d-y { background: #febc2e; }
+  .sc-d-g { background: #28c840; }
+
+  .sc-url-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: #0d0d0d;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    flex: 1;
+  }
+
+  .sc-url-bar i { font-size: 10px; color: #2dd47f; }
+
+  /* Viewport */
+  .sc-viewport {
+    flex: 1;
+    overflow: hidden;
+    background: #0d0d0d;
+    line-height: 0;
+  }
+
+  .sc-viewport img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Footer */
+  .sc-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 8px 14px;
+    background: #141414;
+    border-top: 1px solid #1e1e1e;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .sc-footer-left { display: flex; flex-direction: column; gap: 1px; }
+
+  .sc-site-name {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #f5f5f5;
+  }
+
+  .sc-site-desc {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    color: #888;
+  }
+
+  .sc-footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
+
+  .sc-metric-value {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--project-color);
+  }
+
+  .sc-metric-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #666;
+  }
+
+  /* Progress bar */
+  .sc-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--project-color);
+    width: 0;
+    z-index: 10;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .sc-card[data-position="front"] .sc-progress {
+    animation: sc-fill 5s linear;
+  }
+
+  @keyframes sc-fill { from { width: 0; } to { width: 100%; } }
+
+  /* Live region (screen readers only) */
+  .sc-live-region {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Modal */
+  .sc-modal {
+    max-width: 90vw;
+    max-height: 90vh;
+    border: none;
+    border-radius: 8px;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    padding: 0;
+    overflow: hidden;
+    margin: auto;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.2s ease, transform 0.2s ease,
+      display 0.2s ease allow-discrete, overlay 0.2s ease allow-discrete;
+  }
+
+  .sc-modal[open] { opacity: 1; transform: scale(1); }
+
+  @starting-style { .sc-modal[open] { opacity: 0; transform: scale(0.96); } }
+
+  .sc-modal::backdrop {
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.2s ease,
+      display 0.2s ease allow-discrete, overlay 0.2s ease allow-discrete;
+  }
+
+  .sc-modal[open]::backdrop { opacity: 1; }
+  @starting-style { .sc-modal[open]::backdrop { opacity: 0; } }
+
+  .sc-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .sc-modal-img {
+    max-width: 85vw;
+    max-height: 75vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .sc-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: #f5f5f5;
+    font-size: 22px;
+    width: 44px;
+    height: 44px;
+    min-height: unset;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sc-modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #f5f5f5;
+    font-size: 20px;
+    width: 44px;
+    height: 44px;
+    min-height: unset;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sc-modal-prev { left: 16px; }
+  .sc-modal-next { right: 16px; }
+
+  .sc-modal-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 85vw;
+    padding: 12px 0 0;
+  }
+
+  .sc-modal-info-left { display: flex; flex-direction: column; gap: 2px; }
+
+  .sc-modal-project {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ccc;
+  }
+
+  .sc-modal-caption {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #888;
+  }
+
+  .sc-modal-counter {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .sc-stage { perspective: none; }
+    .sc-card[data-position="middle"],
+    .sc-card[data-position="back"] {
+      display: none;
+    }
+    .sc-card[data-position="front"] {
+      position: relative;
+      transform: none;
+    }
+    .sc-modal-nav { display: none; }
+    .sc-modal-body { padding: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sc-card { transition: none; }
+    .sc-progress { animation: none; width: 100%; opacity: 0.3; }
+    .sc-modal, .sc-modal::backdrop { transition: none; }
+  }
+
+  @media (scripting: enabled) {
+    .stacked-carousel:not(.is-visible) {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .stacked-carousel.is-visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+  }
+</style>
+
+<script define:vars={{ allScreenshots: JSON.stringify(allScreenshots) }}>
+  const screenshots = JSON.parse(allScreenshots);
+</script>
+
+<script>
+  function initStackedCarousel() {
+    document.querySelectorAll('.stacked-carousel').forEach((el) => {
+      const cards = Array.from(el.querySelectorAll('.sc-card')) as HTMLElement[];
+      const dots = Array.from(el.querySelectorAll('.sc-dot')) as HTMLElement[];
+      const pauseBtn = el.querySelector('.sc-pause') as HTMLElement;
+      const liveRegion = el.querySelector('.sc-live-region') as HTMLElement;
+      const modal = el.nextElementSibling as HTMLDialogElement;
+      if (!modal || modal.tagName !== 'DIALOG') return;
+
+      const modalImg = modal.querySelector('.sc-modal-img') as HTMLImageElement;
+      const modalProject = modal.querySelector('.sc-modal-project') as HTMLElement;
+      const modalCaption = modal.querySelector('.sc-modal-caption') as HTMLElement;
+      const modalCounter = modal.querySelector('.sc-modal-counter') as HTMLElement;
+
+      // Parse screenshots from script vars
+      const allShots: { src: string; caption: string; projectName: string; projectColor: string }[] = [];
+      try {
+        const parsed = JSON.parse((document.querySelector('[data-astro-cid-stacked] script, .stacked-carousel ~ script')?.textContent || '[]').match(/\[.*\]/s)?.[0] || '[]');
+        allShots.push(...parsed);
+      } catch {}
+
+      // Fallback: build from card data
+      if (allShots.length === 0) {
+        cards.forEach((card) => {
+          const img = card.querySelector('.sc-viewport img') as HTMLImageElement;
+          const name = card.querySelector('.sc-site-name')?.textContent || '';
+          const color = card.style.getPropertyValue('--project-color');
+          if (img) allShots.push({ src: img.src, caption: img.alt, projectName: name, projectColor: color });
+        });
+      }
+
+      let currentProject = 0;
+      let paused = false;
+      let cycleTimer: ReturnType<typeof setInterval> | null = null;
+      let modalIndex = 0;
+
+      const positions = ['front', 'middle', 'back'];
+
+      function setPositions(frontIndex: number) {
+        currentProject = frontIndex;
+        cards.forEach((card, i) => {
+          const offset = (i - frontIndex + cards.length) % cards.length;
+          const pos = positions[offset] || 'back';
+          card.setAttribute('data-position', pos);
+          card.classList.remove('exiting');
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === frontIndex));
+        if (liveRegion) {
+          const name = cards[frontIndex]?.querySelector('.sc-site-name')?.textContent;
+          liveRegion.textContent = `Now showing: ${name}`;
+        }
+        // Reset progress animation
+        const frontCard = cards[frontIndex];
+        const progress = frontCard?.querySelector('.sc-progress') as HTMLElement;
+        if (progress) {
+          progress.style.animation = 'none';
+          progress.offsetHeight; // reflow
+          progress.style.animation = '';
+        }
+      }
+
+      function cycle() {
+        if (paused) return;
+        const next = (currentProject + 1) % cards.length;
+        setPositions(next);
+      }
+
+      function startCycle() {
+        stopCycle();
+        cycleTimer = setInterval(cycle, 5000);
+      }
+
+      function stopCycle() {
+        if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+      }
+
+      // Card clicks
+      cards.forEach((card, i) => {
+        card.addEventListener('click', () => {
+          if (card.getAttribute('data-position') === 'front') {
+            // Open modal with this project's first screenshot
+            modalIndex = allShots.findIndex((s) => s.projectName === (card.querySelector('.sc-site-name')?.textContent || ''));
+            if (modalIndex < 0) modalIndex = 0;
+            updateModal(modalIndex);
+            modal.showModal();
+            stopCycle();
+          } else {
+            setPositions(i);
+            startCycle();
+          }
+        });
+      });
+
+      // Dot clicks
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          setPositions(i);
+          startCycle();
+        });
+      });
+
+      // Pause
+      pauseBtn?.addEventListener('click', () => {
+        paused = !paused;
+        const icon = pauseBtn.querySelector('i');
+        if (icon) {
+          icon.className = paused ? 'ph ph-play' : 'ph ph-pause';
+        }
+        if (paused) stopCycle(); else startCycle();
+      });
+
+      // Hover pause
+      el.addEventListener('mouseenter', () => { if (!paused) stopCycle(); });
+      el.addEventListener('mouseleave', () => { if (!paused) startCycle(); });
+
+      // Modal
+      function updateModal(i: number) {
+        modalIndex = i;
+        const shot = allShots[i];
+        if (!shot) return;
+        if (modalImg) { modalImg.src = shot.src; modalImg.alt = shot.caption; }
+        if (modalProject) { modalProject.textContent = shot.projectName; modalProject.style.color = shot.projectColor; }
+        if (modalCaption) modalCaption.textContent = shot.caption;
+        if (modalCounter) modalCounter.textContent = `${i + 1} / ${allShots.length}`;
+      }
+
+      function modalNav(delta: number) {
+        const next = (modalIndex + delta + allShots.length) % allShots.length;
+        updateModal(next);
+      }
+
+      modal.querySelector('.sc-modal-close')?.addEventListener('click', () => { modal.close(); startCycle(); });
+      modal.addEventListener('click', (e) => { if (e.target === modal) { modal.close(); startCycle(); } });
+      modal.querySelector('.sc-modal-prev')?.addEventListener('click', () => modalNav(-1));
+      modal.querySelector('.sc-modal-next')?.addEventListener('click', () => modalNav(1));
+      modal.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); modalNav(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); modalNav(1); }
+      });
+
+      // Touch swipe in modal
+      let touchX = 0;
+      modal.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+      modal.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 50) modalNav(dx > 0 ? -1 : 1);
+      });
+
+      // Keyboard on carousel
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); setPositions((currentProject + 1) % cards.length); startCycle(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); setPositions((currentProject - 1 + cards.length) % cards.length); startCycle(); }
+      });
+
+      // Scroll reveal + auto-cycle start
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              startCycle();
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); startCycle(); } }, 2000);
+
+      // Visibility pause
+      const visObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting && !paused) stopCycle();
+          else if (entry.isIntersecting && !paused) startCycle();
+        });
+      }, { threshold: 0 });
+      visObserver.observe(el);
+    });
+  }
+
+  initStackedCarousel();
+  document.addEventListener('astro:after-swap', initStackedCarousel);
+</script>

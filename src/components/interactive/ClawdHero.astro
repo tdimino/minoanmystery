@@ -1,0 +1,275 @@
+---
+/**
+ * ClaudicleHero — Claude Code Mentoring hero with Claudicle mascot + mini terminal.
+ * Pixel shimmer grid behind mascot, SVG connection lines, terminal status.
+ */
+const shimmerDelays = Array.from({ length: 64 }, () => (Math.random() * 2.5).toFixed(2));
+---
+
+<div class="clawd-hero" aria-label="Claudicle mascot alongside Claude Code terminal">
+  <div class="clawd-container">
+    <div class="pixel-frame">
+      <div class="pixel-grid" aria-hidden="true">
+        {shimmerDelays.map((delay, i) => (
+          <div class="pixel-cell" style={`--shimmer-delay: ${delay}s`}></div>
+        ))}
+      </div>
+      <img src="/images/services/clawd-mascot-transparent.png" alt="Claudicle, the Claude Code mascot" width="120" height="120" class="clawd-img" />
+    </div>
+    <span class="clawd-label">Claudicle</span>
+    <span class="clawd-subtitle">Your coding Pok&eacute;mon</span>
+  </div>
+
+  <svg class="clawd-connections" viewBox="0 0 120 200" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,60 C40,60 80,40 120,40" class="conn-line" />
+    <path d="M0,100 C40,100 80,100 120,100" class="conn-line" />
+    <path d="M0,140 C40,140 80,160 120,160" class="conn-line" />
+  </svg>
+
+  <div class="clawd-terminal">
+    <div class="ct-chrome">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="ct-title">claude code</span>
+    </div>
+    <div class="ct-lines">
+      <div class="ct-line"><span class="ct-prompt">❯</span> claude "Help me ship this"</div>
+      <div class="ct-response">
+        <div class="ct-status"><span class="ct-dot green"></span> 62 skills ready</div>
+        <div class="ct-status"><span class="ct-dot green"></span> Memory loaded (3 sessions)</div>
+        <div class="ct-status"><span class="ct-dot pulse"></span> Listening...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .clawd-hero {
+    display: grid;
+    grid-template-columns: 200px 120px 1fr;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 40px 0;
+    background: var(--color-background-alt);
+    min-height: 240px;
+  }
+
+  .clawd-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 32px 24px;
+  }
+
+  .pixel-frame {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pixel-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    opacity: 0.15;
+    z-index: 0;
+  }
+
+  .pixel-cell {
+    background: var(--color-primary);
+    opacity: 0;
+    animation: pixel-shimmer 3s ease-in-out infinite;
+    animation-delay: calc(var(--shimmer-delay));
+  }
+
+  @keyframes pixel-shimmer {
+    0%, 100% { opacity: 0; }
+    15%, 25% { opacity: 0.6; }
+  }
+
+  .clawd-img {
+    position: relative;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    image-rendering: pixelated;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .clawd-img:hover {
+    transform: rotate(-3deg) scale(1.05);
+  }
+
+  .clawd-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-primary);
+  }
+
+  .clawd-subtitle {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .clawd-connections {
+    width: 120px;
+    height: 100%;
+  }
+
+  .conn-line {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    animation: conn-flow 2s linear infinite;
+  }
+
+  @keyframes conn-flow {
+    to { stroke-dashoffset: -16; }
+  }
+
+  .clawd-terminal {
+    background: #0d0d0d;
+    padding: 20px 24px;
+    border-left: 1px solid var(--color-border);
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .ct-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.red { background: #FF5F57; }
+  .dot.yellow { background: #FEBC2E; }
+  .dot.green { background: #28C840; }
+
+  .ct-title {
+    margin-left: 8px;
+    font-size: 11px;
+    color: #686868;
+  }
+
+  .ct-line {
+    font-size: 13px;
+    color: #e0e0e0;
+    margin-bottom: 12px;
+  }
+
+  .ct-prompt {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .ct-response {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ct-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #b8b8b8;
+  }
+
+  .ct-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ct-dot.green {
+    background: #2dd47f;
+    box-shadow: 0 0 6px rgba(45, 212, 127, 0.5);
+  }
+
+  .ct-dot.pulse {
+    background: var(--color-primary);
+    animation: listen-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes listen-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @media (max-width: 768px) {
+    .clawd-hero {
+      grid-template-columns: 1fr;
+    }
+    .clawd-container {
+      flex-direction: row;
+      padding: 20px;
+    }
+    .pixel-frame { width: 80px; height: 80px; }
+    .clawd-img { width: 60px; height: 60px; }
+    .clawd-connections { display: none; }
+    .clawd-terminal { border-left: none; border-top: 1px solid var(--color-border); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pixel-cell { animation: none; }
+    .conn-line { animation: none; }
+    .ct-dot.pulse { animation: none; opacity: 1; }
+    .clawd-img:hover { transform: none; }
+  }
+
+  @media (scripting: enabled) {
+    .clawd-hero {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .clawd-hero.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  function initClaudicleHero() {
+    document.querySelectorAll('.clawd-hero').forEach((el) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+    });
+  }
+
+  initClaudicleHero();
+  document.addEventListener('astro:after-swap', initClaudicleHero);
+</script>

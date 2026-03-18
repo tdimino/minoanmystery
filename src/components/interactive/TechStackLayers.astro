@@ -1,0 +1,183 @@
+---
+/**
+ * TechStackLayers — Interactive layered stack visualization.
+ * Replaces static "Stalled Build" mosaic on Custom Applications page.
+ * Shows 4 capability layers that reveal on scroll with hover detail.
+ */
+---
+
+<div class="stack-layers" aria-label="Full-stack development capabilities across 4 layers">
+  <div class="layer layer-infra">
+    <div class="layer-bar"></div>
+    <div class="layer-content">
+      <span class="layer-label">Infrastructure</span>
+      <div class="layer-techs">
+        <span class="tech-pill">Vercel</span>
+        <span class="tech-pill">Cloudflare</span>
+        <span class="tech-pill">Railway</span>
+        <span class="tech-pill">GitHub Actions</span>
+      </div>
+    </div>
+  </div>
+  <div class="layer layer-backend">
+    <div class="layer-bar"></div>
+    <div class="layer-content">
+      <span class="layer-label">Backend</span>
+      <div class="layer-techs">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">Serverless</span>
+        <span class="tech-pill">FastAPI</span>
+      </div>
+    </div>
+  </div>
+  <div class="layer layer-ai">
+    <div class="layer-bar"></div>
+    <div class="layer-content">
+      <span class="layer-label">A.I. / ML</span>
+      <div class="layer-techs">
+        <span class="tech-pill accent">Claude API</span>
+        <span class="tech-pill">OpenAI</span>
+        <span class="tech-pill">Ollama</span>
+        <span class="tech-pill">RAG</span>
+      </div>
+    </div>
+  </div>
+  <div class="layer layer-frontend">
+    <div class="layer-bar"></div>
+    <div class="layer-content">
+      <span class="layer-label">Frontend</span>
+      <div class="layer-techs">
+        <span class="tech-pill">Astro</span>
+        <span class="tech-pill">React</span>
+        <span class="tech-pill">TypeScript</span>
+        <span class="tech-pill">Tailwind</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stack-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 40px 0;
+    background: var(--color-border);
+  }
+
+  .layer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    background: var(--color-background);
+    transition: background 0.35s ease;
+  }
+
+  .layer:hover {
+    background: var(--color-background-alt);
+  }
+
+  .layer-bar {
+    display: none;
+  }
+
+  .layer-content {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .layer-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    min-width: 100px;
+  }
+
+  .layer-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tech-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    background: rgba(var(--color-primary-rgb), 0.06);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+
+  .layer:hover .tech-pill {
+    border-color: rgba(var(--color-primary-rgb), 0.2);
+  }
+
+  .tech-pill.accent {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.2);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .layer-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 16px 20px;
+    }
+    .layer-label { min-width: auto; }
+  }
+
+  @media (scripting: enabled) {
+    .layer {
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.35s ease;
+    }
+    .layer.layer-revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .layer { opacity: 1; transform: none; transition: background 0.35s ease; }
+  }
+</style>
+
+<script>
+  function initStackLayers() {
+    document.querySelectorAll('.stack-layers').forEach((el) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const layers = entry.target.querySelectorAll('.layer');
+              layers.forEach((layer, i) => {
+                setTimeout(() => layer.classList.add('layer-revealed'), 200 + i * 120);
+              });
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      observer.observe(el);
+    });
+  }
+
+  initStackLayers();
+  document.addEventListener('astro:after-swap', initStackLayers);
+</script>

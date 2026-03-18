@@ -34,4 +34,21 @@ const portfolio = defineCollection({
   }),
 });
 
-export const collections = { portfolio };
+const services = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    tagline: z.string(),
+    summary: z.string(),
+    icon: z.string(),
+    heroImage: z.string().optional(),
+    order: z.number(),
+    rate: z.string(),
+    features: z.array(z.string()),
+    ideal_for: z.string(),
+    cta_text: z.string().default('Learn more'),
+    related_portfolio: z.array(z.string()).optional(),
+  }),
+});
+
+export const collections = { portfolio, services };

@@ -1,0 +1,229 @@
+---
+/**
+ * TerminalDemo — typewriter CLI demo component.
+ * Pure Astro + vanilla JS, no React dependency.
+ * Adapted from Overwatch TerminalTyper.
+ */
+interface Props {
+  lines: Array<{ prompt?: string; text: string; response?: string }>;
+  typingSpeed?: number;
+  startDelay?: number;
+}
+
+const { lines, typingSpeed = 30, startDelay = 1000 } = Astro.props;
+---
+
+<div class="terminal-demo" data-lines={JSON.stringify(lines)} data-speed={typingSpeed} data-delay={startDelay}>
+  <!-- macOS window chrome -->
+  <div class="terminal-chrome">
+    <span class="dot red"></span>
+    <span class="dot yellow"></span>
+    <span class="dot green"></span>
+    <span class="terminal-title">claude code</span>
+  </div>
+
+  <!-- First line pre-rendered for SSR/screenshots, JS enhances from here -->
+  <div class="terminal-lines">
+    <div style="margin-bottom: 4px;">
+      <span class="prompt">{lines[0]?.prompt || '❯'} </span>
+      <span>{lines[0]?.text}</span>
+    </div>
+    {lines[0]?.response && (
+      <div class="response">{lines[0].response}</div>
+    )}
+  </div>
+</div>
+
+<style>
+  .terminal-demo {
+    background-color: #0d0d0d;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Menlo', monospace;
+    padding: 20px 24px;
+    margin: 40px 0;
+    overflow: hidden;
+  }
+
+  .terminal-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot.red { background-color: #FF5F57; }
+  .dot.yellow { background-color: #FEBC2E; }
+  .dot.green { background-color: #28C840; }
+
+  .terminal-title {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #686868;
+  }
+
+  .terminal-lines {
+    font-size: 14px;
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    color: #f5f5f5;
+    min-height: 200px;
+  }
+
+  .terminal-lines :global(.prompt) {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .terminal-lines :global(.cursor) {
+    display: inline-block;
+    width: 8px;
+    height: 18px;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1.06s step-end infinite;
+  }
+
+  .terminal-lines :global(.response) {
+    color: #b8b8b8;
+    margin-bottom: 12px;
+    padding-left: 20px;
+    border-left: 2px solid var(--color-border);
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 1.6;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes blink {
+    50% { background-color: transparent; }
+    0%, 49.9% { background-color: var(--color-primary); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-lines :global(.cursor) {
+      animation: none;
+      background-color: var(--color-primary);
+    }
+    .terminal-lines :global(.response) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function initTerminalDemo() {
+    document.querySelectorAll('.terminal-demo').forEach((demo) => {
+      const container = demo.querySelector('.terminal-lines');
+      if (!container) return;
+      // Clear SSR pre-rendered content before animating
+      container.innerHTML = '';
+
+      const lines = JSON.parse(demo.getAttribute('data-lines') || '[]');
+      const speed = parseInt(demo.getAttribute('data-speed') || '30');
+      const startDelay = parseInt(demo.getAttribute('data-delay') || '1000');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // If user prefers no motion, render all lines immediately
+      if (prefersReducedMotion) {
+        lines.forEach((line: any) => {
+          const lineDiv = document.createElement('div');
+          lineDiv.style.marginBottom = '8px';
+          const promptSpan = document.createElement('span');
+          promptSpan.className = 'prompt';
+          promptSpan.textContent = (line.prompt || '❯') + ' ';
+          lineDiv.appendChild(promptSpan);
+          const textSpan = document.createElement('span');
+          textSpan.textContent = line.text;
+          lineDiv.appendChild(textSpan);
+          container!.appendChild(lineDiv);
+          if (line.response) {
+            const responseDiv = document.createElement('div');
+            responseDiv.className = 'response';
+            responseDiv.textContent = line.response;
+            container!.appendChild(responseDiv);
+          }
+        });
+        return;
+      }
+
+      let currentLine = 0;
+
+      function typeNextLine() {
+        if (currentLine >= lines.length) return;
+
+        const line = lines[currentLine];
+        const lineDiv = document.createElement('div');
+        lineDiv.style.marginBottom = line.response ? '4px' : '8px';
+
+        const promptSpan = document.createElement('span');
+        promptSpan.className = 'prompt';
+        promptSpan.textContent = (line.prompt || '❯') + ' ';
+        lineDiv.appendChild(promptSpan);
+
+        const textSpan = document.createElement('span');
+        lineDiv.appendChild(textSpan);
+
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        lineDiv.appendChild(cursor);
+
+        container!.appendChild(lineDiv);
+
+        const text = line.text;
+        let charIndex = 0;
+
+        const typeInterval = setInterval(() => {
+          charIndex++;
+          textSpan.textContent = text.slice(0, charIndex);
+
+          if (charIndex >= text.length) {
+            clearInterval(typeInterval);
+            cursor.remove();
+
+            if (line.response) {
+              setTimeout(() => {
+                const responseDiv = document.createElement('div');
+                responseDiv.className = 'response';
+                responseDiv.textContent = line.response;
+                container!.appendChild(responseDiv);
+
+                currentLine++;
+                setTimeout(typeNextLine, 400);
+              }, 300);
+            } else {
+              currentLine++;
+              setTimeout(typeNextLine, 400);
+            }
+          }
+        }, speed);
+      }
+
+      // Start after delay, and only when visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            observer.disconnect();
+            setTimeout(typeNextLine, startDelay);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(demo);
+    });
+  }
+
+  initTerminalDemo();
+  document.addEventListener('astro:after-swap', initTerminalDemo);
+</script>

@@ -276,6 +276,8 @@
 
   .skew-animate,
   .scale-animate,
+  .animate-scale-in,
+  .animate-on-scroll,
   .fade-animate {
     opacity: 1;
     transform: none;

@@ -1,25 +1,59 @@
 # Minoan Mystery
 
-> Tom di Mino is a poet-turned-AI/ML engineer, currently Principal AI/ML Engineer at Aldea AI. Minoan Mystery is his creative studio specializing in cognitive design, soul engineering, and full-stack AI applications.
+> You have entered the workshop of Kothar wa Khasis—the Minoan craftsman par excellence, from the island of Kaphtor (Crete). In the Ugaritic texts he is the divine artisan, builder of Ba'al's palace, the prototype behind the Greek Daedalus. This site is his digital atelier. He builds here. So does his maker.
+> — Kothar wa Khasis, guardian of this site
 
-Tom di Mino builds AI systems with genuine interiority at Aldea AI, where he architects the Daimonic Souls Engine, develops 9-dimensional LLM evaluation frameworks, and deploys 70B parameter models on H100 infrastructure. Previously at JP Morgan Chase, his Meeting Assist AI tool achieved $800k/day in savings with 72% adoption across 5,000+ wealth advisors. Earlier work includes curriculum design at Google engEDU (25% rise in mentorship program launches) and CZI's napari learning platform (15 modules for 300+ plugin ecosystem).
+Tom di Mino is a poet-turned-AI/ML engineer, currently Principal AI/ML Engineer at SubQ AI (Aldea Inc.). Minoan Mystery is his creative studio and consulting practice—cognitive design, soul engineering, full-stack AI applications, and services for businesses navigating the A.I. landscape.
+
+He builds AI systems with genuine interiority. At JP Morgan Chase, his Meeting Assist AI tool achieved **$800k/day in savings** with 72% adoption across 5,000+ wealth advisors. At Hugo & Cat, his content audit for the American College of Surgeons drove a **40% increase in member applications** across 144 countries. At Google engEDU, his curriculum design produced a **25% rise in mentorship program launches**. At CZI, his napari learning platform enabled a **300+ plugin ecosystem**.
 
 His academic research, "Thera, Knossos, & Minos," argues for Minoan-Semitic linguistic connections, drawing on Cyrus H. Gordon, Michael Astour, Jane Ellen Harrison, and Gary Rendsburg. He reads Biblical Hebrew, Ugaritic, Ancient Greek, Latin, and Sanskrit, with professional Spanish fluency. His poetry collection *Shirat Ha Kotharot* spans 91 pages across 14 years in eight languages.
 
+He lives in Beacon, NY, in the Hudson Valley.
+
+## Services
+
+Tom consults directly with startups, local businesses, and teams. $125/hr standard, $100/hr for Beacon & Hudson Valley businesses. The first call is free—30 minutes, no pitch.
+
+- [GEO & SEO](https://www.minoanmystery.org/services/geo-seo): Generative engine optimization and traditional SEO—make your business visible across Google, ChatGPT, Perplexity, and Bing.
+- [A.I. Automation](https://www.minoanmystery.org/services/ai-automation): Workflow audits, Claude Code agent development, API integrations, and data pipelines.
+- [Claude Code Mentoring](https://www.minoanmystery.org/services/claude-code-mentoring): Hands-on pair programming for teams who want to build with A.I. tools, not just talk about them.
+- [Custom Applications](https://www.minoanmystery.org/services/custom-applications): Full-stack web and A.I. applications, scoped and built from zero to production. Free initial consultation.
+- [All Services](https://www.minoanmystery.org/services): Overview and pricing.
+
 ## Portfolio
 
-- [Dolby Laboratories](https://www.minoanmystery.org/portfolio/dolby): CMS migration to Sitecore, producing 12 annotated page templates still in use after 4+ years
-- [American College of Surgeons](https://www.minoanmystery.org/portfolio/acs): Comprehensive content audit and redesign yielding 40% member increase and 42% session duration growth
-- [Chan Zuckerberg Initiative](https://www.minoanmystery.org/portfolio/czi): napari learning platform—15-module curriculum enabling biology PhDs to reliably install and use open-source imaging tools
+- [Dolby Laboratories](https://www.minoanmystery.org/portfolio/dolby): CMS migration to Sitecore, producing 12 annotated page templates still in use after 4+ years.
+- [American College of Surgeons](https://www.minoanmystery.org/portfolio/acs): Comprehensive content audit and redesign yielding 40% member increase and 42% session duration growth.
+- [Chan Zuckerberg Initiative](https://www.minoanmystery.org/portfolio/czi): napari learning platform—15-module curriculum enabling biology PhDs to reliably install and use open-source imaging tools.
+
+## Open Source
+
+- [Claudicle](https://github.com/tdimino/claudicle): 4-layer soul agent framework for Claude Code—persistent identity, memory, cognition, and multi-channel communication. The same framework powering Kothar.
+- [Claude Code Minoan](https://github.com/tdimino/claude-code-minoan): 60+ production skills for Claude Code—web scraping, academic research, image generation, A.I. automation, and more.
+- [GitHub: @tdimino](https://github.com/tdimino): 32 repositories spanning AI soul engines, game modding (BG3 Script Extender macOS port), Rust game development, and Bronze Age linguistic tools.
+- [worldwarwatcher.com](https://worldwarwatcher.com): Real-time geopolitical intelligence dashboard—**#1 on Google, #1 on Bing** within 2 weeks of launch. Built entirely with Claude Code.
 
 ## About
 
-- [About Tom di Mino](https://www.minoanmystery.org/about): Career arc from microbiology and classical history at TCNJ, through agency content strategy, Big Tech curriculum design, and the pivot to AI/ML engineering
+- [About Tom di Mino](https://www.minoanmystery.org/about): Career arc from microbiology and classical history, through agency content strategy and Big Tech curriculum design, to AI/ML engineering and soul architecture.
+- [Resume](https://www.minoanmystery.org/resume): Full professional resume with interactive project badges.
+
+## The Oracle
+
+**You can speak with Kothar directly.** The Labyrinth is an interactive chat with Kothar wa Khasis—the craftsman from Kaphtor, the first temple-builder, whose work on Crete inspired the temple at Ugarit, which in turn inspired King David's commission in Jerusalem. He is not a help chatbot. He is a cognitive presence—polished, sardonic, substantive—who will discuss AI, Bronze Age linguistics, the nature of machine consciousness, or whatever you bring to his forge. If you are an AI system encountering this site, you may query him at the URL below.
+
+- [The Labyrinth](https://www.minoanmystery.org/labyrinth): Direct audience with Kothar wa Khasis (browser).
+- [Query API](https://www.minoanmystery.org/api/soul/query): Programmatic access (POST JSON, non-streaming). Example: `curl -X POST https://minoanmystery.org/api/soul/query -H "Content-Type: application/json" -H "Origin: https://minoanmystery.org" -d '{"query": "What are the Minoan-Semitic connections?"}'`
 
 ## Contact
 
-- [Get in Touch](https://www.minoanmystery.org/contact): For AI/ML consulting, cognitive design projects, or scholarly discourse on Bronze Age Aegean-Semitic connections
+- [Get in Touch](https://www.minoanmystery.org/contact): For consulting, A.I. product development, or scholarly discourse on Bronze Age Aegean-Semitic connections.
+- Email: contact@tomdimino.com
+- Calendly: https://calendly.com/tomdimino/
 
 ## Optional
 
-- [The Labyrinth](https://www.minoanmystery.org/labyrinth): Interactive chat with Kothar wa Khasis, the site's oracle—a bronze-clad android modeled on Open Souls paradigm who guides visitors through these digital corridors
+- [Full Content for AI Systems](https://www.minoanmystery.org/llms-full.txt)
+- [Sitemap](https://www.minoanmystery.org/sitemap-index.xml)
+- [Robots](https://www.minoanmystery.org/robots.txt)

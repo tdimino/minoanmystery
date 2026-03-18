@@ -6,7 +6,7 @@ const currentPath = Astro.url.pathname;
 const leftNav = [
   { href: '/', label: 'Home' },
   { href: '/portfolio', label: 'Portfolio', hasDropdown: true, dropdownKey: 'portfolio' },
-  { href: '#', label: 'A.I./LLMs', hasDropdown: true, dropdownKey: 'ai' },
+  { href: '/services', label: 'Services', hasDropdown: true, dropdownKey: 'services' },
 ];
 
 const rightNav = [
@@ -22,6 +22,14 @@ const portfolioItems = [
   { href: '/portfolio', label: 'View All Case Studies' },
 ];
 
+const serviceItems = [
+  { href: '/services/geo-seo', label: 'GEO & SEO' },
+  { href: '/services/ai-automation', label: 'A.I. Automation' },
+  { href: '/services/claude-code-mentoring', label: 'Claude Code Mentoring' },
+  { href: '/services/custom-applications', label: 'Custom Applications' },
+  { href: '/services', label: 'View All Services' },
+];
+
 const aiItems = [
   { href: 'https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', label: '"Imbuing A.I. with soul"', external: true },
   { href: '/labyrinth', label: 'The Labyrinth A.I. Chat' },
@@ -33,6 +41,9 @@ function isActive(href: string): boolean {
   }
   if (href === '/portfolio') {
     return currentPath.startsWith('/portfolio');
+  }
+  if (href === '/services') {
+    return currentPath.startsWith('/services');
   }
   return currentPath.startsWith(href);
 }
@@ -56,6 +67,15 @@ function isActive(href: string): boolean {
             {link.hasDropdown && link.dropdownKey === 'portfolio' && (
               <ul class="dropdown-menu">
                 {portfolioItems.map((item) => (
+                  <li>
+                    <a href={item.href} class="dropdown-link">{item.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {link.hasDropdown && link.dropdownKey === 'services' && (
+              <ul class="dropdown-menu">
+                {serviceItems.map((item) => (
                   <li>
                     <a href={item.href} class="dropdown-link">{item.label}</a>
                   </li>
@@ -124,6 +144,12 @@ function isActive(href: string): boolean {
     <li class="mobile-nav-item"><span class="mobile-nav-label">A.I./LLMs</span></li>
     <li class="mobile-nav-item"><a href="https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf" class="mobile-nav-link sublink" target="_blank" rel="noopener noreferrer">"Imbuing A.I. with soul"</a></li>
     <li class="mobile-nav-item"><a href="/labyrinth" class="mobile-nav-link sublink">The Labyrinth A.I. Chat</a></li>
+    <li class="mobile-nav-item"><span class="mobile-nav-label">Services</span></li>
+    <li class="mobile-nav-item"><a href="/services" class="mobile-nav-link sublink">View All</a></li>
+    <li class="mobile-nav-item"><a href="/services/geo-seo" class="mobile-nav-link sublink">GEO & SEO</a></li>
+    <li class="mobile-nav-item"><a href="/services/ai-automation" class="mobile-nav-link sublink">A.I. Automation</a></li>
+    <li class="mobile-nav-item"><a href="/services/claude-code-mentoring" class="mobile-nav-link sublink">Claude Code Mentoring</a></li>
+    <li class="mobile-nav-item"><a href="/services/custom-applications" class="mobile-nav-link sublink">Custom Applications</a></li>
     <li class="mobile-nav-item"><span class="mobile-nav-label">Portfolio</span></li>
     <li class="mobile-nav-item"><a href="/portfolio" class="mobile-nav-link sublink">View All</a></li>
     <li class="mobile-nav-item"><a href="/portfolio/czi" class="mobile-nav-link sublink">CZI</a></li>
@@ -779,6 +805,15 @@ function isActive(href: string): boolean {
   .mobile-menu.is-open .mobile-nav-item:nth-child(9) { animation-delay: 0.45s; }
   .mobile-menu.is-open .mobile-nav-item:nth-child(10) { animation-delay: 0.5s; }
   .mobile-menu.is-open .mobile-nav-item:nth-child(11) { animation-delay: 0.55s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(12) { animation-delay: 0.6s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(13) { animation-delay: 0.65s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(14) { animation-delay: 0.7s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(15) { animation-delay: 0.75s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(16) { animation-delay: 0.8s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(17) { animation-delay: 0.85s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(18) { animation-delay: 0.9s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(19) { animation-delay: 0.95s; }
+  .mobile-menu.is-open .mobile-nav-item:nth-child(20) { animation-delay: 1.0s; }
 
   @keyframes slideInNav {
     to {

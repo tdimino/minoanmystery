@@ -1,0 +1,314 @@
+---
+/**
+ * BlueprintForge — System Topology hero for Custom Applications.
+ * 4-column architecture diagram with animated data-flow SVG paths.
+ * Frontend → Backend → Database → LLM/AI.
+ * Overwatch: data-dense, monospace, dark command center.
+ */
+const columns = [
+  {
+    id: 'frontend',
+    label: 'Frontend',
+    color: '#d4a843',
+    icon: 'ph-browser',
+    techs: ['Astro', 'React', 'TypeScript', 'Tailwind'],
+  },
+  {
+    id: 'backend',
+    label: 'Backend',
+    color: '#966a85',
+    icon: 'ph-terminal',
+    techs: ['Python', 'Node.js', 'FastAPI', 'Serverless'],
+  },
+  {
+    id: 'database',
+    label: 'Database',
+    color: '#2dd4bf',
+    icon: 'ph-database',
+    techs: ['Supabase', 'SQLite', 'Redis', 'pgvector'],
+  },
+  {
+    id: 'ai',
+    label: 'LLM / AI',
+    color: '#6366f1',
+    icon: 'ph-brain',
+    techs: ['Claude API', 'Ollama', 'RAG', 'LoRA'],
+  },
+];
+---
+
+<div class="system-topology" aria-label="Full-stack application architecture: Frontend, Backend, Database, and LLM/AI layers">
+  <div class="st-header">
+    <span class="st-label">System Architecture</span>
+    <span class="st-badge"><span class="st-count" data-target="6">0</span> shipped</span>
+  </div>
+
+  <div class="st-diagram">
+    {columns.map((col, i) => (
+      <div class={`st-column`} style={`--col-color: ${col.color}; --stagger: ${i * 120}ms`} data-col={col.id}>
+        <div class="st-col-header">
+          <i class={`ph ${col.icon}`} aria-hidden="true"></i>
+          <span class="st-col-label">{col.label}</span>
+        </div>
+        <div class="st-techs">
+          {col.techs.map((t, j) => (
+            <div class="st-tech" style={`--tech-stagger: ${i * 120 + j * 60}ms`}>
+              <span class="st-tech-dot" aria-hidden="true"></span>
+              <span class="st-tech-name">{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {/* Connection SVGs between columns */}
+    <svg class="st-connections" viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C50,40 50,40 100,40" class="st-path" />
+      <path d="M0,80 C50,80 50,80 100,80" class="st-path" />
+      <path d="M0,120 C50,120 50,120 100,120" class="st-path" />
+      <path d="M0,160 C50,160 50,160 100,160" class="st-path" />
+    </svg>
+    <svg class="st-connections" viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C50,40 50,40 100,40" class="st-path" />
+      <path d="M0,80 C50,80 50,80 100,80" class="st-path" />
+      <path d="M0,120 C50,120 50,120 100,120" class="st-path" />
+      <path d="M0,160 C50,160 50,160 100,160" class="st-path" />
+    </svg>
+    <svg class="st-connections" viewBox="0 0 100 200" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C50,40 50,40 100,40" class="st-path" />
+      <path d="M0,80 C50,80 50,80 100,80" class="st-path" />
+      <path d="M0,120 C50,120 50,120 100,120" class="st-path" />
+      <path d="M0,160 C50,160 50,160 100,160" class="st-path" />
+    </svg>
+  </div>
+
+  <div class="st-footer">
+    <span class="st-footer-text">Vercel</span>
+    <span class="st-footer-sep">·</span>
+    <span class="st-footer-text">Cloudflare</span>
+    <span class="st-footer-sep">·</span>
+    <span class="st-footer-text">Railway</span>
+    <span class="st-footer-sep">·</span>
+    <span class="st-footer-text">GitHub Actions</span>
+  </div>
+</div>
+
+<style>
+  .system-topology {
+    background: #0d0d0d;
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .st-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .st-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #666;
+  }
+
+  .st-badge {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: #888;
+  }
+
+  .st-count {
+    font-weight: 800;
+    color: var(--color-accent);
+  }
+
+  .st-diagram {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: start;
+    padding: 28px 20px;
+    gap: 0;
+  }
+
+  .st-column {
+    padding: 16px;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background: #111;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .st-column:hover {
+    border-color: var(--col-color);
+    background: #161616;
+  }
+
+  .st-col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .st-col-header i {
+    font-size: 16px;
+    color: var(--col-color);
+  }
+
+  .st-col-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--col-color);
+  }
+
+  .st-techs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .st-tech {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    color: #ccc;
+  }
+
+  .st-tech-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--col-color);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--col-color);
+  }
+
+  .st-connections {
+    width: 100%;
+    height: 200px;
+    align-self: center;
+    max-width: 40px;
+  }
+
+  .st-path {
+    fill: none;
+    stroke: #2a2a2a;
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+    animation: st-flow 1.2s linear infinite;
+  }
+
+  @keyframes st-flow { to { stroke-dashoffset: -14; } }
+
+  .st-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-top: 1px solid #1e1e1e;
+  }
+
+  .st-footer-text {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    color: #555;
+    letter-spacing: 0.04em;
+  }
+
+  .st-footer-sep { color: #333; font-size: 10px; }
+
+  @media (max-width: 768px) {
+    .st-diagram {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .st-connections { display: none; }
+    .st-column { padding: 12px; }
+    .st-techs { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .st-tech { font-size: 11px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .st-path { animation: none; }
+  }
+
+  @media (scripting: enabled) {
+    .system-topology:not(.is-visible) {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .system-topology.is-visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .st-column {
+      opacity: 0; transform: translateY(8px);
+    }
+    .system-topology.is-visible .st-column {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.4s ease var(--stagger), transform 0.4s ease var(--stagger);
+    }
+    .st-tech {
+      opacity: 0;
+    }
+    .system-topology.is-visible .st-tech {
+      opacity: 1;
+      transition: opacity 0.3s ease var(--tech-stagger);
+    }
+  }
+</style>
+
+<script>
+  function initSystemTopology() {
+    document.querySelectorAll('.system-topology').forEach((el) => {
+      let counted = false;
+
+      function animateCounter() {
+        if (counted) return;
+        counted = true;
+        el.querySelectorAll('.st-count').forEach((counter) => {
+          const target = parseInt((counter as HTMLElement).dataset.target || '0', 10);
+          let current = 0;
+          const interval = setInterval(() => {
+            current++;
+            counter.textContent = String(current);
+            if (current >= target) clearInterval(interval);
+          }, 150);
+        });
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              animateCounter();
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); animateCounter(); } }, 2000);
+    });
+  }
+
+  initSystemTopology();
+  document.addEventListener('astro:after-swap', initSystemTopology);
+</script>

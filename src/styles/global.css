@@ -65,9 +65,9 @@
   --color-primary-light: #7a2b7a;
   --color-text: #0d0d0d; /* rgb(13, 13, 13) */
   --color-text-muted: #686868; /* rgb(104, 104, 104) */
-  --color-background: #ffffff;
-  --color-background-rgb: 255, 255, 255; /* For rgba() usage */
-  --color-background-alt: #f5f5f5;
+  --color-background: #faf8f5; /* warm parchment-white */
+  --color-background-rgb: 250, 248, 245; /* For rgba() usage */
+  --color-background-alt: #f2efe9; /* warmed correspondingly */
   --color-border: #dfdfdf; /* Match Webflow --neutral-300 */
   --color-accent: #d4af37;
   --color-highlight: rgb(255, 248, 201); /* Pale yellow highlight - matches Webflow */
@@ -125,6 +125,7 @@
   --color-primary: #c9a0b8;        /* Brightened for better contrast (8.52:1) */
   --color-primary-rgb: 201, 160, 184; /* For rgba() usage */
   --color-primary-dark: #966a85;
+  --color-accent: #d4af37;          /* Gold — unchanged in dark mode */
   --color-highlight: rgba(201, 160, 184, 0.35);  /* Brighter purple tint for visibility */
   --color-destructive: #f87171;
   --color-destructive-hover: #ef4444;

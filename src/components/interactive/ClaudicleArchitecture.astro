@@ -1,0 +1,334 @@
+---
+/**
+ * ClaudicleArchitecture — 4-layer accordion for Claudicle soul agent framework.
+ * Identity → Cognition → Memory → Channels with expand/collapse, GitHub links, star counts.
+ * Replaces proof-mentoring.jpg.
+ */
+const layers = [
+  {
+    id: 'identity',
+    label: 'Identity',
+    color: 'var(--color-primary)',
+    icon: 'ph-fingerprint',
+    description: 'Persistent soul definition, personality templates, multi-profile switching. The soul.md file defines who Claude becomes across sessions.',
+    repo: { name: 'claudicle', url: 'https://github.com/tdimino/claudicle', stars: 5 },
+  },
+  {
+    id: 'cognition',
+    label: 'Cognition',
+    color: 'var(--color-accent)',
+    icon: 'ph-brain',
+    description: '12 sub-daimones for specialized reasoning—research, reflection, design, verification, memory retrieval. Each runs as a focused subagent with constrained tools.',
+    repo: { name: 'claude-code-minoan', url: 'https://github.com/tdimino/claude-code-minoan', stars: 12 },
+  },
+  {
+    id: 'memory',
+    label: 'Memory',
+    color: '#2dd47f',
+    icon: 'ph-database',
+    description: 'Three-tier persistent memory across terminal, Slack, and SMS channels. Working memory, soul memory, and user models survive across sessions and machines.',
+    repo: null,
+  },
+  {
+    id: 'channels',
+    label: 'Channels',
+    color: 'var(--color-text-muted)',
+    icon: 'ph-plugs-connected',
+    description: 'Terminal, Slack Socket Mode, SMS via Telnyx/Twilio, REST API. Each channel adapter maps to the same soul engine with channel-specific formatting.',
+    repo: { name: 'dabarat', url: 'https://github.com/tdimino/dabarat', stars: 8 },
+  },
+];
+---
+
+<div class="claudicle-arch" aria-label="Claudicle 4-layer soul agent architecture">
+  <div class="arch-header">
+    <div class="arch-badge">
+      <img src="/images/services/clawd-mascot-transparent.png" alt="" width="32" height="32" class="arch-mascot" />
+      <span class="arch-badge-label">Claudicle</span>
+    </div>
+    <span class="arch-subtitle">Open-source soul agent framework</span>
+  </div>
+
+  <div class="arch-layers">
+    {layers.map((layer, i) => (
+      <div
+        class={`arch-layer ${i === 0 ? 'expanded' : ''}`}
+        data-layer={layer.id}
+        style={`--layer-color: ${layer.color}; --stagger: ${i * 0.1}s`}
+      >
+        <button class="arch-layer-header" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`layer-content-${layer.id}`}>
+          <span class="layer-color-bar" aria-hidden="true"></span>
+          <i class={`ph ${layer.icon}`} aria-hidden="true"></i>
+          <span class="layer-name">{layer.label}</span>
+          <span class="layer-chevron" aria-hidden="true">
+            <i class="ph ph-caret-down"></i>
+          </span>
+        </button>
+        <div class="arch-layer-content" id={`layer-content-${layer.id}`}>
+          <p class="layer-desc">{layer.description}</p>
+          {layer.repo && (
+            <a href={layer.repo.url} class="repo-link" target="_blank" rel="noopener noreferrer">
+              <i class="ph ph-github-logo" aria-hidden="true"></i>
+              <span>{layer.repo.name}</span>
+              <span class="repo-stars">
+                <i class="ph ph-star" aria-hidden="true"></i>
+                <span class="star-count" data-target={layer.repo.stars}>0</span>
+              </span>
+            </a>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .claudicle-arch {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 40px 0;
+    background: var(--color-background-alt);
+  }
+
+  .arch-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .arch-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .arch-mascot {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  .arch-badge-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .arch-subtitle {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .arch-layers {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .arch-layer {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .arch-layer:last-child {
+    border-bottom: none;
+  }
+
+  .arch-layer-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    transition: background 0.2s ease;
+  }
+
+  .arch-layer-header:hover {
+    background: rgba(128, 128, 128, 0.05);
+  }
+
+  .layer-color-bar {
+    display: none;
+  }
+
+  .arch-layer-header i:first-of-type {
+    color: var(--layer-color);
+    font-size: 16px;
+  }
+
+  .layer-name {
+    flex: 1;
+    text-align: left;
+  }
+
+  .layer-chevron {
+    transition: transform 0.3s ease;
+    color: var(--color-text-muted);
+    font-size: 14px;
+  }
+
+  .arch-layer.expanded .layer-chevron {
+    transform: rotate(180deg);
+  }
+
+  .arch-layer-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: 0 20px 0 55px;
+  }
+
+  .arch-layer.expanded .arch-layer-content {
+    max-height: 200px;
+    padding: 0 20px 16px 55px;
+  }
+
+  .layer-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0 0 12px 0;
+  }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .repo-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .repo-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--color-accent);
+  }
+
+  .repo-stars i {
+    font-size: 11px;
+  }
+
+  .star-count {
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .arch-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .arch-layer-content {
+      padding-left: 20px;
+    }
+
+    .arch-layer.expanded .arch-layer-content {
+      padding-left: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arch-layer-content { transition: none; }
+    .layer-chevron { transition: none; }
+  }
+
+  @media (scripting: enabled) {
+    .claudicle-arch:not(.is-visible) {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .claudicle-arch.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+  }
+</style>
+
+<script>
+  function initClaudicleArch() {
+    document.querySelectorAll('.claudicle-arch').forEach((el) => {
+      // Accordion toggle
+      el.querySelectorAll('.arch-layer-header').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const layer = btn.closest('.arch-layer');
+          if (!layer) return;
+          const isExpanded = layer.classList.contains('expanded');
+
+          // Close all layers in this accordion
+          el.querySelectorAll('.arch-layer').forEach((l) => {
+            l.classList.remove('expanded');
+            l.querySelector('.arch-layer-header')?.setAttribute('aria-expanded', 'false');
+          });
+
+          // Toggle clicked layer
+          if (!isExpanded) {
+            layer.classList.add('expanded');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      // Animated star counters
+      let starsAnimated = false;
+      function animateStars() {
+        if (starsAnimated) return;
+        starsAnimated = true;
+        el.querySelectorAll('.star-count').forEach((counter) => {
+          const target = parseInt(counter.dataset.target || '0', 10);
+          let current = 0;
+          const step = Math.max(1, Math.floor(target / 15));
+          const interval = setInterval(() => {
+            current = Math.min(current + step, target);
+            counter.textContent = String(current);
+            if (current >= target) clearInterval(interval);
+          }, 60);
+        });
+      }
+
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              animateStars();
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); animateStars(); } }, 2000);
+    });
+  }
+
+  initClaudicleArch();
+  document.addEventListener('astro:after-swap', initClaudicleArch);
+</script>

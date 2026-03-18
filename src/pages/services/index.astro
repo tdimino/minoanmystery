@@ -1,0 +1,1450 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import StructuredData from '../../components/StructuredData.astro';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+
+// Feature → Phosphor icon mapping
+const featureIcons: Record<string, string> = {
+  // GEO/SEO
+  'Technical SEO audit': 'ph-magnifying-glass',
+  'GEO optimization and llms.txt': 'ph-robot',
+  'Structured data (JSON-LD)': 'ph-code',
+  'A.I. crawler strategy': 'ph-compass',
+  'Content strategy for generative engines': 'ph-article',
+  'Local SEO and listing management': 'ph-map-pin',
+  // AI Automation
+  'Workflow audit and automation roadmap': 'ph-chart-line-up',
+  'Claude Code agent development': 'ph-terminal-window',
+  'LLM fine-tuning (LoRA, SFT, DPO)': 'ph-brain',
+  'Model hosting and serving (GPU fleet, local inference)': 'ph-cpu',
+  'Evaluation and safety (LLM-as-judge, adversarial testing)': 'ph-target',
+  'RAG systems (vector search, reranking)': 'ph-database',
+  'API integrations and data pipelines': 'ph-plugs-connected',
+  'API integrations': 'ph-plugs-connected',
+  'Data extraction and processing pipelines': 'ph-funnel',
+  'Monitoring and alerts': 'ph-bell-ringing',
+  // Mentoring
+  'Team capability assessment': 'ph-users',
+  '1-on-1 or small group pair programming': 'ph-handshake',
+  'Custom workflow templates': 'ph-file-code',
+  'CLAUDE.md and project instruction setup': 'ph-gear-six',
+  'Follow-up support (30 days)': 'ph-headset',
+  // Custom Applications
+  'Technical scoping and architecture': 'ph-blueprint',
+  'Full-stack development': 'ph-brackets-curly',
+  'A.I./ML integration': 'ph-brain',
+  'Deployment and hosting': 'ph-cloud-arrow-up',
+  'Documentation and handoff': 'ph-scroll',
+  '30 days post-launch support': 'ph-lifebuoy',
+};
+
+const medallions = [
+  '/images/services/medallions/geo-seo.png',
+  '/images/services/medallions/ai-automation.png',
+  '/images/services/medallions/mentoring.png',
+  '/images/services/medallions/custom-apps.png',
+];
+
+const collages = [
+  {
+    src: '/images/services/collages/collage-knossos-lg.jpg',
+    title: 'Knights of Mykenai',
+    subtitle: 'Mixed-media collage on paper',
+    description: 'Palace reconstruction, marine-style pottery motif, cuneiform tablet, Mycenaean gold lion—the Bronze Age Aegean as a Semitic-speaking world.',
+    poem: `<strong><em>Am ha Yam ani
+U beiti Kaphtor
+Baruch iyat Tinit
+Ki ne'emar
+Kretanit Jed'anit
+Ba'alat barat</em></strong>
+
+"I am a Sea People
+And my home is Crete
+Blessed isle of Tinit
+For it is said:
+A wise Cretan woman
+You created, Mistress"`,
+    poemTitle: 'Shirat Ha Yamu',
+    poemSubtitle: 'The Song of the Serpent\'s Sea (#69)',
+  },
+  {
+    src: '/images/services/collages/collage-lycian-lg.jpg',
+    title: 'Matrilineal Descent',
+    subtitle: 'Mixed-media collage on paper',
+    description: 'Lycian, Etruscan, and Cretan matrilineal succession texts, African goddess figure, Minoan mosaic borders—the feminine line that archaeological convention has tried to erase.',
+    poem: `<strong><em>Beresheit Ba'alat barat
+Eilim wa ha Shamayim
+Et wa Haretz</em></strong>
+
+"In Beginning, Mistress you created
+The angels, the heavens
+And the essence of the Earth"`,
+    poemTitle: 'Shirat Ha Kotharot',
+    poemSubtitle: 'Upon hearing Genesis in Biblical Hebrew (#68)',
+  },
+  {
+    src: '/images/services/collages/collage-bluejay-lg.jpg',
+    title: 'Where the Squirrels Hid',
+    subtitle: 'Mixed-media collage on paper',
+    description: 'Blue jay, archaic ceramic face, sheet music, lace, pink shell, antique map, cats—the cabinet of domestic mysteries, where the ancient and the intimate coexist.',
+    poem: `in a form of faces — the
+lips we kiss with — a shore
+of words wet as the sea of
+nymphs when sky is veiled,
+the day a tapestry, and ancient song
+repeats, its notes floating like flames
+the shadows a boy might chase if demons
+sang more like Muses`,
+    poemTitle: 'Deluge by Dawn',
+    poemSubtitle: '#21',
+  },
+];
+---
+
+<BaseLayout
+  title="Services"
+  description="GEO/SEO, A.I. automation, Claude Code mentoring, and custom application development. $125/hr standard, $100/hr for Beacon & Hudson Valley businesses. Pro-bono audits and consultations."
+  image="/images/og/og-about.png"
+>
+  <StructuredData schemas={[
+    {
+      type: "ItemList",
+      data: {
+        "@id": "https://www.minoanmystery.org/services/#itemlist",
+        name: "Tom di Mino's Consulting Services",
+        description: "Professional services in GEO/SEO, A.I. automation, Claude Code mentoring, and custom application development.",
+        numberOfItems: services.length,
+        itemListElement: services.map((entry, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: `https://www.minoanmystery.org/services/${entry.slug}`,
+          name: entry.data.title,
+          description: entry.data.summary
+        }))
+      }
+    },
+    ...services.map(entry => ({
+      type: "Service" as const,
+      data: {
+        name: entry.data.title,
+        description: entry.data.summary,
+        provider: {
+          "@type": "Person",
+          "@id": "https://www.minoanmystery.org/#person",
+          name: "Tom di Mino"
+        },
+        areaServed: ["United States", "Hudson Valley, New York", "Beacon, NY"],
+        url: `https://www.minoanmystery.org/services/${entry.slug}`
+      }
+    })),
+    {
+      type: "BreadcrumbList",
+      data: {
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.minoanmystery.org/" },
+          { "@type": "ListItem", position: 2, name: "Services" }
+        ]
+      }
+    }
+  ]} />
+  <link rel="stylesheet" href="/fonts/phosphor.css" slot="head" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" slot="head" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin slot="head" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" slot="head" />
+  <Header slot="header" />
+
+  <!-- Hero Section -->
+  <section class="services-hero">
+    <div class="container">
+      <h1 class="animate-on-scroll">What I build, teach, and optimize—for startups, businesses, and teams navigating <span class="ai-underline">A.I.</span></h1>
+      <p class="paragraph-large fade-animate">
+        I've spent a decade shipping content strategy, product design, and A.I. systems for JPMorgan Chase, Google, CZI, the <a href="/portfolio/acs">American College of Surgeons</a>, and <a href="/portfolio/dolby">Dolby Labs</a>. Now I bring that same toolkit to smaller companies, local businesses, and teams who need to move fast without hiring an agency. Four services, one engineer, no fluff.
+      </p>
+    </div>
+  </section>
+
+  <!-- Collage Gallery -->
+  <section class="collage-gallery-section" aria-label="Original mixed-media collages">
+    <div class="collage-gallery" role="group" aria-label="Hand-made collages by Tom di Mino">
+      <div class="collage-frame" tabindex="0">
+        <picture>
+          <source srcset="/images/services/collages/collage-knossos-sm.webp 400w, /images/services/collages/collage-knossos-md.webp 600w, /images/services/collages/collage-knossos-lg.webp 800w" sizes="(max-width: 767px) 75vw, (max-width: 991px) 45vw, 33vw" type="image/webp" />
+          <img src="/images/services/collages/collage-knossos-lg.jpg" alt="Knights of Mykenai — mixed-media collage" loading="eager" decoding="async" width="800" height="1000" />
+        </picture>
+        <span class="poem-whisper" aria-hidden="true">Am ha Yam ani<br/>U beiti Kaphtor</span>
+      </div>
+      <div class="collage-frame" tabindex="0">
+        <picture>
+          <source srcset="/images/services/collages/collage-lycian-sm.webp 400w, /images/services/collages/collage-lycian-md.webp 600w, /images/services/collages/collage-lycian-lg.webp 800w" sizes="(max-width: 767px) 75vw, (max-width: 991px) 45vw, 33vw" type="image/webp" />
+          <img src="/images/services/collages/collage-lycian-lg.jpg" alt="Matrilineal Descent — mixed-media collage" loading="eager" decoding="async" width="800" height="1000" />
+        </picture>
+        <span class="poem-whisper" aria-hidden="true">Beresheit Ba'alat barat<br/>Eilim wa ha Shamayim</span>
+      </div>
+      <div class="collage-frame" tabindex="0">
+        <picture>
+          <source srcset="/images/services/collages/collage-bluejay-sm.webp 400w, /images/services/collages/collage-bluejay-md.webp 600w, /images/services/collages/collage-bluejay-lg.webp 800w" sizes="(max-width: 767px) 75vw, (max-width: 991px) 45vw, 33vw" type="image/webp" />
+          <img src="/images/services/collages/collage-bluejay-lg.jpg" alt="Blue Jay / Archaic Face — mixed-media collage" loading="eager" decoding="async" width="800" height="1000" />
+        </picture>
+        <span class="poem-whisper" aria-hidden="true">in a form of faces—the<br/>lips we kiss with</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider"></div>
+  </div>
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <div class="container">
+      <div class="services-list">
+        {services.map((entry, index) => (
+          <article
+            class={`service-entry animate-scale-in ${index === 0 ? 'first' : ''}`}
+            style={`transition-delay: ${index * 0.1}s`}
+          >
+            <img src={medallions[index]} alt="" class="service-medallion-bg" loading="lazy" aria-hidden="true" />
+            <div class="service-identity">
+              <i class={`ph ${entry.data.icon} service-icon`} aria-hidden="true"></i>
+              <h3 class="service-name">
+                <a href={`/services/${entry.slug}`}>{entry.data.title}</a>
+              </h3>
+              <div class="service-rate">{entry.data.rate}</div>
+            </div>
+            <div class="service-details">
+              <p class="service-tagline" set:html={
+                entry.data.tagline
+                  .replace(/Google/g, '<span class="platform-pill">Google</span>')
+                  .replace(/ChatGPT/g, '<span class="platform-pill">ChatGPT</span>')
+                  .replace(/Perplexity/g, '<span class="platform-pill">Perplexity</span>')
+                  .replace(/Bing/g, '<span class="platform-pill">Bing</span>')
+                  .replace(/Claude Code/g, '<span class="platform-pill accent">Claude Code</span>')
+              } />
+              <ul class="service-features">
+                {entry.data.features.slice(0, 4).map((feature: string, fi: number) => (
+                  <li class="feature-item" style={`--fi: ${fi}`}>
+                    <i class={`ph ${featureIcons[feature] || 'ph-check-circle'} feature-icon`} aria-hidden="true"></i>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="service-ideal"><em>{entry.data.ideal_for}</em></p>
+              <a href={`/services/${entry.slug}`} class="service-cta">
+                <span class="service-cta-text">
+                  <span>{entry.data.cta_text}</span>
+                  <span class="arrow-icon"></span>
+                </span>
+                <span class="service-cta-underline"></span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Rate -->
+  <section class="community-section">
+    <div class="container">
+      <div class="community-inner fade-animate">
+        <div class="community-grid">
+          <div class="community-header">
+            <h2>Beacon & Hudson Valley</h2>
+            <div class="community-rate">$100<span class="rate-suffix">/hour</span></div>
+          </div>
+          <div class="community-body">
+            <p class="paragraph-large">
+              I live and work in Beacon, NY. If you're a local business on Main Street, in the Hudson Valley, or anywhere in Dutchess County, my rate drops to <strong>$100/hr</strong>—and initial consultations and audits are always free. I'd rather walk down to Big Mouth Roaster, or Madam Brett, than pitch a stranger over email.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section interested">
+    <div class="container">
+      <div class="interested-grid">
+        <div class="interested-content">
+          <h2>Ready to start? <a href="/contact" class="underline-heading">Get in touch</a> today.</h2>
+          <p class="paragraph-large">The first call is free. 30 minutes, no pitch—just your stack, your problems, and what I'd do about them. <a href="https://calendly.com/tomdimino/" target="_blank" rel="noopener noreferrer">Book a call</a>.</p>
+        </div>
+        <a href="/contact" class="circle-link" aria-label="Get in touch">
+          <span class="circle-link-icon"></span>
+          <span class="circle-bg-hover"></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collage Data -->
+  <script type="application/json" id="collage-data" set:html={JSON.stringify(collages)} />
+
+  <!-- Collage Modal -->
+  <dialog class="collage-modal" id="collage-modal">
+    <button class="modal-close" aria-label="Close">&times;</button>
+    <button class="modal-nav modal-prev" aria-label="Previous collage">&larr;</button>
+    <button class="modal-nav modal-next" aria-label="Next collage">&rarr;</button>
+    <div class="modal-content">
+      <div class="modal-image">
+        <img id="modal-img" src="" alt="" />
+      </div>
+      <div class="modal-text">
+        <h3 class="modal-title" id="modal-title"></h3>
+        <p class="modal-subtitle" id="modal-subtitle"></p>
+        <p class="modal-description" id="modal-description"></p>
+        <div class="modal-poem">
+          <h4 class="poem-title" id="poem-title"></h4>
+          <p class="poem-subtitle" id="poem-subtitle"></p>
+          <pre class="poem-text" id="poem-text"></pre>
+        </div>
+        <p class="modal-technique">Hand-cut mixed-media collage on paper. Source materials include archaeological photographs, museum reproductions, antique maps, architectural plans, textile fragments, and found ephemera.</p>
+        <p class="modal-collection">Poems from the forthcoming collection <em>Shirat Ha Kotharot</em> (Song of the Muses)</p>
+      </div>
+    </div>
+  </dialog>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .services-hero {
+    padding: 100px 0 110px;
+  }
+
+  .services-hero h1 {
+    font-size: clamp(36px, 5vw + 1rem, 60px);
+    font-weight: 500;
+    line-height: 1.17;
+    margin-bottom: 24px;
+    max-width: 900px;
+  }
+
+  .ai-underline {
+    text-decoration: underline;
+  }
+
+  .services-hero .paragraph-large {
+    font-size: 22px;
+    line-height: 36px;
+    color: var(--color-text-muted);
+    max-width: 740px;
+    margin-bottom: 0;
+  }
+
+  .services-hero .paragraph-large a {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .services-hero .paragraph-large a:hover {
+    color: var(--color-primary);
+  }
+
+  /* Collage Gallery — The Curator's Table */
+  .collage-gallery-section {
+    padding: 0 0 40px;
+    position: relative;
+    background: linear-gradient(180deg, transparent 0%, #f0ebe3 15%, #f0ebe3 85%, transparent 100%);
+  }
+
+  :global([data-theme='dark']) .collage-gallery-section {
+    background: linear-gradient(180deg, transparent 0%, #141210 15%, #141210 85%, transparent 100%);
+  }
+
+  /* Gallery spotlight */
+  .collage-gallery-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255, 248, 240, 0.08) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  :global([data-theme='dark']) .collage-gallery-section::before {
+    background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(201, 160, 184, 0.04) 0%, transparent 100%);
+  }
+
+  .collage-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 40px 24px;
+    perspective: 1200px;
+    perspective-origin: 50% 50%;
+  }
+
+  .collage-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+    cursor: pointer;
+  }
+
+  @media (scripting: enabled) {
+    .collage-frame {
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .collage-frame.is-visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .collage-frame:nth-child(1) { margin-top: 24px; transition-delay: 0ms; }
+  .collage-frame:nth-child(2) { margin-top: 0; transition-delay: 100ms; }
+  .collage-frame:nth-child(3) { margin-top: 40px; transition-delay: 200ms; }
+
+  .collage-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+    filter: drop-shadow(0px 4px 12px rgba(80, 55, 40, 0.25));
+    transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global([data-theme='dark']) .collage-frame img {
+    filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.45));
+  }
+
+  .collage-frame:hover img {
+    filter: drop-shadow(0px 8px 24px rgba(80, 55, 40, 0.35));
+  }
+
+  :global([data-theme='dark']) .collage-frame:hover img {
+    filter: drop-shadow(0px 8px 24px rgba(0, 0, 0, 0.6));
+  }
+
+  /* Dark gradient at bottom of collage for text readability */
+  .collage-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .collage-frame:hover::after {
+    opacity: 1;
+  }
+
+  /* Poem whisper — ghostly lines on hover */
+  .poem-whisper {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.6;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .collage-frame:hover .poem-whisper {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+
+  .collage-frame:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 6px;
+  }
+
+  /* Tablet */
+  @media (max-width: 991px) {
+    .collage-gallery {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      perspective: 1000px;
+    }
+    .collage-frame:nth-child(1) { margin-top: 0; }
+    .collage-frame:nth-child(2) { margin-top: 16px; }
+    .collage-frame:nth-child(3) {
+      grid-column: 1 / -1;
+      max-width: 50%;
+      margin: 0 auto;
+    }
+  }
+
+  /* Mobile — horizontal scroll strip */
+  @media (max-width: 767px) {
+    .collage-gallery {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 24px 24px;
+      perspective: 800px;
+    }
+    .collage-frame {
+      flex: 0 0 75vw;
+      scroll-snap-align: center;
+      margin-top: 0 !important;
+    }
+  }
+
+  /* Services Section */
+  .services-section {
+    padding: 80px 0 160px;
+  }
+
+  .services-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Service Entry — vertical stack with border separators */
+  .service-entry {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr;
+    gap: 40px;
+    padding: 56px 24px;
+    margin: 0 -24px;
+    border-bottom: 1.5px solid var(--color-border);
+    position: relative;
+    align-items: start;
+    border-radius: 8px;
+    overflow: visible;
+    transition: background-color 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .service-entry.first {
+    border-top: 1.5px solid var(--color-border);
+  }
+
+  /* HoverLift + GlowBorder */
+  .service-entry {
+    --glow-x: 50%;
+    --glow-y: 50%;
+    --glow-opacity: 0;
+  }
+
+  .service-entry::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 4px;
+    background: radial-gradient(300px circle at var(--glow-x) var(--glow-y), rgba(var(--color-primary-rgb), 0.12), transparent 40%);
+    opacity: var(--glow-opacity);
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .service-entry:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px -8px rgba(var(--color-primary-rgb), 0.08);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .service-entry:hover::after {
+    --glow-opacity: 1;
+  }
+
+  @media (hover: none) {
+    .service-entry:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .service-entry::after {
+      display: none;
+    }
+  }
+
+  /* Ghost medallion watermark */
+  .service-medallion-bg {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 13%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.195;
+    pointer-events: none;
+    z-index: 0;
+    object-fit: contain;
+    filter: grayscale(0.3);
+    transition: opacity 0.5s ease;
+  }
+
+  .service-entry:hover .service-medallion-bg {
+    opacity: 0.23;
+  }
+
+  :global([data-theme='dark']) .service-medallion-bg {
+    opacity: 0.07;
+    filter: grayscale(0.2) brightness(1.2);
+  }
+
+  :global([data-theme='dark']) .service-entry:hover .service-medallion-bg {
+    opacity: 0.12;
+  }
+
+  /* Service Identity (left column) */
+  .service-identity {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Standalone service identifier icon */
+  .service-icon {
+    font-size: 32px;
+    color: var(--color-primary);
+    opacity: 0.85;
+    margin-bottom: 16px;
+    display: block;
+    transition: opacity 0.35s ease, color 0.35s ease;
+  }
+
+  .service-entry:hover .service-icon {
+    opacity: 1;
+  }
+
+  .service-name {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 34px;
+    margin-bottom: 16px;
+  }
+
+  .service-name a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.35s ease;
+  }
+
+  .service-name a:hover {
+    color: var(--color-primary);
+  }
+
+  .service-rate {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Service Details (right column) */
+  .service-details {
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-tagline {
+    font-size: 18px;
+    line-height: 30px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Platform name pills */
+  .service-tagline :global(.platform-pill) {
+    display: inline-block;
+    padding: 2px 10px;
+    margin: 0 2px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: rgba(var(--color-primary-rgb), 0.08);
+    color: var(--color-text);
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+
+  .service-tagline :global(.platform-pill:hover) {
+    background: rgba(var(--color-primary-rgb), 0.15);
+    transform: translateY(-1px);
+  }
+
+  .service-tagline :global(.platform-pill.accent) {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--color-text);
+  }
+
+  .service-tagline :global(.platform-pill.accent:hover) {
+    background: rgba(212, 175, 55, 0.22);
+  }
+
+  .service-tagline :global(.platform-pill.muted) {
+    background: rgba(var(--color-primary-rgb), 0.05);
+    color: var(--color-text-muted);
+  }
+
+  .service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .feature-item {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    transition: color 0.25s ease;
+  }
+
+  @media (scripting: enabled) {
+    .feature-item {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                  transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                  color 0.25s ease;
+    }
+
+    .service-entry.is-visible .feature-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--fi) * 80ms + 200ms);
+    }
+  }
+
+  .feature-icon {
+    font-size: 18px;
+    color: var(--color-primary);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .feature-item:hover .feature-icon {
+    color: var(--color-text);
+  }
+
+  .feature-item:hover {
+    color: var(--color-primary);
+  }
+
+  .service-ideal {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--color-text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Service CTA — matching contact page link-arrow pattern */
+  .service-cta {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .service-cta-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .arrow-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d0d0d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='19' x2='19' y2='5'%3E%3C/line%3E%3Cpolyline points='9 5 19 5 19 15'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform var(--transition-fast);
+  }
+
+  .service-cta:hover .arrow-icon {
+    transform: translate(4px, -4px);
+  }
+
+  :global([data-theme='dark']) .arrow-icon {
+    filter: invert(1);
+  }
+
+  .service-cta-underline {
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-text) 0%, var(--color-primary) 50%, var(--color-accent) 100%);
+    margin-top: 10px;
+    transition: width 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .service-cta:hover .service-cta-underline {
+    width: 100%;
+  }
+
+
+  /* Community Rate Section */
+  .community-section {
+    padding: 0 0 80px;
+  }
+
+  .community-inner {
+    padding: 48px;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.04) 0%, transparent 50%);
+    border-radius: 4px;
+  }
+
+  :global([data-theme='dark']) .community-inner {
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
+  }
+
+  .community-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.5fr;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .community-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .community-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  :global([data-theme='dark']) .community-icon {
+    filter: invert(1);
+  }
+
+  .community-header h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .community-rate {
+    font-size: clamp(48px, 8vw, 72px);
+    font-weight: 700;
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .rate-suffix {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  .community-body .paragraph-large {
+    font-size: 18px;
+    line-height: 30px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .community-body strong {
+    color: var(--color-text);
+  }
+
+  /* CTA Section — reuse about.astro pattern */
+  .interested {
+    padding: 80px 0 160px;
+  }
+
+  .interested-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .interested h2 {
+    margin-bottom: var(--space-md);
+    font-size: 48px;
+    line-height: 64px;
+    max-width: 720px;
+  }
+
+  .interested .paragraph-large {
+    margin-bottom: 0;
+    max-width: 900px;
+  }
+
+  .underline-heading {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 5px solid var(--color-text);
+    padding-bottom: 3px;
+  }
+
+  .underline-heading:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* Circle Link — from about.astro */
+  .circle-link {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .circle-link-icon {
+    width: 50px;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230d0d0d' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+    transition: background-image 0.35s ease;
+  }
+
+  .circle-bg-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--color-text);
+    border-radius: 50%;
+    transition: width 0.35s ease;
+    z-index: 1;
+  }
+
+  .circle-link:hover .circle-bg-hover {
+    width: 100%;
+  }
+
+  .circle-link:hover .circle-link-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  }
+
+  :global([data-theme='dark']) .circle-link-icon {
+    filter: invert(1);
+  }
+
+  /* Scroll animations — gated behind scripting: enabled for progressive enhancement */
+  @media (scripting: enabled) {
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(36%) skew(-6deg, -1deg);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0) skew(0, 0);
+    }
+
+    .fade-animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .fade-animate.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .animate-scale-in {
+      opacity: 0;
+      transform: scale(0.97);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .animate-scale-in.is-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Responsive — Tablet */
+  @media (max-width: 991px) {
+    .services-hero {
+      padding: 80px 0;
+    }
+
+    .service-entry {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .community-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll,
+    .fade-animate,
+    .animate-scale-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Responsive — Mobile */
+  @media (max-width: 768px) {
+    .services-hero {
+      padding: 60px 0 80px;
+    }
+
+    .services-hero h1 {
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .services-hero .paragraph-large {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .services-section {
+      padding: 60px 0 80px;
+    }
+
+    .service-entry {
+      padding: 32px 0;
+    }
+
+    .service-icon {
+      font-size: 28px;
+    }
+
+    .service-medallion-bg {
+      width: 120px;
+      height: 120px;
+      right: 0;
+      left: auto;
+    }
+
+    .service-name {
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .community-inner {
+      padding: 32px 24px;
+    }
+
+    .interested {
+      padding: 60px 0 80px;
+    }
+
+    .interested-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .interested h2 {
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .circle-link {
+      margin: var(--space-md) auto 0;
+    }
+  }
+
+  /* ── Collage Modal ── */
+  .collage-modal {
+    max-width: 800px;
+    width: 90vw;
+    max-height: 90vh;
+    border: none;
+    border-radius: 12px;
+    background: #0a0a0a;
+    color: #f5f5f5;
+    padding: 0;
+    overflow: hidden;
+    margin: auto;
+  }
+
+  .collage-modal::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-image {
+    width: 100%;
+    flex-shrink: 0;
+    padding: 32px 32px 0;
+    display: flex;
+    justify-content: center;
+    perspective: 800px;
+  }
+
+  .modal-image img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.5));
+    transform: rotateX(2deg);
+    transition: transform 0.5s ease;
+  }
+
+  .modal-image img:hover {
+    transform: rotateX(0deg) scale(1.02);
+  }
+
+  .modal-text {
+    padding: 32px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f5f5f5;
+    margin: 0;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    margin: 0;
+  }
+
+  .modal-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #b8b8b8;
+    margin: 0;
+  }
+
+  .modal-poem {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .poem-title {
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--color-accent);
+    margin: 0 0 4px;
+  }
+
+  .poem-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin: 0 0 16px;
+  }
+
+  .poem-text {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #e0e0e0;
+    white-space: pre-wrap;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .poem-text :global(strong),
+  .poem-text :global(em),
+  .poem-text :global(strong em),
+  .poem-text :global(em strong) {
+    font-weight: 600;
+    font-style: italic;
+    color: #f5f5f5;
+  }
+
+  .modal-technique {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #666;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .modal-collection {
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .modal-collection em {
+    color: #e0e0e0;
+    font-style: italic;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: #f5f5f5;
+    font-size: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #f5f5f5;
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease;
+  }
+
+  .modal-nav:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal-prev { left: 16px; }
+  .modal-next { right: 16px; }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-image {
+      max-height: 40vh;
+    }
+
+    .modal-text {
+      padding: 24px;
+    }
+
+    .modal-nav { display: none; }
+  }
+</style>
+
+<script>
+  function initServicesAnimations() {
+    // General elements: observe normally
+    const generalObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            generalObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '-50px 0px' }
+    );
+
+    document.querySelectorAll('.animate-on-scroll, .fade-animate, .collage-frame').forEach((el) => {
+      generalObserver.observe(el);
+    });
+
+    // Service entries: staggered cascade (120ms between each)
+    const serviceObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt((entry.target as HTMLElement).dataset.index || '0', 10);
+            setTimeout(() => {
+              entry.target.classList.add('is-visible');
+            }, index * 120);
+            serviceObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: '-20px 0px' }
+    );
+
+    document.querySelectorAll('.service-entry').forEach((el, i) => {
+      (el as HTMLElement).dataset.index = String(i);
+      serviceObserver.observe(el);
+    });
+  }
+
+  // GlowBorder: mouse-tracking radial gradient
+  function initGlowBorder() {
+    document.querySelectorAll('.service-entry').forEach((card) => {
+      card.addEventListener('mousemove', (e: Event) => {
+        const mouseEvent = e as MouseEvent;
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        (card as HTMLElement).style.setProperty('--glow-x', `${mouseEvent.clientX - rect.left}px`);
+        (card as HTMLElement).style.setProperty('--glow-y', `${mouseEvent.clientY - rect.top}px`);
+      });
+    });
+  }
+
+  // Collage Gallery: CSS 3D parallax tilt
+  function initCollageTilt() {
+    const gallery = document.querySelector('.collage-gallery');
+    if (!gallery || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const frames = gallery.querySelectorAll('.collage-frame');
+    const MAX_TILT = 8;
+
+    gallery.addEventListener('mousemove', (e) => {
+      frames.forEach((frame) => {
+        const rect = frame.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = Math.max(-1, Math.min(1, (e.clientX - centerX) / (rect.width / 2)));
+        const dy = Math.max(-1, Math.min(1, (e.clientY - centerY) / (rect.height / 2)));
+        const dist = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
+        const proximity = Math.max(0, 1 - dist / (rect.width * 1.5));
+        const tiltX = dy * MAX_TILT * proximity * -1;
+        const tiltY = dx * MAX_TILT * proximity;
+        (frame as HTMLElement).style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      });
+    });
+
+    gallery.addEventListener('mouseleave', () => {
+      frames.forEach((frame) => {
+        (frame as HTMLElement).style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        (frame as HTMLElement).style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(() => {
+          (frame as HTMLElement).style.transition = '';
+        }, 600);
+      });
+    });
+  }
+
+  // Collage Modal
+  function initCollageModal() {
+    const modal = document.getElementById('collage-modal') as HTMLDialogElement;
+    if (!modal) return;
+
+    const collageData = JSON.parse(document.getElementById('collage-data')?.textContent || '[]');
+    let currentIndex = 0;
+
+    function showCollage(index: number) {
+      currentIndex = index;
+      const c = collageData[index];
+      (document.getElementById('modal-img') as HTMLImageElement).src = c.src;
+      (document.getElementById('modal-img') as HTMLImageElement).alt = c.title;
+      document.getElementById('modal-title')!.textContent = c.title;
+      document.getElementById('modal-subtitle')!.textContent = c.subtitle;
+      document.getElementById('modal-description')!.textContent = c.description;
+      document.getElementById('poem-title')!.textContent = c.poemTitle;
+      document.getElementById('poem-subtitle')!.textContent = c.poemSubtitle;
+      document.getElementById('poem-text')!.innerHTML = c.poem;
+    }
+
+    // Click handlers on collage frames
+    document.querySelectorAll('.collage-frame').forEach((frame, i) => {
+      frame.addEventListener('click', () => {
+        showCollage(i);
+        modal.showModal();
+      });
+    });
+
+    // Navigation
+    modal.querySelector('.modal-prev')?.addEventListener('click', () => {
+      showCollage((currentIndex - 1 + collageData.length) % collageData.length);
+    });
+    modal.querySelector('.modal-next')?.addEventListener('click', () => {
+      showCollage((currentIndex + 1) % collageData.length);
+    });
+
+    // Close
+    modal.querySelector('.modal-close')?.addEventListener('click', () => modal.close());
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.close();
+    });
+
+    // Keyboard
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') showCollage((currentIndex - 1 + collageData.length) % collageData.length);
+      if (e.key === 'ArrowRight') showCollage((currentIndex + 1) % collageData.length);
+    });
+  }
+
+  initServicesAnimations();
+  initCollageTilt();
+  initGlowBorder();
+  initCollageModal();
+  document.addEventListener('astro:after-swap', () => {
+    initServicesAnimations();
+    initCollageTilt();
+    initGlowBorder();
+    initCollageModal();
+  });
+</script>
