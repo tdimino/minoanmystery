@@ -58,6 +58,34 @@ const canonicalURL = new URL(pathname, Astro.site);
   <meta property="twitter:description" content={description}>
   <meta property="twitter:image" content={new URL(image, Astro.site)}>
 
+  <!-- Site-wide Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.minoanmystery.org/#website",
+        "name": "Minoan Mystery",
+        "url": "https://www.minoanmystery.org",
+        "description": "Tom di Mino — AI/ML engineer, GEO/SEO consultant, and builder of cognitive systems. Services for startups and businesses navigating A.I.",
+        "publisher": { "@id": "https://www.minoanmystery.org/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.minoanmystery.org/#person",
+        "name": "Tom di Mino",
+        "url": "https://www.minoanmystery.org",
+        "jobTitle": "Principal AI/ML Engineer",
+        "sameAs": [
+          "https://github.com/tdimino",
+          "https://x.com/IdaeanDaktyl",
+          "https://tomdimino.substack.com",
+          "https://www.linkedin.com/in/tomdimino"
+        ]
+      }
+    ]
+  })} />
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.ico">
