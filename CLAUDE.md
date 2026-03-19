@@ -95,6 +95,24 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 
 **GEO/SEO implementation**: `public/robots.txt` (21 AI crawlers), `public/llms.txt` (Kothar-voiced), `public/llms-full.txt` (163 lines), JSON-LD Service + BreadcrumbList schemas on all service pages, `/api/soul/query` REST endpoint.
 
+## Radiant Shaders ("The Burning Archive")
+
+WebGL ambient backgrounds via `ShaderBackground.astro` + `src/lib/shader/index.ts`. 4 MIT-licensed shaders from radiant-shaders.com in `public/shaders/`.
+
+| Page | Shader | Light / Dark Opacity |
+|------|--------|---------------------|
+| Home hero | `gilded-fracture` (alpha-transparent cracks) | 7% / 22% |
+| Contact | `fluid-amber` | 9% / 18% |
+| About hero | `gilt-mosaic` | 3% / 7% |
+| Labyrinth | `silk-threads` (half-res) | 6% / 8% |
+| Services / Resume | none | Deliberately bare |
+
+**Component props**: `shader`, `opacityLight`, `opacityDark`, `position`, `vignette`, `pixelScale`, `class`. Uses `position: absolute` scoped to parent section with `overflow: hidden`. Edge fade via CSS `mask-image` (6% top/bottom).
+
+**Performance**: Disabled <768px viewport. Hidden on `prefers-reduced-motion`. Idle-pause after 60s. FPS telemetry every 2s via `postMessage` → console (`[Shader]` prefix, color-coded ✓/⚠/✗). View Transition cleanup via `astro:before-swap` (destroys GL context).
+
+**postMessage protocol**: `pause`, `resume`, `destroy`, `config` (e.g., `{ type: 'config', label: false }`). Context loss recovery via `webglcontextlost`/`webglcontextrestored`.
+
 ## Key Features
 
 - **Command Palette**: `Cmd+K` for navigation + dynamic soul commands (routes to Kothar, not hardcoded)

@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
+import ShaderBackground from '../components/ShaderBackground.astro';
 
 const projects = [
   {
@@ -83,8 +84,14 @@ const projects = [
   ]} />
   <Header slot="header" />
 
-  <!-- Hero Section -->
-  <section class="hero">
+  <!-- Hero Section — "The Kintsugi Welcome" -->
+  <section class="hero shader-hero">
+    <ShaderBackground
+      shader="gilded-fracture.html"
+      opacityLight={0.07}
+      opacityDark={0.22}
+      fallbackGradient="radial-gradient(ellipse at 50% 40%, rgba(150,106,133,0.06) 0%, transparent 70%)"
+    />
     <div class="container">
       <h1 class="hero-title skew-animate">
         Poet-turned <em>AI/ML engineer</em> at <a href="https://aldea.ai/" target="_blank" rel="noopener noreferrer" class="stealth-link"><span class="highlight-bold">SubQ AI</span></a>; <strong>ex-JPMorgan, Google, & CZI</strong>.
@@ -93,7 +100,7 @@ const projects = [
         In a past life, I had a fondness for solving puzzles and following upstarts, so I'm quite smitten by any digital work involving: <span class="skills">scaleable A.I. prototypes</span> for enterprise clients; <span class="skills">copy</span> and <span class="skills">UI design</span> for startups; <span class="skills">full-stack A.I./ML apps</span>, tech <span class="skills">documentation</span>; UX <span class="skills">personas</span>; and <span class="skills">co-design</span> workshops.
       </p>
       <p class="cta-text fade-animate">
-        <strong>Perhaps <a href="/contact" class="link-highlight">we should chat</a>?</strong> <span class="cta-emoji">🔮</span>
+        <strong>Perhaps <a href="/contact" class="link-highlight" id="home-cta">we should chat</a>?</strong> <span class="cta-emoji">🔮</span>
       </p>
     </div>
   </section>
@@ -143,6 +150,11 @@ const projects = [
   /* Hero */
   .hero {
     padding: var(--space-2xl) 0 var(--space-xl);
+  }
+
+  .shader-hero {
+    position: relative;
+    overflow: hidden;
   }
 
   .hero-title {
@@ -456,4 +468,13 @@ const projects = [
 
   // Re-run after View Transitions
   document.addEventListener('astro:after-swap', initImageReveal);
+
+  // Randomize CTA text on load
+  const ctaPool = ['we should chat', 'we should Claude Code', 'we should build an app together', 'we should co-design a prototype', 'we should wordsmith your copy'];
+  function randomizeCTA() {
+    const cta = document.getElementById('home-cta');
+    if (cta) cta.textContent = ctaPool[Math.floor(Math.random() * ctaPool.length)];
+  }
+  randomizeCTA();
+  document.addEventListener('astro:after-swap', randomizeCTA);
 </script>

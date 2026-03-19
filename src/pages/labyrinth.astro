@@ -11,6 +11,7 @@ import ProfileModal from '../components/ProfileModal.astro';
 import StructuredData from '../components/StructuredData.astro';
 import RegisterSelector from '../components/labyrinth/RegisterSelector.astro';
 import ChatInput from '../components/labyrinth/ChatInput.astro';
+import ShaderBackground from '../components/ShaderBackground.astro';
 
 // Modular CSS imports
 import '../styles/labyrinth/backgrounds.css';
@@ -92,6 +93,15 @@ import '../styles/labyrinth/chat.css';
 
   <Header />
   <main class="labyrinth-page">
+    <!-- Shader: "The Ariadne Weave" — Silk Threads, ambient layer beneath soul-bg -->
+    <ShaderBackground
+      shader="silk-threads.html"
+      opacityLight={0.06}
+      opacityDark={0.08}
+      vignette={false}
+      pixelScale={0.5}
+      class="labyrinth-shader"
+    />
     <header class="labyrinth-header">
       <div class="labyrinth-title">
         <h1>Consult with Kothar</h1>

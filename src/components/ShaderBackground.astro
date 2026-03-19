@@ -1,0 +1,150 @@
+---
+/**
+ * ShaderBackground — Embeds a WebGL shader as an ambient background layer.
+ *
+ * Renders a container that dynamically creates an iframe pointing to a
+ * self-contained shader HTML file in /public/shaders/. The iframe is
+ * managed by ShaderManager (src/lib/shader/) which handles:
+ * - Deferred loading (after LCP via requestIdleCallback)
+ * - Mobile detection (disabled below 768px)
+ * - prefers-reduced-motion (shows CSS fallback instead)
+ * - Viewport pause/resume via IntersectionObserver
+ * - Idle pause after 60s of no interaction
+ * - Theme-aware opacity (light vs dark)
+ * - View Transition cleanup (astro:before-swap destroys GL context)
+ *
+ * Part of "The Burning Archive" shader integration.
+ * MIT-licensed shaders from radiant-shaders.com (pbakaus/radiant).
+ */
+
+interface Props {
+  /** Shader filename in /public/shaders/ (e.g., "gilded-fracture.html") */
+  shader: string;
+  /** Opacity in light theme */
+  opacityLight?: number;
+  /** Opacity in dark theme */
+  opacityDark?: number;
+  /** CSS position: "fixed" for full-page, "absolute" for section-scoped */
+  position?: 'fixed' | 'absolute';
+  /** CSS height (default: "100%") */
+  height?: string;
+  /** Pixel scale for resolution (0.5 = half res, saves GPU) */
+  pixelScale?: number;
+  /** Show radial vignette overlay */
+  vignette?: boolean;
+  /** CSS fallback gradient for no-JS / no-WebGL / mobile */
+  fallbackGradient?: string;
+  /** Extra CSS class */
+  class?: string;
+}
+
+const {
+  shader,
+  opacityLight = 0.12,
+  opacityDark = 0.20,
+  position = 'absolute',
+  height = '100%',
+  pixelScale = 1,
+  vignette = true,
+  fallbackGradient = 'none',
+  class: className = '',
+} = Astro.props;
+
+const src = `/shaders/${shader}`;
+---
+
+<div
+  class:list={['shader-background', className]}
+  style={`--shader-height: ${height}; --shader-position: ${position};`}
+  data-shader-src={src}
+  data-shader-opacity-light={String(opacityLight)}
+  data-shader-opacity-dark={String(opacityDark)}
+  data-shader-fallback={fallbackGradient}
+  data-shader-pixel-scale={String(pixelScale)}
+  aria-hidden="true"
+>
+  {vignette && <div class="shader-vignette" />}
+</div>
+
+<style>
+  .shader-background {
+    position: var(--shader-position, absolute);
+    inset: 0;
+    width: 100%;
+    height: var(--shader-height, 100%);
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+    background: none;
+    /* Soft edge fade — shader bleeds naturally into page background */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+  }
+
+  .shader-background :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    /* Unifying color treatment — sepia warms toward brand gold */
+    filter: sepia(0.15) saturate(0.7);
+    /* Force compositing layer for Safari fixed-position flicker fix */
+    transform: translateZ(0);
+  }
+
+  :global([data-theme='dark']) .shader-background :global(iframe) {
+    filter: sepia(0.08) saturate(0.85) brightness(0.9);
+  }
+
+  .shader-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      transparent 0%,
+      transparent 40%,
+      rgba(var(--color-background-rgb, 13, 13, 13), 0.4) 70%,
+      rgba(var(--color-background-rgb, 13, 13, 13), 0.8) 100%
+    );
+  }
+
+  /* Hide on mobile — CSS gate matches JS check in ShaderManager */
+  @media (max-width: 767px) {
+    .shader-background :global(iframe) {
+      display: none;
+    }
+  }
+
+  /* Reduced motion — hide iframe, show CSS fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .shader-background :global(iframe) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initShaderBackgrounds } from '../lib/shader';
+
+  // Initialize on first load
+  initShaderBackgrounds();
+
+  // Re-initialize after View Transitions
+  document.addEventListener('astro:after-swap', initShaderBackgrounds);
+</script>

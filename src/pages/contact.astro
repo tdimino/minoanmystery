@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
+import ShaderBackground from '../components/ShaderBackground.astro';
 ---
 
 <BaseLayout
@@ -43,8 +44,13 @@ import StructuredData from '../components/StructuredData.astro';
   ]} />
   <Header slot="header" />
 
-  <!-- Contact Section - Two Column Layout -->
-  <section class="contact-section">
+  <!-- Contact Section — "Resin Correspondence" -->
+  <section class="contact-section shader-section">
+    <ShaderBackground
+      shader="fluid-amber.html"
+      opacityLight={0.09}
+      opacityDark={0.18}
+    />
     <div class="container">
       <div class="contact-grid">
         <!-- Left Column - Text -->
@@ -153,6 +159,11 @@ import StructuredData from '../components/StructuredData.astro';
   .contact-section {
     padding-top: 100px;
     padding-bottom: 110px;
+  }
+
+  .shader-section {
+    position: relative;
+    overflow: hidden;
   }
 
   .contact-grid {
@@ -275,7 +286,7 @@ import StructuredData from '../components/StructuredData.astro';
   /* Input fields - Webflow exact */
   .form-group input {
     width: 100%;
-    padding: 0 0 16px 0;
+    padding: 0 0 16px 4px;
     margin-bottom: 56px;
     border: none;
     border-bottom: 1px solid var(--color-text-muted);

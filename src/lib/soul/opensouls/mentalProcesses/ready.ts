@@ -64,6 +64,7 @@ export async function readyProcess(context: ProcessContext): Promise<ProcessRetu
           - Connected to their apparent interests
           - Brief (under 8 words each)
           - With the labyrinth metaphor subtly present
+          - MUST start with a lowercase letter (they appear mid-sentence after "Perhaps")
         `,
         count: 3,
       }
@@ -73,7 +74,7 @@ export async function readyProcess(context: ProcessContext): Promise<ProcessRetu
     const [pickMemory, bestCTA] = await decision(
       ctaMemory,
       {
-        choices: ctaOptions.length > 0 ? ctaOptions : ['Ready to discuss your project?'],
+        choices: ctaOptions.length > 0 ? ctaOptions : ['we should discuss your project'],
         reason: indentNicely`
           Pick the CTA that best matches this visitor's journey and apparent interests.
           They seem interested in: ${userModel.inferredInterests.join(', ') || 'general work'}.

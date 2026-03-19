@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
+import ShaderBackground from '../components/ShaderBackground.astro';
 
 const experience = [
   {
@@ -115,7 +116,12 @@ const experience = [
   <Header slot="header" />
 
   <!-- Hero Section with Bio - Matching Webflow 2-column layout -->
-  <section class="about-hero">
+  <section class="about-hero shader-section">
+    <ShaderBackground
+      shader="gilt-mosaic.html"
+      opacityLight={0.03}
+      opacityDark={0.07}
+    />
     <div class="container">
       <div class="about-hero-grid">
         <div class="about-hero-image">
@@ -210,6 +216,12 @@ const experience = [
   .about-hero {
     padding: 100px 0 110px;
   }
+
+  .shader-section {
+    position: relative;
+    overflow: hidden;
+  }
+
 
   .about-hero-grid {
     display: grid;

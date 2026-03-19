@@ -104,7 +104,7 @@ const triggers: Trigger[] = [
       type: 'cta',
       payload: {
         selector: 'section a[href="/contact"]',  // Only page CTAs, not navbar
-        text: 'Let\'s build something together',
+        text: ['we should build something together', 'we should Claude Code'][Math.floor(Math.random() * 2)],
         originalText: 'Inquire herein'
       }
     },
