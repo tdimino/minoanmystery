@@ -1,9 +1,10 @@
 ---
 /**
- * MissionTOC — "Operations Manifest" table of contents.
- * Zero-padded numbered entries with Phosphor icons, scroll-spy active state,
- * left-border accent channel, staggered reveal.
- * Kotharat design spec: 2026-03-17.
+ * MissionTOC — "Operations Manifest" pipeline stepper.
+ * Scroll-spy driven: rows transition PENDING → ACTIVE → COMPLETE as you
+ * scroll through the page. Per-section progress bars fill proportionally.
+ * Master "X/N reviewed" counter in header.
+ * Kotharat spec: Ops Manifest + Pipeline Stepper hybrid, 2026-03-20.
  */
 interface Section {
   num: string;
@@ -19,20 +20,33 @@ interface Props {
 const { sections } = Astro.props;
 ---
 
-<nav class="mission-toc" aria-label="Table of contents">
+<nav class="mission-toc" aria-label="Automation pipeline — table of contents">
   <div class="toc-header">
-    <span class="toc-ops">OPS</span>
-    <span class="toc-count">{sections.length}</span>
+    <div class="toc-header-left">
+      <span class="toc-ops">OPS</span>
+      <span class="toc-separator">—</span>
+      <span class="toc-pipeline-label">Automation Pipeline</span>
+    </div>
+    <span class="toc-counter"><span class="toc-counter-num" id="toc-reviewed-count">0</span>/{sections.length} reviewed</span>
   </div>
+
+  <div class="toc-scan-overlay" aria-hidden="true"></div>
+
   <ol class="toc-list">
     {sections.map((s, i) => (
-      <li class="toc-item" style={`--row: ${i}; --row-hue: ${[340, 25, 45, 180, 210, 270, 300, 150, 60][i] ?? 0}`}>
-        <a class="toc-link" href={s.href} data-active="false">
+      <li class="toc-item" style={`--row: ${i}; --row-hue: ${[0, 30, 55, 120, 170, 210, 260, 310, 45][i] ?? 0}`} data-section-href={s.href}>
+        <a class="toc-link" href={s.href} data-status="pending">
           <span class="toc-num">{s.num}</span>
           <i class={`ph ${s.icon} toc-icon`} aria-hidden="true"></i>
-          <span class="toc-label" data-text={s.label}>{s.label}</span>
-          <span class="toc-cursor" aria-hidden="true"></span>
+          <span class="toc-label">{s.label}</span>
+          <span class="toc-status">
+            <span class="toc-status-dot" aria-hidden="true"></span>
+            <span class="toc-status-text">Pending</span>
+          </span>
         </a>
+        <div class="toc-progress" aria-hidden="true">
+          <div class="toc-progress-fill"></div>
+        </div>
       </li>
     ))}
   </ol>
@@ -46,14 +60,49 @@ const { sections } = Astro.props;
     border-radius: 6px;
     background: var(--color-background-alt);
     overflow: hidden;
+    position: relative;
   }
 
+  /* Scan-line overlay — CRT atmosphere */
+  .toc-scan-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.02) 3px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+  }
+
+  :global([data-theme='dark']) .toc-scan-overlay {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(255, 255, 255, 0.015) 3px,
+      rgba(255, 255, 255, 0.015) 4px
+    );
+  }
+
+  /* Header */
   .toc-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 16px;
     border-bottom: 1px solid var(--color-border);
+    position: relative;
+    z-index: 2;
+  }
+
+  .toc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 
   .toc-ops {
@@ -65,7 +114,24 @@ const { sections } = Astro.props;
     color: var(--color-text-muted);
   }
 
-  .toc-count {
+  .toc-separator {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    color: var(--color-text-muted);
+    opacity: 0.4;
+  }
+
+  .toc-pipeline-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .toc-counter {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
     font-size: 10px;
     font-weight: 500;
@@ -73,95 +139,56 @@ const { sections } = Astro.props;
     opacity: 0.6;
   }
 
+  .toc-counter-num {
+    color: var(--color-accent);
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  /* List */
   .toc-list {
     margin: 0;
     padding: 0;
     list-style: none;
+    position: relative;
+    z-index: 2;
   }
 
   .toc-item {
     margin: 0;
     padding: 0;
-    /* Pastel accent — each row gets a unique hue via --row-hue */
-    border-left: 3px solid hsl(var(--row-hue, 0), 40%, 78%);
+    background: hsl(var(--row-hue, 0), 40%, 96%);
   }
 
-  /* JS hides items before typing; no-JS shows them immediately */
-  @media (scripting: enabled) {
-    .mission-toc:not(.typed-done) .toc-item {
-      opacity: 0;
-    }
-    .mission-toc:not(.typed-done) .toc-item.typed,
-    .mission-toc:not(.typed-done) .toc-item.typing {
-      opacity: 1;
-    }
+  :global([data-theme='dark']) .toc-item {
+    background: hsl(var(--row-hue, 0), 20%, 12%);
   }
 
-  /* Blinking cursor */
-  .toc-cursor {
-    display: none;
-    width: 2px;
-    height: 14px;
-    background: var(--color-primary);
-    margin-left: 2px;
-    flex-shrink: 0;
-  }
-
-  .toc-item.typing .toc-cursor {
-    display: inline-block;
-    animation: cursor-blink 0.6s steps(1) infinite;
-  }
-
-  @keyframes cursor-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
+  /* Link row */
   .toc-link {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 9px 16px 9px 14px;
+    padding: 9px 16px 5px 14px;
     text-decoration: none;
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    border-left: none;
     transition: background-color 0.2s ease;
+    position: relative;
   }
 
-  .toc-link:hover {
-    background: rgba(150, 106, 133, 0.04);
+  @media (hover: hover) {
+    .toc-link:hover {
+      background: rgba(150, 106, 133, 0.04);
+    }
+    .toc-link:hover .toc-label { color: var(--color-text); }
   }
-
-  .toc-link:hover .toc-label { color: var(--color-text); }
-  .toc-link:hover .toc-num { opacity: 0.7; }
-  .toc-link:hover .toc-icon { opacity: 0.7; }
 
   .toc-link:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: -2px;
-    border-radius: 0;
   }
 
-  /* Active state via scroll-spy */
-  .toc-link[data-active="true"] {
-    border-left-color: var(--color-primary);
-    background: rgba(150, 106, 133, 0.05);
-  }
-
-  .toc-link[data-active="true"] .toc-num {
-    color: var(--color-accent);
-    opacity: 1;
-  }
-
-  .toc-link[data-active="true"] .toc-icon {
-    color: var(--color-primary);
-    opacity: 0.8;
-  }
-
-  .toc-link[data-active="true"] .toc-label {
-    color: var(--color-text);
-  }
-
+  /* Number */
   .toc-num {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
     font-size: 11px;
@@ -190,27 +217,140 @@ const { sections } = Astro.props;
     letter-spacing: 0.02em;
     color: var(--color-text-muted);
     transition: color 0.3s ease;
+    flex: 1;
   }
 
+  /* Status badge */
+  .toc-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .toc-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-text-muted);
+    opacity: 0.3;
+    transition: background 0.3s ease, opacity 0.3s ease;
+  }
+
+  .toc-status-text {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+    opacity: 0.4;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Progress bar */
+  .toc-progress {
+    height: 2px;
+    margin: 0 14px 6px 14px;
+    background: rgba(128, 128, 128, 0.08);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .toc-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: hsl(var(--row-hue, 0), 45%, 65%);
+    border-radius: 1px;
+    transition: width 0.15s ease-out;
+  }
+
+  /* === STATUS STATES === */
+
+  /* ACTIVE */
+  .toc-link[data-status="active"] {
+    background: rgba(150, 106, 133, 0.05);
+  }
+
+  .toc-link[data-status="active"] .toc-num {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .toc-link[data-status="active"] .toc-icon {
+    color: var(--color-primary);
+    opacity: 0.8;
+  }
+
+  .toc-link[data-status="active"] .toc-label {
+    color: var(--color-text);
+  }
+
+  .toc-link[data-status="active"] .toc-status-dot {
+    background: var(--color-accent);
+    opacity: 1;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .toc-link[data-status="active"] .toc-status-text {
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* COMPLETE */
+  .toc-link[data-status="complete"] .toc-num {
+    opacity: 0.6;
+  }
+
+  .toc-link[data-status="complete"] .toc-icon {
+    opacity: 0.6;
+  }
+
+  .toc-link[data-status="complete"] .toc-label {
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  .toc-link[data-status="complete"] .toc-status-dot {
+    background: #6ee7b7;
+    opacity: 1;
+  }
+
+  .toc-link[data-status="complete"] .toc-status-text {
+    color: #6ee7b7;
+    opacity: 0.8;
+  }
+
+  /* Hide progress bar when complete */
+  .toc-link[data-status="complete"] + .toc-progress {
+    display: none;
+  }
+
+  /* Mobile */
   @media (max-width: 768px) {
-    .toc-link { padding: 8px 12px 8px 11px; gap: 8px; }
+    .toc-link { padding: 8px 12px 4px 11px; gap: 8px; }
     .toc-label { font-size: 11px; }
     .toc-header { padding: 8px 12px; }
     .toc-icon { display: none; }
+    .toc-scan-overlay { display: none; }
+    .toc-pipeline-label { display: none; }
+    .toc-progress { margin: 0 11px 5px 11px; }
   }
 
   @media (max-width: 480px) {
     .toc-num { display: none; }
-  }
-
-  :global([data-theme='dark']) .toc-item {
-    border-left-color: hsl(var(--row-hue, 0), 50%, 55%);
+    .toc-status-text { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .toc-item { opacity: 1; }
-    .toc-cursor { display: none; }
-    .toc-link, .toc-num, .toc-icon, .toc-label { transition-duration: 0.01s; }
+    .toc-status-dot { animation: none; }
+    .toc-link, .toc-num, .toc-icon, .toc-label, .toc-status-dot, .toc-status-text { transition-duration: 0.01s; }
+    .toc-progress-fill { transition-duration: 0.01s; }
   }
 </style>
 
@@ -238,225 +378,194 @@ const { sections } = Astro.props;
 </style>
 
 <script>
-  // Kotharat "Teletype Spool" — scroll-linked character typing.
-  // Desktop: scroll position drives character reveal. Mobile: time-based fallback.
-
-  // Eased band mapping (Kotharat spec): early rows faster, later rows slower
-  const ROW_BANDS = [
-    [0.00, 0.08], [0.08, 0.17], [0.17, 0.27], [0.27, 0.38],
-    [0.38, 0.49], [0.49, 0.60], [0.60, 0.72], [0.72, 0.85],
-    [0.85, 1.00],
-  ];
-
-  const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
-  const PREFERS_REDUCED = typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /**
+   * MissionTOC — Pipeline Stepper with scroll-spy.
+   * Rows transition PENDING → ACTIVE → COMPLETE based on which section
+   * the user is currently reading. Progress bars fill proportionally.
+   */
 
   function initMissionTOC() {
     document.querySelectorAll('.mission-toc').forEach((nav) => {
-      if (nav.classList.contains('typed-done') || (nav as any).__tocBound) {
-        if (nav.classList.contains('typed-done')) initScrollSpy(nav);
-        return;
-      }
-
-      if (PREFERS_REDUCED) {
-        showAllImmediately(nav as HTMLElement);
-        initScrollSpy(nav);
-        return;
-      }
-
+      if ((nav as any).__tocBound) return;
       (nav as any).__tocBound = true;
-      const items = Array.from(nav.querySelectorAll('.toc-item')) as HTMLElement[];
-      if (!items.length) { initScrollSpy(nav); return; }
 
-      // Clear labels for JS-driven typing
+      const items = Array.from(nav.querySelectorAll('.toc-item')) as HTMLElement[];
+      const links = Array.from(nav.querySelectorAll('.toc-link')) as HTMLElement[];
+      const counterEl = nav.querySelector('.toc-counter-num') as HTMLElement;
+      if (!links.length) return;
+
+      // Collect target h2 elements + their next sibling sections
+      const sections: { el: Element; link: HTMLElement; item: HTMLElement; fill: HTMLElement }[] = [];
       items.forEach((item) => {
-        const label = item.querySelector('.toc-label') as HTMLElement;
-        if (label) label.textContent = '';
+        const link = item.querySelector('.toc-link') as HTMLElement;
+        const href = link?.getAttribute('href');
+        if (!href) return;
+        const id = href.replace('#', '');
+        const el = document.getElementById(id);
+        const fill = item.querySelector('.toc-progress-fill') as HTMLElement;
+        if (el && fill) sections.push({ el, link, item, fill });
       });
 
-      if (IS_MOBILE) {
-        // Mobile: time-based typewriter on viewport entry
-        const observer = new IntersectionObserver((entries) => {
+      let activeIndex = -1;
+      let highWaterMark = -1; // highest section ever reached — never reverts
+
+      function updateStatuses() {
+        let completed = 0;
+
+        sections.forEach((s, i) => {
+          const statusText = s.link.querySelector('.toc-status-text') as HTMLElement;
+
+          if (i < highWaterMark) {
+            // COMPLETE — once reached, stays complete even on scroll-back
+            s.link.setAttribute('data-status', 'complete');
+            s.fill.style.width = '100%';
+            if (statusText) statusText.textContent = 'Complete';
+            completed++;
+          } else if (i === highWaterMark && i === activeIndex) {
+            // ACTIVE — currently being read
+            s.link.setAttribute('data-status', 'active');
+            // progress fill updated by scroll handler
+            if (statusText) statusText.textContent = 'Active';
+          } else if (i === highWaterMark && i !== activeIndex) {
+            // Was the furthest reached but user scrolled back — mark complete
+            s.link.setAttribute('data-status', 'complete');
+            s.fill.style.width = '100%';
+            if (statusText) statusText.textContent = 'Complete';
+            completed++;
+          } else {
+            // PENDING — not yet reached
+            s.link.setAttribute('data-status', 'pending');
+            s.fill.style.width = '0%';
+            if (statusText) statusText.textContent = 'Pending';
+          }
+        });
+
+        if (counterEl) counterEl.textContent = String(completed);
+      }
+
+      // Scroll-driven: compute active section + progress on every frame
+      let ticking = false;
+      const triggerLine = 120; // px from top of viewport
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(() => {
+            // Find which section the trigger line is inside
+            let newActive = -1;
+            for (let i = sections.length - 1; i >= 0; i--) {
+              const rect = sections[i].el.getBoundingClientRect();
+              if (rect.top <= triggerLine) {
+                newActive = i;
+                break;
+              }
+            }
+
+            activeIndex = newActive;
+            if (activeIndex > highWaterMark) {
+              highWaterMark = activeIndex;
+            }
+            updateStatuses();
+
+            // Update progress bar for active section
+            if (activeIndex >= 0 && activeIndex < sections.length) {
+              const s = sections[activeIndex];
+              const rect = s.el.getBoundingClientRect();
+              const nextEl = sections[activeIndex + 1]?.el;
+              const nextRect = nextEl?.getBoundingClientRect();
+              const sectionHeight = nextRect ? nextRect.top - rect.top : window.innerHeight;
+              if (sectionHeight > 0) {
+                const progress = Math.max(0, Math.min(1, (triggerLine - rect.top) / sectionHeight));
+                s.fill.style.width = `${Math.round(progress * 100)}%`;
+              }
+            }
+
+            ticking = false;
+          });
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Smooth scroll on click
+      links.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const href = link.getAttribute('href');
+          if (!href) return;
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      // Typing entrance: hide items, type in one by one when TOC enters viewport
+      let typingDone = false;
+      items.forEach((item) => item.style.opacity = '0');
+
+      function typeEntrance() {
+        let row = 0;
+        function typeRow() {
+          if (row >= items.length) {
+            typingDone = true;
+            nav.classList.add('typed-done');
+            onScroll(); // kick off scroll-spy after typing
+            return;
+          }
+          const item = items[row];
+          const label = item.querySelector('.toc-label') as HTMLElement;
+          const fullText = label?.dataset.text || label?.textContent || '';
+          if (label) label.dataset.text = fullText; // store for later
+
+          item.style.opacity = '1';
+          item.style.transition = 'opacity 0.2s ease';
+          label.textContent = '';
+
+          let ci = 0;
+          const iv = setInterval(() => {
+            if (ci < fullText.length) {
+              label.textContent = fullText.slice(0, ++ci);
+            } else {
+              clearInterval(iv);
+              row++;
+              setTimeout(typeRow, 80);
+            }
+          }, 25);
+        }
+        typeRow();
+      }
+
+      // Trigger typing when TOC enters viewport
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              observer.unobserve(entry.target);
-              startTimeTypewriter(entry.target as HTMLElement, items);
+            if (entry.isIntersecting && !typingDone) {
+              revealObserver.unobserve(entry.target);
+              typeEntrance();
             }
           });
-        }, { threshold: 0.1 });
-        observer.observe(nav);
-      } else {
-        // Desktop: scroll-position-driven typing
-        startScrollTyping(nav as HTMLElement, items);
-      }
+        },
+        { threshold: 0.1 }
+      );
+      revealObserver.observe(nav);
 
       // 3s fallback
       setTimeout(() => {
-        if (!nav.classList.contains('typed-done')) {
-          showAllImmediately(nav as HTMLElement);
-          initScrollSpy(nav);
+        if (!typingDone) {
+          items.forEach((item) => { item.style.opacity = '1'; });
+          typingDone = true;
+          nav.classList.add('typed-done');
+          onScroll();
         }
       }, 3000);
     });
   }
 
-  function startScrollTyping(nav: HTMLElement, items: HTMLElement[]) {
-    let ticking = false;
-    let done = false;
-
-    function getProgress(): number {
-      const rect = nav.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // Progress: 0 when TOC bottom enters viewport, 1 when TOC top at 15% from top
-      const start = vh;
-      const end = vh * 0.15;
-      return Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
-    }
-
-    function apply(progress: number) {
-      if (done) return;
-      const rowCount = items.length;
-
-      for (let i = 0; i < rowCount; i++) {
-        const item = items[i];
-        const label = item.querySelector('.toc-label') as HTMLElement;
-        if (!label) continue;
-        const fullText = label.dataset.text || '';
-
-        // Use eased bands if available, otherwise equal bands
-        const band = ROW_BANDS[i] || [i / rowCount, (i + 1) / rowCount];
-        const [bandStart, bandEnd] = band;
-
-        if (progress < bandStart) {
-          item.classList.remove('typing', 'typed');
-          label.textContent = '';
-        } else if (progress >= bandEnd) {
-          item.classList.remove('typing');
-          item.classList.add('typed');
-          label.textContent = fullText;
-        } else {
-          const rowProgress = (progress - bandStart) / (bandEnd - bandStart);
-          item.classList.add('typing');
-          item.classList.remove('typed');
-          if (rowProgress < 0.08) {
-            label.textContent = '';
-          } else {
-            const charProgress = (rowProgress - 0.08) / 0.92;
-            label.textContent = fullText.slice(0, Math.floor(charProgress * fullText.length));
-          }
-        }
-      }
-
-      if (progress >= 1) {
-        done = true;
-        items.forEach((item) => {
-          item.classList.remove('typing');
-          item.classList.add('typed');
-          const l = item.querySelector('.toc-label') as HTMLElement;
-          if (l) l.textContent = l.dataset.text || '';
-        });
-        nav.classList.add('typed-done');
-        window.removeEventListener('scroll', onScroll);
-        initScrollSpy(nav);
-      }
-    }
-
-    function onScroll() {
-      if (done) return;
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          apply(getProgress());
-          ticking = false;
-        });
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    apply(getProgress());
-  }
-
-  function startTimeTypewriter(nav: HTMLElement, items: HTMLElement[]) {
-    let row = 0;
-    function typeRow() {
-      if (row >= items.length) {
-        nav.classList.add('typed-done');
-        initScrollSpy(nav);
-        return;
-      }
-      const item = items[row] as HTMLElement;
-      const label = item.querySelector('.toc-label') as HTMLElement;
-      const fullText = label?.dataset.text || '';
-      item.classList.add('typing');
-      label.textContent = '';
-      let ci = 0;
-      const iv = setInterval(() => {
-        if (ci < fullText.length) {
-          label.textContent = fullText.slice(0, ++ci);
-        } else {
-          clearInterval(iv);
-          item.classList.remove('typing');
-          item.classList.add('typed');
-          row++;
-          setTimeout(typeRow, 120);
-        }
-      }, 30);
-    }
-    typeRow();
-  }
-
-  function showAllImmediately(nav: HTMLElement) {
-    nav.querySelectorAll('.toc-item').forEach((item) => {
-      item.classList.add('typed');
-      item.classList.remove('typing');
-      const label = item.querySelector('.toc-label') as HTMLElement;
-      if (label) label.textContent = label.dataset.text || '';
+  // Delay init to run after slot injection (initServiceAnimations moves TOC into markdown)
+  setTimeout(initMissionTOC, 100);
+  document.addEventListener('astro:after-swap', () => {
+    document.querySelectorAll('.mission-toc').forEach((nav) => {
+      delete (nav as any).__tocBound;
     });
-    nav.classList.add('typed-done');
-  }
-
-  function initScrollSpy(nav: Element) {
-    const links = Array.from(nav.querySelectorAll('.toc-link'));
-    if (!links.length) return;
-    const targets: { el: Element; link: HTMLElement }[] = [];
-    links.forEach((link) => {
-      const href = link.getAttribute('href');
-      if (!href) return;
-      const id = href.replace('#', '');
-      const el = document.getElementById(id);
-      if (el) targets.push({ el, link: link as HTMLElement });
-    });
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            links.forEach((l) => {
-              (l as HTMLElement).setAttribute('data-active', 'false');
-              (l as HTMLElement).removeAttribute('aria-current');
-            });
-            const match = targets.find((t) => t.el === entry.target);
-            if (match) {
-              match.link.setAttribute('data-active', 'true');
-              match.link.setAttribute('aria-current', 'true');
-            }
-          }
-        });
-      },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
-    );
-    targets.forEach((t) => observer.observe(t.el));
-    links.forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = link.getAttribute('href');
-        if (!href) return;
-        const target = document.querySelector(href);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  }
-
-  initMissionTOC();
-  document.addEventListener('astro:after-swap', initMissionTOC);
+    setTimeout(initMissionTOC, 100);
+  });
 </script>

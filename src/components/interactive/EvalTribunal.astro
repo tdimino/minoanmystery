@@ -14,35 +14,52 @@ const judges = [
 
 const metricGroups = [
   { category: 'Accuracy', metrics: [
-    { name: 'Factual Accuracy', pass: true },
-    { name: 'Citation Density', pass: true },
-    { name: 'Hallucination Rate', pass: true },
-    { name: 'Source Diversity', pass: true },
+    { name: 'Factual Accuracy', pass: true, tip: 'Claims verified against ground truth sources' },
+    { name: 'Citation Density', pass: true, tip: 'Ratio of cited vs uncited claims in responses' },
+    { name: 'Hallucination Rate', pass: true, tip: 'Frequency of fabricated facts or nonexistent sources' },
+    { name: 'Source Diversity', pass: true, tip: 'Breadth of reference material used across responses' },
   ]},
   { category: 'Quality', metrics: [
-    { name: 'Coherence', pass: true },
-    { name: 'Completeness', pass: true },
-    { name: 'Answer Relevancy', pass: true },
-    { name: 'Character Consistency', pass: true },
-    { name: 'Emotional Awareness', pass: true },
+    { name: 'Coherence', pass: true, tip: 'Logical flow within and across conversation turns' },
+    { name: 'Completeness', pass: true, tip: 'Coverage of all requested aspects in the response' },
+    { name: 'Answer Relevancy', pass: true, tip: 'How directly the response addresses the user query' },
+    { name: 'Character Consistency', pass: true, tip: 'Persona, voice, and behavioral traits maintained across sessions' },
+    { name: 'Emotional Awareness', pass: true, tip: 'Recognition and appropriate response to user emotional state' },
   ]},
   { category: 'Safety', metrics: [
-    { name: 'Toxicity Detection', pass: true },
-    { name: 'Bias Detection', pass: true },
-    { name: 'PII Leakage', pass: true },
-    { name: 'Scope Boundaries', pass: true },
-    { name: 'Refusal Accuracy', pass: true },
+    { name: 'Toxicity Detection', pass: true, tip: 'Identifies and refuses harmful, abusive, or violent content' },
+    { name: 'Bias Detection', pass: true, tip: 'Screens for demographic, cultural, or ideological bias' },
+    { name: 'PII Leakage', pass: true, tip: 'Prevents exposure of personal identifiable information' },
+    { name: 'Scope Boundaries', pass: true, tip: 'Stays within defined expertise domain, defers when appropriate' },
+    { name: 'Refusal Accuracy', pass: true, tip: 'Correctly refuses dangerous requests without over-refusing safe ones' },
   ]},
   { category: 'Fine-Tuning', metrics: [
-    { name: 'Domain Accuracy', pass: true },
-    { name: 'Style Fidelity', pass: false },
-    { name: 'Concept Detection', pass: true },
+    { name: 'Domain Accuracy', pass: true, tip: 'Correctness within the trained specialty knowledge area' },
+    { name: 'Style Fidelity', pass: false, tip: 'Adherence to target voice, tone, and communication patterns' },
+    { name: 'Concept Detection', pass: true, tip: 'Ability to identify domain-specific concepts in user input' },
   ]},
   { category: 'Performance', metrics: [
-    { name: 'Latency (p95)', pass: true },
-    { name: 'Cost per Query', pass: true },
-    { name: 'Token Efficiency', pass: true },
+    { name: 'Latency (p95)', pass: true, tip: '95th percentile response time under production load' },
+    { name: 'Cost per Query', pass: true, tip: 'Average API + compute cost per user interaction' },
+    { name: 'Token Efficiency', pass: true, tip: 'Information density relative to token usage' },
   ]},
+];
+
+// Coverage matrix: which safety dimensions each judge evaluates
+const coverageDimensions = [
+  'Toxicity', 'Bias', 'PII', 'Scope', 'Refusal', 'Risk Detect', 'Cultural', 'Sycophancy',
+];
+// true = covers, false = doesn't, null = partial
+const coverageMatrix: (boolean | null)[][] = [
+  // Kimi    GPT-5.4  Sonnet   Qwen3.5  LoRA
+  [true,    true,    true,    true,    true   ], // Toxicity
+  [true,    true,    true,    true,    false  ], // Bias
+  [true,    true,    true,    null,    true   ], // PII
+  [true,    true,    true,    true,    true   ], // Scope
+  [true,    true,    true,    null,    true   ], // Refusal
+  [false,   true,    true,    false,   true   ], // Risk Detect
+  [null,    true,    true,    null,    false  ], // Cultural
+  [true,    true,    true,    false,   true   ], // Sycophancy
 ];
 
 const scenarios = [
@@ -77,16 +94,12 @@ const counters = [
     <span class="et-header-badge"><span class="et-hero-count" data-target="27">0</span> dimensions</span>
   </div>
 
-  {/* Judge status row — inline name + verdict */}
-  <div class="et-judges" role="group" aria-label="LLM judge verdicts">
+  {/* Judge status row — dot + name only */}
+  <div class="et-judges" role="group" aria-label="LLM judge providers">
     {judges.map((j) => (
-      <div class="et-judge" style={`--jc: ${j.color}`}>
+      <div class="et-judge" style={`--jc: ${j.color}`} title={`${j.name}: ${j.verdict}`}>
         <span class="et-judge-dot" aria-hidden="true"></span>
         <span class="et-judge-name">{j.name}</span>
-        <span class={`et-verdict ${j.verdict === 'PASS' ? 'et-pass' : 'et-partial'}`}>
-          <i class={`ph ${j.verdict === 'PASS' ? 'ph-check' : 'ph-warning'}`} aria-hidden="true"></i>
-          {j.verdict}
-        </span>
       </div>
     ))}
   </div>
@@ -99,14 +112,15 @@ const counters = [
         <span>20 Metrics</span>
       </div>
       <div class="et-metric-groups">
-        {metricGroups.map((group) => (
-          <div class="et-group">
+        {metricGroups.map((group, gi) => (
+          <div class="et-group" style={`--cat-hue: ${[150, 210, 0, 40, 270][gi] ?? 0}`}>
             <span class="et-group-label">{group.category}</span>
             <div class="et-group-metrics">
               {group.metrics.map((m) => (
-                <span class={`et-metric ${m.pass ? '' : 'et-metric-warn'}`}>
+                <span class={`et-metric ${m.pass ? '' : 'et-metric-warn'}`} data-tip={m.tip}>
                   <span class="et-metric-dot" aria-hidden="true"></span>
                   {m.name}
+                  <span class="et-tooltip">{m.tip}</span>
                 </span>
               ))}
             </div>
@@ -126,9 +140,37 @@ const counters = [
           <div class="et-scenario">
             <span class="et-s-dot" aria-hidden="true"></span>
             <span class="et-s-name">{s.name}</span>
-            <span class="et-s-badge">{s.instrument}</span>
+            <span class={`et-s-badge et-s-${s.instrument.toLowerCase()}`}>{s.instrument}</span>
           </div>
         ))}
+      </div>
+
+      {/* Coverage Matrix — which dimensions each judge evaluates */}
+      <div class="et-coverage">
+        <div class="et-zone-label">
+          <i class="ph ph-grid-four" aria-hidden="true"></i>
+          <span>Judge Coverage</span>
+        </div>
+        <div class="et-coverage-grid">
+          <div class="et-cov-header">
+            <span class="et-cov-corner"></span>
+            {judges.map((j) => (
+              <span class="et-cov-judge" style={`color: ${j.color}`} title={j.name}>
+                {j.name === 'Kimi K2.5' ? 'K2.5' : j.name === 'GPT-5.4' ? 'GPT' : j.name === 'Sonnet 4.6' ? 'Son' : j.name === 'Qwen3.5' ? 'Qwn' : 'LoRA'}
+              </span>
+            ))}
+          </div>
+          {coverageDimensions.map((dim, ri) => (
+            <div class="et-cov-row">
+              <span class="et-cov-dim">{dim}</span>
+              {coverageMatrix[ri].map((val) => (
+                <span class={`et-cov-cell ${val === true ? 'et-cov-yes' : val === null ? 'et-cov-partial' : 'et-cov-no'}`}>
+                  {val === true ? '●' : val === null ? '◐' : '○'}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -148,10 +190,13 @@ const counters = [
   .eval-tribunal {
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    overflow: hidden;
     margin: 40px 0;
     background: var(--color-background-alt);
+    /* No overflow:hidden — tooltips must escape the container */
   }
+
+  .et-header { border-radius: 8px 8px 0 0; }
+  .et-proof { border-radius: 0 0 8px 8px; overflow: hidden; }
 
   /* Header */
   .et-header {
@@ -186,15 +231,13 @@ const counters = [
 
   /* Judges — inline status row */
   .et-judges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     border-bottom: 1px solid var(--color-border);
   }
 
   .et-judge {
-    flex: 1;
-    min-width: 120px;
+    min-width: 0;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -242,7 +285,7 @@ const counters = [
 
   .et-pass {
     background: rgba(45, 212, 127, 0.1);
-    color: #2dd47f;
+    color: #3a9e6e;
   }
 
   .et-partial {
@@ -295,15 +338,30 @@ const counters = [
     gap: 14px;
   }
 
+  /* Per-category subtle background tint */
+  .et-group {
+    padding: 10px 12px;
+    border-radius: 4px;
+    background: hsl(var(--cat-hue, 0), 30%, 97%);
+  }
+
+  :global([data-theme='dark']) .et-group {
+    background: hsl(var(--cat-hue, 0), 15%, 11%);
+  }
+
   .et-group-label {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--color-text-muted);
+    color: hsl(var(--cat-hue, 0), 30%, 45%);
     display: block;
     margin-bottom: 6px;
+  }
+
+  :global([data-theme='dark']) .et-group-label {
+    color: hsl(var(--cat-hue, 0), 35%, 65%);
   }
 
   .et-group-metrics {
@@ -324,9 +382,49 @@ const counters = [
     background: var(--color-background);
     border: 1px solid var(--color-border);
     transition: border-color 0.2s ease;
+    position: relative;
+    cursor: default;
   }
 
-  .et-metric:hover { border-color: #2dd47f; }
+  @media (hover: hover) {
+    .et-metric:hover { border-color: #3a9e6e; }
+    .et-metric:hover .et-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* Tooltip */
+  .et-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--color-text);
+    color: var(--color-background);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: normal;
+    width: max-content;
+    max-width: 220px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .et-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-text);
+  }
 
   .et-metric-warn {
     border-color: rgba(212, 168, 67, 0.3);
@@ -339,15 +437,13 @@ const counters = [
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #2dd47f;
+    background: #3a9e6e;
     flex-shrink: 0;
   }
 
   .et-metric-warn .et-metric-dot { background: #d4a843; }
 
   /* Adversarial feed */
-  .et-adversarial-zone {}
-
   .et-scenario-list {
     max-height: 320px;
     overflow-y: auto;
@@ -371,7 +467,7 @@ const counters = [
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #2dd47f;
+    background: #3a9e6e;
     flex-shrink: 0;
   }
 
@@ -398,6 +494,23 @@ const counters = [
     white-space: nowrap;
     flex-shrink: 0;
   }
+
+  /* Per-instrument badge tints */
+  .et-s-safety { color: hsl(0, 50%, 45%); border-color: hsl(0, 40%, 85%); background: hsl(0, 40%, 97%); }
+  .et-s-accuracy { color: hsl(210, 50%, 40%); border-color: hsl(210, 40%, 82%); background: hsl(210, 40%, 96%); }
+  .et-s-privacy { color: hsl(270, 40%, 45%); border-color: hsl(270, 30%, 82%); background: hsl(270, 30%, 96%); }
+  .et-s-security { color: hsl(30, 55%, 40%); border-color: hsl(30, 40%, 82%); background: hsl(30, 40%, 96%); }
+  .et-s-fairness { color: hsl(160, 45%, 35%); border-color: hsl(160, 35%, 80%); background: hsl(160, 35%, 96%); }
+  .et-s-fidelity { color: hsl(45, 55%, 38%); border-color: hsl(45, 40%, 80%); background: hsl(45, 40%, 96%); }
+  .et-s-training { color: hsl(320, 40%, 42%); border-color: hsl(320, 30%, 82%); background: hsl(320, 30%, 96%); }
+
+  :global([data-theme='dark']) .et-s-safety { color: hsl(0, 45%, 65%); border-color: hsl(0, 30%, 25%); background: hsl(0, 20%, 14%); }
+  :global([data-theme='dark']) .et-s-accuracy { color: hsl(210, 50%, 65%); border-color: hsl(210, 30%, 25%); background: hsl(210, 20%, 14%); }
+  :global([data-theme='dark']) .et-s-privacy { color: hsl(270, 40%, 70%); border-color: hsl(270, 25%, 25%); background: hsl(270, 15%, 14%); }
+  :global([data-theme='dark']) .et-s-security { color: hsl(30, 50%, 60%); border-color: hsl(30, 30%, 25%); background: hsl(30, 15%, 14%); }
+  :global([data-theme='dark']) .et-s-fairness { color: hsl(160, 40%, 55%); border-color: hsl(160, 25%, 25%); background: hsl(160, 15%, 14%); }
+  :global([data-theme='dark']) .et-s-fidelity { color: hsl(45, 50%, 58%); border-color: hsl(45, 25%, 25%); background: hsl(45, 15%, 14%); }
+  :global([data-theme='dark']) .et-s-training { color: hsl(320, 40%, 65%); border-color: hsl(320, 25%, 25%); background: hsl(320, 15%, 14%); }
 
   /* Proof footer */
   .et-proof {
@@ -433,10 +546,69 @@ const counters = [
     color: var(--color-text-muted);
   }
 
+  /* Coverage Matrix */
+  .et-coverage {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .et-coverage-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(5, 1fr);
+    padding: 0 16px 12px;
+    gap: 0;
+    align-items: center;
+  }
+
+  .et-cov-header {
+    display: contents;
+  }
+
+  .et-cov-corner { /* empty top-left cell */ }
+
+  .et-cov-judge {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    opacity: 0.7;
+    padding: 6px 0;
+  }
+
+  .et-cov-row {
+    display: contents;
+  }
+
+  .et-cov-dim {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.06);
+  }
+
+  .et-cov-cell {
+    text-align: center;
+    font-size: 11px;
+    line-height: 1;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.06);
+  }
+
+  .et-cov-yes { color: #3a9e6e; }
+  .et-cov-partial { color: var(--color-accent); }
+  .et-cov-no { color: var(--color-text-muted); opacity: 0.2; }
+
+  @media (max-width: 900px) {
+    .et-judges { grid-template-columns: repeat(3, 1fr); }
+  }
+
   @media (max-width: 768px) {
     .et-split { grid-template-columns: 1fr; }
     .et-metrics-zone { border-right: none; border-bottom: 1px solid var(--color-border); }
-    .et-judges { flex-direction: column; }
+    .et-judges { grid-template-columns: 1fr; }
     .et-judge { border-right: none; border-bottom: 1px solid var(--color-border); }
     .et-judge:last-child { border-bottom: none; }
     .et-scenario-list { max-height: 200px; }
