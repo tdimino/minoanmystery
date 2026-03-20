@@ -170,6 +170,7 @@ const { sections } = Astro.props;
     align-items: center;
     gap: 10px;
     padding: 9px 16px 5px 14px;
+    min-height: 44px;
     text-decoration: none;
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
     transition: background-color 0.2s ease;
@@ -422,10 +423,10 @@ const { sections } = Astro.props;
             if (statusText) statusText.textContent = 'Complete';
             completed++;
           } else if (i === highWaterMark && i === activeIndex) {
-            // ACTIVE — currently being read
+            // ACTIVE — currently being read (counts as reviewed)
             s.link.setAttribute('data-status', 'active');
-            // progress fill updated by scroll handler
             if (statusText) statusText.textContent = 'Active';
+            completed++;
           } else if (i === highWaterMark && i !== activeIndex) {
             // Was the furthest reached but user scrolled back — mark complete
             s.link.setAttribute('data-status', 'complete');
