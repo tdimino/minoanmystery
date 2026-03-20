@@ -561,7 +561,7 @@
 
 /* Form */
 .labyrinth-form {
-  padding: 16px 0 24px;
+  padding: 16px 0 32px;
   border-top: 1px solid rgba(128, 128, 128, 0.15);
   background: transparent;
 }
@@ -631,9 +631,12 @@
   box-shadow: 0 2px 8px rgba(150, 106, 133, 0.25);
 }
 
-.labyrinth-submit:hover {
-  transform: scale(1.05) translateY(-1px);
-  box-shadow: 0 4px 12px rgba(150, 106, 133, 0.35);
+@media (hover: hover) {
+  .labyrinth-submit:hover {
+    transform: scale(1.05) translateY(-1px);
+    filter: drop-shadow(0 4px 12px rgba(150, 106, 133, 0.35));
+    box-shadow: none;
+  }
 }
 
 .labyrinth-submit:active {
