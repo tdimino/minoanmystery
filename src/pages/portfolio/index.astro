@@ -208,6 +208,22 @@ const disciplineLabels: Record<string, string> = {
   /* Filter Section */
   .filter-section {
     padding-bottom: var(--space-lg);
+    position: relative;
+  }
+
+  /* Scroll fade indicator for mobile overflow */
+  @media (max-width: 768px) {
+    .filter-section::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      background: linear-gradient(to right, transparent, var(--color-background));
+      pointer-events: none;
+      z-index: 1;
+    }
   }
 
   .filter-pills {

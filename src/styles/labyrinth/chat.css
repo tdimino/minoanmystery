@@ -391,6 +391,7 @@
 /* Mobile: stack chips vertically if needed */
 @media (max-width: 480px) {
   .starter-prompts {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     max-width: 280px;
@@ -854,7 +855,7 @@
   }
 
   .labyrinth-container {
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .message {

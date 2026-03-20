@@ -58,17 +58,18 @@
   transition: width 0.3s ease;
 }
 
-.link-arrow:hover::after {
-  width: 100%;
+@media (hover: hover) {
+  .link-arrow:hover::after {
+    width: 100%;
+  }
+  .link-arrow:hover .arrow {
+    transform: translateX(4px);
+  }
 }
 
 .link-arrow .arrow {
   display: inline-block;
   transition: transform 0.3s ease;
-}
-
-.link-arrow:hover .arrow {
-  transform: translateX(4px);
 }
 
 /* ============================================
@@ -106,12 +107,13 @@
   border-radius: 50%;
 }
 
-.circle-link:hover {
-  color: var(--btn-fg);
-}
-
-.circle-link:hover::before {
-  transform: translateX(0);
+@media (hover: hover) {
+  .circle-link:hover {
+    color: var(--btn-fg);
+  }
+  .circle-link:hover::before {
+    transform: translateX(0);
+  }
 }
 
 .circle-link-text {
@@ -134,8 +136,10 @@
   transition: transform 0.3s ease;
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
+@media (hover: hover) {
+  .project-card:hover {
+    transform: translateY(-4px);
+  }
 }
 
 .project-card-image {
@@ -148,8 +152,10 @@
   transition: transform 0.4s ease;
 }
 
-.project-card:hover .project-card-image img {
-  transform: scale(1.03);
+@media (hover: hover) {
+  .project-card:hover .project-card-image img {
+    transform: scale(1.03);
+  }
 }
 
 .project-card-title {
@@ -165,8 +171,10 @@
   transition: transform 0.3s ease;
 }
 
-.project-card:hover .project-card-title .arrow {
-  transform: translateX(4px);
+@media (hover: hover) {
+  .project-card:hover .project-card-title .arrow {
+    transform: translateX(4px);
+  }
 }
 
 .project-card-summary {

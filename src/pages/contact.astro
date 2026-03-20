@@ -98,26 +98,31 @@ import ShaderBackground from '../components/ShaderBackground.astro';
             class="contact-form fade-animate"
           >
             <div class="form-group">
+              <label for="name" class="sr-only">Your preferred name</label>
               <input
                 type="text"
                 id="name"
                 name="name"
                 required
+                autocomplete="name"
                 placeholder="Your preferred name"
               />
             </div>
 
             <div class="form-group">
+              <label for="email" class="sr-only">Email address</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 required
+                autocomplete="email"
                 placeholder="Email address"
               />
             </div>
 
             <div class="form-group">
+              <label for="message" class="sr-only">Your message</label>
               <textarea
                 id="message"
                 name="message"
@@ -250,8 +255,11 @@ import ShaderBackground from '../components/ShaderBackground.astro';
     transition: transform var(--transition-fast);
   }
 
-  .contact-link:hover .arrow-icon {
-    transform: translate(4px, -4px);
+  @media (hover: hover) {
+    .contact-link:hover .arrow-icon { transform: translate(4px, -4px); }
+    .contact-link:hover .contact-link-underline { width: 100%; }
+    .submit-link:hover .arrow-icon { transform: translate(4px, -4px); }
+    .submit-link:hover .submit-link-underline { width: 100%; }
   }
 
   /* Invert arrows to white in dark mode */
@@ -268,9 +276,6 @@ import ShaderBackground from '../components/ShaderBackground.astro';
     transition: width 0.35s ease;
   }
 
-  .contact-link:hover .contact-link-underline {
-    width: 100%;
-  }
 
   /* Contact Form */
   .contact-form {
@@ -286,7 +291,8 @@ import ShaderBackground from '../components/ShaderBackground.astro';
   /* Input fields - Webflow exact */
   .form-group input {
     width: 100%;
-    padding: 0 0 16px 4px;
+    padding: 12px 0 16px 4px;
+    min-height: 48px;
     margin-bottom: 56px;
     border: none;
     border-bottom: 1px solid var(--color-text-muted);
@@ -387,10 +393,6 @@ import ShaderBackground from '../components/ShaderBackground.astro';
     margin-left: 9px;
   }
 
-  .submit-link:hover .arrow-icon {
-    transform: translate(4px, -4px);
-  }
-
   /* Animated underline for submit */
   .submit-link-underline {
     width: 0;
@@ -398,10 +400,6 @@ import ShaderBackground from '../components/ShaderBackground.astro';
     background-color: var(--color-text);
     margin-top: 14px;
     transition: width 0.35s ease;
-  }
-
-  .submit-link:hover .submit-link-underline {
-    width: 100%;
   }
 
   /* Form Messages */
@@ -464,13 +462,20 @@ import ShaderBackground from '../components/ShaderBackground.astro';
     }
 
     .contact-links {
-      grid-column-gap: 30px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-column-gap: 16px;
       margin-top: 40px;
     }
 
     .contact-link {
-      font-size: 18px;
+      font-size: 16px;
       line-height: 20px;
+    }
+
+    .contact-link .arrow-icon {
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
     }
 
     .form-group input {

@@ -25,12 +25,13 @@ const { sections } = Astro.props;
     <span class="toc-count">{sections.length}</span>
   </div>
   <ol class="toc-list">
-    {sections.map((s) => (
-      <li class="toc-item">
+    {sections.map((s, i) => (
+      <li class="toc-item" style={`--row: ${i}; --row-hue: ${[340, 25, 45, 180, 210, 270, 300, 150, 60][i] ?? 0}`}>
         <a class="toc-link" href={s.href} data-active="false">
           <span class="toc-num">{s.num}</span>
           <i class={`ph ${s.icon} toc-icon`} aria-hidden="true"></i>
-          <span class="toc-label">{s.label}</span>
+          <span class="toc-label" data-text={s.label}>{s.label}</span>
+          <span class="toc-cursor" aria-hidden="true"></span>
         </a>
       </li>
     ))}
@@ -81,23 +82,39 @@ const { sections } = Astro.props;
   .toc-item {
     margin: 0;
     padding: 0;
-    animation: toc-appear 0.4s ease-out forwards;
-    opacity: 0;
+    /* Pastel accent — each row gets a unique hue via --row-hue */
+    border-left: 3px solid hsl(var(--row-hue, 0), 40%, 78%);
   }
 
-  .toc-item:nth-child(1) { animation-delay: 0.05s; }
-  .toc-item:nth-child(2) { animation-delay: 0.08s; }
-  .toc-item:nth-child(3) { animation-delay: 0.11s; }
-  .toc-item:nth-child(4) { animation-delay: 0.14s; }
-  .toc-item:nth-child(5) { animation-delay: 0.17s; }
-  .toc-item:nth-child(6) { animation-delay: 0.20s; }
-  .toc-item:nth-child(7) { animation-delay: 0.23s; }
-  .toc-item:nth-child(8) { animation-delay: 0.26s; }
-  .toc-item:nth-child(9) { animation-delay: 0.29s; }
+  /* JS hides items before typing; no-JS shows them immediately */
+  @media (scripting: enabled) {
+    .mission-toc:not(.typed-done) .toc-item {
+      opacity: 0;
+    }
+    .mission-toc:not(.typed-done) .toc-item.typed,
+    .mission-toc:not(.typed-done) .toc-item.typing {
+      opacity: 1;
+    }
+  }
 
-  @keyframes toc-appear {
-    from { opacity: 0; transform: translateX(-6px); }
-    to { opacity: 1; transform: translateX(0); }
+  /* Blinking cursor */
+  .toc-cursor {
+    display: none;
+    width: 2px;
+    height: 14px;
+    background: var(--color-primary);
+    margin-left: 2px;
+    flex-shrink: 0;
+  }
+
+  .toc-item.typing .toc-cursor {
+    display: inline-block;
+    animation: cursor-blink 0.6s steps(1) infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
   }
 
   .toc-link {
@@ -107,8 +124,8 @@ const { sections } = Astro.props;
     padding: 9px 16px 9px 14px;
     text-decoration: none;
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    border-left: 3px solid transparent;
-    transition: border-color 0.3s ease, background-color 0.2s ease;
+    border-left: none;
+    transition: background-color 0.2s ease;
   }
 
   .toc-link:hover {
@@ -186,8 +203,13 @@ const { sections } = Astro.props;
     .toc-num { display: none; }
   }
 
+  :global([data-theme='dark']) .toc-item {
+    border-left-color: hsl(var(--row-hue, 0), 50%, 55%);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .toc-item { animation: none; opacity: 1; }
+    .toc-item { opacity: 1; }
+    .toc-cursor { display: none; }
     .toc-link, .toc-num, .toc-icon, .toc-label { transition-duration: 0.01s; }
   }
 </style>
@@ -216,54 +238,221 @@ const { sections } = Astro.props;
 </style>
 
 <script>
+  // Kotharat "Teletype Spool" — scroll-linked character typing.
+  // Desktop: scroll position drives character reveal. Mobile: time-based fallback.
+
+  // Eased band mapping (Kotharat spec): early rows faster, later rows slower
+  const ROW_BANDS = [
+    [0.00, 0.08], [0.08, 0.17], [0.17, 0.27], [0.27, 0.38],
+    [0.38, 0.49], [0.49, 0.60], [0.60, 0.72], [0.72, 0.85],
+    [0.85, 1.00],
+  ];
+
+  const IS_MOBILE = typeof window !== 'undefined' && window.innerWidth < 768;
+  const PREFERS_REDUCED = typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   function initMissionTOC() {
     document.querySelectorAll('.mission-toc').forEach((nav) => {
-      const links = Array.from(nav.querySelectorAll('.toc-link'));
-      if (!links.length) return;
+      if (nav.classList.contains('typed-done') || (nav as any).__tocBound) {
+        if (nav.classList.contains('typed-done')) initScrollSpy(nav);
+        return;
+      }
 
-      // Collect target h2 elements
-      const targets: { el: Element; link: HTMLElement }[] = [];
-      links.forEach((link) => {
-        const href = link.getAttribute('href');
-        if (!href) return;
-        const id = href.replace('#', '');
-        const el = document.getElementById(id);
-        if (el) targets.push({ el, link: link as HTMLElement });
+      if (PREFERS_REDUCED) {
+        showAllImmediately(nav as HTMLElement);
+        initScrollSpy(nav);
+        return;
+      }
+
+      (nav as any).__tocBound = true;
+      const items = Array.from(nav.querySelectorAll('.toc-item')) as HTMLElement[];
+      if (!items.length) { initScrollSpy(nav); return; }
+
+      // Clear labels for JS-driven typing
+      items.forEach((item) => {
+        const label = item.querySelector('.toc-label') as HTMLElement;
+        if (label) label.textContent = '';
       });
 
-      // Scroll-spy via IntersectionObserver
-      const observer = new IntersectionObserver(
-        (entries) => {
+      if (IS_MOBILE) {
+        // Mobile: time-based typewriter on viewport entry
+        const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              // Deactivate all
-              links.forEach((l) => {
-                (l as HTMLElement).setAttribute('data-active', 'false');
-                (l as HTMLElement).removeAttribute('aria-current');
-              });
-              // Activate matching link
-              const match = targets.find((t) => t.el === entry.target);
-              if (match) {
-                match.link.setAttribute('data-active', 'true');
-                match.link.setAttribute('aria-current', 'true');
-              }
+              observer.unobserve(entry.target);
+              startTimeTypewriter(entry.target as HTMLElement, items);
             }
           });
-        },
-        { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
-      );
+        }, { threshold: 0.1 });
+        observer.observe(nav);
+      } else {
+        // Desktop: scroll-position-driven typing
+        startScrollTyping(nav as HTMLElement, items);
+      }
 
-      targets.forEach((t) => observer.observe(t.el));
+      // 3s fallback
+      setTimeout(() => {
+        if (!nav.classList.contains('typed-done')) {
+          showAllImmediately(nav as HTMLElement);
+          initScrollSpy(nav);
+        }
+      }, 3000);
+    });
+  }
 
-      // Smooth scroll on click
-      links.forEach((link) => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const href = link.getAttribute('href');
-          if (!href) return;
-          const target = document.querySelector(href);
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function startScrollTyping(nav: HTMLElement, items: HTMLElement[]) {
+    let ticking = false;
+    let done = false;
+
+    function getProgress(): number {
+      const rect = nav.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Progress: 0 when TOC bottom enters viewport, 1 when TOC top at 15% from top
+      const start = vh;
+      const end = vh * 0.15;
+      return Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+    }
+
+    function apply(progress: number) {
+      if (done) return;
+      const rowCount = items.length;
+
+      for (let i = 0; i < rowCount; i++) {
+        const item = items[i];
+        const label = item.querySelector('.toc-label') as HTMLElement;
+        if (!label) continue;
+        const fullText = label.dataset.text || '';
+
+        // Use eased bands if available, otherwise equal bands
+        const band = ROW_BANDS[i] || [i / rowCount, (i + 1) / rowCount];
+        const [bandStart, bandEnd] = band;
+
+        if (progress < bandStart) {
+          item.classList.remove('typing', 'typed');
+          label.textContent = '';
+        } else if (progress >= bandEnd) {
+          item.classList.remove('typing');
+          item.classList.add('typed');
+          label.textContent = fullText;
+        } else {
+          const rowProgress = (progress - bandStart) / (bandEnd - bandStart);
+          item.classList.add('typing');
+          item.classList.remove('typed');
+          if (rowProgress < 0.08) {
+            label.textContent = '';
+          } else {
+            const charProgress = (rowProgress - 0.08) / 0.92;
+            label.textContent = fullText.slice(0, Math.floor(charProgress * fullText.length));
+          }
+        }
+      }
+
+      if (progress >= 1) {
+        done = true;
+        items.forEach((item) => {
+          item.classList.remove('typing');
+          item.classList.add('typed');
+          const l = item.querySelector('.toc-label') as HTMLElement;
+          if (l) l.textContent = l.dataset.text || '';
         });
+        nav.classList.add('typed-done');
+        window.removeEventListener('scroll', onScroll);
+        initScrollSpy(nav);
+      }
+    }
+
+    function onScroll() {
+      if (done) return;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          apply(getProgress());
+          ticking = false;
+        });
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    apply(getProgress());
+  }
+
+  function startTimeTypewriter(nav: HTMLElement, items: HTMLElement[]) {
+    let row = 0;
+    function typeRow() {
+      if (row >= items.length) {
+        nav.classList.add('typed-done');
+        initScrollSpy(nav);
+        return;
+      }
+      const item = items[row] as HTMLElement;
+      const label = item.querySelector('.toc-label') as HTMLElement;
+      const fullText = label?.dataset.text || '';
+      item.classList.add('typing');
+      label.textContent = '';
+      let ci = 0;
+      const iv = setInterval(() => {
+        if (ci < fullText.length) {
+          label.textContent = fullText.slice(0, ++ci);
+        } else {
+          clearInterval(iv);
+          item.classList.remove('typing');
+          item.classList.add('typed');
+          row++;
+          setTimeout(typeRow, 120);
+        }
+      }, 30);
+    }
+    typeRow();
+  }
+
+  function showAllImmediately(nav: HTMLElement) {
+    nav.querySelectorAll('.toc-item').forEach((item) => {
+      item.classList.add('typed');
+      item.classList.remove('typing');
+      const label = item.querySelector('.toc-label') as HTMLElement;
+      if (label) label.textContent = label.dataset.text || '';
+    });
+    nav.classList.add('typed-done');
+  }
+
+  function initScrollSpy(nav: Element) {
+    const links = Array.from(nav.querySelectorAll('.toc-link'));
+    if (!links.length) return;
+    const targets: { el: Element; link: HTMLElement }[] = [];
+    links.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const id = href.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) targets.push({ el, link: link as HTMLElement });
+    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((l) => {
+              (l as HTMLElement).setAttribute('data-active', 'false');
+              (l as HTMLElement).removeAttribute('aria-current');
+            });
+            const match = targets.find((t) => t.el === entry.target);
+            if (match) {
+              match.link.setAttribute('data-active', 'true');
+              match.link.setAttribute('aria-current', 'true');
+            }
+          }
+        });
+      },
+      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+    );
+    targets.forEach((t) => observer.observe(t.el));
+    links.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
   }

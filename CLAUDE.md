@@ -48,6 +48,12 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **CSS transitions**: Never use `transition: all`—enumerate specific properties
 - **Focus styles**: Use `:focus-visible` progressive pattern: `:focus` for functional state, `:focus-visible` for outline, `:focus:not(:focus-visible)` to suppress for mouse. Never bare `outline: none` on `:focus`.
 - **Touch targets**: All interactive elements must meet 44px minimum height (WCAG 2.2 / Apple HIG)
+- **Hover gating**: All `:hover` transform/animation effects wrapped in `@media (hover: hover)` to prevent sticky hover on touch
+- **Form inputs**: Always pair with `sr-only` `<label>` + `autocomplete` attribute (WCAG 1.3.1 + 1.3.5)
+- **Heavy animations**: Sparks, particle effects disabled on `(pointer: coarse)` or `<768px`
+- **Parallax**: `background-attachment: fixed` disabled on touch via `@media (hover: none)` (iOS Safari fallback)
+- **Hamburger nav**: Activates at `1024px` to cover touch tablets; mobile menu stagger capped at 500ms
+- **Scroll behavior**: `scroll-behavior: smooth` gated behind `@media (prefers-reduced-motion: no-preference)`
 
 ## SEO Conventions
 

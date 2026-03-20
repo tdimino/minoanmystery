@@ -631,6 +631,13 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     transform: translateY(0);
   }
 
+  /* Touch devices: disable parallax fixed attachment (broken on iOS Safari) */
+  @media (hover: none) {
+    .parallax-section {
+      background-attachment: scroll;
+    }
+  }
+
   /* Responsive */
   @media (max-width: 768px) {
     .portfolio-hero {
@@ -654,12 +661,14 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
       height: 14px;
     }
 
+    /* iOS Safari doesn't support background-attachment:fixed */
     .parallax-section {
       background-attachment: scroll;
-      height: 330px;
-      margin-top: 40px;
-      background-size: auto 180%;
-      background-position: center 85%;
+      height: 280px;
+      margin-top: 32px;
+      background-size: cover;
+      background-position: center 40%;
+      overflow: hidden;
     }
 
     .portfolio-details {
@@ -676,6 +685,10 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
 
     .detail-item {
       align-items: center;
+    }
+
+    .detail-item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
 
     .detail-label {

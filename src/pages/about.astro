@@ -295,7 +295,7 @@ const experience = [
   }
 
   .about-hero h1 {
-    font-size: 58px;
+    font-size: clamp(28px, 5vw + 0.5rem, 58px);
     font-weight: 500;
     line-height: 1.2;
     margin-bottom: 24px;
@@ -400,10 +400,6 @@ const experience = [
     transition: transform 0.3s ease;
   }
 
-  .resume-link:hover .resume-arrow-icon {
-    transform: translate(4px, -4px);
-  }
-
   /* Invert resume arrow to white in dark mode */
   :global([data-theme='dark']) .resume-arrow-icon {
     filter: invert(1);
@@ -415,10 +411,6 @@ const experience = [
     background-color: var(--color-text);
     margin-top: 14px;
     transition: width 0.35s ease;
-  }
-
-  .resume-link:hover .resume-link-underline {
-    width: 100%;
   }
 
   /* Experience Cards - Line separator style */
@@ -570,12 +562,13 @@ const experience = [
     z-index: 1;
   }
 
-  .circle-link:hover .circle-bg-hover {
-    width: 100%;
-  }
-
-  .circle-link:hover .circle-link-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+  @media (hover: hover) {
+    .circle-link:hover .circle-bg-hover { width: 100%; }
+    .circle-link:hover .circle-link-icon {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff' stroke-width='1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/%3E%3C/svg%3E");
+    }
+    .resume-link:hover .resume-arrow-icon { transform: translate(4px, -4px); }
+    .resume-link:hover .resume-link-underline { width: 100%; }
   }
 
   /* Invert circle link chevron to white in dark mode */
@@ -598,6 +591,10 @@ const experience = [
     .about-hero-image {
       max-width: 400px;
       margin: 0 auto;
+    }
+
+    .about-hero-image img {
+      min-height: auto;
     }
 
     .about-bio .paragraph-large {
@@ -626,7 +623,6 @@ const experience = [
     }
 
     .about-hero h1 {
-      font-size: 28px;
       line-height: 1.3;
     }
 

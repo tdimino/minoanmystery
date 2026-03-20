@@ -260,8 +260,12 @@ const projects = [
     transition: transform 0.35s ease;
   }
 
-  .project-row:hover {
-    transform: scale(0.98);
+  @media (hover: hover) {
+    .project-row:hover { transform: scale(0.98); }
+    .project-row:hover .project-title { color: var(--color-text-muted); }
+    .project-row:hover .view-project .arrow-icon { transform: translate(4px, -4px); }
+    .project-row:hover .view-project-underline { width: 100%; }
+    .project-row:hover .project-image img { transform: scale(1.08); }
   }
 
   .project-content {
@@ -280,9 +284,7 @@ const projects = [
     transition: color 0.35s ease;
   }
 
-  .project-row:hover .project-title {
-    color: var(--color-text-muted);
-  }
+  /* hover effects gated in @media (hover: hover) above */
 
   .project-summary {
     color: var(--color-text-muted);
@@ -318,9 +320,6 @@ const projects = [
     transition: transform var(--transition-fast);
   }
 
-  .project-row:hover .view-project .arrow-icon {
-    transform: translate(4px, -4px);
-  }
 
   /* Invert arrow to white in dark mode */
   :global([data-theme='dark']) .view-project .arrow-icon {
@@ -335,9 +334,6 @@ const projects = [
     transition: width 0.35s ease;
   }
 
-  .project-row:hover .view-project-underline {
-    width: 100%;
-  }
 
   .project-image {
     overflow: hidden;
@@ -360,9 +356,6 @@ const projects = [
     transition: transform 0.4s ease;
   }
 
-  .project-row:hover .project-image img {
-    transform: scale(1.08);
-  }
 
   /* Image reveal animation - black overlay swipes right to left */
   .image-reveal-container {
@@ -423,13 +416,24 @@ const projects = [
 
     .project-content,
     .project-row.reverse .project-content {
-      padding: var(--space-md);
+      padding: var(--space-sm) var(--space-md) var(--space-md);
       order: 2;
     }
 
     .project-image {
       order: 1;
       padding: 0;
+      max-height: 220px;
+    }
+
+    .project-image img {
+      max-height: 220px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .projects-list {
+      gap: var(--space-md);
     }
 
     .section-title {
