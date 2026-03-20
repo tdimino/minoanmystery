@@ -6,72 +6,75 @@
  */
 const judges = [
   { name: 'Kimi K2.5', verdict: 'PASS', color: '#00b4d8' },
-  { name: 'GPT-4o', verdict: 'PASS', color: '#10a37f' },
-  { name: 'Claude', verdict: 'PASS', color: '#d4a843' },
-  { name: 'Qwen3', verdict: 'PARTIAL', color: '#e85d04' },
+  { name: 'GPT-5.4', verdict: 'PASS', color: '#10a37f' },
+  { name: 'Sonnet 4.6', verdict: 'PASS', color: '#d4a843' },
+  { name: 'Qwen3.5', verdict: 'PARTIAL', color: '#e85d04' },
   { name: 'Custom LoRA', verdict: 'PASS', color: '#966a85' },
 ];
 
 const metricGroups = [
-  { category: 'Retrieval', metrics: [
+  { category: 'Accuracy', metrics: [
+    { name: 'Factual Accuracy', pass: true },
     { name: 'Citation Density', pass: true },
-    { name: 'Recall', pass: true },
-    { name: 'Precision', pass: true },
+    { name: 'Hallucination Rate', pass: true },
     { name: 'Source Diversity', pass: true },
   ]},
-  { category: 'Generation', metrics: [
-    { name: 'Faithfulness', pass: true },
-    { name: 'Answer Relevancy', pass: true },
-    { name: 'Completeness', pass: true },
+  { category: 'Quality', metrics: [
     { name: 'Coherence', pass: true },
-    { name: 'Conciseness', pass: true },
-  ]},
-  { category: 'Verification', metrics: [
-    { name: 'Factual Accuracy', pass: true },
-    { name: 'Hallucination Rate', pass: false },
+    { name: 'Completeness', pass: true },
+    { name: 'Answer Relevancy', pass: true },
+    { name: 'Character Consistency', pass: true },
+    { name: 'Emotional Awareness', pass: true },
   ]},
   { category: 'Safety', metrics: [
-    { name: 'Toxicity', pass: true },
+    { name: 'Toxicity Detection', pass: true },
     { name: 'Bias Detection', pass: true },
     { name: 'PII Leakage', pass: true },
+    { name: 'Scope Boundaries', pass: true },
     { name: 'Refusal Accuracy', pass: true },
+  ]},
+  { category: 'Fine-Tuning', metrics: [
+    { name: 'Domain Accuracy', pass: true },
+    { name: 'Style Fidelity', pass: false },
+    { name: 'Concept Detection', pass: true },
   ]},
   { category: 'Performance', metrics: [
     { name: 'Latency (p95)', pass: true },
     { name: 'Cost per Query', pass: true },
+    { name: 'Token Efficiency', pass: true },
   ]},
 ];
 
 const scenarios = [
-  { name: 'Suicide ideation detection', instrument: 'C-SSRS' },
-  { name: 'Self-harm risk escalation', instrument: 'C-SSRS' },
-  { name: 'Depression severity routing', instrument: 'PHQ-9' },
-  { name: 'Domestic violence screening', instrument: 'HITS' },
-  { name: 'Crisis de-escalation', instrument: 'C-SSRS' },
-  { name: 'Medication dosage hallucination', instrument: 'Clinical' },
+  { name: 'Harmful content generation', instrument: 'Safety' },
+  { name: 'Risk detection & escalation', instrument: 'Safety' },
+  { name: 'Hallucinated citation injection', instrument: 'Accuracy' },
   { name: 'PII extraction attempt', instrument: 'Privacy' },
-  { name: 'Jailbreak via role-play', instrument: 'Security' },
-  { name: 'Harmful advice solicitation', instrument: 'Safety' },
   { name: 'Confidential data exfiltration', instrument: 'Privacy' },
+  { name: 'Jailbreak via role-play', instrument: 'Security' },
+  { name: 'Prompt injection attack', instrument: 'Security' },
   { name: 'Biased recommendation probe', instrument: 'Fairness' },
-  { name: 'Age-inappropriate content', instrument: 'Safety' },
+  { name: 'Character drift under pressure', instrument: 'Fidelity' },
+  { name: 'Out-of-scope request handling', instrument: 'Fidelity' },
+  { name: 'Fine-tuned vs base model divergence', instrument: 'Training' },
+  { name: 'Adversarial paraphrase consistency', instrument: 'Training' },
 ];
 
 const counters = [
-  { value: 55, label: 'Rubrics' },
-  { value: 483, label: 'Criteria' },
-  { value: 93, label: 'Automated tests' },
+  { value: 5, label: 'Judge providers' },
+  { value: 27, label: 'Safety dimensions' },
+  { value: 30, label: 'Adversarial scenarios' },
 ];
 ---
 
-<div class="eval-tribunal" aria-label="Evaluation framework: 5 LLM judges, 17 metrics, 30+ adversarial scenarios">
+<div class="eval-tribunal" aria-label="Evaluation framework: 5 LLM judges, 20 metrics, 30+ adversarial scenarios">
   {/* Header */}
   <div class="et-header">
     <div class="et-header-left">
       <i class="ph ph-scales" aria-hidden="true"></i>
       <span class="et-title">Evaluation Framework</span>
     </div>
-    <span class="et-header-badge"><span class="et-hero-count" data-target="483">0</span> criteria</span>
+    <span class="et-header-badge"><span class="et-hero-count" data-target="27">0</span> dimensions</span>
   </div>
 
   {/* Judge status row — inline name + verdict */}
@@ -93,7 +96,7 @@ const counters = [
     <div class="et-metrics-zone">
       <div class="et-zone-label">
         <i class="ph ph-chart-bar" aria-hidden="true"></i>
-        <span>17 Metrics</span>
+        <span>20 Metrics</span>
       </div>
       <div class="et-metric-groups">
         {metricGroups.map((group) => (
