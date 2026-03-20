@@ -380,9 +380,12 @@ const { sections } = Astro.props;
 
 <script>
   /**
-   * MissionTOC — Pipeline Stepper with scroll-spy.
-   * Rows transition PENDING → ACTIVE → COMPLETE based on which section
-   * the user is currently reading. Progress bars fill proportionally.
+   * MissionTOC — Pipeline Stepper with scroll-spy + typing entrance.
+   *
+   * Coordination: computeScrollState() is pure state (no DOM writes).
+   * During typing, scroll-spy tracks state silently. Typing checks scroll
+   * state per-row and skips rows already claimed by scroll-spy.
+   * After typing, scroll-spy takes full DOM control.
    */
 
   function initMissionTOC() {
@@ -395,7 +398,6 @@ const { sections } = Astro.props;
       const counterEl = nav.querySelector('.toc-counter-num') as HTMLElement;
       if (!links.length) return;
 
-      // Collect target h2 elements + their next sibling sections
       const sections: { el: Element; link: HTMLElement; item: HTMLElement; fill: HTMLElement }[] = [];
       items.forEach((item) => {
         const link = item.querySelector('.toc-link') as HTMLElement;
@@ -408,79 +410,107 @@ const { sections } = Astro.props;
       });
 
       let activeIndex = -1;
-      let highWaterMark = -1; // highest section ever reached — never reverts
+      let highWaterMark = -1;
+      let typingDone = false;
+      const triggerLine = 120;
+
+      // Store original label text before anything touches it
+      items.forEach((item) => {
+        const label = item.querySelector('.toc-label') as HTMLElement;
+        if (label && !label.dataset.text) {
+          label.dataset.text = label.textContent || '';
+        }
+      });
+
+      // Pure state computation — no DOM side effects. Safe during typing.
+      function computeScrollState() {
+        let newActive = -1;
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const rect = sections[i].el.getBoundingClientRect();
+          if (rect.top <= triggerLine) { newActive = i; break; }
+        }
+        activeIndex = newActive;
+        if (activeIndex > highWaterMark) highWaterMark = activeIndex;
+      }
 
       function updateStatuses() {
         let completed = 0;
-
         sections.forEach((s, i) => {
           const statusText = s.link.querySelector('.toc-status-text') as HTMLElement;
-
           if (i < highWaterMark) {
-            // COMPLETE — once reached, stays complete even on scroll-back
             s.link.setAttribute('data-status', 'complete');
             s.fill.style.width = '100%';
             if (statusText) statusText.textContent = 'Complete';
             completed++;
           } else if (i === highWaterMark && i === activeIndex) {
-            // ACTIVE — currently being read (counts as reviewed)
             s.link.setAttribute('data-status', 'active');
             if (statusText) statusText.textContent = 'Active';
             completed++;
           } else if (i === highWaterMark && i !== activeIndex) {
-            // Was the furthest reached but user scrolled back — mark complete
             s.link.setAttribute('data-status', 'complete');
             s.fill.style.width = '100%';
             if (statusText) statusText.textContent = 'Complete';
             completed++;
           } else {
-            // PENDING — not yet reached
             s.link.setAttribute('data-status', 'pending');
             s.fill.style.width = '0%';
             if (statusText) statusText.textContent = 'Pending';
           }
         });
-
         if (counterEl) counterEl.textContent = String(completed);
       }
 
-      // Scroll-driven: compute active section + progress on every frame
-      let ticking = false;
-      const triggerLine = 120; // px from top of viewport
+      // Apply correct status for a single row (used during typing)
+      function updateStatusForRow(rowIndex: number) {
+        if (rowIndex >= sections.length) return;
+        const s = sections[rowIndex];
+        const statusText = s.link.querySelector('.toc-status-text') as HTMLElement;
+        if (rowIndex < highWaterMark) {
+          s.link.setAttribute('data-status', 'complete');
+          s.fill.style.width = '100%';
+          if (statusText) statusText.textContent = 'Complete';
+        } else if (rowIndex === highWaterMark && rowIndex === activeIndex) {
+          s.link.setAttribute('data-status', 'active');
+          if (statusText) statusText.textContent = 'Active';
+        } else if (rowIndex === highWaterMark && rowIndex !== activeIndex) {
+          s.link.setAttribute('data-status', 'complete');
+          s.fill.style.width = '100%';
+          if (statusText) statusText.textContent = 'Complete';
+        } else {
+          s.link.setAttribute('data-status', 'pending');
+          s.fill.style.width = '0%';
+          if (statusText) statusText.textContent = 'Pending';
+        }
+        // Update counter
+        let c = 0;
+        sections.forEach((sec) => {
+          const st = sec.link.getAttribute('data-status');
+          if (st === 'complete' || st === 'active') c++;
+        });
+        if (counterEl) counterEl.textContent = String(c);
+      }
 
+      let ticking = false;
       function onScroll() {
         if (!ticking) {
           ticking = true;
           requestAnimationFrame(() => {
-            // Find which section the trigger line is inside
-            let newActive = -1;
-            for (let i = sections.length - 1; i >= 0; i--) {
-              const rect = sections[i].el.getBoundingClientRect();
-              if (rect.top <= triggerLine) {
-                newActive = i;
-                break;
+            computeScrollState();
+            // Only update DOM if typing is done
+            if (typingDone) {
+              updateStatuses();
+              if (activeIndex >= 0 && activeIndex < sections.length) {
+                const s = sections[activeIndex];
+                const rect = s.el.getBoundingClientRect();
+                const nextEl = sections[activeIndex + 1]?.el;
+                const nextRect = nextEl?.getBoundingClientRect();
+                const sectionHeight = nextRect ? nextRect.top - rect.top : window.innerHeight;
+                if (sectionHeight > 0) {
+                  const progress = Math.max(0, Math.min(1, (triggerLine - rect.top) / sectionHeight));
+                  s.fill.style.width = `${Math.round(progress * 100)}%`;
+                }
               }
             }
-
-            activeIndex = newActive;
-            if (activeIndex > highWaterMark) {
-              highWaterMark = activeIndex;
-            }
-            updateStatuses();
-
-            // Update progress bar for active section
-            if (activeIndex >= 0 && activeIndex < sections.length) {
-              const s = sections[activeIndex];
-              const rect = s.el.getBoundingClientRect();
-              const nextEl = sections[activeIndex + 1]?.el;
-              const nextRect = nextEl?.getBoundingClientRect();
-              const sectionHeight = nextRect ? nextRect.top - rect.top : window.innerHeight;
-              if (sectionHeight > 0) {
-                const progress = Math.max(0, Math.min(1, (triggerLine - rect.top) / sectionHeight));
-                s.fill.style.width = `${Math.round(progress * 100)}%`;
-              }
-            }
-
             ticking = false;
           });
         }
@@ -488,7 +518,6 @@ const { sections } = Astro.props;
 
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      // Smooth scroll on click
       links.forEach((link) => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
@@ -499,32 +528,60 @@ const { sections } = Astro.props;
         });
       });
 
-      // Typing entrance: hide items, type in one by one when TOC enters viewport
-      let typingDone = false;
+      // Hide all items before typing
       items.forEach((item) => item.style.opacity = '0');
 
       function typeEntrance() {
+        // Snapshot scroll state to know which rows to skip
+        computeScrollState();
+
         let row = 0;
         function typeRow() {
           if (row >= items.length) {
             typingDone = true;
             nav.classList.add('typed-done');
-            onScroll(); // kick off scroll-spy after typing
+            computeScrollState();
+            updateStatuses();
             return;
           }
+
           const item = items[row];
           const label = item.querySelector('.toc-label') as HTMLElement;
-          const fullText = label?.dataset.text || label?.textContent || '';
-          if (label) label.dataset.text = fullText; // store for later
+          const fullText = label?.dataset.text || '';
 
+          // Re-check scroll state — user may have scrolled during typing
+          computeScrollState();
+
+          // If scroll-spy already claimed this row, show instantly — no typing
+          if (row <= highWaterMark) {
+            item.style.opacity = '1';
+            item.style.transition = 'opacity 0.15s ease';
+            if (label) label.textContent = fullText;
+            updateStatusForRow(row);
+            row++;
+            typeRow(); // advance immediately for already-scrolled rows
+            return;
+          }
+
+          // PENDING row — run typing animation
           item.style.opacity = '1';
           item.style.transition = 'opacity 0.2s ease';
-          label.textContent = '';
+          if (label) label.textContent = '';
 
           let ci = 0;
           const iv = setInterval(() => {
+            // Mid-type check: if scroll caught up, finish instantly
+            computeScrollState();
+            if (row <= highWaterMark) {
+              clearInterval(iv);
+              if (label) label.textContent = fullText;
+              updateStatusForRow(row);
+              row++;
+              setTimeout(typeRow, 80);
+              return;
+            }
             if (ci < fullText.length) {
-              label.textContent = fullText.slice(0, ++ci);
+              if (label) label.textContent = fullText.slice(0, ++ci);
             } else {
               clearInterval(iv);
               row++;
@@ -535,7 +592,6 @@ const { sections } = Astro.props;
         typeRow();
       }
 
-      // Trigger typing when TOC enters viewport
       const revealObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -552,16 +608,20 @@ const { sections } = Astro.props;
       // 3s fallback
       setTimeout(() => {
         if (!typingDone) {
-          items.forEach((item) => { item.style.opacity = '1'; });
+          items.forEach((item) => {
+            item.style.opacity = '1';
+            const label = item.querySelector('.toc-label') as HTMLElement;
+            if (label && label.dataset.text) label.textContent = label.dataset.text;
+          });
           typingDone = true;
           nav.classList.add('typed-done');
-          onScroll();
+          computeScrollState();
+          updateStatuses();
         }
       }, 3000);
     });
   }
 
-  // Delay init to run after slot injection (initServiceAnimations moves TOC into markdown)
   setTimeout(initMissionTOC, 100);
   document.addEventListener('astro:after-swap', () => {
     document.querySelectorAll('.mission-toc').forEach((nav) => {
