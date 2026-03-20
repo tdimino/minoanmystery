@@ -471,9 +471,8 @@ sang more like Muses`,
     z-index: 5;
   }
 
-  .collage-frame:hover .poem-whisper {
-    opacity: 0.85;
-    transform: translateY(0);
+  @media (hover: hover) {
+    .collage-frame:hover .poem-whisper { opacity: 0.85; transform: translateY(0); }
   }
 
   .collage-frame:focus-visible {
@@ -564,23 +563,14 @@ sang more like Muses`,
     z-index: 0;
   }
 
-  .service-entry:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px -8px rgba(var(--color-primary-rgb), 0.08);
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .service-entry:hover::after {
-    --glow-opacity: 1;
-  }
-
-  @media (hover: none) {
+  @media (hover: hover) {
     .service-entry:hover {
-      transform: none;
-      box-shadow: none;
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px -8px rgba(var(--color-primary-rgb), 0.08);
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .service-entry::after {
-      display: none;
+    .service-entry:hover::after {
+      --glow-opacity: 1;
     }
   }
 
@@ -684,9 +674,11 @@ sang more like Muses`,
     transition: background 0.25s ease, transform 0.25s ease;
   }
 
-  .service-tagline :global(.platform-pill:hover) {
-    background: rgba(var(--color-primary-rgb), 0.15);
-    transform: translateY(-1px);
+  @media (hover: hover) {
+    .service-tagline :global(.platform-pill:hover) {
+      background: rgba(var(--color-primary-rgb), 0.15);
+      transform: translateY(-1px);
+    }
   }
 
   .service-tagline :global(.platform-pill.accent) {
@@ -790,8 +782,8 @@ sang more like Muses`,
     transition: transform var(--transition-fast);
   }
 
-  .service-cta:hover .arrow-icon {
-    transform: translate(4px, -4px);
+  @media (hover: hover) {
+    .service-cta:hover .arrow-icon { transform: translate(4px, -4px); }
   }
 
   :global([data-theme='dark']) .arrow-icon {
@@ -806,8 +798,8 @@ sang more like Muses`,
     transition: width 0.45s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  .service-cta:hover .service-cta-underline {
-    width: 100%;
+  @media (hover: hover) {
+    .service-cta:hover .service-cta-underline { width: 100%; }
   }
 
 
@@ -954,8 +946,8 @@ sang more like Muses`,
     z-index: 1;
   }
 
-  .circle-link:hover .circle-bg-hover {
-    width: 100%;
+  @media (hover: hover) {
+    .circle-link:hover .circle-bg-hover { width: 100%; }
   }
 
   .circle-link:hover .circle-link-icon {
@@ -1145,8 +1137,8 @@ sang more like Muses`,
     transition: transform 0.5s ease;
   }
 
-  .modal-image img:hover {
-    transform: rotateX(0deg) scale(1.02);
+  @media (hover: hover) {
+    .modal-image img:hover { transform: rotateX(0deg) scale(1.02); }
   }
 
   .modal-text {

@@ -415,12 +415,9 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     transition: width 0.35s ease;
   }
 
-  .link-arrow:hover .link-underline {
-    width: 100%;
-  }
-
-  .link-arrow:hover .link-arrow-icon {
-    transform: translate(3px, -3px);
+  @media (hover: hover) {
+    .link-arrow:hover .link-underline { width: 100%; }
+    .link-arrow:hover .link-arrow-icon { transform: translate(3px, -3px); }
   }
 
   /* Invert arrow to white in dark mode */
@@ -588,8 +585,8 @@ const { title, client, team, role, website, heroImage, parallaxImage, tagline, g
     z-index: 1;
   }
 
-  .arrow-circle:hover .circle-bg-hover {
-    width: 100%;
+  @media (hover: hover) {
+    .arrow-circle:hover .circle-bg-hover { width: 100%; }
   }
 
   .arrow-circle:hover .circle-icon {

@@ -293,9 +293,11 @@ const disciplineLabels: Record<string, string> = {
     transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   }
 
-  .portfolio-card:hover {
-    transform: scale(0.98);
-    border-color: var(--color-primary);
+  @media (hover: hover) {
+    .portfolio-card:hover { transform: scale(0.98); border-color: var(--color-primary); }
+    .portfolio-card:hover .card-image { transform: scale(1.05); }
+    .portfolio-card:hover .cta-text::after { width: 100%; }
+    .portfolio-card:hover .cta-arrow { transform: translate(3px, -3px); }
   }
 
   .portfolio-card.hidden {
@@ -320,9 +322,6 @@ const disciplineLabels: Record<string, string> = {
     transition: transform 0.5s ease;
   }
 
-  .portfolio-card:hover .card-image {
-    transform: scale(1.05);
-  }
 
   .card-image-overlay {
     position: absolute;
@@ -427,9 +426,6 @@ const disciplineLabels: Record<string, string> = {
     transition: width 0.35s ease;
   }
 
-  .portfolio-card:hover .cta-text::after {
-    width: 100%;
-  }
 
   .cta-arrow {
     display: inline-block;
@@ -445,9 +441,6 @@ const disciplineLabels: Record<string, string> = {
     filter: invert(1);
   }
 
-  .portfolio-card:hover .cta-arrow {
-    transform: translate(3px, -3px);
-  }
 
   .cta-underline {
     display: none;
