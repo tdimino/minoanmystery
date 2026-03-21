@@ -98,6 +98,7 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - Suppress `.rich-text li::before` bullets via `<style is:global>` in components using lists
 - **MissionTOC**: Ops Manifest + Pipeline Stepper hybrid. Scroll-spy driven PENDING→ACTIVE→COMPLETE status badges, per-section progress bars, master counter, typing entrance animation, pastel row tints. highWaterMark prevents revert on scroll-back.
 - **EvalTribunal**: 5 judges (Kimi K2.5, GPT-5.4, Sonnet 4.6, Qwen3.5, Custom LoRA), 20 metrics with hover tooltips, coverage matrix, per-category/per-instrument color coding, sage green (#3a9e6e) for pass indicators.
+- **Collage Gallery Tilt**: Spring-interpolated 3D tilt (stiffness 0.06, damping 0.87) with quadratic proximity falloff (radius `rect.width * 2.0`). Semi-implicit Euler integration for frame-rate independence. Parent `perspective: 1200px` (no inline perspective). `.tilt-ready` class via `transitionend` (not setTimeout) prevents CSS/JS entrance fight. Poem-whisper parallax via `--tilt-x`/`--tilt-y` custom properties at 0.5px/degree.
 
 **OG images**: Per-service social cards in `public/images/og/` — Kothar-referenced subjects (Gemini 3 Pro `generate_with_references.py`) composited via ImageMagick onto Tom's collage art. 500px circle, `#8E3568` Tyrian purple ring, 6px stroke. Brightness-matched to og-about.png (0.20–0.23 range). Optimized with pngquant.
 
