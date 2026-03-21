@@ -411,11 +411,6 @@ sang more like Muses`,
   .collage-frame:nth-child(2) { margin-top: 0; transition-delay: 100ms; }
   .collage-frame:nth-child(3) { margin-top: 40px; transition-delay: 200ms; }
 
-  /* After entrance animation, JS-driven spring physics owns transform */
-  .collage-frame.tilt-ready {
-    transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-
   .collage-frame img {
     width: 100%;
     height: 100%;
@@ -457,7 +452,7 @@ sang more like Muses`,
     opacity: 1;
   }
 
-  /* Poem whisper — ghostly lines on hover, with tilt parallax */
+  /* Poem whisper — ghostly lines on hover */
   .poem-whisper {
     position: absolute;
     bottom: 20px;
@@ -471,8 +466,6 @@ sang more like Muses`,
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
     opacity: 0;
     transform: translateY(8px);
-    /* Parallax layer — subtle counter-shift relative to frame tilt */
-    translate: calc(var(--tilt-y, 0) * 0.5px) calc(var(--tilt-x, 0) * -0.5px);
     transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
     pointer-events: none;
     z-index: 5;
@@ -1356,132 +1349,38 @@ sang more like Muses`,
     });
   }
 
-  // Collage Gallery: spring-interpolated 3D tilt with quadratic proximity falloff
+  // Collage Gallery: CSS 3D parallax tilt
   function initCollageTilt() {
     const gallery = document.querySelector('.collage-gallery');
-    if (!gallery
-        || window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        || !window.matchMedia('(hover: hover)').matches) return;
+    if (!gallery || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const frames = gallery.querySelectorAll('.collage-frame');
     const MAX_TILT = 8;
-    const SPRING_STIFFNESS = 0.06;
-    const DAMPING = 0.87;
 
-    // Per-frame spring state
-    const state = Array.from(frames).map(() => ({
-      targetX: 0, targetY: 0,
-      currentX: 0, currentY: 0,
-      velocityX: 0, velocityY: 0,
-    }));
-
-    let mouseX = 0, mouseY = 0;
-    let isInGallery = false;
-    let rafId: number | null = null;
-    let lastTime = performance.now();
-
-    function updateTargets() {
-      frames.forEach((frame, i) => {
+    gallery.addEventListener('mousemove', (e) => {
+      frames.forEach((frame) => {
         const rect = frame.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-
-        if (!isInGallery) {
-          state[i].targetX = 0;
-          state[i].targetY = 0;
-          return;
-        }
-
-        const dx = Math.max(-1, Math.min(1, (mouseX - centerX) / (rect.width / 2)));
-        const dy = Math.max(-1, Math.min(1, (mouseY - centerY) / (rect.height / 2)));
-        const dist = Math.hypot(mouseX - centerX, mouseY - centerY);
-        const rawProximity = Math.max(0, 1 - dist / (rect.width * 2.0));
-        const proximity = rawProximity * rawProximity; // quadratic falloff
-
-        state[i].targetX = dy * MAX_TILT * proximity * -1;
-        state[i].targetY = dx * MAX_TILT * proximity;
+        const dx = Math.max(-1, Math.min(1, (e.clientX - centerX) / (rect.width / 2)));
+        const dy = Math.max(-1, Math.min(1, (e.clientY - centerY) / (rect.height / 2)));
+        const dist = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2));
+        const proximity = Math.max(0, 1 - dist / (rect.width * 1.5));
+        const tiltX = dy * MAX_TILT * proximity * -1;
+        const tiltY = dx * MAX_TILT * proximity;
+        (frame as HTMLElement).style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       });
-    }
-
-    function tick(now: number) {
-      const dt = Math.min((now - lastTime) / 16.667, 3); // normalize to 60fps, cap
-      lastTime = now;
-      let anyMoving = false;
-
-      // Move target computation into tick for RAF-cadence rect reads
-      updateTargets();
-
-      state.forEach((s, i) => {
-        // Correct semi-implicit Euler: force is acceleration (no dt), then integrate
-        const forceX = SPRING_STIFFNESS * (s.targetX - s.currentX);
-        const forceY = SPRING_STIFFNESS * (s.targetY - s.currentY);
-        const dampFactor = Math.pow(DAMPING, dt);
-        s.velocityX = (s.velocityX + forceX * dt) * dampFactor;
-        s.velocityY = (s.velocityY + forceY * dt) * dampFactor;
-        s.currentX += s.velocityX * dt;
-        s.currentY += s.velocityY * dt;
-
-        // Only write to DOM after entrance animation completes
-        const el = frames[i] as HTMLElement;
-        if (el.classList.contains('tilt-ready')) {
-          el.style.transform = `rotateX(${s.currentX}deg) rotateY(${s.currentY}deg)`;
-          el.style.setProperty('--tilt-x', `${s.currentX}`);
-          el.style.setProperty('--tilt-y', `${s.currentY}`);
-        }
-
-        if (Math.abs(s.velocityX) > 0.001 || Math.abs(s.velocityY) > 0.001
-            || Math.abs(s.targetX - s.currentX) > 0.01
-            || Math.abs(s.targetY - s.currentY) > 0.01) {
-          anyMoving = true;
-        }
-      });
-
-      if (anyMoving) {
-        rafId = requestAnimationFrame(tick);
-      } else {
-        rafId = null;
-      }
-    }
-
-    function ensureAnimating() {
-      if (rafId === null) {
-        lastTime = performance.now();
-        rafId = requestAnimationFrame(tick);
-      }
-    }
-
-    // Use transitionend to hand off from CSS entrance to JS spring (no race condition)
-    frames.forEach((frame) => {
-      const el = frame as HTMLElement;
-      function onEntranceDone(e: TransitionEvent) {
-        if (e.propertyName === 'opacity' || e.propertyName === 'transform') {
-          el.removeEventListener('transitionend', onEntranceDone);
-          el.classList.add('tilt-ready');
-        }
-      }
-      el.addEventListener('transitionend', onEntranceDone);
     });
-
-    gallery.addEventListener('mousemove', (e) => {
-      const me = e as MouseEvent;
-      mouseX = me.clientX;
-      mouseY = me.clientY;
-      ensureAnimating();
-    });
-
-    gallery.addEventListener('mouseenter', () => { isInGallery = true; });
 
     gallery.addEventListener('mouseleave', () => {
-      isInGallery = false;
-      state.forEach((s) => { s.targetX = 0; s.targetY = 0; });
-      ensureAnimating();
+      frames.forEach((frame) => {
+        (frame as HTMLElement).style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        (frame as HTMLElement).style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(() => {
+          (frame as HTMLElement).style.transition = '';
+        }, 600);
+      });
     });
-
-    // Cleanup for View Transitions
-    document.addEventListener('astro:before-swap', () => {
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      rafId = null;
-    }, { once: true });
   }
 
   // Collage Modal
