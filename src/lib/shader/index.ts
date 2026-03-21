@@ -3,10 +3,12 @@
  *
  * Handles: iframe creation/destruction, viewport-based pause/resume,
  * idle timeout, View Transition cleanup, reduced-motion, mobile detection,
- * and theme-aware opacity.
+ * theme-aware opacity, and SVG erosion masks ("Petrified Aperture").
  *
  * Follows the LabyrinthChat pattern: utility module in lib/, thin script in .astro.
  */
+
+import type { ErosionConfig } from './erosion-mask';
 
 export interface ShaderOptions {
   /** Path to shader HTML file (e.g., "/shaders/gilded-fracture.html") */
@@ -21,6 +23,8 @@ export interface ShaderOptions {
   pixelScale?: number;
   /** Seconds of inactivity before pausing shader (0 = never) */
   idleTimeout?: number;
+  /** Erosion mask config — if set, applies SVG feTurbulence mask */
+  erosion?: Partial<ErosionConfig>;
 }
 
 const MOBILE_BREAKPOINT = 768;
@@ -33,13 +37,14 @@ export class ShaderManager {
   private idleTimer: ReturnType<typeof setTimeout> | null = null;
   private isVisible = false;
   private isPaused = false;
-  private options: Required<ShaderOptions>;
+  private options: Required<Omit<ShaderOptions, 'erosion'>> & { erosion?: Partial<ErosionConfig> };
   private boundHandlers: {
     beforeSwap: () => void;
     themeChange: MutationCallback;
     interaction: () => void;
   };
   private themeObserver: MutationObserver | null = null;
+  private erosionCleanup: (() => void) | null = null;
 
   constructor(container: HTMLElement, options: ShaderOptions) {
     this.container = container;
@@ -50,6 +55,7 @@ export class ShaderManager {
       fallbackGradient: options.fallbackGradient ?? 'none',
       pixelScale: options.pixelScale ?? 1,
       idleTimeout: options.idleTimeout ?? DEFAULT_IDLE_TIMEOUT,
+      erosion: options.erosion,
     };
 
     this.boundHandlers = {
@@ -71,6 +77,13 @@ export class ShaderManager {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.showFallback();
       return;
+    }
+
+    // Apply erosion mask if configured
+    if (this.options.erosion) {
+      import('./erosion-mask').then(({ applyErosionMask }) => {
+        this.erosionCleanup = applyErosionMask(this.container, this.options.erosion);
+      });
     }
 
     // Create iframe after idle (defer past LCP)
@@ -106,6 +119,8 @@ export class ShaderManager {
     this.observer = null;
     this.themeObserver?.disconnect();
     this.themeObserver = null;
+    this.erosionCleanup?.();
+    this.erosionCleanup = null;
 
     if (this.idleTimer) clearTimeout(this.idleTimer);
 
@@ -270,6 +285,16 @@ export function initShaderBackgrounds(): void {
     const src = container.dataset.shaderSrc;
     if (!src) return;
 
+    // Parse erosion config from data attributes
+    const erosionEnabled = container.dataset.shaderErosion === 'true';
+    const erosion = erosionEnabled ? {
+      seed: parseInt(container.dataset.shaderErosionSeed || '42', 10),
+      baseFrequency: (container.dataset.shaderErosionFreq?.split(',').map(Number) as [number, number]) || [0.004, 0.006],
+      numOctaves: parseInt(container.dataset.shaderErosionOctaves || '5', 10),
+      erosionTop: parseFloat(container.dataset.shaderErosionTop || '0.15'),
+      erosionBottom: parseFloat(container.dataset.shaderErosionBottom || '0.18'),
+    } : undefined;
+
     const manager = new ShaderManager(container, {
       src,
       opacityLight: parseFloat(container.dataset.shaderOpacityLight || '0.12'),
@@ -277,6 +302,7 @@ export function initShaderBackgrounds(): void {
       fallbackGradient: container.dataset.shaderFallback || undefined,
       pixelScale: parseFloat(container.dataset.shaderPixelScale || '1'),
       idleTimeout: parseFloat(container.dataset.shaderIdleTimeout || '60'),
+      erosion,
     });
     manager.init();
     managers.push(manager);

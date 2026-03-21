@@ -96,11 +96,13 @@ import '../styles/labyrinth/chat.css';
     <!-- Shader: "The Ariadne Weave" — Silk Threads, ambient layer beneath soul-bg -->
     <ShaderBackground
       shader="silk-threads.html"
-      opacityLight={0.06}
+      opacityLight={0.08}
       opacityDark={0.08}
       vignette={false}
       pixelScale={0.5}
       class="labyrinth-shader"
+      erosion={true}
+      erosionSeed={1024}
     />
     <header class="labyrinth-header">
       <div class="labyrinth-title">

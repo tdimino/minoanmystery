@@ -48,8 +48,10 @@ import ShaderBackground from '../components/ShaderBackground.astro';
   <section class="contact-section shader-section">
     <ShaderBackground
       shader="fluid-amber.html"
-      opacityLight={0.09}
+      opacityLight={0.12}
       opacityDark={0.18}
+      erosion={true}
+      erosionSeed={137}
     />
     <div class="container">
       <div class="contact-grid">

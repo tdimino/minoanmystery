@@ -88,9 +88,11 @@ const projects = [
   <section class="hero shader-hero">
     <ShaderBackground
       shader="gilded-fracture.html"
-      opacityLight={0.07}
+      opacityLight={0.10}
       opacityDark={0.22}
       fallbackGradient="radial-gradient(ellipse at 50% 40%, rgba(150,106,133,0.06) 0%, transparent 70%)"
+      erosion={true}
+      erosionSeed={42}
     />
     <div class="container">
       <h1 class="hero-title skew-animate">

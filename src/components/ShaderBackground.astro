@@ -36,6 +36,18 @@ interface Props {
   fallbackGradient?: string;
   /** Extra CSS class */
   class?: string;
+  /** Enable SVG feTurbulence erosion mask ("Petrified Aperture") */
+  erosion?: boolean;
+  /** Turbulence seed — unique per page for distinct erosion patterns */
+  erosionSeed?: number;
+  /** feTurbulence baseFrequency [x, y] */
+  erosionFrequency?: [number, number];
+  /** feTurbulence numOctaves */
+  erosionOctaves?: number;
+  /** Top erosion zone as fraction (0.15 = 15%) */
+  erosionTop?: number;
+  /** Bottom erosion zone as fraction (0.18 = 18%) */
+  erosionBottom?: number;
 }
 
 const {
@@ -48,19 +60,31 @@ const {
   vignette = true,
   fallbackGradient = 'none',
   class: className = '',
+  erosion = false,
+  erosionSeed = 42,
+  erosionFrequency = [0.012, 0.020],
+  erosionOctaves = 4,
+  erosionTop = 0.20,
+  erosionBottom = 0.22,
 } = Astro.props;
 
 const src = `/shaders/${shader}`;
 ---
 
 <div
-  class:list={['shader-background', className]}
+  class:list={['shader-background', erosion && 'shader-eroded', className]}
   style={`--shader-height: ${height}; --shader-position: ${position};`}
   data-shader-src={src}
   data-shader-opacity-light={String(opacityLight)}
   data-shader-opacity-dark={String(opacityDark)}
   data-shader-fallback={fallbackGradient}
   data-shader-pixel-scale={String(pixelScale)}
+  data-shader-erosion={erosion ? 'true' : undefined}
+  data-shader-erosion-seed={erosion ? String(erosionSeed) : undefined}
+  data-shader-erosion-freq={erosion ? erosionFrequency.join(',') : undefined}
+  data-shader-erosion-octaves={erosion ? String(erosionOctaves) : undefined}
+  data-shader-erosion-top={erosion ? String(erosionTop) : undefined}
+  data-shader-erosion-bottom={erosion ? String(erosionBottom) : undefined}
   aria-hidden="true"
 >
   {vignette && <div class="shader-vignette" />}
@@ -108,6 +132,22 @@ const src = `/shaders/${shader}`;
 
   :global([data-theme='dark']) .shader-background :global(iframe) {
     filter: sepia(0.08) saturate(0.85) brightness(0.9);
+  }
+
+  /* Eroded variant — SVG mask applied via JS, remove CSS mask fallback */
+  .shader-eroded {
+    -webkit-mask-image: none;
+    mask-image: none;
+    /* Warm plaster substrate glow at erosion boundaries */
+    box-shadow:
+      inset 0 25px 50px -12px rgba(212, 168, 67, 0.06),
+      inset 0 -25px 50px -12px rgba(212, 168, 67, 0.05);
+  }
+
+  :global([data-theme='dark']) .shader-eroded {
+    box-shadow:
+      inset 0 25px 50px -12px rgba(212, 168, 67, 0.03),
+      inset 0 -25px 50px -12px rgba(212, 168, 67, 0.025);
   }
 
   .shader-vignette {
