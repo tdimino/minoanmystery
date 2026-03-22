@@ -48,6 +48,12 @@ interface Props {
   erosionTop?: number;
   /** Bottom erosion zone as fraction (0.18 = 18%) */
   erosionBottom?: number;
+  /** Erosion mode: "craquelure" (cracked plaster) or "diffusion" (watercolor bleed) */
+  erosionMode?: 'craquelure' | 'diffusion';
+  /** Crack boundary sharpness — higher = more binary (default 5, craquelure only) */
+  erosionSlope?: number;
+  /** Crack threshold — lower = more erosion (default -1.8, craquelure only) */
+  erosionIntercept?: number;
 }
 
 const {
@@ -66,6 +72,9 @@ const {
   erosionOctaves = 4,
   erosionTop = 0.20,
   erosionBottom = 0.22,
+  erosionMode,
+  erosionSlope,
+  erosionIntercept,
 } = Astro.props;
 
 const src = `/shaders/${shader}`;
@@ -85,6 +94,9 @@ const src = `/shaders/${shader}`;
   data-shader-erosion-octaves={erosion ? String(erosionOctaves) : undefined}
   data-shader-erosion-top={erosion ? String(erosionTop) : undefined}
   data-shader-erosion-bottom={erosion ? String(erosionBottom) : undefined}
+  data-shader-erosion-mode={erosion && erosionMode ? erosionMode : undefined}
+  data-shader-erosion-slope={erosion && erosionSlope != null ? String(erosionSlope) : undefined}
+  data-shader-erosion-intercept={erosion && erosionIntercept != null ? String(erosionIntercept) : undefined}
   aria-hidden="true"
 >
   {vignette && <div class="shader-vignette" />}

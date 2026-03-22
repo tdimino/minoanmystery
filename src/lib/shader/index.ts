@@ -37,6 +37,7 @@ export class ShaderManager {
   private idleTimer: ReturnType<typeof setTimeout> | null = null;
   private isVisible = false;
   private isPaused = false;
+  private isDestroyed = false;
   private options: Required<Omit<ShaderOptions, 'erosion'>> & { erosion?: Partial<ErosionConfig> };
   private boundHandlers: {
     beforeSwap: () => void;
@@ -82,7 +83,10 @@ export class ShaderManager {
     // Apply erosion mask if configured
     if (this.options.erosion) {
       import('./erosion-mask').then(({ applyErosionMask }) => {
+        if (this.isDestroyed) return;
         this.erosionCleanup = applyErosionMask(this.container, this.options.erosion);
+      }).catch((err) => {
+        console.warn('[Shader] Erosion mask failed to load:', err);
       });
     }
 
@@ -114,6 +118,7 @@ export class ShaderManager {
 
   /** Tear down everything. Safe to call multiple times. */
   destroy(): void {
+    this.isDestroyed = true;
     this.destroyIframe();
     this.observer?.disconnect();
     this.observer = null;
@@ -293,6 +298,9 @@ export function initShaderBackgrounds(): void {
       numOctaves: parseInt(container.dataset.shaderErosionOctaves || '5', 10),
       erosionTop: parseFloat(container.dataset.shaderErosionTop || '0.15'),
       erosionBottom: parseFloat(container.dataset.shaderErosionBottom || '0.18'),
+      ...(container.dataset.shaderErosionMode && { mode: container.dataset.shaderErosionMode as 'craquelure' | 'diffusion' }),
+      ...(container.dataset.shaderErosionSlope != null && { contrastSlope: parseFloat(container.dataset.shaderErosionSlope) }),
+      ...(container.dataset.shaderErosionIntercept != null && { contrastIntercept: parseFloat(container.dataset.shaderErosionIntercept) }),
     } : undefined;
 
     const manager = new ShaderManager(container, {
