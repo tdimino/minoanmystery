@@ -5,7 +5,7 @@ summary: "Hands-on pair programming sessions where your product, marketing, and 
 icon: "ph-terminal-window"
 heroImage: "/images/services/hero-mentoring.jpg"
 order: 3
-rate: "$125/hr"
+rate: "from $125/hr"
 features:
   - "Team capability assessment"
   - "1-on-1 or small group pair programming"

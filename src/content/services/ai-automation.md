@@ -5,7 +5,7 @@ summary: "Workflow audits, Claude Code agent development, and API integrations t
 icon: "ph-lightning"
 heroImage: "/images/services/hero-ai-automation.jpg"
 order: 2
-rate: "$125/hr"
+rate: "from $125/hr"
 features:
   - "Workflow audit and automation roadmap"
   - "Claude Code agent development"
@@ -14,7 +14,7 @@ features:
   - "Evaluation and safety (LLM-as-judge, adversarial testing)"
   - "RAG systems (vector search, reranking)"
   - "API integrations and data pipelines"
-ideal_for: "Startups and teams who need A.I. automation, custom model training, or production-grade LLM evaluation—from workflow agents to fine-tuned models to safety compliance."
+ideal_for: "Startups, growth-stage companies, and enterprise product teams who need A.I. automation, custom model training, or production-grade LLM evaluation—from workflow agents to fine-tuned models to safety compliance."
 cta_text: "Book a workflow audit"
 related_portfolio: []
 ---
