@@ -5,9 +5,9 @@ import Lightbox from '../components/Lightbox.astro';
 import '../styles/global.css';
 import '../styles/resume.css';
 
-const title = "Resume - Tom di Mino";
-const description = "Applied AI/ML Engineer with 4+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Subquadratic AI with fine-tuned LLMs and voice pipelines.";
-const canonicalURL = "https://resume.minoanmystery.org";
+const title = "Resume - Tom di Mino | Product Engineer";
+const description = "Full-stack AI engineer with 4+ years shipping production systems in Python and TypeScript. Built $800k/day AI tool at JP Morgan with bespoke LangGraph agents for 5,000+ wealth advisors. Currently building SubQ Code—an open competitor to Claude Code—with autonomous long-context improvement loops, evaluation infra, and agentic orchestration.";
+const canonicalURL = "https://resume.minoanmystery.org/resume-hedgineer";
 
 // Structured Data for Resume/ProfilePage
 const structuredData = {
@@ -28,7 +28,7 @@ const structuredData = {
       "name": "Tom di Mino",
       "url": "https://www.minoanmystery.org",
       "image": "https://www.minoanmystery.org/images/tyrian-profile.png",
-      "jobTitle": "Principal AI/ML Engineer",
+      "jobTitle": "Full-Stack AI Engineer",
       "description": description,
       "email": "contact@tomdimino.com",
       "sameAs": [
@@ -46,18 +46,22 @@ const structuredData = {
         "name": "The College of New Jersey"
       },
       "knowsAbout": [
-        "AI/ML Engineering",
-        "Large Language Models",
-        "LLM Fine-tuning",
-        "RAG Systems",
-        "Vector Databases",
-        "LangGraph",
-        "LlamaIndex",
         "Python",
+        "FastAPI",
+        "Full-Stack Engineering",
+        "Claude Code",
+        "MCP (Model Context Protocol)",
+        "LangGraph",
+        "RAG Systems",
+        "Docker",
+        "SQL",
+        "Polars",
+        "Pandas",
+        "DuckDB",
+        "React",
         "TypeScript",
-        "TensorRT-LLM",
-        "Triton Inference Server",
-        "Voice AI Pipelines"
+        "Financial Data Systems",
+        "Agentic AI Frameworks"
       ],
     }
   ]
@@ -66,58 +70,58 @@ const structuredData = {
 // Data
 const skills = [
   {
-    title: "AI/ML",
+    title: "Languages & Data",
+    icon: "ph:code-duotone",
+    items: "Python (primary), TypeScript, JavaScript, SQL, Rust, C. Polars, Pandas, DuckDB"
+  },
+  {
+    title: "AI / Agents",
     icon: "ph:brain-duotone",
-    items: "LLM APIs (OpenAI, Anthropic, Groq), LangGraph, LlamaIndex, DeepEval, Fine-tuning (LoRA), Embeddings (VoyageAI), Vector DBs (pgvector), Semantic search, Subquadratic attention"
+    items: "Claude Code, MCP, Claude Agent SDK, LangGraph, LlamaIndex, DeepEval, RAG, Fine-tuning (LoRA), VoyageAI, pgvector, LLM-as-a-Judge"
   },
   {
     title: "Infrastructure",
     icon: "ph:hard-drives-duotone",
-    items: "TensorRT-LLM, Triton Inference Server, Lambda Labs H100, FastAPI, WebSocket, SSE streaming"
+    items: "FastAPI, Docker, AWS, Vercel, Railway, TensorRT-LLM, Triton, WebSocket, SSE, Modal"
   },
   {
-    title: "Languages",
-    icon: "ph:code-duotone",
-    items: "Python, TypeScript, JavaScript, Rust, C"
-  },
-  {
-    title: "Web",
+    title: "Frontend",
     icon: "ph:globe-duotone",
-    items: "Next.js, React, Node.js, Astro, Vite, Tailwind, ShadCN, LiveKit, Vercel, Railway"
+    items: "React, Next.js, Astro, Node.js, Vite, Tailwind, ShadCN, LiveKit"
   }
 ];
 
 const experience = [
   {
     company: "Subquadratic AI",
-    role: "Principal AI/ML Engineer",
+    role: "Principal Engineer",
     dates: "Jul 2025 — Present",
-    context: "Startup building AI advisors that internalize expert methodologies via fine-tuned and post-Transformer LLMs",
+    context: "AI startup building SubQ Code (Claude Code competitor), AI advisors, and evaluation infrastructure",
     logo: "/images/logos/aldea.png",
     logoUrl: "https://aldea.ai",
-    logoDark: true, // needs inversion in dark mode
+    logoDark: true,
     bullets: [
-      { text: "Architected production SMS/mobile AI platform with <strong>9 cognitive agent \"souls\"</strong> and layered memory" },
+      { text: "Architected <strong>autonomous code improvement loops</strong> that leverage long context to iteratively modify, evaluate, and keep/discard changes against SWE-bench—binary decision via LLM-as-a-Judge" },
+      { text: "Built <strong>Python evaluation infrastructure</strong>: Docker-containerized agent harnesses on Modal cloud, 7-dimension DX scoring system across 24 test scenarios" },
       { text: "Deployed <strong>fine-tuned LLMs</strong> to production via TensorRT-LLM + Triton on <span class=\"metric\">4×H100</span> with tensor parallelism" },
-      { text: "Built LLM-as-a-Judge evaluation framework using Gemini, Qwen3, Kimi K2 for <strong>9-dimensional persona assessment</strong>" },
-      { text: "Implemented voice-first pipeline with <strong>sub-second latency</strong>, barge-in detection, and speculative RAG" },
-      { text: "Designed cognitive flows for AI advisors that remember across sessions and emotionally attune" },
-      { text: "Maintained internal <strong>Claude Code</strong> skills repo and mentored teams on agentic planning, debugging, and development" }
+      { text: "Architected production AI advisor platform with <strong>FastAPI</strong> backend, layered memory, and 9 cognitive agent personas serving clients via SMS and voice" },
+      { text: "Maintained internal <strong>Claude Code</strong> skills repo; mentored teams on agentic planning and development workflows" }
     ]
   },
   {
     company: "JP Morgan Chase",
-    role: "AI Content Engineer",
+    role: "AI Engineer",
     dates: "May 2024 — Jul 2025",
-    context: "World's largest bank, building AI tools for 5,000+ wealth advisors",
+    context: "Building bespoke AI tools for 5,000+ wealth advisors at the world's largest bank",
     logo: "/images/logos/jpmorgan.png",
     logoUrl: "https://www.jpmorgan.com",
     logoDark: false,
     bullets: [
-      { text: "Built \"Meeting Assist\" AI tool generating <span class=\"metric\">$800k/day</span> savings with <span class=\"metric\">72%</span> adoption rate" },
-      { text: "Designed <strong>5-agent agentic architecture</strong> using LangGraph, evaluated with DeepEval" },
-      { text: "Reduced hallucinations in production by <strong>rewriting prompts</strong> and deconstructing chain-of-thought" },
-      { text: "Developed RAG pipelines using <strong>LlamaIndex</strong> and proprietary solutions" }
+      { text: "Built <strong>Meeting Assist</strong>—bespoke AI tool for wealth advisors generating <span class=\"metric\">$800k/day</span> savings with <span class=\"metric\">72%</span> advisor adoption rate" },
+      { text: "Designed <strong>5-agent agentic architecture</strong> using LangGraph with Python orchestration, evaluated with DeepEval" },
+      { text: "Reduced hallucinations in production by <strong>rewriting and deconstructing prompt chains</strong>—systematic prompt engineering for financial compliance" },
+      { text: "Developed <strong>RAG pipelines</strong> using LlamaIndex and proprietary solutions over financial documents and client data" },
+      { text: "Collaborated directly with wealth advisors through <strong>5 rounds of UX research</strong>, translating client feedback into engineering requirements" }
     ]
   },
   {
@@ -129,8 +133,7 @@ const experience = [
     logoUrl: "https://www.google.com",
     logoDark: false,
     bullets: [
-      { text: "Designed curriculum for Googlers advancing technical leadership skills (Markdown, HTML/CSS)" },
-      { text: "Interviewed AI/UX leaders and synthesized learnings into internal/external thought leadership" },
+      { text: "Designed curriculum and internal tools for Googlers advancing technical leadership skills" },
       { text: "Audited mentorship platform serving <span class=\"metric\">22k+</span> employees, drove <span class=\"metric\">25%</span> rise in program launches" }
     ]
   },
@@ -143,9 +146,8 @@ const experience = [
     logoUrl: "https://chanzuckerberg.com",
     logoDark: false,
     bullets: [
-      { text: "Co-led design of learning platform for <strong>napari</strong>—Python-based image analysis for biologists" },
-      { text: "Published full course on GitHub using <strong>Jupyter Book, Jupyter Notebooks</strong> (Markdown, Python, and narrated video)" },
-      { text: "Collaborated with 9 application scientists, UX researchers, and SWEs to ship MVP in 6 months" }
+      { text: "Co-led design of learning platform for <strong>napari</strong>—Python-based scientific image analysis tool used by biologists worldwide" },
+      { text: "Published full course on GitHub using <strong>Jupyter Notebooks and Python</strong>; collaborated with 9 scientists and engineers to ship MVP in 6 months" }
     ]
   },
   {
@@ -193,7 +195,7 @@ const projects = [
   {
     name: "Claudicle",
     year: "2026",
-    description: "Open-source alternative to OpenClaw with four-layer soul architecture (<code>soul.md</code>, Cognition, Memory, Channels)—configurable personas, cognitive pipelines, and Slack integration. Built for augmenting Claude Code sessions. <br><a href='https://github.com/tdimino/claudicle' class='project-link' target='_blank'>View on GitHub →</a>",
+    description: "Python-native alternative to OpenClaw with four-layer soul architecture—configurable personas, cognitive pipelines, SQLite persistence, and Slack integration. ~40K LOC Python. Built on <strong>Claude Agent SDK</strong>. <br><a href='https://github.com/tdimino/claudicle' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["Python", "Claude Agent SDK", "Slack SDK", "SQLite"],
     icon: "ph:brain-duotone",
     logo: "/images/claudius-mask.png",
@@ -204,7 +206,7 @@ const projects = [
   {
     name: "BG3 Script Extender macOS",
     year: "2026",
-    description: "Open source native ARM64 port of Baldur's Gate 3 Script Extender. Ground-up systems programming—runtime hooking, memory injection, embedded Lua scripting. 94% feature parity with 1,999 components via Ghidra reverse engineering. <br><a href='https://github.com/tdimino/bg3se-macos' class='project-link' target='_blank'>View on GitHub →</a>",
+    description: "Native ARM64 port of Baldur's Gate 3 Script Extender. Ground-up systems programming—runtime hooking, memory injection, embedded Lua scripting. 94% feature parity with 1,999 components via Ghidra reverse engineering. <br><a href='https://github.com/tdimino/bg3se-macos' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["C", "ARM64", "Ghidra", "Lua"],
     icon: "ph:game-controller-duotone",
     logo: "/images/badge-bg3se.png",
@@ -215,8 +217,8 @@ const projects = [
   {
     name: "Kothar wa Khasis",
     year: "2026",
-    description: "AI oracle living inside minoanmystery.org—perceives visitor behavior, remembers across sessions, generates tarot cards, and speaks through RAG-enhanced memory. Built on the Open Souls paradigm. Named for the Canaanite craftsman god. <br><a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>Speak with Kothar →</a>",
-    tech: ["Open Souls", "VoyageAI", "Supabase", "Astro"],
+    description: "AI oracle with RAG-enhanced memory—perceives visitor behavior, remembers across sessions, generates content through semantic search over vector embeddings. Built with VoyageAI + Supabase (pgvector). <br><a href='https://www.minoanmystery.org/labyrinth' class='project-link' target='_blank'>Speak with Kothar →</a>",
+    tech: ["RAG", "VoyageAI", "pgvector", "Supabase", "Astro"],
     icon: "ph:eye-duotone",
     logo: "/images/avatars/minoan-avatar.webp",
     logoUrl: "https://www.minoanmystery.org/labyrinth",
@@ -262,7 +264,7 @@ const lightboxGalleries = [{
   <!-- SEO -->
   <link rel="canonical" href={canonicalURL}>
   <meta name="author" content="Tom di Mino">
-  <meta name="keywords" content="AI engineer, ML engineer, LLM, machine learning, applied AI, Python, TypeScript, LangGraph, RAG, vector databases, fine-tuning">
+  <meta name="keywords" content="AI engineer, Python, full-stack, Claude Code, MCP, LangGraph, RAG, FastAPI, Docker, financial data, hedge fund technology, agentic AI">
 
   <!-- Open Graph -->
   <meta property="og:type" content="profile">
@@ -335,11 +337,8 @@ const lightboxGalleries = [{
 
   <!-- Theme Toggle -->
   <button class="resume-theme-toggle" aria-label="Theme: light. Press to switch to sunny." title="Cycle theme (Cmd+Shift+D)" data-animate="fade">
-    <!-- Phosphor Moon fill (shown in light — next: dark) -->
     <svg class="theme-icon theme-icon--moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M235.54,150.21a104.84,104.84,0,0,1-37,52.91A104,104,0,0,1,32,120,103.09,103.09,0,0,1,52.88,57.48a104.84,104.84,0,0,1,52.91-37,8,8,0,0,1,10,10,88.08,88.08,0,0,0,109.8,109.8,8,8,0,0,1,10,10Z"/></svg>
-    <!-- Phosphor Sun fill (shown in dark — next: light) -->
     <svg class="theme-icon theme-icon--sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
-    <!-- Phosphor SunHorizon fill (shown in sunny — next: dark) -->
     <svg class="theme-icon theme-icon--sunhorizon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M248,160a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H56.45a73.54,73.54,0,0,1-.45-8,72,72,0,0,1,144,0,73.54,73.54,0,0,1-.45,8H240A8,8,0,0,1,248,160Zm-40,32H48a8,8,0,0,0,0,16H208a8,8,0,0,0,0-16ZM80.84,59.58a8,8,0,0,0,14.32-7.16l-8-16a8,8,0,0,0-14.32,7.16ZM20.42,103.16l16,8a8,8,0,1,0,7.16-14.31l-16-8a8,8,0,1,0-7.16,14.31ZM216,112a8,8,0,0,0,3.57-.84l16-8a8,8,0,1,0-7.16-14.31l-16,8A8,8,0,0,0,216,112ZM164.42,63.16a8,8,0,0,0,10.74-3.58l8-16a8,8,0,0,0-14.32-7.16l-8,16A8,8,0,0,0,164.42,63.16Z"/></svg>
   </button>
 
@@ -347,7 +346,7 @@ const lightboxGalleries = [{
     <!-- Header -->
     <header class="resume-header" data-animate="header">
       <h1 class="resume-name">Tom di Mino</h1>
-      <p class="resume-title">Applied AI/ML Engineer</p>
+      <p class="resume-title">AI/ML Engineer</p>
       <div class="resume-contact">
         <a href="mailto:contact@tomdimino.com">
           <Icon name="ph:envelope-duotone" class="contact-icon" />
@@ -374,10 +373,10 @@ const lightboxGalleries = [{
     <!-- Summary -->
     <div class="resume-summary" data-animate="summary">
       <p>
-        Full-stack AI engineer with <strong>4+ years shipping LLM-powered production systems</strong>.
-        Built <strong>$800k/day AI tool</strong> at JP Morgan serving 5,000+ wealth advisors.
-        Currently architecting production AI advisor platform at SubQ AI with fine-tuned LLMs,
-        voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes with users, and ideates constantly.</strong>
+        Full-stack AI/ML engineer with <strong>4+ years shipping production systems in Python and TypeScript</strong>.
+        Built <strong>$800k/day AI tool</strong> at JP Morgan—bespoke LangGraph agents, data pipeline, and RAG for 5,000+ wealth advisors.
+        Currently building <strong>SubQ Code</strong>—an open competitor to Claude Code—with autonomous long-context improvement loops,
+        Python evaluation infra, and agentic orchestration. <strong>Deep Claude ecosystem expertise; startup builder who ships fast and works directly with clients.</strong>
       </p>
     </div>
 
@@ -489,20 +488,6 @@ const lightboxGalleries = [{
               Linguistics/Philology
             </h3>
             <p class="skill-category-items hobbies-text">Spanish, Italian, French, Biblical Hebrew, Classical Latin, Arabic, Sanskrit, Ancient Greek, Ugaritic</p>
-          </div>
-          <div class="skill-category" data-animate="skill">
-            <h3 class="skill-category-title">
-              <Icon name="ph:scroll-duotone" class="skill-icon" />
-              History blog
-            </h3>
-            <p class="skill-category-items"><a href="https://tomdimino.substack.com">tomdimino.substack.com</a></p>
-          </div>
-          <div class="skill-category" data-animate="skill">
-            <h3 class="skill-category-title">
-              <Icon name="ph:island-duotone" class="skill-icon" />
-              Last trip abroad
-            </h3>
-            <p class="skill-category-items">Sitia, Crete · Nov 2025</p>
           </div>
         </section>
 
@@ -733,7 +718,6 @@ const lightboxGalleries = [{
       const themeBtn = document.querySelector('.resume-theme-toggle');
       if (!themeBtn) return;
 
-      // Set initial aria-label
       const initial = document.documentElement.getAttribute('data-theme') || 'light';
       themeBtn.setAttribute('aria-label', THEME_LABELS[initial] || THEME_LABELS.light);
 

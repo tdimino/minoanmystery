@@ -564,16 +564,19 @@
   outline: none;
 }
 
-/* Light mode adjustments */
-[data-theme="light"] .volume-slider {
+/* Light & sunny mode adjustments */
+[data-theme="light"] .volume-slider,
+[data-theme="sunny"] .volume-slider {
   background: rgba(0, 0, 0, 0.15);
 }
 
-[data-theme="light"] .volume-slider::-moz-range-track {
+[data-theme="light"] .volume-slider::-moz-range-track,
+[data-theme="sunny"] .volume-slider::-moz-range-track {
   background: rgba(0, 0, 0, 0.15);
 }
 
-[data-theme="light"] .volume-slider::-webkit-slider-runnable-track {
+[data-theme="light"] .volume-slider::-webkit-slider-runnable-track,
+[data-theme="sunny"] .volume-slider::-webkit-slider-runnable-track {
   background: linear-gradient(
     to right,
     var(--color-primary) 0%,

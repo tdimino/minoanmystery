@@ -10,26 +10,31 @@
  * - 5 PM to 7 AM: Dark mode
  * - Uses user's timezone, defaults to ET (America/New_York)
  *
+ * Themes: dark, light, sunny
+ * Sunny mode technique by @danywander (dany.works)
+ *
  * Soul Memory Pattern: Perceive preference → Apply immediately
  */
 ---
 
 <script is:inline>
   (function() {
+    var VALID_THEMES = { dark: 1, light: 1, sunny: 1 };
+
     // Get current hour in user's timezone (fallback to ET)
     function getTimeBasedTheme() {
       try {
         // Try to get user's local time first
-        const now = new Date();
-        let hour = now.getHours();
+        var now = new Date();
+        var hour = now.getHours();
 
         // If we can't determine timezone reliably, use ET as default
         // This happens on first visit before we know user's locale
-        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         // If timezone detection failed or is UTC, assume ET
         if (!userTimezone || userTimezone === 'UTC') {
-          const etFormatter = new Intl.DateTimeFormat('en-US', {
+          var etFormatter = new Intl.DateTimeFormat('en-US', {
             timeZone: 'America/New_York',
             hour: 'numeric',
             hour12: false
@@ -47,13 +52,13 @@
     }
 
     // Soul Memory: Check what the user prefers
-    const stored = localStorage.getItem('theme');
-    const timeBasedTheme = getTimeBasedTheme();
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var stored = localStorage.getItem('theme');
+    var timeBasedTheme = getTimeBasedTheme();
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // Decision logic: stored preference > time-based > system preference > light default
-    let theme;
-    if (stored) {
+    var theme;
+    if (stored && VALID_THEMES[stored]) {
       theme = stored;
     } else if (timeBasedTheme) {
       theme = timeBasedTheme;
@@ -65,14 +70,14 @@
     document.documentElement.setAttribute('data-theme', theme);
 
     // Soul Memory: Track if this is a returning visitor
-    const visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
+    var visits = parseInt(localStorage.getItem('visitCount') || '0') + 1;
     localStorage.setItem('visitCount', visits.toString());
 
     // Listen for system preference changes (when no manual preference)
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
       if (!localStorage.getItem('theme')) {
         // Re-check time-based theme on system change
-        const timeBased = getTimeBasedTheme();
+        var timeBased = getTimeBasedTheme();
         document.documentElement.setAttribute('data-theme', timeBased || (e.matches ? 'dark' : 'light'));
       }
     });

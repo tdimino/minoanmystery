@@ -37,6 +37,11 @@
   font-display: swap;
 }
 
+/* @property registrations — enable smooth palette morphing between themes */
+@property --morph-bg { syntax: '<color>'; inherits: true; initial-value: #faf8f5; }
+@property --morph-text { syntax: '<color>'; inherits: true; initial-value: #0d0d0d; }
+@property --morph-accent { syntax: '<color>'; inherits: true; initial-value: #966a85; }
+
 /* CSS Reset */
 *,
 *::before,
@@ -110,6 +115,11 @@
   --color-palette-border: #dfdfdf;
   --color-palette-input-bg: #f5f5f5;
   --color-kbd: #e5e5e5;
+
+  /* Palette morph targets (light) */
+  --morph-bg: #faf8f5;
+  --morph-text: #0d0d0d;
+  --morph-accent: #966a85;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -154,11 +164,72 @@
   --color-palette-border: #333333;
   --color-palette-input-bg: #0d0d0d;
   --color-kbd: #2a2a2a;
+
+  /* Palette morph targets (dark) */
+  --morph-bg: #0d0d0d;
+  --morph-text: #f5f5f5;
+  --morph-accent: #c9a0b8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SUNNY THEME — Dappled Light
+   Warm cream surfaces with leaf shadow video overlay.
+   Content/accent colors inherited from light mode.
+   Origin: @danywander (dany.works), adapted by Minoan Mystery
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="sunny"] {
+  /* Warmer surfaces — the only color difference from light mode */
+  --color-background: #f2efe9;
+  --color-background-rgb: 242, 239, 233;
+  --color-background-alt: #ebe7de;
+  --color-border: #d6d0c4;
+  --color-highlight: rgba(212, 175, 55, 0.15);
+
+  /* Palette morph targets */
+  --morph-bg: #f2efe9;
+  --morph-text: #0d0d0d;
+  --morph-accent: #966a85;
+
+  /* Command palette — warm glass */
+  --color-overlay: rgba(242, 239, 233, 0.5);
+  --color-palette-bg: #f2efe9;
+  --color-palette-border: #d6d0c4;
+  --color-palette-input-bg: #ebe7de;
+  --color-kbd: #d6d0c4;
+
+  color-scheme: light;
+}
+
+/* Sunny shadows — dappled leaf video overlay */
+.sunny-shadows {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 700ms cubic-bezier(0.23, 1, 0.32, 1);
+  background: none;
+}
+
+[data-theme="sunny"] .sunny-shadows {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sunny-shadows {
+    animation: none;
+    display: none;
+  }
 }
 
 /* System preference detection - applies when no manual theme is set */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]):not([data-theme="sunny"]) {
     --color-background: #0d0d0d;
     --color-background-rgb: 13, 13, 13; /* For rgba() usage */
     --color-background-alt: #1a1a1a;
@@ -222,6 +293,8 @@ body {
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease-out, color 0.3s ease-out,
+              --morph-bg 400ms ease, --morph-text 400ms ease, --morph-accent 400ms ease;
 }
 
 /* Typography */

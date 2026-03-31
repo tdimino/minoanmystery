@@ -44,6 +44,16 @@
   --color-glow: rgba(150, 106, 133, 0.4);
 }
 
+/* Sunny mode */
+[data-theme="sunny"] .resume-page {
+  --color-background: #f2efe9;
+  --color-background-rgb: 242, 239, 233;
+  --color-background-alt: #ebe7de;
+  --color-border: #d6d0c4;
+  --color-border-purple: rgba(122, 79, 107, 0.12);
+  --color-card: #ebe7de;
+}
+
 /* Light mode: subtle warm gradient */
 .resume-page::before {
   content: '';
@@ -652,26 +662,52 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Light mode: show moon (click to go dark) */
-.resume-theme-toggle .theme-icon--sun {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.8);
-}
-
+/* Default (light): show moon — next: dark */
 .resume-theme-toggle .theme-icon--moon {
   opacity: 1;
   transform: rotate(0) scale(1);
 }
 
-/* Dark mode: show sun (click to go light) */
+.resume-theme-toggle .theme-icon--sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.8);
+}
+
+.resume-theme-toggle .theme-icon--sunhorizon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.8);
+}
+
+/* Dark mode: show sun — next: light */
+[data-theme="dark"] .resume-theme-toggle .theme-icon--moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.8);
+}
+
 [data-theme="dark"] .resume-theme-toggle .theme-icon--sun {
   opacity: 1;
   transform: rotate(0) scale(1);
 }
 
-[data-theme="dark"] .resume-theme-toggle .theme-icon--moon {
+[data-theme="dark"] .resume-theme-toggle .theme-icon--sunhorizon {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.8);
+}
+
+/* Sunny mode: show sunhorizon — next: dark */
+[data-theme="sunny"] .resume-theme-toggle .theme-icon--moon {
   opacity: 0;
   transform: rotate(-90deg) scale(0.8);
+}
+
+[data-theme="sunny"] .resume-theme-toggle .theme-icon--sun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.8);
+}
+
+[data-theme="sunny"] .resume-theme-toggle .theme-icon--sunhorizon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
 }
 
 /* Back link */

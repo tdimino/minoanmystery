@@ -4,8 +4,11 @@
  *
  * Soul Pattern: Perceive click → Update memory → Dispatch theme change
  *
+ * Three-way cycle: dark → light → sunny → dark
+ * Sunny mode technique by @danywander (dany.works)
+ *
  * Features:
- * - Sun/Moon icon transition
+ * - Moon/Sun/SunHorizon icon transition
  * - Keyboard shortcut: Cmd+Shift+D / Ctrl+Shift+D
  * - Works with View Transitions (astro:after-swap)
  */
@@ -13,29 +16,22 @@
 
 <button
   class="theme-toggle"
-  aria-label="Toggle dark mode"
-  title="Toggle theme (Cmd+Shift+D)"
+  aria-label="Cycle theme"
+  title="Cycle theme (Cmd+Shift+D)"
 >
-  <!-- Sun icon (shown in dark mode - click to go light) -->
-  <span class="theme-icon theme-icon--sun">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
+  <!-- Phosphor Moon fill (shown in light — next: dark) -->
+  <span class="theme-icon theme-icon--moon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M235.54,150.21a104.84,104.84,0,0,1-37,52.91A104,104,0,0,1,32,120,103.09,103.09,0,0,1,52.88,57.48a104.84,104.84,0,0,1,52.91-37,8,8,0,0,1,10,10,88.08,88.08,0,0,0,109.8,109.8,8,8,0,0,1,10,10Z"/></svg>
   </span>
 
-  <!-- Moon icon (shown in light mode - click to go dark) -->
-  <span class="theme-icon theme-icon--moon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
+  <!-- Phosphor Sun fill (shown in dark — next: light) -->
+  <span class="theme-icon theme-icon--sun">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg>
+  </span>
+
+  <!-- Phosphor SunHorizon fill (shown in sunny — next: dark) -->
+  <span class="theme-icon theme-icon--sunhorizon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M248,160a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H56.45a73.54,73.54,0,0,1-.45-8,72,72,0,0,1,144,0,73.54,73.54,0,0,1-.45,8H240A8,8,0,0,1,248,160Zm-40,32H48a8,8,0,0,0,0,16H208a8,8,0,0,0,0-16ZM80.84,59.58a8,8,0,0,0,14.32-7.16l-8-16a8,8,0,0,0-14.32,7.16ZM20.42,103.16l16,8a8,8,0,1,0,7.16-14.31l-16-8a8,8,0,1,0-7.16,14.31ZM216,112a8,8,0,0,0,3.57-.84l16-8a8,8,0,1,0-7.16-14.31l-16,8A8,8,0,0,0,216,112ZM164.42,63.16a8,8,0,0,0,10.74-3.58l8-16a8,8,0,0,0-14.32-7.16l-8,16A8,8,0,0,0,164.42,63.16Z"/></svg>
   </span>
 </button>
 
@@ -73,26 +69,52 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  /* Default: show moon (light mode, waiting to go dark) */
-  .theme-icon--sun {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.8);
-  }
-
+  /* Default (light mode): show moon (next → dark) */
   .theme-icon--moon {
     opacity: 1;
     transform: rotate(0) scale(1);
   }
 
-  /* Dark mode: show sun (waiting to go light) */
+  .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.8);
+  }
+
+  .theme-icon--sunhorizon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.8);
+  }
+
+  /* Dark mode: show sun (next → light) */
+  :global([data-theme="dark"]) .theme-icon--moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+  }
+
   :global([data-theme="dark"]) .theme-icon--sun {
     opacity: 1;
     transform: rotate(0) scale(1);
   }
 
-  :global([data-theme="dark"]) .theme-icon--moon {
+  :global([data-theme="dark"]) .theme-icon--sunhorizon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.8);
+  }
+
+  /* Sunny mode: show sunhorizon (next → dark) */
+  :global([data-theme="sunny"]) .theme-icon--moon {
     opacity: 0;
     transform: rotate(-90deg) scale(0.8);
+  }
+
+  :global([data-theme="sunny"]) .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+  }
+
+  :global([data-theme="sunny"]) .theme-icon--sunhorizon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
   }
 
   /* Mobile adjustments - maintain 44px touch target */
@@ -119,6 +141,7 @@
   /**
    * ThemeToggle Controller
    *
+   * Three-way cycle: dark → light → sunny → dark
    * Handles theme switching with proper View Transition cleanup.
    * Uses data attribute tracking to prevent duplicate click handlers
    * and tracks the keydown listener for cleanup.
@@ -127,11 +150,25 @@
     let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
     let initialized = false;
 
-    function toggleTheme() {
+    const CYCLE: Record<string, string> = { dark: 'light', light: 'sunny', sunny: 'dark' };
+    const ARIA: Record<string, string> = {
+      dark: 'Theme: dark. Press to switch to light.',
+      light: 'Theme: light. Press to switch to sunny.',
+      sunny: 'Theme: sunny. Press to switch to dark.',
+    };
+
+    function updateAriaLabels(theme: string) {
+      document.querySelectorAll('.theme-toggle').forEach((btn) => {
+        btn.setAttribute('aria-label', ARIA[theme] || ARIA.light);
+      });
+    }
+
+    function cycleTheme() {
       const current = document.documentElement.getAttribute('data-theme') || 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
+      const next = CYCLE[current] ?? 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+      updateAriaLabels(next);
     }
 
     function initThemeToggles() {
@@ -143,7 +180,7 @@
         keydownHandler = (e: KeyboardEvent) => {
           if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'd') {
             e.preventDefault();
-            toggleTheme();
+            cycleTheme();
           }
         };
         document.addEventListener('keydown', keydownHandler);
@@ -154,9 +191,12 @@
       document.querySelectorAll('.theme-toggle').forEach((toggle) => {
         if (!toggle.hasAttribute('data-theme-initialized')) {
           toggle.setAttribute('data-theme-initialized', 'true');
-          toggle.addEventListener('click', toggleTheme);
+          toggle.addEventListener('click', cycleTheme);
         }
       });
+
+      // Set initial aria-label
+      updateAriaLabels(document.documentElement.getAttribute('data-theme') || 'light');
     }
 
     function cleanupThemeToggles() {

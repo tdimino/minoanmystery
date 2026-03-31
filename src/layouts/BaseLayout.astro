@@ -86,6 +86,9 @@ const canonicalURL = new URL(pathname, Astro.site);
     ]
   })} />
 
+  <!-- Sunny mode credit — technique by @danywander (dany.works) -->
+  <meta name="credits" content="Sunny mode technique by @danywander (dany.works)">
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.ico">
@@ -112,6 +115,18 @@ const canonicalURL = new URL(pathname, Astro.site);
   </script>
 </head>
 <body>
+  <!-- Sunny mode — dappled leaf shadows (hidden unless data-theme="sunny") -->
+  <video
+    class="sunny-shadows"
+    src="/leaves.mp4"
+    loop
+    muted
+    playsinline
+    preload="none"
+    aria-hidden="true"
+    id="sunny-shadows-video"
+  ></video>
+
   <div class="page-wrapper">
     <slot name="header" />
     <main>
@@ -119,6 +134,29 @@ const canonicalURL = new URL(pathname, Astro.site);
     </main>
     <slot name="footer" />
   </div>
+
+  <!-- Sunny shadows video controller -->
+  <script is:inline>
+    (function() {
+      var _sunnyObs = null;
+      function initSunnyShadows() {
+        if (_sunnyObs) { _sunnyObs.disconnect(); _sunnyObs = null; }
+        var el = document.getElementById('sunny-shadows-video');
+        if (!el) return;
+        _sunnyObs = new MutationObserver(function() {
+          var isSunny = document.documentElement.getAttribute('data-theme') === 'sunny';
+          if (isSunny) { el.play().catch(function(){}); }
+          else { el.pause(); el.currentTime = 0; }
+        });
+        _sunnyObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        if (document.documentElement.getAttribute('data-theme') === 'sunny') {
+          el.play().catch(function(){});
+        }
+      }
+      initSunnyShadows();
+      document.addEventListener('astro:after-swap', initSunnyShadows);
+    })();
+  </script>
 
   <!-- Motion for scroll animations -->
   <script>

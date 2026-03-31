@@ -41,7 +41,7 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 - **UX/Frontend**: Use `frontend-design` skill for all design work
 - **Image generation**: Use `nano-banana-pro` skill (Gemini 3 Pro) for visual assets
 - **Cross-model resonance**: Use `gemini-claude-resonance` skill for Gemini↔Claude visual dialogue
-- **Dark mode**: Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark)
+- **Theme cycle**: Three-way (dark → light → sunny → dark). Time-based defaults (7 AM–5 PM light, 5 PM–7 AM dark). Sunny mode by @danywander (dany.works)—`@property` palette morphing, `leaves.mp4` video overlay with `mix-blend-mode: multiply`
 - **CSS**: Use CSS variables (`var(--color-*)`) for theme-aware colors
 - **Animations**: Prefer Motion library over GSAP, respect `prefers-reduced-motion`
 - **Lightbox**: Native `<dialog>` with `showModal()`/`close()`, `@starting-style` entry/exit animations, View Transitions API morphing (badge→lightbox), Pointer Events swipe gestures (left/right navigate, down closes), `closedby="any"` progressive enhancement. Structured captions (`title`, `year`, `description`, `tags[]`, `link`, `circular`). Scoped `--lightbox-accent` tokens (always dark bg). `body.lightbox-open` locks scroll + hides fixed UI.
@@ -64,15 +64,17 @@ See **ARCHITECTURE.md** for complete Soul Engine codemap.
 
 ## Brand Colors
 
-| Token | Light | Dark | Usage |
-|-------|-------|------|-------|
-| `--color-primary` | #966a85 | #c9a0b8 | Tyrian purple accent |
-| `--color-text` | #0d0d0d | #f5f5f5 | Primary text |
-| `--color-text-muted` | #686868 | #b8b8b8 | Secondary text |
-| `--color-background` | #faf8f5 | #0d0d0d | Page background (warm off-white) |
-| `--color-accent` | #d4a843 | #d4a843 | Gold accent |
-| `--color-success-*` | #d4edda / #a3d4b0 / #155724 | rgba(52,211,153,0.1/0.3) / #6ee7b7 | Form success feedback |
-| `--color-error-*` | #f8d7da / #e8b0b5 / #721c24 | rgba(248,113,113,0.1/0.3) / #fca5a5 | Form error feedback |
+| Token | Light | Dark | Sunny | Usage |
+|-------|-------|------|-------|-------|
+| `--color-primary` | #966a85 | #c9a0b8 | (light) | Tyrian purple accent |
+| `--color-text` | #0d0d0d | #f5f5f5 | (light) | Primary text |
+| `--color-text-muted` | #686868 | #b8b8b8 | (light) | Secondary text |
+| `--color-background` | #faf8f5 | #0d0d0d | #f2efe9 | Page background |
+| `--color-background-alt` | #f2efe9 | #1a1a1a | #ebe7de | Alt surfaces |
+| `--color-border` | #dfdfdf | #2a2a2a | #d6d0c4 | Borders |
+| `--color-accent` | #d4a843 | #d4a843 | (light) | Gold accent |
+| `--color-success-*` | #d4edda / #a3d4b0 / #155724 | rgba(52,211,153,0.1/0.3) / #6ee7b7 | (light) | Form success feedback |
+| `--color-error-*` | #f8d7da / #e8b0b5 / #721c24 | rgba(248,113,113,0.1/0.3) / #fca5a5 | (light) | Form error feedback |
 
 ## Services Section
 
@@ -131,7 +133,7 @@ Props: `erosionMode` (`"craquelure"` | `"diffusion"`), `erosionSlope`, `erosionI
 ## Key Features
 
 - **Command Palette**: `Cmd+K` for navigation + dynamic soul commands (routes to Kothar, not hardcoded)
-- **Theme Toggle**: `Cmd+Shift+D` or button in header
+- **Theme Toggle**: `Cmd+Shift+D` or button in header — cycles dark → light → sunny. Sunny adds `leaves.mp4` video overlay (auto-play/pause via MutationObserver in BaseLayout)
 - **View Transitions**: Smooth page navigation
 - **Labyrinth**: `/labyrinth` chat interface with Kothar oracle
 - **Resume**: `/resume` interactive resume (subdomain: `resume.minoanmystery.org`)

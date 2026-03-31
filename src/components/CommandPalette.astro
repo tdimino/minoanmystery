@@ -635,20 +635,54 @@
           keywords: ['czi', 'chan', 'zuckerberg', 'napari', 'science', 'case study']
         },
 
-        // Theme
+        // Theme — three-way cycle: dark → light → sunny → dark
         {
           id: 'theme-toggle',
-          label: 'Toggle Dark Mode',
+          label: 'Cycle Theme',
           shortcut: '⌃D',
           icon: 'moon',
           group: 'Preferences',
           action: () => {
+            const cycle: Record<string, string> = { dark: 'light', light: 'sunny', sunny: 'dark' };
             const current = document.documentElement.getAttribute('data-theme') || 'light';
-            const next = current === 'dark' ? 'light' : 'dark';
+            const next = cycle[current] ?? 'dark';
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
           },
-          keywords: ['dark', 'light', 'theme', 'mode', 'toggle', 'night']
+          keywords: ['dark', 'light', 'sunny', 'theme', 'mode', 'toggle', 'night', 'cycle']
+        },
+        {
+          id: 'theme-dark',
+          label: 'Theme: Dark',
+          icon: 'moon',
+          group: 'Preferences',
+          action: () => {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+          },
+          keywords: ['dark', 'night', 'theme']
+        },
+        {
+          id: 'theme-light',
+          label: 'Theme: Light',
+          icon: 'sun',
+          group: 'Preferences',
+          action: () => {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+          },
+          keywords: ['light', 'day', 'theme']
+        },
+        {
+          id: 'theme-sunny',
+          label: 'Theme: Sunny',
+          icon: 'sun',
+          group: 'Preferences',
+          action: () => {
+            document.documentElement.setAttribute('data-theme', 'sunny');
+            localStorage.setItem('theme', 'sunny');
+          },
+          keywords: ['sunny', 'summer', 'warm', 'dappled', 'cream', 'theme']
         },
         {
           id: 'theme-system',
@@ -852,8 +886,9 @@
         case 'c': action = () => window.location.href = '/contact'; break;
         case 'i': action = () => window.open('https://www.tomdimino.com/Cognitive-Designing-AI-LLMs.pdf', '_blank'); break;
         case 'd': action = () => {
+          const cycle: Record<string, string> = { dark: 'light', light: 'sunny', sunny: 'dark' };
           const current = document.documentElement.getAttribute('data-theme') || 'light';
-          const next = current === 'dark' ? 'light' : 'dark';
+          const next = cycle[current] ?? 'dark';
           document.documentElement.setAttribute('data-theme', next);
           localStorage.setItem('theme', next);
         }; break;
