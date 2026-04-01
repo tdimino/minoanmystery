@@ -135,26 +135,69 @@ const canonicalURL = new URL(pathname, Astro.site);
     <slot name="footer" />
   </div>
 
-  <!-- Sunny shadows video controller -->
+  <!-- Theme ambient audio -->
+  <audio id="sunny-audio" src="/forest.mp3" loop preload="none" aria-hidden="true"></audio>
+  <audio id="night-audio" src="/night.mp3" loop preload="none" aria-hidden="true"></audio>
+
+  <!-- Sunny shadows video + theme ambient audio controller -->
   <script is:inline>
     (function() {
-      var _sunnyObs = null;
-      function initSunnyShadows() {
-        if (_sunnyObs) { _sunnyObs.disconnect(); _sunnyObs = null; }
-        var el = document.getElementById('sunny-shadows-video');
-        if (!el) return;
-        _sunnyObs = new MutationObserver(function() {
-          var isSunny = document.documentElement.getAttribute('data-theme') === 'sunny';
-          if (isSunny) { el.play().catch(function(){}); }
-          else { el.pause(); el.currentTime = 0; }
-        });
-        _sunnyObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-        if (document.documentElement.getAttribute('data-theme') === 'sunny') {
-          el.play().catch(function(){});
-        }
+      var _themeObs = null;
+      var _prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function stopAudio(el) {
+        if (el) { el.pause(); el.currentTime = 0; }
       }
-      initSunnyShadows();
-      document.addEventListener('astro:after-swap', initSunnyShadows);
+
+      function playAudio(el) {
+        if (el && !_prefersReduced) { el.volume = 0.3; el.play().catch(function(){}); }
+      }
+
+      function applyTheme(theme) {
+        var video = document.getElementById('sunny-shadows-video');
+        var sunnyAudio = document.getElementById('sunny-audio');
+        var nightAudio = document.getElementById('night-audio');
+
+        // Video: sunny only
+        if (theme === 'sunny') { if (video) video.play().catch(function(){}); }
+        else { if (video) { video.pause(); video.currentTime = 0; } }
+
+        // Audio: sunny → forest, dark → crickets, light → silence
+        stopAudio(sunnyAudio);
+        stopAudio(nightAudio);
+        if (theme === 'sunny') playAudio(sunnyAudio);
+        else if (theme === 'dark') playAudio(nightAudio);
+      }
+
+      function initThemeMedia() {
+        if (_themeObs) { _themeObs.disconnect(); _themeObs = null; }
+        _themeObs = new MutationObserver(function() {
+          applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+        });
+        _themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+        // Init video (muted — always allowed), but defer audio to first gesture
+        var theme = document.documentElement.getAttribute('data-theme') || 'light';
+        if (theme === 'sunny') {
+          var video = document.getElementById('sunny-shadows-video');
+          if (video) video.play().catch(function(){});
+        }
+        // Audio deferred: browser blocks autoplay without gesture.
+        // The MutationObserver fires from the theme toggle click (user gesture),
+        // so audio starts naturally when the user actually toggles the theme.
+      }
+
+      // Teardown before View Transition swap
+      document.addEventListener('astro:before-swap', function() {
+        stopAudio(document.getElementById('sunny-audio'));
+        stopAudio(document.getElementById('night-audio'));
+        var video = document.getElementById('sunny-shadows-video');
+        if (video) { video.pause(); }
+        if (_themeObs) { _themeObs.disconnect(); _themeObs = null; }
+      });
+
+      initThemeMedia();
+      document.addEventListener('astro:after-swap', initThemeMedia);
     })();
   </script>
 
