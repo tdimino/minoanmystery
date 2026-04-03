@@ -23,6 +23,7 @@ pnpm-debug.log*
 # Generated/temporary files
 screenshots/
 generated/
+src/data/proof-metrics.json
 
 # jetbrains setting folder
 .idea/

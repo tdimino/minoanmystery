@@ -1,76 +1,97 @@
 ---
 /**
- * LiveProofDashboard — Dual-site ranking dashboard for GEO/SEO proof section.
- * Side-by-side: worldwarwatcher.com (teal) + minoanmystery.org (Tyrian purple).
- * 2x2 ranking grid per column with animated countdown counters.
- * Replaces ProofCard.
+ * LiveProofDashboard — Dual-site ranking + traffic dashboard for GEO/SEO proof section.
+ * Orchestrator: imports proof-metrics.json + sub-components.
+ *
+ * Layout: asymmetric 55/45 columns (WWW gets more space), gold-bordered traffic
+ * telemetry strip below rankings, inline SVG sparkline, social proof callout.
+ *
+ * Design system: minoanmystery.org tokens (Tyrian purple + gold), NOT PHOSPHOR VIGIL.
  */
-const sites = [
-  {
-    name: 'worldwarwatcher.com',
-    url: 'https://worldwarwatcher.com',
-    color: '#2dd4bf',
-    badge: null,
-    rankings: [
-      { platform: 'Google', rank: 1, label: '#1', verifyUrl: 'https://www.google.com/search?q=World+War+Watcher' },
-      { platform: 'Bing', rank: 1, label: '#1', verifyUrl: 'https://www.bing.com/search?q=World+War+Watcher' },
-      { platform: 'Perplexity', rank: 0, label: 'Cited', verifyUrl: 'https://www.perplexity.ai/search?q=World+War+Watcher' },
-      { platform: 'ChatGPT', rank: 0, label: 'Cited', verifyUrl: null },
+import RankingGrid from './proof/RankingGrid.astro';
+import TrafficMetrics from './proof/TrafficMetrics.astro';
+import VerifyFooter from './proof/VerifyFooter.astro';
+import type { ProofMetrics } from '../../types/proof';
+
+let metrics: ProofMetrics;
+try {
+  const mod = await import('../../data/proof-metrics.json');
+  metrics = (mod.default ?? mod) as ProofMetrics;
+} catch {
+  // Fallback: hardcoded rankings, no traffic
+  metrics = {
+    generated: new Date().toISOString(),
+    sites: [
+      {
+        id: 'worldwarwatcher',
+        name: 'worldwarwatcher.com',
+        url: 'https://worldwarwatcher.com',
+        color: '#2dd4bf',
+        badge: null,
+        rankings: [
+          { platform: 'Google', rank: 1, label: '#1', verifyUrl: 'https://www.google.com/search?q=World+War+Watcher' },
+          { platform: 'Bing', rank: 1, label: '#1', verifyUrl: 'https://www.bing.com/search?q=World+War+Watcher' },
+          { platform: 'Perplexity', rank: 0, label: 'Cited', verifyUrl: 'https://www.perplexity.ai/search?q=World+War+Watcher' },
+          { platform: 'ChatGPT', rank: 0, label: 'Cited', verifyUrl: null },
+        ],
+        traffic: null,
+        socialProof: null,
+      },
+      {
+        id: 'minoanmystery',
+        name: 'minoanmystery.org',
+        url: 'https://minoanmystery.org',
+        color: '#9b59b6',
+        badge: 'This site',
+        rankings: [
+          { platform: 'Google', rank: 8, label: '#8', verifyUrl: 'https://www.google.com/search?q=minoanmystery.org' },
+          { platform: 'Bing', rank: 3, label: '#3', verifyUrl: 'https://www.bing.com/search?q=minoanmystery.org' },
+          { platform: 'Perplexity', rank: 0, label: 'Cited', verifyUrl: 'https://www.perplexity.ai/search?q=minoanmystery.org' },
+          { platform: 'Claude', rank: 0, label: 'Cited', verifyUrl: null },
+        ],
+        traffic: null,
+        socialProof: null,
+      },
     ],
-  },
-  {
-    name: 'minoanmystery.org',
-    url: 'https://minoanmystery.org',
-    color: '#9b59b6',
-    badge: 'This site',
-    rankings: [
-      { platform: 'Google', rank: 8, label: '#8', verifyUrl: 'https://www.google.com/search?q=minoanmystery.org' },
-      { platform: 'Bing', rank: 3, label: '#3', verifyUrl: 'https://www.bing.com/search?q=minoanmystery.org' },
-      { platform: 'Perplexity', rank: 0, label: 'Cited', verifyUrl: 'https://www.perplexity.ai/search?q=minoanmystery.org' },
-      { platform: 'Claude', rank: 0, label: 'Cited', verifyUrl: null },
-    ],
-  },
-];
+  };
+}
+
+const verifiedDate = new Date(metrics.generated);
+const verifiedFormatted = verifiedDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+// Find the site with traffic for the telemetry strip
+const trafficSite = metrics.sites.find(s => s.traffic !== null);
 ---
 
-<div class="live-proof" aria-label="Ranking proof: two sites built with these GEO/SEO techniques">
+<div class="live-proof" aria-label="Ranking and traffic proof: two sites built with these GEO/SEO techniques">
   <div class="lp-header">
     <span class="lp-title">Live Rankings</span>
-    <span class="lp-badge">Verified</span>
+    <span class="lp-badge">Verified {verifiedFormatted}</span>
   </div>
 
   <div class="lp-columns">
-    {sites.map((site) => (
-      <div class="lp-column" style={`--site-color: ${site.color}`}>
+    {metrics.sites.map((site) => (
+      <div class="lp-column">
         <div class="lp-site-header">
-          <a href={site.url} target="_blank" rel="noopener noreferrer" class="lp-site-name">{site.name}</a>
+          <a href={site.url} target="_blank" rel="noopener noreferrer" class="lp-site-name" style={`--site-color: ${site.color}`}>
+            {site.name}
+          </a>
           {site.badge && <span class="lp-this-site">{site.badge}</span>}
         </div>
-        <div class="lp-rankings">
-          {site.rankings.map((r) => (
-            r.verifyUrl ? (
-              <a href={r.verifyUrl} target="_blank" rel="noopener noreferrer" class="lp-rank-card lp-rank-link">
-                <span class="lp-rank-platform">{r.platform}</span>
-                <span class="lp-rank-value" data-target={r.rank > 0 ? r.rank : ''}>
-                  {r.rank > 0 ? `#${r.rank}` : r.label}
-                </span>
-                <span class="lp-verify">verify &rarr;</span>
-              </a>
-            ) : (
-              <div class="lp-rank-card">
-                <span class="lp-rank-platform">{r.platform}</span>
-                <span class="lp-rank-value" data-target={r.rank > 0 ? r.rank : ''}>
-                  {r.rank > 0 ? `#${r.rank}` : r.label}
-                </span>
-              </div>
-            )
-          ))}
-        </div>
+        <RankingGrid rankings={site.rankings} siteColor={site.color} />
       </div>
     ))}
   </div>
 
-  <div class="lp-scanline" aria-hidden="true"></div>
+  {trafficSite?.traffic && (
+    <TrafficMetrics
+      traffic={trafficSite.traffic}
+      siteColor={trafficSite.color}
+      socialProof={trafficSite.socialProof}
+    />
+  )}
+
+  <VerifyFooter generatedDate={metrics.generated} />
 </div>
 
 <style>
@@ -79,7 +100,7 @@ const sites = [
     border-radius: 8px;
     overflow: hidden;
     margin: 40px 0;
-    background: #0d0d0d;
+    background: var(--color-background);
     position: relative;
   }
 
@@ -88,14 +109,14 @@ const sites = [
     align-items: center;
     justify-content: space-between;
     padding: 14px 20px;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .lp-title {
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    color: #e0e0e0;
+    font-family: var(--font-heading, 'Thicccboi', system-ui, sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
   }
 
   .lp-badge {
@@ -106,22 +127,23 @@ const sites = [
     letter-spacing: 0.08em;
     padding: 2px 8px;
     border-radius: 100px;
-    background: rgba(45, 212, 127, 0.15);
-    color: #2dd47f;
+    background: color-mix(in oklch, var(--color-accent) 12%, transparent);
+    color: var(--color-accent);
   }
 
   .lp-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 11fr 9fr;
     gap: 0;
   }
 
   .lp-column {
     padding: 20px;
-    border-right: 1px solid #1a1a1a;
   }
 
-  .lp-column:last-child { border-right: none; }
+  .lp-column:first-child {
+    border-right: 1px solid var(--color-border);
+  }
 
   .lp-site-header {
     display: flex;
@@ -140,9 +162,11 @@ const sites = [
     transition: opacity 0.2s ease;
   }
 
-  .lp-site-name:hover {
-    opacity: 0.8;
-    color: var(--site-color);
+  @media (hover: hover) {
+    .lp-site-name:hover {
+      opacity: 0.8;
+      color: var(--site-color);
+    }
   }
 
   .lp-this-site {
@@ -153,91 +177,21 @@ const sites = [
     letter-spacing: 0.1em;
     padding: 2px 6px;
     border-radius: 3px;
-    background: rgba(155, 89, 182, 0.15);
-    color: #9b59b6;
-  }
-
-  .lp-rankings {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .lp-rank-card {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px;
-    background: #161616;
-    border: 1px solid #2a2a2a;
-    border-radius: 6px;
-    position: relative;
-  }
-
-  .lp-rank-link {
-    text-decoration: none;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-  }
-
-  .lp-rank-link:hover {
-    border-color: var(--site-color);
-  }
-
-  .lp-rank-link:hover .lp-verify {
-    opacity: 1;
-  }
-
-  .lp-verify {
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 9px;
-    color: #666;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    margin-top: 4px;
-  }
-
-  .lp-rank-platform {
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 10px;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .lp-rank-value {
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--site-color);
-  }
-
-  /* CRT scanline overlay */
-  .lp-scanline {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 2px,
-      rgba(0, 0, 0, 0.05) 2px,
-      rgba(0, 0, 0, 0.05) 4px
-    );
-    pointer-events: none;
+    background: color-mix(in oklch, var(--color-primary) 15%, transparent);
+    color: var(--color-primary);
   }
 
   @media (max-width: 768px) {
     .lp-columns {
       grid-template-columns: 1fr;
     }
-    .lp-column { border-right: none; border-bottom: 1px solid #1a1a1a; }
-    .lp-column:last-child { border-bottom: none; }
+    .lp-column:first-child {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+    }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .lp-rank-value { transition: none; }
-  }
-
+  /* Scroll-reveal */
   @media (scripting: enabled) {
     .live-proof:not(.is-visible) {
       opacity: 0;
@@ -250,16 +204,27 @@ const sites = [
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-proof {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
   function initLiveProof() {
-    document.querySelectorAll('.live-proof').forEach((el) => {
+    document.querySelectorAll('.live-proof:not([data-proof-init])').forEach((el) => {
+      (el as HTMLElement).dataset.proofInit = '1';
       let animated = false;
 
-      function animateRanks() {
+      function animateCounters() {
         if (animated) return;
         animated = true;
+
+        // Rank counters (count down from 50)
         el.querySelectorAll('.lp-rank-value[data-target]').forEach((val) => {
           const target = parseInt((val as HTMLElement).dataset.target || '0', 10);
           if (!target) return;
@@ -273,6 +238,23 @@ const sites = [
             }
           }, 60);
         });
+
+        // Traffic counters (count up from 0)
+        el.querySelectorAll('[data-count-target]').forEach((val) => {
+          const target = parseInt((val as HTMLElement).dataset.countTarget || '0', 10);
+          if (!target) return;
+          const duration = 800;
+          const start = performance.now();
+          function tick(now: number) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            const current = Math.round(eased * target);
+            val.textContent = current.toLocaleString();
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
       }
 
       const observer = new IntersectionObserver(
@@ -280,7 +262,7 @@ const sites = [
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('is-visible');
-              animateRanks();
+              animateCounters();
               observer.unobserve(entry.target);
             }
           });
@@ -288,7 +270,14 @@ const sites = [
         { threshold: 0.1 }
       );
       observer.observe(el);
-      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); animateRanks(); } }, 2000);
+
+      // Fallback: show after 2s if observer doesn't fire
+      setTimeout(() => {
+        if (!el.classList.contains('is-visible')) {
+          el.classList.add('is-visible');
+          animateCounters();
+        }
+      }, 2000);
     });
   }
 

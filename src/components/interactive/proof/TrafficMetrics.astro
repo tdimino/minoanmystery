@@ -1,0 +1,223 @@
+---
+/**
+ * TrafficMetrics — Headline metrics + SVG sparkline + social proof.
+ * Gold-bordered telemetry strip with three oversized numbers.
+ * Inline SVG sparkline (no charting library), peak bar highlighted.
+ */
+import type { TrafficMetrics as TM, SocialProof } from '../../../types/proof';
+
+interface Props {
+  traffic: TM;
+  siteColor: string;
+  socialProof?: SocialProof | null;
+}
+
+const { traffic, siteColor, socialProof } = Astro.props;
+
+const pagesPerVisit = traffic.uniqueVisitors > 0
+  ? (traffic.pageViews / traffic.uniqueVisitors).toFixed(1)
+  : '—';
+
+// Format peak date
+const peakDateObj = new Date(traffic.peakDate + 'T00:00:00');
+const peakDateFormatted = peakDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+// Sparkline SVG
+const points = traffic.sparkline;
+const maxVal = Math.max(...points, 1);
+const peakIdx = points.indexOf(Math.max(...points));
+const barWidth = 100 / points.length;
+const barGap = barWidth * 0.2;
+---
+
+<div class="lp-telemetry" style={`--site-color: ${siteColor}`} aria-label={`Traffic metrics: ${traffic.uniqueVisitors.toLocaleString()} visitors over ${traffic.daysCounted} days`}>
+  <div class="lp-metric">
+    <span class="lp-metric-ghost" aria-hidden="true">{traffic.uniqueVisitors.toLocaleString()}</span>
+    <span class="lp-metric-value" data-count-target={traffic.uniqueVisitors}>
+      {traffic.uniqueVisitors.toLocaleString()}
+    </span>
+    <span class="lp-metric-label">Visitors</span>
+    <span class="lp-metric-sub">{traffic.daysCounted} days</span>
+  </div>
+
+  <div class="lp-metric">
+    <span class="lp-metric-ghost" aria-hidden="true">{traffic.pageViews.toLocaleString()}</span>
+    <span class="lp-metric-value" data-count-target={traffic.pageViews}>
+      {traffic.pageViews.toLocaleString()}
+    </span>
+    <span class="lp-metric-label">Page Views</span>
+    <span class="lp-metric-sub">{pagesPerVisit}/visit</span>
+  </div>
+
+  <div class="lp-metric">
+    <span class="lp-metric-ghost" aria-hidden="true">{traffic.peakDayUniques.toLocaleString()}</span>
+    <span class="lp-metric-value" data-count-target={traffic.peakDayUniques}>
+      {traffic.peakDayUniques.toLocaleString()}
+    </span>
+    <span class="lp-metric-label">Peak Day</span>
+    <span class="lp-metric-sub">{peakDateFormatted}</span>
+  </div>
+
+  <div class="lp-sparkline-row">
+    <svg class="lp-sparkline" viewBox={`0 0 100 32`} preserveAspectRatio="none" role="img"
+      aria-label={`Daily visitor chart: ${points.length} days, peak ${maxVal.toLocaleString()}`}>
+      {points.map((val, i) => {
+        const x = i * barWidth + barGap / 2;
+        const h = (val / maxVal) * 28 + 2;
+        const y = 32 - h;
+        const isPeak = i === peakIdx;
+        return (
+          <rect
+            x={x}
+            y={y}
+            width={barWidth - barGap}
+            height={h}
+            rx="1"
+            class={isPeak ? 'bar-peak' : 'bar-normal'}
+          >
+            <title>{val.toLocaleString()} visitors</title>
+          </rect>
+        );
+      })}
+    </svg>
+    {socialProof && (
+      <span class="lp-social-proof">
+        Featured on {socialProof.platform}—{socialProof.note.toLowerCase()}
+      </span>
+    )}
+  </div>
+</div>
+
+<style>
+  .lp-telemetry {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--color-accent);
+    border-left: 3px solid var(--site-color);
+    padding: 20px;
+  }
+
+  .lp-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+  }
+
+  .lp-metric-ghost {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--color-accent);
+    opacity: 0.03;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .lp-metric-value {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--site-color);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lp-metric-label {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .lp-metric-sub {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+  }
+
+  .lp-sparkline-row {
+    grid-column: 1 / -1;
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .lp-sparkline {
+    width: 100%;
+    height: 32px;
+    display: block;
+  }
+
+  .bar-normal {
+    fill: var(--color-text-muted);
+    opacity: 0.25;
+  }
+
+  .bar-peak {
+    fill: var(--color-accent);
+    opacity: 0.8;
+  }
+
+  .lp-social-proof {
+    display: block;
+    font-family: var(--font-body, 'Thicccboi', system-ui, sans-serif);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin-top: 8px;
+  }
+
+  /* Hide metric values before animation (prevents flash from SSR value to "0") */
+  @media (scripting: enabled) {
+    .lp-metric-value[data-count-target] {
+      visibility: hidden;
+    }
+    :global(.live-proof.is-visible) .lp-metric-value[data-count-target] {
+      visibility: visible;
+    }
+  }
+
+  /* Sparkline draw animation */
+  @media (scripting: enabled) {
+    .lp-sparkline {
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 0.6s ease-out;
+    }
+    :global(.live-proof.is-visible) .lp-sparkline {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-sparkline {
+      clip-path: none !important;
+      transition: none !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .lp-telemetry {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .lp-metric-value {
+      font-size: 28px;
+    }
+    .lp-metric-ghost {
+      font-size: 44px;
+    }
+  }
+</style>

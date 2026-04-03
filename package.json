@@ -4,10 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "prebuild": "npx tsx scripts/prebuild-proof.ts",
+    "build": "npm run prebuild && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate:manifests": "npx tsx scripts/generate-manifests.ts"
+    "generate:manifests": "npx tsx scripts/generate-manifests.ts",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",

@@ -1,0 +1,133 @@
+---
+/**
+ * RankingGrid — 2x2 ranking cards for a single site.
+ * Extracted from LiveProofDashboard for composability.
+ */
+import type { RankingEntry } from '../../../types/proof';
+
+interface Props {
+  rankings: RankingEntry[];
+  siteColor: string;
+}
+
+const { rankings, siteColor } = Astro.props;
+---
+
+<div class="lp-rankings" style={`--site-color: ${siteColor}`}>
+  {rankings.map((r, i) => (
+    r.verifyUrl ? (
+      <a href={r.verifyUrl} target="_blank" rel="noopener noreferrer"
+        class="lp-rank-card lp-rank-link"
+        aria-label={`${r.platform}: ${r.rank > 0 ? `ranked #${r.rank}` : r.label}`}
+        style={`--i: ${i}`}>
+        <span class="lp-rank-platform">{r.platform}</span>
+        <span class="lp-rank-value" data-target={r.rank > 0 ? r.rank : ''}>
+          {r.rank > 0 ? `#${r.rank}` : r.label}
+        </span>
+        <span class="lp-verify">verify &rarr;</span>
+      </a>
+    ) : (
+      <div class="lp-rank-card" style={`--i: ${i}`}>
+        <span class="lp-rank-platform">{r.platform}</span>
+        <span class="lp-rank-value" data-target={r.rank > 0 ? r.rank : ''}>
+          {r.rank > 0 ? `#${r.rank}` : r.label}
+        </span>
+      </div>
+    )
+  ))}
+</div>
+
+<style>
+  .lp-rankings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .lp-rank-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    background: var(--color-background-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    position: relative;
+  }
+
+  .lp-rank-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  @media (hover: hover) {
+    .lp-rank-link:hover {
+      border-color: var(--site-color);
+      transform: translateY(-1px);
+    }
+    .lp-rank-link:hover .lp-verify {
+      opacity: 1;
+    }
+  }
+
+  .lp-rank-link:focus-visible {
+    outline: 2px solid var(--site-color);
+    outline-offset: 2px;
+  }
+
+  .lp-rank-link:focus-visible .lp-verify {
+    opacity: 1;
+  }
+
+  .lp-verify {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 9px;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    margin-top: 4px;
+  }
+
+  .lp-rank-platform {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .lp-rank-value {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--site-color);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (scripting: enabled) {
+    .lp-rank-card {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rank-enter 0.3s ease forwards;
+      animation-delay: calc(var(--i, 0) * 60ms);
+      animation-play-state: paused;
+    }
+    :global(.live-proof.is-visible) .lp-rank-card {
+      animation-play-state: running;
+    }
+  }
+
+  @keyframes rank-enter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-rank-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
