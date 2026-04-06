@@ -111,6 +111,22 @@ Ugaritic *mnn* ("to apportion, bestow") develops a noun form *mnš* ("present, t
 
 **The semantic fit**: If Minos means "the Allotter," his role as Judge of the Dead is etymologically encoded. He assigns (*mānâ*) each soul its portion (*mānâ*) in the underworld—the one who counts and distributes eternal fates.
 
+**Plato** (*Gorgias* 523e–524a; *Apology* 41a) confirms Minos as one of three judges of the dead—a juridical figure adjudicating from the realm below.
+
+**The Ugaritic prototype — Yammu Ṯāpiṭu Naharu**:
+
+In the Baal Cycle, Yammu holds a double name and juridical title:
+
+| Ugaritic | Translation | Function |
+|----------|-------------|----------|
+| *ym* (Yammu) | Sea | Domain: the waters |
+| *nhr* (Naharu) | River | Domain: the streams |
+| *ṯpṭ nhr* (Ṯāpiṭu Naharu) | Judge River | Office: juridical authority |
+
+Yammu is not merely a sea-monster to be defeated. He is a **judge** — he rules, he adjudicates from the waters. Gordon documents *ya-mu* in Linear A at Hagia Triada (§129, *Evidence for the Minoan Language*, 1966) — the Northwest Semitic sea-god worshipped on Crete.
+
+The structural parallel: the sea-king who judges (Yammu *ṯpṭ nhr*) → the dead king who judges (Minos in Hades with his golden scepter). The function is identical — adjudication from the realm below. In Semitic cosmology, the waters and the underworld are the same domain: Tehom, the abyss beneath.
+
 ### 8. Daimon as "Divider/Allotter"
 
 **Greek δαίμων etymology**:

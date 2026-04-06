@@ -167,6 +167,9 @@ The offering of honey (*me-ri*) to the Labyrinth goddess reinforces the bee conn
 - [murex-paur-paur-textile.md](../part-1-thera/murex-paur-paur-textile.md) — Priestess traditions
 - [young-god-initiation-priesthood.md](./young-god-initiation-priesthood.md) — Male counterpart: young god initiation
 
+### Research Dossiers (Thera-Knossos-Minos-Paper)
+- [land-milk-honey-crete.md](~/Desktop/Thera-Knossos-Minos-Paper/research/synthesis/land-milk-honey-crete.md) — Full argument: Crete as the paradigmatic "land of milk and honey"; 20+ Biblical attestations, Callimachus/Diodorus, Melissa priestess tradition, Deuteronomy 8:7-9 comparison
+
 ### Per-Article Dossiers
 - [harrison/themis/ch2-olympian-dionysiac.md](../scholarly-sources/harrison/themis/ch2-olympian-dionysiac.md) — Bee priestesses
 

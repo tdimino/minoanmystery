@@ -111,6 +111,9 @@ The primordial state consisted of dark air (*aer*), boundless chaos (*chaos*), a
 - [divine-feminine-toponyms.md](./divine-feminine-toponyms.md) — Athirat/Thera etymology
 - [classical-sources-spartan-bias.md](./classical-sources-spartan-bias.md) — Herodotean source critique
 
+### Research Dossiers (Thera-Knossos-Minos-Paper)
+- [vital-waters-spirit-breath.md](~/Desktop/Thera-Knossos-Minos-Paper/research/synthesis/vital-waters-spirit-breath.md) — "Waters without light" as cosmological universal; primordial waters as spirit-bearing, not inert
+
 ### Per-Article Dossiers
 - [astour/greek-names-semitic-world-1964.md](../scholarly-sources/astour/greek-names-semitic-world-1964.md) — Full methodological framework
 - [astour/hellenosemitica/ch2-cadmos.md](../scholarly-sources/astour/hellenosemitica/ch2-cadmos.md) — Extended Cadmean analysis

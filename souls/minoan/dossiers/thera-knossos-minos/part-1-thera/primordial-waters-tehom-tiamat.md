@@ -207,6 +207,9 @@ The "Pall of Darkness" passage—cosmogonic vocabulary applied to the Cretan sea
 - [divine-feminine-toponyms.md](./divine-feminine-toponyms.md) — Athirat/Thera etymology
 - [ya-wa-eil-yamu.md](./ya-wa-eil-yamu.md) — Yamu as Sea God
 
+### Research Dossiers (Thera-Knossos-Minos-Paper)
+- [vital-waters-spirit-breath.md](~/Desktop/Thera-Knossos-Minos-Paper/research/synthesis/vital-waters-spirit-breath.md) — Cross-cultural identity of primordial water and vital force; PIE *\*h2ep-* reflex chain, Vedic *apomayah pranah*, waters as spirit-bearing medium
+
 ### Per-Article Dossiers
 - [gordon/ugaritic-poetry/baal-yamm-cycle.md](../scholarly-sources/gordon/ugaritic-poetry/baal-yamm-cycle.md) — Yamu/Baal combat
 - [harrison/themis/ch3-thunder-rites.md](../scholarly-sources/harrison/themis/ch3-thunder-rites.md) — Chthonic chaos

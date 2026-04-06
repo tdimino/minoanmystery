@@ -13,9 +13,9 @@ Research dossiers on the Minos-Moses parallels, etymological connections, and Ca
 | [kouretes-diktaean-young-god.md](kouretes-diktaean-young-god.md) | Kouretes, Palaikastro Hymn | Megistos Kouros, Ba'al Rapu, dying-rising god |
 | [gaza-minos-marnas-complex.md](gaza-minos-marnas-complex.md) | Gaza = Minoa, ΜΕΙΝΩΣ coins | Marnas = Dagon = Zeus Cretagenes |
 | [yahweh-cretan-zeus-convergence.md](yahweh-cretan-zeus-convergence.md) | YHW coin, Moses-Minos pattern | Cherethite transmission, law-giver |
-| [levite-cretan-connection.md](levite-cretan-connection.md) | Cherethites as Cretans | Mycenaean *laos* hypothesis |
+| [levite-cretan-connection.md](levite-cretan-connection.md) | Cherethites as Cretans | *laos* hypothesis, nahash-nehoshet chain, Daktyloi-Kenite, pillar as Cretan memory, Egyptian names on Crete |
 | [canaanite-baalim-yahweh-absorption.md](canaanite-baalim-yahweh-absorption.md) | YHWH absorbed Canaanite traditions | Baal epithets, El attributes |
-| [exodus-archaeological-critique.md](exodus-archaeological-critique.md) | Finkelstein/Dever critique | Israelites emerged from Canaanites |
+| [exodus-archaeological-critique.md](exodus-archaeological-critique.md) | Against historical Exodus | Finkelstein/Dever, Tacitus reliability, landscape transformation table, origo gentis parallels |
 
 ---
 
@@ -23,8 +23,12 @@ Research dossiers on the Minos-Moses parallels, etymological connections, and Ca
 
 - **Minos-Moses typology**: Law-giver, mountain theophany, tablet reception
 - **Etymological chains**: Minos < *m-n-n*, Manasseh, Manat
+- **Yammu-Minos judge parallel**: *Ṯāpiṭu Naharu* → Minos as Judge of the Dead
 - **Gaza-Crete connection**: Marnas cult, MEINΩΣ coinage
-- **Cherethite transmission**: Cretans in David's guard
+- **Cherethite transmission**: Cretans in David's guard; nahash-nehoshet metallurgical chain
+- **Daktyloi-Kenite parallel**: Artisan-priests of the copper cult on Mt. Ida / in the Arabah
+- **Egyptian names on Crete**: Gordon §127; counter to Friedman's Levites-only thesis
+- **Origo gentis fabrication**: Cretan memory overwritten by Egyptian narrative (comparative parallels: Rome, Ethiopia, Aztecs, Japan)
 - **Yahwism origins**: Absorption of Canaanite/Cretan elements
 
 ---

@@ -15,6 +15,7 @@ Research dossiers on the Theran eruption, primordial chaos mythology, and divine
 | [murex-paur-paur-textile.md](murex-paur-paur-textile.md) | Linear B "paur-paur" < Semitic *pʾr* | Purple dye, Kythera murex industry |
 | [asherah-tree-exile-malignment.md](asherah-tree-exile-malignment.md) | Asherah as tree/staff/serpent | Exile-era polemic, Nehushtan, goddess suppression |
 | [classical-sources-spartan-bias.md](classical-sources-spartan-bias.md) | Critique of Greek sources | Spartan colonial propaganda, Herodotus bias |
+| [thera-eruption-cretan-visibility.md](thera-eruption-cretan-visibility.md) | Eruption as seen from Crete | 36–39 km column, Hood 1867 datum, Cretan visibility geometry |
 
 ---
 
