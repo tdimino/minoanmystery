@@ -51,10 +51,13 @@ Jane Ellen Harrison (*Themis*, 1912) identifies the Kouretes as "daimones of the
 |-------------|----------------|---------|
 | **Megistos** | **Ba'al** | Greatest / Lord |
 | **Kouros** | **Rapu** | Youth / Healer |
+| **Korybas** | **\*qarub-baʿal** | "Attendant of Baal" |
 
 **Ugaritic evidence**: The Rephaim texts (KTU 1.20–22) describe the *rpum* as divine shades or heroes associated with Ba'al. The title **Ba'al Rapu** connects the storm-god to healing and the underworld.
 
 **Semantic parallel**: Both titles designate a **supreme young male deity** associated with seasonal renewal, warrior/storm functions, and leadership of a divine entourage.
+
+**The Korybantes as *qarub-baʿal***: Assmann's etymology (developed by Bérard, endorsed by Astour) derives *Korybas* from W-S **\*qarub-baʿal** "attendant of Baal"—the same vowel-collapse pattern that yields Greek *Annibas* from Phoenician *Ḥanniba'al* (Hannibal). The Kouretes/Korybantes are thereby literal *attendants of Baal*, and the Palaikastro hymn's address to the Megistos Kouros names the Baal whose attendants they are.
 
 ### 3. Dionysos Shape-Shifting: A Semitic Substratum
 
@@ -127,6 +130,8 @@ The Kouretes are **daimones of initiation**—spirits who mediate between mortal
 | **Telchines** | Rhodes | Smiths, sorcerers |
 
 All represent the same phenomenon—bands of initiated young men serving mystery functions, their names varying by region but their ritual role constant.
+
+**The Bronze Age substrate**: Astour traces the *Korybantes* to W-S **\*qarub-baʿal** ("attendant of Baal") and equates the **seven Korybantes** with the **seven *Rpum*** and Baal's "seven lads, eight boars" in the Ugaritic Baal Cycle (I\*AB V: 8-9). Their leader, "*Korybas* par excellence," is **Rpu-Bʿl**—the same figure who, at Elis, surfaces as **Satrapes = Šed-râphe'** (Pausanias VI: 25:6). The Greek mystery bands are not native Greek inventions but the western continuation of a W-S underworld pattern.
 
 ### 8. Thunder-Rites and Shield-Clashing
 

@@ -24,6 +24,7 @@ corner-stones and emphasizes that current work is only the beginning of reapprai
 2. **Onomastic Primacy**: Names are conservative linguistic repositories
 3. **Functional Analysis**: Semitic origin + functional parallelism + genealogical clustering = proof
 4. **Anti-Bias Critique**: 19th-century scholarship systematically suppressed Oriental influence
+5. **Daimones as Rephaim**: The Greek *daimon* category is continuous with the W-S *Rephaim*; the seven Korybantes (Kouretes/Cabiri) = seven *Rpum*, with *Korybas par excellence* = *Rpu-Bʿl*, head of the Rephaim
 
 ## Methodological Approach
 

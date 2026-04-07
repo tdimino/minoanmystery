@@ -92,6 +92,9 @@ The "Greatest Youth" is the god himself, but the hymn's ritual context involved 
 **Marinatos's initiates = Harrison's Kouretes**:
 Both describe youths undergoing initiation who ritually *become* the young male deity through possession by his spirit—what Harrison calls "living" the god.
 
+**Astour's Bronze Age substrate**:
+The same initiatory band predates Crete in W-S underworld theology. Astour derives **Korybas** from W-S **\*qarub-baʿal** "attendant of Baal" (Assmann's etymology, developed by Bérard), and equates the **seven Korybantes** (= Kouretes = Cabiri, "identified by the ancients") with the **seven *Rpum*** (Rephaim) and the "seven lads, eight boars" who accompany Baal to the Nether World in the Ugaritic Baal Cycle (I\*AB = UM 67: V: 8-9). Their leader, "*Korybas* par excellence," corresponds to **Rpu-Bʿl**—the head of the Rephaim and son of Baal and Anath. At Elis (Pausanias VI: 25:6) the same figure surfaces as **Satrapes = Šed-râphe'**, "Demon-Healer." The Greek **daimon** category itself is, by Astour's own pen, continuous with the W-S **Rephaim**.
+
 ### 6. The Mycenaean Displacement: From Goddess to King
 
 **The transition pattern**: The young god initiates represent a critical moment in Minoan religious history—the shift from **goddess-centered** to **king-centered** cult. In the earlier Neopalatial period, the goddess priestess held primacy; the male priest served her cult. By the Late Minoan/Mycenaean period, the pattern inverts: the priest-king and young god initiates assume central importance.

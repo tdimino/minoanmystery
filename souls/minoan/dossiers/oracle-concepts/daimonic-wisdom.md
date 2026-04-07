@@ -89,6 +89,10 @@ The essay references Idomeneos (Ἰδομενεύς), the mythical king of Crete
 
 The musical pairing—Mozart's "Idomeneo, K. 366: Ouverture"—reinforces the essay's argument that melody communicates through *pathos* rather than verbiage, making it "the best container for the Spirit."
 
+## The Bronze Age Substrate: Daimones as Rephaim
+
+Astour (*Hellenosemitica*) derives the Cretan **Korybantes**—the band of seven who attend the infant Zeus alongside the Kouretes—from W-S **\*qarub-baʿal**, "attendant of Baal," and equates them with the seven *Rpum* (Rephaim) and Baal's "seven lads, eight boars" who descend with him to the Nether World in the Ugaritic Baal Cycle. Their leader, *Korybas par excellence*, is **Rpu-Bʿl**—the chthonic young god worshipped at Elis as **Satrapes = Šed-râphe'**, "Demon-Healer." The Greek **daimon** category is, by Astour's own pen, continuous with the W-S **Rephaim**: Socrates' inner whisper and Tom's daimon Idomeneos share a Bronze Age Levantine pedigree.
+
 ---
 
 ## Core Insight

@@ -5,12 +5,12 @@ source:
   year: 1965
   venue: "Hellenosemitica"
 tags:
-  deities: [bellerophon, ninazu, ningiszida, rpu-baal, mush, athena, ishara]
-  concepts: [hellenosemitica, etymology, healing-gods, serpent-symbolism, owl-symbolism, chthonic]
-  places: [kos, ugarit, aegean, corinth]
-  scholars: [astour, lewy, starcky, gordon]
+  deities: [bellerophon, ninazu, ningiszida, rpu-baal, mush, athena, ishara, korybantes, kouretes, cabiri, sed-raphe, satrapes, rephaim, qarub-baal]
+  concepts: [hellenosemitica, etymology, healing-gods, serpent-symbolism, owl-symbolism, chthonic, daimones, initiatory-bands, seven-attendants]
+  places: [kos, ugarit, aegean, corinth, elis, lebadeia, crete]
+  scholars: [astour, lewy, starcky, gordon, assmann, berard, clermont-ganneau]
   periods: [bronze-age]
-  languages: [west-semitic, ugaritic, sumerian, akkadian, greek]
+  languages: [west-semitic, ugaritic, sumerian, akkadian, greek, phoenician]
 ---
 
 # Hellenosemitica Chapter III Part A: Onomastica and Attributes of Healing Gods
@@ -29,9 +29,9 @@ tags:
 
 ## Overview
 
-This opening section of Chapter III establishes the foundation for understanding Greek healer-heroes as derivatives of Semitic and Sumerian healing deities. Astour begins with the name "Bellerophon" (*B'l-rāphôn* = "Healing Baal") and builds outward to demonstrate that an entire category of Greek mythological figures—distinguished not by genealogy but by their role as healers—traces back to Near Eastern prototypes. The section examines Sumerian *Ninazu* ("Lord Physician"), the serpent-god *Ningišzida*, the Ugaritic *Rpu-Bʿl* ("Healing Lord"), and the bird-symbolism (especially owls) that pervades both Babylonian medicine and Greek mythology.
+This opening section of Chapter III establishes the foundation for understanding Greek healer-heroes as derivatives of Semitic and Sumerian healing deities. Astour begins with the name "Bellerophon" (*B'l-rāphôn* = "Healing Baal") and builds outward to demonstrate that an entire category of Greek mythological figures—distinguished not by genealogy but by their role as healers—traces back to Near Eastern prototypes. The section examines Sumerian *Ninazu* ("Lord Physician"), the serpent-god *Ningišzida*, the Ugaritic *Rpu-Bʿl* ("Healing Lord"), the **Korybantes as *Qarub-Baʿal* / "attendants of Baal" equated with the seven Rephaim**, and the bird-symbolism (especially owls) that pervades both Babylonian medicine and Greek mythology.
 
-**Why this matters for Kothar**: This section reveals that Greek healing mythology is deeply rooted in Semitic and Sumerian traditions, with the serpent (a key Minoan symbol) and the owl serving as cross-cultural symbols of healing and chthonic wisdom.
+**Why this matters for Kothar**: This section reveals that Greek healing mythology is deeply rooted in Semitic and Sumerian traditions, with the serpent (a key Minoan symbol) and the owl serving as cross-cultural symbols of healing and chthonic wisdom. Crucially, Astour's identification of the seven Korybantes with the seven *Rpum* (pp. 238–239) grounds the Greek **daimon** category in Bronze Age West-Semitic underworld theology — *qarub-Baʿal* "attendant of Baal" *is* a daimon in the original Levantine sense, not a Greek philosophical abstraction.
 
 ---
 
@@ -93,7 +93,7 @@ Astour demonstrates that the Ugaritic deity *Mš* (son of Baal and the heifer-go
 
 **Feminine form** *Mšt*: Appears in names *Mšt-Dnty* (wife of Danel) and *Mšt-Hry* (wife of Krt)—"she-serpent" with W-S feminine ending.
 
-### 4. *Rpu-Bʿl* "Healing Baal" (pp. 245–249)
+### 4. *Rpu-Bʿl* "Healing Baal" (pp. 245–247)
 
 The Ugaritic *Rpu-Bʿl*, son of Baal and the heifer, is:
 - Identical with *Mš* in the mythological plane
@@ -102,7 +102,27 @@ The Ugaritic *Rpu-Bʿl*, son of Baal and the heifer, is:
 
 This establishes the chain: **Ninazu** → **Rpu-Bʿl** → **Bellerophon**
 
-### 5. Bird-Symbolism in Healing Magic (pp. 246–260)
+### 5. Korybantes as *Qarub-Baʿal* / Seven Rephaim (pp. 238–239)
+
+Returning to the Šed-râphe' material on pp. 238–239, Astour weaves the Greek **Korybantes** into the same Bronze Age West-Semitic underworld theology as Rpu-Bʿl. The point of departure is the divine name **Šed-râphe'** ("Demon-Healer"), attested at Byblos and in Hellenistic Cilicia. Clermont-Ganneau, almost a century earlier, had detected Šed-râphe' in the god **Satrapes** worshipped at Elis (Pausanias VI: 25:6). Pausanias adds the crucial gloss: "*Satrapēs* is a surname of *Korybas*."
+
+**The chain Astour reconstructs**:
+
+1. **Korybantes = Kouretes = Cabiri** ("identified by the ancients"). They are "ancient deities or *genii* in the Cretan cult of Rhea, who helped to raise the infant Zeus."
+2. **It was remembered that there were seven of them.**
+3. **Korybas < W-S \*Qarub-baʿal** "attendant of Baal" (Assmann's etymology, accepted and developed by V. Bérard, who identified the Corybants with the Curetes — the latter as a translation of W-S *naʿar*, meaning both "lad" and "servant").
+4. **Chthonic confirmation**: On a low relief from Boeotian **Lebadeia**, a serpent stands in front of these Corybants — the same serpent symbolism Astour has tracked through Ningišzida, *Mš*, and Šed-râphe'.
+5. **Ugaritic linchpin**: In the Baal Cycle (I\*AB = UM 67: V: 8-9), Baal descends to the Nether World with his "**seven lads, eight boars**." Astour writes:
+
+> "These seven lads, apparently, correspond, to a certain extent, to the **seven *Rpum*** and the **seven Corybants** ('attendants of Baal'), and **their leader, *Korybas* par excellence, corresponds to *Rpu-Bʿl***." (p. 238)
+
+6. **Synthesis**: Therefore at Elis, **Satrapes (*Šed-râphe'*) = Corybas (*Qarub-Baʿal*) = Rpu-Bʿl** (head of the Rephaim) = the divine type that "actually penetrated into Greece and had his own cult there" — almost the same name and the same function as Bellerophon (*B'l-Rpu(n)*).
+
+> "It is clear why in Elis, Satrapes (*Šed-râphe'*) was identified with Corybas (*Qarub-Baʿal*). So the second important conclusion from the above is — that a divine figure of the same type and almost of the same name as *Rpu-Bʿl* (or, if one prefers, *Bʿl-Rpu(n)* = Bellerophon) actually penetrated into Greece and had his own cult there." (pp. 238–239)
+
+**Why this matters for Kothar**: Astour's equation **seven Korybantes = seven Rpum** *implicitly* identifies the Greek **daimones** with the Semitic **Rephaim** — both as initiatory bands of seven attached to a young dying-and-rising god (Zeus Kouros / Rpu-Bʿl / Baal-of-the-underworld). This grounds the entire daimonic category in Bronze Age West-Semitic underworld theology by Astour's own pen, and gives the Open Souls Paradigm a textual root in Levantine religion. The "*qarub-Baʿal*" ("attendant of Baal") is a daimon in the strict and original sense — not a Greek philosophical abstraction, but a chthonic spirit attached to a god, exactly the role Kothar wa Khasis fills for Baal in the Ugaritic cycle.
+
+### 6. Bird-Symbolism in Healing Magic (pp. 246–260)
 
 Astour reveals the crucial role of nocturnal birds (especially owls) in Babylonian medicine and Greek mythology:
 
@@ -151,6 +171,12 @@ Astour reveals the crucial role of nocturnal birds (especially owls) in Babyloni
 | *anpatu* | Night-bird cognate with Anaphê, *'ânâphâ* | Akkadian |
 | *glaux / glaukōpis* | "Owl" / "owl-eyed"—Athena's symbol/epithet | Greek |
 | *merappeʾ* | "(fem.) healer"—W-S origin of name Merope | West Semitic |
+| *Šed-râphe'* | "Demon-Healer"—Phoenician/Ugaritic divine name attested at Byblos | West Semitic / Phoenician |
+| *Satrapēs* | Greek god worshipped at Elis (Paus. VI: 25:6); surname of Korybas | Greek (from W-S *Šed-râphe'*) |
+| *Korybas* | "Attendant of Baal"—leader of the Korybantes, identified with Rpu-Bʿl | Greek (from W-S *qarub-baʿal*) |
+| *qarub-baʿal* | "Attendant/relative of Baal"—Assmann/Bérard etymology of *Korybas* | West Semitic |
+| *Rpum* | "Rephaim"—seven underworld spirits convoked by Baal; equated with seven Korybantes | Ugaritic / West Semitic |
+| *naʿar* | "Lad/servant"—W-S word translated by Greek *kourēs* (Kouretes) | West Semitic |
 
 ---
 
@@ -198,10 +224,11 @@ Astour reveals the crucial role of nocturnal birds (especially owls) in Babyloni
 | Sumerian and Semitic Parallels | 235–240 | Ninazu, Ningišzida, serpent symbolism |
 | Muš and Ugaritic Mš | 240–245 | Sumerian borrowing into Ugarit |
 | Rpu-Bʿl | 245–247 | "Healing Baal" as translation of Ninazu |
+| **Korybantes as *Qarub-Baʿal* / Seven Rephaim** | **238–239** | **Šed-râphe' = Satrapes = Korybas; seven Korybantes ↔ seven Rpum; Korybas par excellence = Rpu-Bʿl; daimones ↔ Rephaim** |
 | Bird-Symbolism and Healing | 247–260 | Owls in medicine, Coan myth cycle, Athena |
 
 ---
 
 ## RAG Tags
 
-bellerophon, baal raphon, healing gods, healer heroes, ninazu, ningiszida, serpent, serpent god, mush, ugaritic msh, rpu baal, rpubl, chthonic, underworld, owl, glaux, athena, glaukopis, kos, asclepios, anaphē, merope, meropē, merapis, eššepu, exorcist, bird symbolism, nocturnal birds, sumerian, akkadian, ugaritic, west semitic, babylonian medicine, coan myth, cos island, etymology, functional parallels, astour, hellenosemitica
+bellerophon, baal raphon, healing gods, healer heroes, ninazu, ningiszida, serpent, serpent god, mush, ugaritic msh, rpu baal, rpubl, chthonic, underworld, owl, glaux, athena, glaukopis, kos, asclepios, anaphē, merope, meropē, merapis, eššepu, exorcist, bird symbolism, nocturnal birds, sumerian, akkadian, ugaritic, west semitic, babylonian medicine, coan myth, cos island, etymology, functional parallels, astour, hellenosemitica, korybantes, kouretes, korybas, qarub baal, sed raphe, satrapes, rephaim, rpum, daimones, daimon, seven attendants, initiatory band, lebadeia, elis, pausanias, assmann, berard, clermont-ganneau, baal cycle, seven lads
