@@ -178,6 +178,27 @@ const { galleries = [] } = Astro.props;
     filter: invert(1) brightness(0.9);
   }
 
+  /* Always-dark backdrop variant for icons designed for dark surfaces (e.g. WWW tanit).
+     Constrained to 320px so the card→modal scale-up feels proportional, not gigantic.
+     Source PNG carries its own transparent padding so the inscribed icon has breathing
+     room from the circular crop. */
+  .lightbox-content img.lightbox-img--bg-dark {
+    width: 320px;
+    height: 320px;
+    max-width: 320px;
+    max-height: 320px;
+    object-fit: contain;
+    background-color: #0a0e16;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .lightbox-content img.lightbox-img--bg-dark.lightbox-img--circular {
+    border-color: rgba(45, 212, 191, 0.45);
+    box-shadow:
+      0 0 32px rgba(45, 212, 191, 0.3),
+      0 0 80px rgba(45, 212, 191, 0.15);
+  }
+
   /* Circular images (avatars) — matches labyrinth chat avatar glow */
   .lightbox-content img.lightbox-img--circular {
     border-radius: 50%;
@@ -433,6 +454,7 @@ const { galleries = [] } = Astro.props;
         link?: { url: string; label: string };
         invertInLightbox?: boolean;
         circular?: boolean;
+        bgDarkInLightbox?: boolean;
       }
 
       interface Gallery {
@@ -493,6 +515,12 @@ const { galleries = [] } = Astro.props;
           lightboxImg.classList.add('lightbox-img--circular');
         } else {
           lightboxImg.classList.remove('lightbox-img--circular');
+        }
+
+        if (item.bgDarkInLightbox) {
+          lightboxImg.classList.add('lightbox-img--bg-dark');
+        } else {
+          lightboxImg.classList.remove('lightbox-img--bg-dark');
         }
 
         if (caption) {

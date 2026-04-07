@@ -504,6 +504,18 @@
   border: 1px solid var(--color-border-purple);
 }
 
+/* Always-dark backdrop for logos designed for dark surfaces (e.g. WWW PHOSPHOR VIGIL tanit).
+   Slightly enlarged container so the icon reads at the same visual weight as the other
+   project logos. Source PNG carries its own transparent padding for breathing room. */
+.project-logo.logo-bg-dark {
+  background-color: #0a0e16;
+  object-fit: contain;
+  padding: 0;
+  border-color: rgba(45, 212, 191, 0.45);
+  width: 36px;
+  height: 36px;
+}
+
 .project-card:hover .project-logo {
   opacity: 1;
 }

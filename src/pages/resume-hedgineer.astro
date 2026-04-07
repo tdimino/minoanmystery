@@ -6,7 +6,7 @@ import '../styles/global.css';
 import '../styles/resume.css';
 
 const title = "Resume - Tom di Mino | Product Engineer";
-const description = "Full-stack AI engineer with 4+ years shipping production systems in Python and TypeScript. Built $800k/day AI tool at JP Morgan with bespoke LangGraph agents for 5,000+ wealth advisors. Currently building SubQ Code—an open competitor to Claude Code—with autonomous long-context improvement loops, evaluation infra, and agentic orchestration.";
+const description = "Full-stack AI engineer with 5+ years shipping production systems in Python and TypeScript. Built $800k/day AI tool at JP Morgan with bespoke LangGraph agents for 5,000+ wealth advisors. Currently building SubQ Code—an open competitor to Claude Code—with autonomous long-context improvement loops, evaluation infra, and agentic orchestration.";
 const canonicalURL = "https://resume.minoanmystery.org/resume-hedgineer";
 
 // Structured Data for Resume/ProfilePage
@@ -60,6 +60,10 @@ const structuredData = {
         "DuckDB",
         "React",
         "TypeScript",
+        "Rust",
+        "Cloudflare Workers",
+        "Three.js",
+        "WebAssembly",
         "Financial Data Systems",
         "Agentic AI Frameworks"
       ],
@@ -82,12 +86,12 @@ const skills = [
   {
     title: "Infrastructure",
     icon: "ph:hard-drives-duotone",
-    items: "FastAPI, Docker, AWS, Vercel, Railway, TensorRT-LLM, Triton, WebSocket, SSE, Modal"
+    items: "FastAPI, Docker, AWS, Cloudflare Workers, Vercel, Railway, TensorRT-LLM, Triton, WebSocket, SSE, Modal"
   },
   {
     title: "Frontend",
     icon: "ph:globe-duotone",
-    items: "React, Next.js, Astro, Node.js, Vite, Tailwind, ShadCN, LiveKit"
+    items: "React, Next.js, Astro, Node.js, Vite, Tailwind, ShadCN, Three.js, WebAssembly, LiveKit"
   }
 ];
 
@@ -184,7 +188,7 @@ const projects = [
   {
     name: "Claude Code Starter-Kit",
     year: "2026",
-    description: "Open-source <code>~/.claude/</code> configuration—40 skills, 30+ slash commands, 7 lifecycle hooks, CLI tools, and a VS Code extension. Covers local ML, RAG, browser automation, academic research, agentic teams, and session tracking. <br><a href='https://github.com/tdimino/claude-code-minoan' class='project-link' target='_blank'>View on GitHub →</a>",
+    description: "Open-source <code>~/.claude/</code> configuration—72 skills, 30+ slash commands, 7 lifecycle hooks, CLI tools, and a Ghostty terminal setup. Covers local ML, RAG, browser automation, academic research, agentic teams, and session tracking. <br><a href='https://github.com/tdimino/claude-code-minoan' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["Claude Code", "Python", "TypeScript", "Bash"],
     icon: "ph:terminal-window-duotone",
     logo: "/images/seal-of-minos.png",
@@ -222,6 +226,29 @@ const projects = [
     icon: "ph:eye-duotone",
     logo: "/images/avatars/minoan-avatar.webp",
     logoUrl: "https://www.minoanmystery.org/labyrinth",
+    logoDark: false,
+    logoCircular: true
+  },
+  {
+    name: "World War Watcher",
+    year: "2026",
+    description: "Real-time dashboard tracking the Iran-US war's impact on cloud infrastructure and global economics. Four Cloudflare Workers fuse live financial feeds into 46 tickers; 16 Hunyuan3D Pro models render on a <code>react-globe.gl</code> canvas with custom Three.js materials. <br><a href='https://www.worldwarwatcher.com' class='project-link' target='_blank'>Visit site →</a>",
+    tech: ["Next.js 16", "Cloudflare Workers", "Three.js", "SQLite/FTS5"],
+    icon: "ph:globe-hemisphere-east-duotone",
+    logo: "/images/tanit.png",
+    logoUrl: "https://www.worldwarwatcher.com",
+    logoDark: false,
+    logoCircular: true,
+    logoBgDark: true
+  },
+  {
+    name: "Open Rebellion",
+    year: "2026",
+    description: "Ground-up Rust reimplementation of <em>Star Wars Rebellion</em> (1998, LucasArts)—runs native on macOS/Metal and in the browser via WebAssembly. v0.20.0: ~97% parity, 403 tests, 17 simulation systems, 7-phase combat pipeline. 5,127 functions decompiled via Ghidra. <br><a href='https://github.com/tdimino/open-rebellion' class='project-link' target='_blank'>View on GitHub →</a>",
+    tech: ["Rust", "macroquad", "egui", "WebAssembly"],
+    icon: "ph:rocket-launch-duotone",
+    logo: "/images/rebellion-starbird.png",
+    logoUrl: "https://github.com/tdimino/open-rebellion",
     logoDark: false,
     logoCircular: true
   }
@@ -373,7 +400,7 @@ const lightboxGalleries = [{
     <!-- Summary -->
     <div class="resume-summary" data-animate="summary">
       <p>
-        Full-stack AI/ML engineer with <strong>4+ years shipping production systems in Python and TypeScript</strong>.
+        Full-stack AI/ML engineer with <strong>5+ years shipping production systems in Python and TypeScript</strong>.
         Built <strong>$800k/day AI tool</strong> at JP Morgan—bespoke LangGraph agents, data pipeline, and RAG for 5,000+ wealth advisors.
         Currently building <strong>SubQ Code</strong>—an open competitor to Claude Code—with autonomous long-context improvement loops,
         Python evaluation infra, and agentic orchestration. <strong>Deep Claude ecosystem expertise; startup builder who ships fast and works directly with clients.</strong>
@@ -518,7 +545,7 @@ const lightboxGalleries = [{
                       <img
                         src={project.logo}
                         alt={project.name}
-                        class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''}`}
+                        class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''} ${project.logoBgDark ? 'logo-bg-dark' : ''}`}
                       />
                     </button>
                   )}

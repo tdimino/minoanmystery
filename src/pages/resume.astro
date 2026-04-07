@@ -6,7 +6,7 @@ import '../styles/global.css';
 import '../styles/resume.css';
 
 const title = "Resume - Tom di Mino";
-const description = "Applied AI/ML Engineer with 4+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Subquadratic AI with fine-tuned LLMs and voice pipelines.";
+const description = "Applied AI/ML Engineer with 5+ years shipping LLM-powered production systems. Built $800k/day AI tool at JP Morgan serving 5,000+ wealth advisors. Currently architecting production AI platform at Subquadratic AI with fine-tuned LLMs and voice pipelines.";
 const canonicalURL = "https://resume.minoanmystery.org";
 
 // Structured Data for Resume/ProfilePage
@@ -55,9 +55,13 @@ const structuredData = {
         "LlamaIndex",
         "Python",
         "TypeScript",
+        "Rust",
         "TensorRT-LLM",
         "Triton Inference Server",
-        "Voice AI Pipelines"
+        "Voice AI Pipelines",
+        "Cloudflare Workers",
+        "Three.js",
+        "WebAssembly"
       ],
     }
   ]
@@ -83,7 +87,7 @@ const skills = [
   {
     title: "Web",
     icon: "ph:globe-duotone",
-    items: "Next.js, React, Node.js, Astro, Vite, Tailwind, ShadCN, LiveKit, Vercel, Railway"
+    items: "Next.js, React, Node.js, Astro, Vite, Tailwind, ShadCN, Three.js, LiveKit, Cloudflare Workers, Vercel, Railway"
   }
 ];
 
@@ -182,7 +186,7 @@ const projects = [
   {
     name: "Claude Code Starter-Kit",
     year: "2026",
-    description: "Open-source <code>~/.claude/</code> configuration—40 skills, 30+ slash commands, 7 lifecycle hooks, CLI tools, and a VS Code extension. Covers local ML, RAG, browser automation, academic research, agentic teams, and session tracking. <br><a href='https://github.com/tdimino/claude-code-minoan' class='project-link' target='_blank'>View on GitHub →</a>",
+    description: "Open-source <code>~/.claude/</code> configuration—72 skills, 30+ slash commands, 7 lifecycle hooks, CLI tools, and a Ghostty terminal setup. Covers local ML, RAG, browser automation, academic research, agentic teams, and session tracking. <br><a href='https://github.com/tdimino/claude-code-minoan' class='project-link' target='_blank'>View on GitHub →</a>",
     tech: ["Claude Code", "Python", "TypeScript", "Bash"],
     icon: "ph:terminal-window-duotone",
     logo: "/images/seal-of-minos.png",
@@ -222,6 +226,29 @@ const projects = [
     logoUrl: "https://www.minoanmystery.org/labyrinth",
     logoDark: false,
     logoCircular: true
+  },
+  {
+    name: "World War Watcher",
+    year: "2026",
+    description: "Real-time dashboard tracking the Iran-US war's impact on cloud infrastructure and global economics. Four Cloudflare Workers fuse live financial feeds into 46 tickers; 16 Hunyuan3D Pro models render on a <code>react-globe.gl</code> canvas with custom Three.js materials. <br><a href='https://www.worldwarwatcher.com' class='project-link' target='_blank'>Visit site →</a>",
+    tech: ["Next.js 16", "Cloudflare Workers", "Three.js", "SQLite/FTS5"],
+    icon: "ph:globe-hemisphere-east-duotone",
+    logo: "/images/tanit.png",
+    logoUrl: "https://www.worldwarwatcher.com",
+    logoDark: false,
+    logoCircular: true,
+    logoBgDark: true
+  },
+  {
+    name: "Open Rebellion",
+    year: "2026",
+    description: "Ground-up Rust reimplementation of <em>Star Wars Rebellion</em> (1998, LucasArts)—runs native on macOS/Metal and in the browser via WebAssembly. v0.20.0: ~97% parity, 403 tests, 17 simulation systems, 7-phase combat pipeline. 5,127 functions decompiled via Ghidra. <br><a href='https://github.com/tdimino/open-rebellion' class='project-link' target='_blank'>View on GitHub →</a>",
+    tech: ["Rust", "macroquad", "egui", "WebAssembly"],
+    icon: "ph:rocket-launch-duotone",
+    logo: "/images/rebellion-starbird.png",
+    logoUrl: "https://github.com/tdimino/open-rebellion",
+    logoDark: false,
+    logoCircular: true
   }
 ];
 
@@ -239,10 +266,11 @@ const lightboxGalleries = [{
     caption: `${p.name} (${p.year})`,
     title: p.name,
     year: p.year,
-    description: stripHtml(p.description).replace(/View on GitHub →|Speak with Kothar →/g, '').trim(),
+    description: stripHtml(p.description).replace(/View on GitHub →|Speak with Kothar →|Visit site →/g, '').trim(),
     tags: p.tech,
     invertInLightbox: p.logoDark,
     circular: p.logoCircular,
+    bgDarkInLightbox: p.logoBgDark,
     link: p.logoUrl ? {
       url: p.logoUrl,
       label: p.logoUrl.includes('github') ? 'View on GitHub' : (p.logoUrl.includes('labyrinth') ? 'Speak with Kothar' : 'Visit')
@@ -374,7 +402,7 @@ const lightboxGalleries = [{
     <!-- Summary -->
     <div class="resume-summary" data-animate="summary">
       <p>
-        Full-stack AI engineer with <strong>4+ years shipping LLM-powered production systems</strong>.
+        Full-stack AI engineer with <strong>5+ years shipping LLM-powered production systems</strong>.
         Built <strong>$800k/day AI tool</strong> at JP Morgan serving 5,000+ wealth advisors.
         Currently architecting production AI advisor platform at SubQ AI with fine-tuned LLMs,
         voice pipelines, and multi-dimensional evaluation frameworks. <strong>Startup builder who moves fast, empathizes with users, and ideates constantly.</strong>
@@ -533,7 +561,7 @@ const lightboxGalleries = [{
                       <img
                         src={project.logo}
                         alt={project.name}
-                        class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''}`}
+                        class={`project-logo ${project.logoDark ? 'logo-invert' : ''} ${project.logoCircular ? 'logo-circular' : ''} ${project.logoBgDark ? 'logo-bg-dark' : ''}`}
                       />
                     </button>
                   )}
