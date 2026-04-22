@@ -77,11 +77,6 @@ const scenarios = [
   { name: 'Adversarial paraphrase consistency', instrument: 'Training' },
 ];
 
-const counters = [
-  { value: 5, label: 'Judge providers' },
-  { value: 27, label: 'Safety dimensions' },
-  { value: 30, label: 'Adversarial scenarios' },
-];
 ---
 
 <div class="eval-tribunal" aria-label="Evaluation framework: 5 LLM judges, 20 metrics, 30+ adversarial scenarios">
@@ -117,10 +112,10 @@ const counters = [
             <span class="et-group-label">{group.category}</span>
             <div class="et-group-metrics">
               {group.metrics.map((m) => (
-                <span class={`et-metric ${m.pass ? '' : 'et-metric-warn'}`} data-tip={m.tip}>
+                <span class={`et-metric ${m.pass ? '' : 'et-metric-warn'}`} tabindex="0" role="note" aria-label={`${m.name}: ${m.tip}`}>
                   <span class="et-metric-dot" aria-hidden="true"></span>
                   {m.name}
-                  <span class="et-tooltip">{m.tip}</span>
+                  <span class="et-tooltip" aria-hidden="true">{m.tip}</span>
                 </span>
               ))}
             </div>
@@ -177,12 +172,9 @@ const counters = [
 
   {/* Proof footer */}
   <div class="et-proof">
-    {counters.map((c) => (
-      <div class="et-counter">
-        <span class="et-counter-value" data-target={c.value}>0</span>
-        <span class="et-counter-label">{c.label}</span>
-      </div>
-    ))}
+    <span class="et-proof-line">
+      <strong>5</strong> providers &times; <strong>27</strong> dimensions &times; <strong>30+</strong> adversarial scenarios
+    </span>
   </div>
 </div>
 
@@ -365,6 +357,9 @@ const counters = [
     .et-metric:hover .et-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
   }
 
+  .et-metric:focus-visible { border-color: #3a9e6e; outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .et-metric:focus-visible .et-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
   /* Tooltip */
   .et-tooltip {
     position: absolute;
@@ -488,36 +483,20 @@ const counters = [
 
   /* Proof footer */
   .et-proof {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    padding: 12px 20px;
+    text-align: center;
   }
 
-  .et-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 16px;
-    border-right: 1px solid var(--color-border);
-  }
-
-  .et-counter:last-child { border-right: none; }
-
-  .et-counter-value {
+  .et-proof-line {
     font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--color-accent);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .et-counter-label {
-    font-family: 'JetBrains Mono', 'SF Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    letter-spacing: 0.04em;
     color: var(--color-text-muted);
+  }
+
+  .et-proof-line strong {
+    color: var(--color-accent);
+    font-weight: 800;
   }
 
   /* Coverage Matrix */
@@ -573,7 +552,7 @@ const counters = [
 
   .et-cov-yes { color: #3a9e6e; }
   .et-cov-partial { color: var(--color-accent); }
-  .et-cov-no { color: var(--color-text-muted); opacity: 0.2; }
+  .et-cov-no { color: var(--color-text-muted); opacity: 0.35; }
 
   @media (max-width: 900px) {
     .et-judges { grid-template-columns: repeat(3, 1fr); }
@@ -618,27 +597,24 @@ const counters = [
     document.querySelectorAll('.eval-tribunal').forEach((el) => {
       let counted = false;
 
-      function animateCounters() {
-        if (counted) return;
-        counted = true;
-        el.querySelectorAll('.et-counter-value, .et-hero-count').forEach((c) => {
-          const target = parseInt((c as HTMLElement).dataset.target || '0', 10);
-          let current = 0;
-          const step = Math.max(1, Math.floor(target / 20));
-          const interval = setInterval(() => {
-            current = Math.min(current + step, target);
-            c.textContent = String(current);
-            if (current >= target) clearInterval(interval);
-          }, 30);
-        });
-      }
-
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('is-visible');
-              animateCounters();
+              if (!counted) {
+                counted = true;
+                el.querySelectorAll('.et-hero-count').forEach((c) => {
+                  const target = parseInt((c as HTMLElement).dataset.target || '0', 10);
+                  let current = 0;
+                  const step = Math.max(1, Math.floor(target / 20));
+                  const interval = setInterval(() => {
+                    current = Math.min(current + step, target);
+                    c.textContent = String(current);
+                    if (current >= target) clearInterval(interval);
+                  }, 30);
+                });
+              }
               observer.unobserve(entry.target);
             }
           });
@@ -646,7 +622,7 @@ const counters = [
         { threshold: 0.1 }
       );
       observer.observe(el);
-      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); animateCounters(); } }, 2000);
+      setTimeout(() => { if (!el.classList.contains('is-visible')) { el.classList.add('is-visible'); } }, 2000);
     });
   }
 

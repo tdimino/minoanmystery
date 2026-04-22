@@ -1,6 +1,6 @@
 ---
 title: "A.I. Automation"
-tagline: "Turn repetitive tasks into autonomous workflows that run while you sleep."
+tagline: "Seventy-six percent of businesses use A.I. Fourteen percent have integrated it. I close the gap."
 summary: "Workflow audits, Claude Code agent development, and API integrations that give your team back the hours they're wasting on tasks a machine should handle."
 icon: "ph-lightning"
 heroImage: "/images/services/hero-ai-automation.jpg"
@@ -21,15 +21,17 @@ related_portfolio: []
 
 <div id="mission-toc-slot"></div>
 
-## You're spending 10–20 hours a week on tasks a machine should handle
+## You've tried the tools. They didn't stick.
 
 <figure data-badge="THE PROBLEM">
   <img src="/images/services/body/problem-ai-automation.jpg" alt="The Manual Loop — endless cycle of manual data movement between broken systems" loading="lazy" />
 </figure>
 
-Every business has them—the repetitive, rule-based tasks that eat hours without producing insight. Sorting emails. Formatting reports. Copying data between systems. Monitoring competitors. Generating first drafts. These are tasks that A.I. agents handle reliably today, not in some speculative future. The gap isn't capability—it's implementation. Most businesses know A.I. "could" help, but they don't know where to start, which tools to trust, or how to build workflows that actually stick. I close that gap.
+You've tried ChatGPT. Your team has experimented with Copilot, perhaps a chatbot, perhaps a summarizer someone found on Product Hunt. None of it stuck—not because the tools don't work, but because trying isn't integrating. Goldman Sachs found that while three-quarters of small businesses now use A.I. tools, fewer than one in seven have woven them into actual operations. The rest are stuck in the demo loop: impressive in a meeting, abandoned by Friday.
 
-## What I do
+The barrier isn't awareness, and it isn't cost. It's architecture—knowing which tasks are automatable today, which tools to trust, and how to build workflows that survive contact with your real data, your real team, and your real edge cases. I close that gap.
+
+## What I build
 
 <figure class="medallion" data-badge="THE METHOD">
   <img src="/images/services/body/method-ai-automation_0.jpg" alt="The Agent — bronze automaton with neural pathways" loading="lazy" />
@@ -51,7 +53,7 @@ Every business has them—the repetitive, rule-based tasks that eat hours withou
 
 **Inventory monitoring**—Track competitor pricing, stock levels, and product availability across multiple platforms in real time.
 
-**Content generation**—Draft anti-slop blog posts, product descriptions, social copy, or internal reports from structured prompts and your brand voice guidelines.
+**Content generation**—Draft blog posts, product descriptions, social copy, or internal reports from structured prompts and your brand's own voice—not a generic one.
 
 ## LLM fine-tuning
 
@@ -77,7 +79,7 @@ I deploy and manage LLM infrastructure at every scale—from a single Mac Mini r
 A model that works in demos and fails in production is worse than no model at all. I build evaluation frameworks that catch failures before users do.
 
 - **LLM-as-judge**—5 providers tested head-to-head (Kimi K2.5, GPT-4o, Claude, Qwen3, custom LoRA). Each judge calibrated against human labels with TPR/TNR analysis.
-- **17-metric framework**—Citation density, recall, precision (ALCE standard), source diversity, faithfulness, answer relevancy (RAGAS), and 11 more. Not vibes—numbers.
+- **17-metric framework**—Citation density, recall, precision (ALCE standard), source diversity, faithfulness, answer relevancy (RAGAS), and 11 more—each scored against human labels.
 - **Adversarial testing**—30+ scenarios targeting clinical safety (C-SSRS suicide protocol, PHQ-9 depression screening, HITS domestic violence instrument). If your model handles sensitive domains, I stress-test the failure modes.
 - **Proof**: I built a 55-rubric evaluation suite with 483 criteria across Breaking News, VC, Executive, AI/ML, Academic, and 50 other domains. Blind A/B prompt comparison with 93 automated tests.
 
@@ -92,7 +94,7 @@ Retrieval-Augmented Generation gives your model access to your data without retr
 
 ## Built on open-source tooling
 
-The agents I build for clients use the same architecture I've open-sourced. [Claudicle](https://github.com/tdimino/claudicle) provides persistent identity and memory across sessions—so agents remember context, maintain state, and improve over time. My [Claude Code Minoan skill ecosystem](https://github.com/tdimino/claude-code-minoan) includes 60+ production skills covering web scraping, data extraction, search, communication, and more. You're not buying a black box—you're getting systems built on transparent, extensible foundations.
+The agents I build for clients use the same architecture I've open-sourced. [Claudicle](https://github.com/tdimino/claudicle) provides persistent identity and memory across sessions—so agents remember context, maintain state, and improve over time. My [Claude Code Minoan skill ecosystem](https://github.com/tdimino/claude-code-minoan) includes 60+ production skills covering web scraping, data extraction, search, communication, and more. You're not buying a black box—you're getting systems built on transparent, extensible foundations. These aren't hollow agents—they're systems with genuine memory, identity, and the kind of persistence that most AI tools abandon after the first session timeout.
 
 ## What you get
 
@@ -106,4 +108,4 @@ The agents I build for clients use the same architecture I've open-sourced. [Cla
 - Documentation so your team can maintain and extend the workflows
 - 30 days of post-deployment support and iteration
 
-**The question is no longer whether A.I. can automate your workflows—it's how many hours you'll waste before you let it.**
+I close the gap between demo and deployment. [Book a workflow audit](/contact) and we'll find the hours your team is leaving on the table.
